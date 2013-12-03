@@ -123,7 +123,7 @@ For a complete DTD you may run Michael Kay's [DTDGenerator](http://saxon.sourcef
 Options
 -------------
 							
-<meta><structure> and <meta><design> elements are optional and options can also be set as transformation parameters, like so (windows batch) :
+document/meta/structure and document/meta/design elements are optional and options can also be set as transformation parameters, like so (windows batch) :
 
 	echo "generating A5 two column layout info format with technical style" 
 
@@ -135,7 +135,7 @@ Options
 Available parameters are:
 
 
-Document structure: (elements in <meta><structure> and <meta> <design> have priority)
+Document structure: (elements in document/meta/structure and document/meta/design have priority)
 							
 	<xsl:param name="print_supplemental_directives"> { yes | no }
 	<xsl:param name="print_toc"> { yes | no }
