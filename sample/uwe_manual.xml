@@ -1,0 +1,2025 @@
+<?xml version="1.0" encoding="utf-8"?>
+<document>
+   <title>UWE (draft)</title>
+   <meta>  
+      <owner>alex</owner>  
+      <date-of-creation>16.06.2013</date-of-creation>  
+      <date-of-last-change>16.06.2013</date-of-last-change>  
+      <language>de-DE</language>  
+      <status>draft</status>  
+      <description>Das ist das aktuelle Handbuch für die Version 0.8 im Format A4 Marginalienlayout.</description>  
+      <logo-image>sample/images/uwe_logo.png</logo-image>  
+      <cover-image>sample/images/uweboxfinal.png</cover-image>  
+      <main-title>Webbasiertes Textverabeitungssystem für die Technische Dokumentation</main-title>  
+      <subtitle>Benutzerhandbuch</subtitle>  
+      <cover-text>www.uwe-editor.de
+© by www.alex-duesel.de 2010-2013.
+alex@alex-duesel.de
+All rights reserved. 
+YOU AGREE TO THE FOLLOWING TERMS AND CONDITIONS:
+YOU MAY NOT ALTER, REVERSE ENGINEER OR MODIFY THE SOFTWARE IN ANY WAY. THIS SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.</cover-text>  
+      <format>book</format>  
+      <structure>
+         <supplemental-directives/>
+         <toc/>
+         <index/>
+         <chapter-on-right-page/>
+         <cover-backpage/>  
+      </structure>  
+      <design>    
+         <layout>margin</layout>    
+         <paper-format>A4</paper-format>    
+         <page-margin>leftgap</page-margin>    
+         <spaces>small</spaces>    
+         <header>shortheader</header>    
+         <footer>longfooter</footer>    
+         <look-and-feel>fashion</look-and-feel>    
+         <table-layout>advanced</table-layout>  
+      </design>
+   </meta>
+   <chapter id="d1e53e42f4967a46510d8892128b32a7b0476" ismodule="no" hyphenation="yes"
+            chapterpage="no">
+      <content id="d1e53e42f4967a46510d8892128b32a7b0476">
+                     <title id="d1e55e42f4967a46510d8892128b32a7b0476">
+		Colophon als Einleitungskapitel</title>
+                     <block id="d1e57e42f4967a46510d8892128b32a7b0476">
+                        <title id="d1e58e42f4967a46510d8892128b32a7b0476">
+			Colophon</title>
+                        <p id="d1e60e42f4967a46510d8892128b32a7b0476">
+			Dieses Dokument wurde mit <b id="d1e62e42f4967a46510d8892128b32a7b0476">UWE</b> (<b id="d1e65e42f4967a46510d8892128b32a7b0476">U</b>we is not a <b id="d1e68e42f4967a46510d8892128b32a7b0476">W</b>YSIWYG <b id="d1e71e42f4967a46510d8892128b32a7b0476">E</b>ditor) erstellt. <b id="d1e74e42f4967a46510d8892128b32a7b0476">UWE </b>ist ein webbasiertes Textverarbeitungssystem für die Technische Dokumentation.</p>
+                        <ul id="d1e77e42f4967a46510d8892128b32a7b0476">
+                           <title id="d1e78e42f4967a46510d8892128b32a7b0476">
+				Die folgende Open-Source Technologie kommt bei UWE zum Einsatz:</title>
+                           <li id="d1e80e42f4967a46510d8892128b32a7b0476">
+                              <p id="d2e28a02639bb092879273b72b55250991a7f">Programmiersprache Python und Webframework <url id="d2e30a02639bb092879273b72b55250991a7f"
+                          address="http://www.djangoproject.com"> Django </url>.[[xe1:Programmbibliothek;xe2:Django]]</p>
+                           </li>
+                           <li id="d1e86e42f4967a46510d8892128b32a7b0476">
+                              <p id="d2e34a02639bb092879273b72b55250991a7f">Progammiersprachen XSLT, Java, JavaScript/<url id="d2e36a02639bb092879273b72b55250991a7f" address="http://jquery.com/"> jQuery </url>.[[xe1:Programmbibliothek;xe2:jQuery]]</p>
+                           </li>
+                           <li id="d1e92e42f4967a46510d8892128b32a7b0476">
+                              <p id="d2e40a02639bb092879273b72b55250991a7f">Auszeichnungssprachen XML, XSL-FO, XHTML, CSS.[[xe1:Auszeichnungssprache;xe2:XML]]</p>
+                           </li>
+                           <li id="d1e95e42f4967a46510d8892128b32a7b0476">
+                              <p id="d2e43a02639bb092879273b72b55250991a7f">WYSIWYG Texteditor <url id="d2e45a02639bb092879273b72b55250991a7f" address="http://ckeditor.com/"> CKEditor </url>, <url id="d2e48a02639bb092879273b72b55250991a7f" address="http://www.fmath.info/"> FMATH </url> Formel Editor und XSL-FO Renderer <url id="d2e51a02639bb092879273b72b55250991a7f"
+                          address="http://xmlgraphics.apache.org/fop/"> Apache FOP </url>.[[xe1:Programmbibliothek;xe2:CKEditor]][[xe1:Programmbibliothek;xe2:Apache FOP]]</p>
+                           </li>
+                           <li id="d1e107e42f4967a46510d8892128b32a7b0476">
+                              <p id="d2e55a02639bb092879273b72b55250991a7f">Datenbank <url id="d2e57a02639bb092879273b72b55250991a7f" address="http://www.sqlite.org/"> SQLITE </url>
+                              </p>
+                           </li>
+                           <li id="d1e119e42f4967a46510d8892128b32a7b0476">
+                              <p id="d2e60a02639bb092879273b72b55250991a7f">JavaScript Bibliotheken: <url id="d2e62a02639bb092879273b72b55250991a7f"
+                          address="http://ejohn.org/blog/pure-javascript-html-parser/"> htmlparser.js</url>, <url id="d2e65a02639bb092879273b72b55250991a7f"
+                          address="http://www.digitalmagicpro.com/jPicker/"> jpicker.js </url>, <url id="d2e68a02639bb092879273b72b55250991a7f"
+                          address="http://batiste.dosimple.ch/blog/posts/2007-09-11-1/rich-text-editor-jquery.html"> jquery.rte.js </url>, <url id="d2e71a02639bb092879273b72b55250991a7f"
+                          address="http://ludo.cubicphuse.nl/jquery-plugins/treeTable/doc/"> jquery.treetable.js </url>, <url id="d2e74a02639bb092879273b72b55250991a7f"
+                          address="http://methvin.com/splitter/"> splitter.js </url> und <url id="d2e78a02639bb092879273b72b55250991a7f"
+                          address="http://ejohn.org/blog/javascript-micro-templating/"> templater.js </url>. </p>
+                           </li>
+                        </ul>
+                        <figure id="d1e141e42f4967a46510d8892128b32a7b0476" pdfwidth="margin">
+                           <img id="d2e82a02639bb092879273b72b55250991a7f" src="sample/images/alert_32.gif"
+                    width="32px" />
+                           <subtitle id="d1e143e42f4967a46510d8892128b32a7b0476">
+				Achtung</subtitle>
+                        </figure>
+                        <p id="d1e145e42f4967a46510d8892128b32a7b0476">
+			Für jeweilige Lizenzbedingungen der o.g. Softwarekomponenten verweise ich an dieser Stelle auf die Seiten der jeweiligen Hersteller. Das <b id="d1e147e42f4967a46510d8892128b32a7b0476">UWE</b> Kernprogramm selbst und auch die Komponenten dürfen ohne Einschränkungen benutzt, vervielfältigt und verbreitet werden. Es gibt jedoch einen Haftungsausschluss, siehe Disclaimer auf der linken Seite.</p>
+                        <p id="d1e150e42f4967a46510d8892128b32a7b0476">
+                           <b id="d1e151e42f4967a46510d8892128b32a7b0476">UWE</b> steht ab September 2012 auf <url id="d2e95a02639bb092879273b72b55250991a7f" address="http://www.uwe-editor.de"> www.uwe-editor.de</url> als Prototyp zum Testen zur Verfügung. Weitere geplante Features, wie Volltextsuche, kollaborative Zusammenarbeit auf Kapitelebene, Übersetzungsmanagement, Modularisierung/Wiederverwendung von referenzierten Textblöcken und Lokalisierung werden schrittweise bis Ende des Jahres 2013 eingebaut.</p>
+                        <p id="d1e157e42f4967a46510d8892128b32a7b0476">
+			Eine Kopie dieses Handbuchs finden Sie in Ihrem Benutzerverzeichnis. Sie können dieses Dokument für erste Experimente und Tests benutzen.</p>
+                     </block>
+                  </content>
+   </chapter>
+   <chapter id="d1e159e42f4967a46510d8892128b32a7b0476" ismodule="no" hyphenation="yes"
+            chapterpage="no">
+      <content id="d1e159e42f4967a46510d8892128b32a7b0476">
+                     <title id="d1e161e42f4967a46510d8892128b32a7b0476">
+		Anwendungsgebiete</title>
+                     <block id="d1e163e42f4967a46510d8892128b32a7b0476">
+                        <title id="d1e164e42f4967a46510d8892128b32a7b0476">
+			Szenarien</title>
+                        <p id="d1e166e42f4967a46510d8892128b32a7b0476">
+                           <b id="d1e167e42f4967a46510d8892128b32a7b0476">UWE</b>[[xe1:Anwendungsgebiete]] ist zwar nicht ganz so intuitiv zu bedienen wie ein gängiges Textverarbeitungssystem, aber gerade was das Formatieren von Buch-Vorder- und -rückseiten, Kopf- und Fusszeilen, Inhaltsverzeichnis, Buchindex, etc. angeht, ist <b id="d1e170e42f4967a46510d8892128b32a7b0476">UWE</b> unschlagbar. Denn diese Elemente werden automatisch generiert. Auch Abstände und Fontgrössen werden im Dokument immer gut aussehen.</p>
+                        <p id="d2e143423040509086c785a7375745e2a836c">
+			 </p>
+                        <figure id="d1e173e42f4967a46510d8892128b32a7b0476" pdfwidth="margin">
+                           <img id="d2e173423040509086c785a7375745e2a836c" 
+                    src="sample/images/info_32.png"
+                    width="32px" />
+                           <subtitle id="d1e175e42f4967a46510d8892128b32a7b0476">
+				Info</subtitle>
+                        </figure>
+                        <p id="d1e177e42f4967a46510d8892128b32a7b0476">
+			Das Zauberwort heisst hier "Automatischer Satz".[[xe1:Automatischer Satz]] Bisher nur erschwinglich für professionelle Redakteure gibt es mit<b id="d1e179e42f4967a46510d8892128b32a7b0476"> UWE</b> jetzt auch eine kostengünstige Lösung für Heimanwender und Kleinbetriebe. Zusätzlich hat man mit<b id="d1e182e42f4967a46510d8892128b32a7b0476"> UWE</b> ein Content-Managementsystem [[xe1:CMS Content Management System]] mit Versionsverwaltung. Ihre Dokumente werden zentral in einer Datenbank gespeichert und können per WWW von überall aus gepflegt werden.</p>
+                        <ul id="d1e185e42f4967a46510d8892128b32a7b0476">
+                           <title id="d1e186e42f4967a46510d8892128b32a7b0476">
+				Was kann man mit UWE machen und was nicht</title>
+                           <li id="d1e188e42f4967a46510d8892128b32a7b0476">
+                              <p id="d2e333423040509086c785a7375745e2a836c">
+                                 <b id="d1e190e42f4967a46510d8892128b32a7b0476">UWE </b>ist keine Lösung für Leute, die an die Benutzerführung von herkömmlichen Textverarbeitungssystemen gewöhnt sind und sich nicht verändern wollen.</p>
+                           </li>
+                           <li id="d1e193e42f4967a46510d8892128b32a7b0476">
+                              <p id="d2e383423040509086c785a7375745e2a836c">Internet-affine, F@cebook-Nutzer und Benutzer von WEB2.0 Webanwendungen werden sich aber schnell an <b id="d1e196e42f4967a46510d8892128b32a7b0476">UWE</b> gewöhnen und die schöne PDF Ausgabe schätzen. </p>
+                           </li>
+                           <li id="d1e199e42f4967a46510d8892128b32a7b0476">
+                              <p id="d2e443423040509086c785a7375745e2a836c">
+                                 <b id="d1e201e42f4967a46510d8892128b32a7b0476">UWE </b>ist Shareware und eine 100%-ige Garantie für dessen volle Funktionsfähigkeit wird nicht gewährleistet. Deshalb darf <b id="d1e204e42f4967a46510d8892128b32a7b0476">UWE</b> nicht für kritische Anwendungen eingesetzt werden.</p>
+                           </li>
+                           <li id="d1e207e42f4967a46510d8892128b32a7b0476">
+                              <p id="d2e523423040509086c785a7375745e2a836c">Denkbare Einsatzgebiete wären: Schülerzeitung, Vereinszeitung, Kirchenblatt, Produktinfos von Kleinbetrieben, Dokumentation der Software von unabhängigen Programmierern, Fachbücher von unabhängigen Autoren, etc.</p>
+                           </li>
+                           <li id="d1e210e42f4967a46510d8892128b32a7b0476">
+                              <p id="d2e553423040509086c785a7375745e2a836c">Zielgruppe ist also der Hobbyanwender und der "semi-professionelle" Bereich, obwohl<b id="d1e213e42f4967a46510d8892128b32a7b0476"> UWE</b> durchaus Potential für wesentlich mehr hat - Sponsoren sind jederzeit willkommen!</p>
+                           </li>
+                        </ul>
+                     </block>
+                  </content>
+      <chapter id="d1e216e42f4967a46510d8892128b32a7b0476" ismodule="yes" hyphenation="yes"
+               chapterpage="no">
+         <content id="d1e216e42f4967a46510d8892128b32a7b0476">
+                     <title id="d1e218e42f4967a46510d8892128b32a7b0476">
+		www.uwe-editor.de</title>
+                     <block id="d1e220e42f4967a46510d8892128b32a7b0476">
+                        <title id="d1e221e42f4967a46510d8892128b32a7b0476">
+			Prototyp</title>
+                        <p id="d1e223e42f4967a46510d8892128b32a7b0476">
+			Ab September 2012 steht <b id="d1e225e42f4967a46510d8892128b32a7b0476">UWE</b> auf <url id="d2e126d18d6df2bd17ddad69ec2aad060df8a" address="http://www.uwe-editor.de"> www.uwe-editor.de</url> als Prototyp zum Testen bereit.[[xe1:Prototyp]]</p>
+                        <figure id="d1e231e42f4967a46510d8892128b32a7b0476" pdfwidth="margin">
+                           <img id="d2e166d18d6df2bd17ddad69ec2aad060df8a" 
+                       src="sample/images/info_32.png"
+                       width="32px"/>
+                           <subtitle id="d1e234e42f4967a46510d8892128b32a7b0476">
+				Info</subtitle>
+                        </figure>
+                        <p id="d1e236e42f4967a46510d8892128b32a7b0476">
+			Wenn Sie mit <b id="d1e238e42f4967a46510d8892128b32a7b0476">UWE</b> jetzt schon produktiv Dokumente anlegen wollen, dann ist das auch kein Problem, denn mit der XML-Export Funktion können sie einfach das XML zu Ihrem Dokument herunterladen, lokal speichern und zu einem späteren Zeitpunkt in der <b id="d1e241e42f4967a46510d8892128b32a7b0476">UWE </b>Vollversion[[fn:geplant für Ende 2013]] weiterbearbeiten.</p>
+                        <p id="d1e244e42f4967a46510d8892128b32a7b0476">
+			Im nächsten Kapitel erfahren Sie mehr über die Eingabeoptionen und die Benutzerführung. Aber Vorsicht!<b id="d1e246e42f4967a46510d8892128b32a7b0476"> UWE</b> ist kein herkömmliches Textverarbeitungsprogramm und verfolgt auch einen vollkommen anderen Ansatz als andere webbasierte Lösunge, wie bspw. G@@gle docs.</p>
+                     <figure id="d1e341e42f4967a46510d3452128b32a7b0476" pdfwidth="margin">
+                           <img id="d1e379 1" src="sample/images/alert_32.gif" width="32px" height=""/>
+                           <subtitle id="d1e344e42f4967a46510d8892128b32a7b0476">Achtung</subtitle>
+                        </figure>
+                        <p><b>ACHTUNG!</b> Die Entwicklung von <b>UWE</b> sowie der Serverbetrieb wurden eingestellt! Da ich am 1.1.2014 eine Stelle im Bereich Technische Dokumentation antrete, der ich mich voll und ganz widmen werde, habe ich
+                            die Entwicklung an <b>UWE</b> eingestellt. Das PDF Stylesheet und einige Experimente sind auf <url id="d1e351e44564562a7b0476" address="https://github.com/alexdd">GitHub</url>.
+                            Das Entwickler-Blog zum Thema findet sich unter <url id="d1e33523465460476" address="http://www.mandarine.tv">www.mandarine.tv</url> [ bis Ende 2013, ab 2014 geht es da um Spiele-Entwicklung :-]</p>                       
+                     </block>
+                  </content>
+      </chapter>
+   </chapter>
+   <chapter id="d1e249e42f4967a46510d8892128b32a7b0476" ismodule="no" hyphenation="yes"
+            chapterpage="no">
+      <content id="d1e249e42f4967a46510d8892128b32a7b0476">
+                     <title id="d1e251e42f4967a46510d8892128b32a7b0476">
+		Funktionen der Webanwendung</title>
+                     <block id="d1e253e42f4967a46510d8892128b32a7b0476">
+                        <title id="d1e254e42f4967a46510d8892128b32a7b0476">
+			CMS</title>
+                        <p id="d1e256e42f4967a46510d8892128b32a7b0476">
+                           <b id="d1e257e42f4967a46510d8892128b32a7b0476">UWE</b> ist ein Hybrid bestehend aus einer Webanwendung, einer angepassten WYSIWYG[[fn:What You See Is What You Get]] Editor Komponente und einem komplexen automatischen Satzsystem. Daher auch der Name <b id="d1e260e42f4967a46510d8892128b32a7b0476">UWE</b>[[fn:Uwe is not a Wysiwyg Editor]].</p>
+                        <p id="d1e263e42f4967a46510d8892128b32a7b0476">
+			An die Platzhirsche der Textverarbeitung ist man als Anwender mittlerweile derart gewöhnt, dass man mit ihnen ohne grosse Anleitung schnell zu einem Ergebnis kommt. Bei <b id="d1e265e42f4967a46510d8892128b32a7b0476">UWE</b> fällt aufgrund der Neuartigkeit die "Betriebsanleitung" dagegen etwas umfangreicher aus. Ich fange einmal mit der Beschreibung der Webanwendung an.[[xe1:Webanwendung]] Diese ist im Prinzip ein einfaches CMS[[fn:Content Management System]].[[chaptertoc]]</p>
+                     </block>
+                  </content>
+      <chapter id="d1e268e42f4967a46510d8892128b32a7b0476" ismodule="no" hyphenation="yes"
+               chapterpage="no">
+         <content id="d1e268e42f4967a46510d8892128b32a7b0476">
+                     <title id="d1e270e42f4967a46510d8892128b32a7b0476">
+		Welcome-Page</title>
+                     <block id="d1e272e42f4967a46510d8892128b32a7b0476">
+                        <title id="d1e273e42f4967a46510d8892128b32a7b0476">
+			Startseite</title>
+                        <p id="d1e275e42f4967a46510d8892128b32a7b0476">
+			Beim Aufrufen der URL <url id="d2e98474c4a78e8cf3f632daabf8ef41a3cc" address="http://www.uwe-editor.de"> www.uwe-editor.de</url> bekommt man die Startseite der Applikation angezeigt.</p>
+                        <figure id="d1e280e42f4967a46510d8892128b32a7b0476" pdfwidth="margin">
+                           <img id="d2e138474c4a78e8cf3f632daabf8ef41a3cc" 
+                       src="sample/images/home_32.png"
+                       width="32px" />
+                           <subtitle id="d1e282e42f4967a46510d8892128b32a7b0476">
+				Home</subtitle>
+                        </figure>
+                        <p id="d1e284e42f4967a46510d8892128b32a7b0476">
+			Hier werden alle freigegebenen Dokumente aufgelistet. Falls man bereits als Benutzer eingeloggt ist, kann man die Dokumente bearbeiten indem man auf die jeweiligen Links in der ersten Spalte klickt.[[xe1:Veröffentlichte Dokumente]]</p>
+                        <figure id="d1e286e42f4967a46510d8892128b32a7b0476" pdfwidth="page">
+                           <img id="d2e208474c4a78e8cf3f632daabf8ef41a3cc" 
+                       src="sample/images/startseite.png" width="480px" />
+                           <subtitle id="d1e288e42f4967a46510d8892128b32a7b0476">
+				Screenshot der Startseite</subtitle>
+                        </figure>
+                        <p id="d1e290e42f4967a46510d8892128b32a7b0476">
+			Mit den Aktionen <code id="d1e292e42f4967a46510d8892128b32a7b0476">XML</code>, <code id="d1e295e42f4967a46510d8892128b32a7b0476">HTML</code>,<code id="d1e298e42f4967a46510d8892128b32a7b0476"> RTF</code> und <code id="d1e301e42f4967a46510d8892128b32a7b0476">PDF</code> lassen sich die entsprechenden Formate [[xe1:Formate]] von der aktuellen Version erzeugen.</p>
+                     </block>
+                  </content>
+      </chapter>
+      <chapter id="d1e304e42f4967a46510d8892128b32a7b0476" ismodule="no" hyphenation="yes"
+               chapterpage="no">
+         <content id="d1e304e42f4967a46510d8892128b32a7b0476">
+                     <title id="d1e306e42f4967a46510d8892128b32a7b0476">In der Tag-Cloud suchen</title>
+                     <block id="d1e308e42f4967a46510d8892128b32a7b0476">
+                        <title id="d1e309e42f4967a46510d8892128b32a7b0476">Tags</title>
+                        <p id="d1e311e42f4967a46510d8892128b32a7b0476">Unter dem Menüeintrag <code id="d1e313e42f4967a46510d8892128b32a7b0476">Tags</code> wird eine Tag-Cloud angezeigt.[[xe1:Tag-Cloud]]</p>
+                        <figure id="d1e316e42f4967a46510d8892128b32a7b0476" pdfwidth="margin">
+                           <img id="d1e350 1" src="sample/images/tag_32.png"
+                       width="32px" height=""/>
+                           <subtitle id="d1e318e42f4967a46510d8892128b32a7b0476">Tags</subtitle>
+                        </figure>
+                        <p id="d1e320e42f4967a46510d8892128b32a7b0476">Beim Erfassen eines Dokuments kann dieses mit Tags versehen werden. Wie üblich werden häufig benutzte Tags in einer grösseren Schrift dargestellt. Mit Klick auf einen Tag kommt man zur Auflistung aller Dokumente, die mit diesem Tag markiert worden sind.</p>
+                     </block>
+                  </content>
+      </chapter>
+      <chapter id="d1e322e42f4967a46510d8892128b32a7b0476" ismodule="no" hyphenation="yes"
+               chapterpage="no">
+         <content id="d1e322e42f4967a46510d8892128b32a7b0476">
+                     <title id="d1e324e42f4967a46510d8892128b32a7b0476">Neues Dokument anlegen / bearbeiten</title>
+                     <block id="d1e326e42f4967a46510d8892128b32a7b0476">
+                        <title id="d1e327e42f4967a46510d8892128b32a7b0476">Dokument</title>
+                        <p id="d1e329e42f4967a46510d8892128b32a7b0476">Mit dem Menüeintrag <code id="d1e331e42f4967a46510d8892128b32a7b0476">Dokument</code> wechselt man zur Editoransicht und kann dort ein neues Dokument anlegen.[[xe1:Aktionen;xe2:neues Dokument anlegen]]</p>
+                        <figure id="d1e334e42f4967a46510d8892128b32a7b0476" pdfwidth="margin">
+                           <img id="d1e373 1" src="sample/images/document_32.png"
+                       width="32px" height=""/>
+                           <subtitle id="d1e337e42f4967a46510d8892128b32a7b0476">Dokument</subtitle>
+                        </figure>
+                        <p id="d1e339e42f4967a46510d8892128b32a7b0476">Die Eingabemaske ist durch einen grauen horizontalen Balken zweigeteilt. Im oberen Teil wird die Kapitelstruktur des Dokuments angezeigt und im unteren Teil entweder die Metadaten des Dokuments oder das Editorfenster. Sie können diesen Bereich anpassen, indem Sie mit der Maus den grauen (blauen) Balken ziehen.</p>
+                        <figure id="d1e341e42f4967a46510d8892128b32a7b0476" pdfwidth="margin">
+                           <img id="d1e379 1" src="sample/images/alert_32.gif"
+                       width="32px" height=""/>
+                           <subtitle id="d1e344e42f4967a46510d8erfe892128b32a7b0476">Achtung</subtitle>
+                        </figure>
+                        <p id="d1e346e42f4967a46510d8892128b32a7b0476">In <b id="d1e348e42f4967a46510d8892128b32a7b0476">UWE</b>v0.5 funktioniert die Editoransicht nur mit dem Browser <url id="d1e351e42f4967a46510d8892128b32a7b0476" address="http://getfirefox.com"> Firefox </url>. Der Editor ist ein sehr komplexes JavaScript-Programm und müsste für jeden Browser einzeln getestet werden. Deshalb wird die übergreifende Browserkompatibilität erst in einer späteren Version hergestellt, vgl. <doclink id="d1e354e42f4967a46510d8892128b32a7b0476"
+                           class="d1e1271e42f4967a46510d8892128b32a7b0476">7 Geplante Features </doclink> .</p>
+                        <figure id="d1e357e42f4967a46510d8892128b32a7b0476" pdfwidth="page">
+                           <img id="d1e394 1" src="sample/images/editor.png"
+                       width="480px" height=""/>
+                           <subtitle id="d1e360e42f4967a46510d8892128b32a7b0476">Editoransicht mit Splitscreen</subtitle>
+                        </figure>
+                        <p id="d1e362e42f4967a46510d8892128b32a7b0476">Bei einem neuen Dokument will man zuerst den Titel und die Metadaten des Dokuments editieren, daher wird im unteren Bereich initial nicht das Editorfenster angezeigt, sondern der Metadatendialog.</p>
+                        <figure id="d1e364e42f4967a46510d8892128b32a7b0476" pdfwidth="column">
+                           <img id="d1e400 1" src="sample/images/metadaten.png"
+                       width="390px" height=""/>
+                           <subtitle id="d1e367e42f4967a46510d8892128b32a7b0476">Metadatendialog</subtitle>
+                        </figure>
+                        <figure id="d1e369e42f4967a46510d8892128b32a7b0476" pdfwidth="margin">
+                           <img id="d1e404 1" src="sample/images/alert_32.gif"
+                       width="32px" height=""/>
+                           <subtitle id="d1e372e42f4967a46510d8892128b32a7b0476">Achtung</subtitle>
+                        </figure>
+                        <p id="d1e374e42f4967a46510d8892128b32a7b0476">Aus Zeitgründen wird in dieser Version des Handbuchs noch nicht auf jedes Detail eingegangen. Deshalb entdecken Sie bitte alle Funktionen der Editoranischt auf eigene Faust. Im folgenden nur das wichtigste:</p>
+                     </block>
+                  </content>
+         <chapter id="d1e376e42f4967a46510d8892128b32a7b0476" ismodule="no" hyphenation="yes"
+                  chapterpage="no">
+            <content id="d1e376e42f4967a46510d8892128b32a7b0476">
+                     <title id="d1e378e42f4967a46510d8892128b32a7b0476">Funktionen des Kapitelstruktur-Editors</title>
+                     <block id="d1e380e42f4967a46510d8892128b32a7b0476">
+                        <title id="d1e381e42f4967a46510d8892128b32a7b0476">Kapitelstruktur</title>
+                        <p id="d1e383e42f4967a46510d8892128b32a7b0476">Im oberen Teil des Splitscreen wird der Kapitelstruktur-Editor [[xe1:Kapitelstruktur-Editor]]angezeigt. Diese Komponente ist wohl bis dato einzigartig und erlaubt es dem Redakteur Dokumente im Browserfenster zu erstellen, die intern in valides XML transformiert werden.</p>
+                     </block>
+                  </content>
+            <chapter id="d1e385e42f4967a46510d8892128b32a7b0476" ismodule="yes" hyphenation="yes"
+                     chapterpage="no">
+               <content id="d1e385e42f4967a46510d8892128b32a7b0476">
+                     <title id="d1e387e42f4967a46510d8892128b32a7b0476">Dokumentoptionen</title>
+                     <block id="d1e389e42f4967a46510d8892128b32a7b0476">
+                        <title id="d1e390e42f4967a46510d8892128b32a7b0476">Dokument-Ebene</title>
+                        <p id="d1e392e42f4967a46510d8892128b32a7b0476">Klickt man auf die Wurzel der Kapitelstruktur - also auf den Dokumennamen - dann sieht man im rechten Teil der Leiste vier Icons. Mit einem Klick darauf hat man die folgenden Optionen zur Auswahl:</p>
+                        <figure id="d1e394e42f4967a46510d8892128b32a7b0476" pdfwidth="column">
+                           <img id="d1e432 1" src="sample/images/documentoptions.png"
+                             width="390px" height=""/>
+                           <subtitle id="d1e397e42f4967a46510d8892128b32a7b0476">Wurzel der Kapitelstruktur und Optionen</subtitle>
+                        </figure>
+                     </block>
+                  </content>
+            </chapter>
+            <chapter id="d1e399e42f4967a46510d8892128b32a7b0476" ismodule="yes" hyphenation="yes"
+                     chapterpage="no">
+               <content id="d1e399e42f4967a46510d8892128b32a7b0476">
+                     <title id="d1e401e42f4967a46510d8892128b32a7b0476">Dokument kopieren</title>
+                     <block id="d1e403e42f4967a46510d8892128b32a7b0476">
+                        <title id="d1e404e42f4967a46510d8892128b32a7b0476">Dokument kopieren</title>
+                        <p id="d1e406e42f4967a46510d8892128b32a7b0476">Dokumente können kopiert werden. [[xe1:Aktionen;xe2:Dokument kopieren]]Das ist zum Beispiel sinnvoll, wenn ein Dokument einem Übersetzer zugewiesen werden soll.</p>
+                        <figure id="d1e408e42f4967a46510d8892128b32a7b0476" pdfwidth="margin">
+                           <img id="d1e451 1" src="sample/images/pages_32.png"
+                             width="32px" height=""/>
+                           <subtitle id="d1e411e42f4967a46510d8892128b32a7b0476">Copy</subtitle>
+                        </figure>
+                        <p id="d1e413e42f4967a46510d8892128b32a7b0476">Mit Klick auf diese Schaltfläche wird das Dokument kopiert und man wird ins Benutzerverzeichnis weitergeleitet. Dort findet man das Dokument (als Kopie markiert) als erstes Dokument in der Liste und kann es entweder weiterbearbeiten oder einem anderen Benutzer (z.B.) einem Übersetzer zuweisen.[[xe1:Aktionen;xe2:Dokument zuweisen]]</p>
+                     </block>
+                  </content>
+            </chapter>
+            <chapter id="d1e415e42f4967a46510d8892128b32a7b0476" ismodule="yes" hyphenation="yes"
+                     chapterpage="no">
+               <content id="d1e415e42f4967a46510d8892128b32a7b0476">
+                     <title id="d1e417e42f4967a46510d8892128b32a7b0476">Kapitel hinzufügen</title>
+                     <block id="d1e419e42f4967a46510d8892128b32a7b0476">
+                        <title id="d1e420e42f4967a46510d8892128b32a7b0476">Kapitel hinzufügen</title>
+                        <p id="d1e422e42f4967a46510d8892128b32a7b0476">Mit Klick auf den ersten Icon können Sie ein Kapitel auf erster Ebene hinzufügen. Das neue Kapitel wird jeweils ganz unten an die Kapitelstruktur angehängt.[[xe1:Aktionen;xe2:Kapitel hinzufügen]]</p>
+                        <figure id="d1e424e42f4967a46510d8892128b32a7b0476" pdfwidth="margin">
+                           <img id="d1e476 1" src="sample/images/doc_add_32.gif"
+                             width="32px" height=""/>
+                           <subtitle id="d1e426e42f4967a46510d8892128b32a7b0476">hinzufügen</subtitle>
+                        </figure>
+                        <p id="d1e428e42f4967a46510d8892128b32a7b0476">Diese Schaltfläche findet man dann auch im Kapitel-Menü (siehe Punkt <doclink id="d1e430e42f4967a46510d8892128b32a7b0476"
+                                 class="d1e463e42f4967a46510d8892128b32a7b0476">Kapitel-Ebene</doclink>). Auch hier wird mit Klick ein neues Kapitel als Kindelement des aktuellen Kapitels hinzugefügt. Zusätzlich gibt es im Kapitelmenü Pfeil-Schaltflächen. Mit diesen kann das jeweilige Kapitel auf derselben Ebene "hoch-" und "runtergeschoben" werden. Mittels Drag 'n Drop lässt sich der Kapitelbaum weiter modifizieren und Kapitel können in andere Kapitel gezogen werden. Es ist aber auch aus redaktioneller Sicht am besten, wenn vorher schon gedanklich die Gliederung zurechtlegt wird und der Kapitelstrukturbaum nachträglich nur geringfügig verändert wird.[[xe1:Aktionen;xe2:Drag'n drop der Kapitelstruktur]]</p>
+                     </block>
+                  </content>
+            </chapter>
+            <chapter id="d1e433e42f4967a46510d8892128b32a7b0476" ismodule="yes" hyphenation="yes"
+                     chapterpage="no">
+               <content id="d1e433e42f4967a46510d8892128b32a7b0476">
+                     <title id="d1e435e42f4967a46510d8892128b32a7b0476">Dokument löschen</title>
+                     <block id="d1e437e42f4967a46510d8892128b32a7b0476">
+                        <title id="d1e438e42f4967a46510d8892128b32a7b0476">Dokument löschen</title>
+                        <p id="d1e440e42f4967a46510d8892128b32a7b0476">Mit Klick auf diese Schaltfläche wird das Dokument aus der Datenbank entfernt.[[xe1:Aktionen;xe2:Dokument löschen]]</p>
+                        <figure id="d1e442e42f4967a46510d8892128b32a7b0476" pdfwidth="margin">
+                           <img id="d1e504 1" src="sample/images/delete_32.gif"
+                             width="32px" height=""/>
+                           <subtitle id="d1e444e42f4967a46510d8892128b32a7b0476">Löschen</subtitle>
+                        </figure>
+                        <p id="d1e446e42f4967a46510d8892128b32a7b0476">Im Dokument erfasste Grafiken werden nicht gelöscht, weil diese auch in anderen Dokumente referenziert sein können und auch evtl. in Zukunft wieder verwendet werden sollen. Grafiken kann man im Benutzerverzeichnis löschen.</p>
+                     </block>
+                  </content>
+            </chapter>
+            <chapter id="d1e448e42f4967a46510d8892128b32a7b0476" ismodule="yes" hyphenation="yes"
+                     chapterpage="no">
+               <content id="d1e448e42f4967a46510d8892128b32a7b0476">
+                     <title id="d1e450e42f4967a46510d8892128b32a7b0476">Dokument speichern</title>
+                     <block id="d1e452e42f4967a46510d8892128b32a7b0476">
+                        <title id="d1e453e42f4967a46510d8892128b32a7b0476">Dokument speichern</title>
+                        <p id="d1e455e42f4967a46510d8892128b32a7b0476">Dokumente werden in einer Datenbank gespeichert. [[xe1:Aktionen;xe2:Dokument löschen]]Dabei wird die HTML-Editoreingabe in ein XML-Format umgewandelt. So wird der Inhalt von der Darstellung komplett getrennt. Auf diese Weise können aus einer Eingabe mehrere Formate erzeugt werden. U.a. in das XML Rohformat welches auch in andere Systeme leicht überführt werden kann.</p>
+                        <figure id="d1e457e42f4967a46510d8892128b32a7b0476" pdfwidth="margin">
+                           <img id="d1e525 1" src="sample/images/disk_32.png"
+                             width="32px" height=""/>
+                           <subtitle id="d1e459e42f4967a46510d8892128b32a7b0476">Speichern</subtitle>
+                        </figure>
+                        <p id="d1e461e42f4967a46510d8892128b32a7b0476">Nach Bestätigen eines Popup-Dialogs wird bei Klick auf diese Schaltfläche das Dokument in der Datenbank gespeichert.</p>
+                     </block>
+                  </content>
+            </chapter>
+            <chapter id="d1e463e42f4967a46510d8892128b32a7b0476" ismodule="yes" hyphenation="yes"
+                     chapterpage="no">
+               <content id="d1e463e42f4967a46510d8892128b32a7b0476">
+                     <title id="d1e465e42f4967a46510d8892128b32a7b0476">Kapiteloptionen</title>
+                     <block id="d1e467e42f4967a46510d8892128b32a7b0476">
+                        <title id="d1e468e42f4967a46510d8892128b32a7b0476">Kapitel-Ebene</title>
+                        <p id="d1e470e42f4967a46510d8892128b32a7b0476">Wenn man im Kapitelbaum auf eine Kapitelüberschrift klickt, bzw. mit der Maus darüberfährt, dann werden im rechten Teil der Leiste folgende Optionen angezeigt:</p>
+                        <figure id="d1e472e42f4967a46510d8892128b32a7b0476" pdfwidth="column">
+                           <img id="d1e540 1" src="sample/images/chapteroptions.png"
+                             width="390px" height=""/>
+                           <subtitle id="d1e474e42f4967a46510d8892128b32a7b0476">Ausgewählte Kapitelüberschrift und Optionen</subtitle>
+                        </figure>
+                     </block>
+                  </content>
+            </chapter>
+            <chapter id="d1e476e42f4967a46510d8892128b32a7b0476" ismodule="yes" hyphenation="yes"
+                     chapterpage="no">
+               <content id="d1e476e42f4967a46510d8892128b32a7b0476">
+                     <title id="d1e478e42f4967a46510d8892128b32a7b0476">Checkbox Optionen</title>
+                     <block id="d1e480e42f4967a46510d8892128b32a7b0476">
+                        <title id="d1e481e42f4967a46510d8892128b32a7b0476">Checkboxes</title>
+                        <p id="d1e483e42f4967a46510d8892128b32a7b0476">Es gibt drei Checkbox-Eingabefelder. Diese sind initial nicht aktiviert.[[xe1:Optionen;xe2:Checkboxes]]</p>
+                        <figure id="d1e485e42f4967a46510d8892128b32a7b0476" pdfwidth="margin">
+                           <img id="d1e558 1" src="sample/images/checkboxes.png"
+                             width="60px" height=""/>
+                           <subtitle id="d1e487e42f4967a46510d8892128b32a7b0476">checkboxes</subtitle>
+                        </figure>
+                        <p id="d1e489e42f4967a46510d8892128b32a7b0476">Bei Aktivierung der <b id="d1e491e42f4967a46510d8892128b32a7b0476">ersten Checkbox</b> wird im PDF der Kapiteltitel weder im Inhaltsverzeichnis noch im Fliesstext gedruckt. Es wird nur die Kapitelunterüberschrift gedruckt. Das ganze Kapitel wird im PDF als <b id="d1e494e42f4967a46510d8892128b32a7b0476">Textblock</b> behandelt. Die Abstände zum vorhergehenden Kapitel bzw. Textblock und zum nachfolgenden sind entsprechend angepasst.[[xe1:Optionen;xe2:Textblock]]</p>
+                        <p id="d1e497e42f4967a46510d8892128b32a7b0476">Bei Aktivierung der <b id="d1e499e42f4967a46510d8892128b32a7b0476">zweiten Checkbox</b> wird im PDF die <b id="d1e502e42f4967a46510d8892128b32a7b0476">Silbentrennung</b> für dieses Kapitel eingeschaltet.[[xe1:Optionen;xe2:Silbentrennung]]</p>
+                        <p id="d1e505e42f4967a46510d8892128b32a7b0476">Bei Aktivierung der <b id="d1e507e42f4967a46510d8892128b32a7b0476">dritten Checkbox</b> wird das Kapitel im PDF auf die nächste Seite gesetzt und beginnt auf einer<b id="d1e510e42f4967a46510d8892128b32a7b0476"> neuen Seite</b>.[[xe1:Optionen;xe2:Kapitel auf neuer Seite]]</p>
+                     </block>
+                  </content>
+            </chapter>
+            <chapter id="d1e513e42f4967a46510d8892128b32a7b0476" ismodule="yes" hyphenation="yes"
+                     chapterpage="no">
+               <content id="d1e513e42f4967a46510d8892128b32a7b0476">
+                     <title id="d1e515e42f4967a46510d8892128b32a7b0476">Kapitel löschen</title>
+                     <block id="d1e517e42f4967a46510d8892128b32a7b0476">
+                        <title id="d1e518e42f4967a46510d8892128b32a7b0476">Kapitel löschen</title>
+                        <p id="d1e520e42f4967a46510d8892128b32a7b0476">Mit dieser Schaltfläche löschen sie ein Kapitel aus der Kapitelstruktur.[[xe1:Aktionen;xe2:Kapitel löschen]]</p>
+                        <figure id="d1e522e42f4967a46510d8892128b32a7b0476" pdfwidth="margin">
+                           <img id="d1e615 1" src="sample/images/doc_delete_32.gif"
+                             width="32px" height=""/>
+                           <subtitle id="d1e524e42f4967a46510d8892128b32a7b0476">Kapitel löschen</subtitle>
+                        </figure>
+                        <p id="d1e526e42f4967a46510d8892128b32a7b0476">Das Kapitel und auch die darin enthaltenen Unterkapitel werde nach Bestätigung eines Popup-Dialogs gelöscht.</p>
+                     </block>
+                  </content>
+            </chapter>
+         </chapter>
+         <chapter id="d1e528e42f4967a46510d8892128b32a7b0476" ismodule="no" hyphenation="yes"
+                  chapterpage="no">
+            <content id="d1e528e42f4967a46510d8892128b32a7b0476">
+                     <title id="d1e530e42f4967a46510d8892128b32a7b0476">Funktionen des WYSIWYG-Editors</title>
+                     <block id="d1e532e42f4967a46510d8892128b32a7b0476">
+                        <title id="d1e533e42f4967a46510d8892128b32a7b0476">WYSIWYG</title>
+                        <p id="d1e535e42f4967a46510d8892128b32a7b0476">Die Editorkomponente funktioniert aus technischen Gründen nicht ganz so, wie man es von anderen Anwendungen her gewöhnt ist. Ziel ist es, den Benutzer so zu führen, dass ein möglichst sauberer HTML Quellcode der Eingabe erzeugt wird, der dann ohne Probleme in valides XML transformiert werden kann. Folgend sind stichpunktartig einige Unterschiede im Verhalten zu anderen Editoren aufgelistet.</p>
+                        <ul id="d1e537e42f4967a46510d8892128b32a7b0476">
+                           <title id="d1e538e42f4967a46510d8892128b32a7b0476">Unterschiede zu anderen Editoren</title>
+                           <li id="d1e540e42f4967a46510d8892128b32a7b0476">
+                              <p id="d1e541e42f4967a46510d8892128b32a7b0476">Beim Drücken der Entertaste in einem Absatz, wird dieser nicht in zwei Absätze geteilt, sondern der Cursor springt an die nächste freie Position hinter den Absatz.[[xe1:Unterschiede zu anderen Webeditoren]]</p>
+                           </li>
+                           <li id="d1e543e42f4967a46510d8892128b32a7b0476">
+                              <p id="d1e544e42f4967a46510d8892128b32a7b0476">Beim Einfügen von Listen, Tabellen und Grafiken über den entsprechenden Menüeintrag wird eine Schablone an der nächsten freien Stelle im Dokument eingefügt.</p>
+                           </li>
+                           <li id="d1e546e42f4967a46510d8892128b32a7b0476">
+                              <p id="d1e547e42f4967a46510d8892128b32a7b0476">Beim Einfügen von Grafiken, Formeln und Links erscheint ein entsprechender Eingabedialog.</p>
+                           </li>
+                           <li id="d1e549e42f4967a46510d8892128b32a7b0476">
+                              <p id="d1e550e42f4967a46510d8892128b32a7b0476">Beim Einfügen von Inline-Elemente[[xe1:Aktionen;xe2:Inline-Formatierungen]], wie <b id="d1e552e42f4967a46510d8892128b32a7b0476">fetter</b> Text <i id="d1e555e42f4967a46510d8892128b32a7b0476">kursiver</i> Text <sup id="d1e558e42f4967a46510d8892128b32a7b0476">hochgestellter</sup> und <sub id="d1e561e42f4967a46510d8892128b32a7b0476">tiefgestellter</sub> Text, kommt man aus dieser Formatierung wieder heraus, wenn man die Pfeil-Nach-Rechts Taste drückt. Es empfiehlt sich aber den Text zuerst normal zu schreiben und dann die entsprechenden Passagen zu markieren um sie mit der entsprechenden Inline-Formatierung zu versehen. </p>
+                           </li>
+                           <li id="d1e564e42f4967a46510d8892128b32a7b0476">
+                              <p id="d1e565e42f4967a46510d8892128b32a7b0476">Um ein "wildes Copy 'n' Paste" zu vermeiden, sind CTRL-X und CTRL-V deaktiviert. CTRL-C funktioniert [[xe1:Aktionen;xe2:Tastenkombinationen]]. Über die entsprechenden Schaltflächen kann kopierter Text eingefügt werden. Das funktioniert auch mit kopiertem Text aus W@rd oder OpenOffice heraus.</p>
+                           </li>
+                           <li id="d1e567e42f4967a46510d8892128b32a7b0476">
+                              <p id="d1e568e42f4967a46510d8892128b32a7b0476">Links werden über den Linkdialog eingefügt, mehr dazu unter dem Punkt <doclink id="d1e570e42f4967a46510d8892128b32a7b0476"
+                                    class="d1e686e42f4967a46510d8892128b32a7b0476">Links</doclink>. Im Vollbildmodus des Editors wird aber der Linkdialog nicht angezeigt. Den Vollbildmodus muss man verlassen, sobald man eine Verknüpfung einfügen will.</p>
+                           </li>
+                           <li id="d1e573e42f4967a46510d8892128b32a7b0476">
+                              <p id="d1e574e42f4967a46510d8892128b32a7b0476">Das gerade bearbeitete Element wird grau hinterlegt dargestellt. Mit der Tastenkombination <code id="d1e576e42f4967a46510d8892128b32a7b0476">SHIFT-Entf</code> wird dieses sauber gelöscht. Das sollte die bevorzugte Löschmethode sein. Das kleine Aktentasche-Symbol ist der Griff für ein Drag 'n Drop des Elements. Elemente können nur in leere Absatz-Platzhalter gezogen und eingefügt werden.</p>
+                           </li>
+                           <li id="d1e579e42f4967a46510d8892128b32a7b0476">
+                              <p id="d1e580e42f4967a46510d8892128b32a7b0476">Befindet sich der Cursor in einem Platzhalter, so genügt ein Tastendruck und der Platzhalter verschwindet und man kann mit der Erfassung dieses Elements beginnen. </p>
+                           </li>
+                           <li id="d1e582e42f4967a46510d8892128b32a7b0476">
+                              <p id="d1e583e42f4967a46510d8892128b32a7b0476">Wenn ein Element nicht in einem anderen erlaubt ist, bspw. eine nummerierte Liste in einer Tabellenzelle, dann wird eine Warnmeldung angezeigt oder das Element wird an die nächste freie erlaubte Stelle gesetzt.</p>
+                           </li>
+                        </ul>
+                     </block>
+                  </content>
+            <chapter id="d1e585e42f4967a46510d8892128b32a7b0476" ismodule="yes" hyphenation="yes"
+                     chapterpage="no">
+               <content id="d1e585e42f4967a46510d8892128b32a7b0476">
+                     <title id="d1e587e42f4967a46510d8892128b32a7b0476">Spezial-Formatierungen</title>
+                     <block id="d1e589e42f4967a46510d8892128b32a7b0476">
+                        <title id="d1e590e42f4967a46510d8892128b32a7b0476">Specials</title>
+                        <p id="d1e592e42f4967a46510d8892128b32a7b0476">Neben den gängigen Formatierungsmöglichkeiten gibt es bei <b id="d1e594e42f4967a46510d8892128b32a7b0476">UWE</b> auch drei besondere Funktionen.</p>
+                        <figure id="d1e597e42f4967a46510d8892128b32a7b0476" pdfwidth="margin">
+                           <img id="d1e705 1" src="sample/images/specialedit.png"
+                             width="70px" height=""/>
+                           <subtitle id="d1e600e42f4967a46510d8892128b32a7b0476">specials</subtitle>
+                        </figure>
+                        <p id="d1e602e42f4967a46510d8892128b32a7b0476">Nämlich <b id="d1e604e42f4967a46510d8892128b32a7b0476">Platzhalter</b>, <b id="d1e607e42f4967a46510d8892128b32a7b0476">Formeln</b> und <b id="d1e610e42f4967a46510d8892128b32a7b0476">Verknüpfungen</b> (Links). Mit Platzhaltern kann man <b id="d1e613e42f4967a46510d8892128b32a7b0476">Indexeinträge</b> und <b id="d1e616e42f4967a46510d8892128b32a7b0476">Fussnoten</b> einfügen. Mit Klick auf das Formel-Icon erscheint das Formeleditor Popupfenster. Der <b id="d1e620e42f4967a46510d8892128b32a7b0476">Formeleditor</b> ist eine eigenständige komplexe Anwendung eines Drittherstellers. Zur Bedienung sei an dieser Stelle auf die Herstellerdoku verwiesen, siehe <url id="d1e623e42f4967a46510d8892128b32a7b0476" address="http://www.fmath.info"> www.fmath.info</url>.[[xe1:Formel-Editor]]</p>
+                     </block>
+                  </content>
+               <chapter id="d1e626e42f4967a46510d8892128b32a7b0476" ismodule="yes" hyphenation="yes"
+                        chapterpage="no">
+                  <content id="d1e626e42f4967a46510d8892128b32a7b0476">
+                     <title id="d1e628e42f4967a46510d8892128b32a7b0476">Indexeinträge</title>
+                     <block id="d1e630e42f4967a46510d8892128b32a7b0476">
+                        <title id="d1e631e42f4967a46510d8892128b32a7b0476">Index</title>
+                        <p id="d1e633e42f4967a46510d8892128b32a7b0476">Zur Erfassung des Buchindex werden im Fliesstext Indexeinträge bedatet. Dazu Klickt man auf das Platzhaltersymbol und ein Popup-Dialog erscheint.[[xe1:Aktionen;xe2:Indexeintrag einfügen]]</p>
+                        <figure id="d1e635e42f4967a46510d8892128b32a7b0476" pdfwidth="column">
+                           <img id="d1e750 1" src="sample/images/Platzhalter.png"
+                                width="390px" height=""/>
+                           <subtitle id="d1e637e42f4967a46510d8892128b32a7b0476">Platzhalterdialog im WYSIWYG Editorfenster zur Erfassung von Indexeinträgen</subtitle>
+                        </figure>
+                        <p id="d1e639e42f4967a46510d8892128b32a7b0476">Der Indexhaupteintrag wird dabei mit <b id="d1e641e42f4967a46510d8892128b32a7b0476">xe1</b> markiert, gefolgt von einem<b id="d1e644e42f4967a46510d8892128b32a7b0476"> Doppelpunkt</b>. Der zweite Indexeintrag wird mit<b id="d1e647e42f4967a46510d8892128b32a7b0476"> xe2</b> markiert, gefolgt von einem <b id="d1e650e42f4967a46510d8892128b32a7b0476">Doppelpunkt</b> und wird vom ersten getrennt mittels eines <b id="d1e653e42f4967a46510d8892128b32a7b0476">Semikolons</b>.</p>
+                     </block>
+                  </content>
+               </chapter>
+               <chapter id="d1e656e42f4967a46510d8892128b32a7b0476" ismodule="yes" hyphenation="yes"
+                        chapterpage="no">
+                  <content id="d1e656e42f4967a46510d8892128b32a7b0476">
+                     <title id="d1e658e42f4967a46510d8892128b32a7b0476">Erfassung von Fussnoten</title>
+                     <block id="d1e660e42f4967a46510d8892128b32a7b0476">
+                        <title id="d1e661e42f4967a46510d8892128b32a7b0476">Fussnoten</title>
+                        <p id="d1e663e42f4967a46510d8892128b32a7b0476">Fussnoten werden mit der folgenden Syntax erfasst:[[xe1:Aktionen;xe2:Fussnote einfügen]]</p>
+                        <figure id="d1e665e42f4967a46510d8892128b32a7b0476" pdfwidth="column">
+                           <img id="d1e785 1" src="sample/images/www.uwe-editor.png"
+                                width="390px" height=""/>
+                           <subtitle id="d1e667e42f4967a46510d8892128b32a7b0476">Platzhalterdialog zur Erfassung von Fussnoten</subtitle>
+                        </figure>
+                        <p id="d1e669e42f4967a46510d8892128b32a7b0476">Die Fussnote wird mit <b id="d1e671e42f4967a46510d8892128b32a7b0476">fn</b> markiert, gefolgt von einem <b id="d1e674e42f4967a46510d8892128b32a7b0476">Doppelpunkt</b>. Danach wird dann entweder ein Paar bestehend aus <b id="d1e677e42f4967a46510d8892128b32a7b0476">Kürzel</b> und<b id="d1e680e42f4967a46510d8892128b32a7b0476"> Beschreibung</b> getrennt durch ein <b id="d1e683e42f4967a46510d8892128b32a7b0476">Semikolon</b> erfasst, oder nur die Beschreibung der Fussnote. In diesem Fall wird das Kürzel automatisch gesetzt und zwar als fortlaufende Nummerierung.</p>
+                     </block>
+                  </content>
+               </chapter>
+               <chapter id="d1e686e42f4967a46510d8892128b32a7b0476" ismodule="yes" hyphenation="yes"
+                        chapterpage="no">
+                  <content id="d1e686e42f4967a46510d8892128b32a7b0476">
+                     <title id="d1e688e42f4967a46510d8892128b32a7b0476">Verknüpfungen einfügen</title>
+                     <block id="d1e690e42f4967a46510d8892128b32a7b0476">
+                        <title id="d1e691e42f4967a46510d8892128b32a7b0476">Links</title>
+                        <p id="d1e693e42f4967a46510d8892128b32a7b0476">Verknüpfungen werden über einen Popup-Dialog eingefügt. Dabei unterscheiden wir zwischen<b id="d1e695e42f4967a46510d8892128b32a7b0476"> interne Links</b> auf Kapitelüberschriften, Abbildungen und Tabellen und <b id="d1e698e42f4967a46510d8892128b32a7b0476">externe Links</b> auf eine Webseite. Beide Arten werden (noch) über denselben Popup-Dialog erfasst. Dieser sieht folgendermassen aus:[[xe1:Aktionen;xe2:Link einfügen]]</p>
+                        <figure id="d1e701e42f4967a46510d8892128b32a7b0476" pdfwidth="page">
+                           <img id="d1e826 1" src="sample/images/link_dialog.png"
+                                width="480px" height=""/>
+                           <subtitle id="d1e703e42f4967a46510d8892128b32a7b0476">Popup-Dialog zum Einfügen von internen und externen Verknüpfungen</subtitle>
+                        </figure>
+                        <p id="d1e705e42f4967a46510d8892128b32a7b0476">Externe Links werden über die zwei Formularfelder erfasst, interne Links dagegen durch Auswahl einer Kapitelüberschrift oder einer Grafik-/Tabellenunterschrift mit der Maus. Hierbei ist zu beachten, dass nach dem Einfügen des Links der Linktext statisch bleibt. Wenn bspw. danach die Kapitelstruktur verändert wird, dann ist evtl. die Nummerierung im Fliesstext falsch. Wenn danach auch noch der Kapiteltitel verändert wird, dann stimmt auch der Linktext nicht mehr. In diesem Fall müssen die Links manuell korrigiert werden. Es besteht auch die Möglichkeit im Eingabefeld<code id="d1e707e42f4967a46510d8892128b32a7b0476"> Text </code>manuell einen Linktext einzugeben und durch Auswahl des Kapitels mit der Maus nur das Ziel festzulegen.</p>
+                     </block>
+                  </content>
+               </chapter>
+               <chapter id="d1e710e42f4967a46510d8892128b32a7b0476" ismodule="yes" hyphenation="yes"
+                        chapterpage="no">
+                  <content id="d1e710e42f4967a46510d8892128b32a7b0476">
+                     <title id="d1e712e42f4967a46510d8892128b32a7b0476">Sicherheitshinweise</title>
+                     <block id="d1e714e42f4967a46510d8892128b32a7b0476">
+                        <title id="d1e715e42f4967a46510d8892128b32a7b0476">ANSI Z535.6</title>
+                        <p id="d1e717e42f4967a46510d8892128b32a7b0476">Nach ANSI Z535.6 Norm müssen Sicherheitshinweise in einer internationalen Betriebsanleitung einem bestimmten Layout genügen.<b id="d1e719e42f4967a46510d8892128b32a7b0476"> UWE </b>stellt Vorlagen für Sicherheitshinweise bereit. Diese können in der Editoransicht in einer Dropdown-Box ausgewählt und eingefügt werden. Folgend ist beispielhaft ein Hinweis dagestellt:</p>
+                        <figure pdfwidth="column" id="d1e8461" style="margin-bottom:20px">
+                           <img src="/static/images/warning/warning_safe.png" id="d1e8462"/>
+                           <subtitle id="d1e8463" style="display:none">[[warning]]</subtitle>
+                        </figure>
+                        <ul id="d1e8464">
+                           <title id="d1e8465">Die Hinweisvorlage besteht aus zwei Teilen</title>
+                           <li id="d1e849">
+                              <p id="d1e8491">
+                                 </p>
+                              <p id="d1e731e42f4967a46510d8892128b32a7b0476">Wenn man die Grafik mit <code id="d1e733e42f4967a46510d8892128b32a7b0476">SHIFT+Entf</code> löscht, dann wird der Text wie eine unnummerierte Liste behandelt und auch so in der XML-Instanz aufgelöst.</p>
+                              <p/>
+                           </li>
+                           <li id="d1e855">
+                              <p id="d1e8551">
+                                 </p>
+                              <p id="d1e737e42f4967a46510d8892128b32a7b0476">Wenn man den Text löscht, dann wird die Signalgrafik wie eine gewöhnlich eingefügte Grafik behandelt und auch so in der XML-Instanz aufgelöst. </p>
+                              <p/>
+                           </li>
+                        </ul>
+                     </block>
+                  </content>
+               </chapter>
+               <chapter id="d1e739e42f4967a46510d8892128b32a7b0476" ismodule="yes" hyphenation="yes"
+                        chapterpage="no">
+                  <content id="d1e739e42f4967a46510d8892128b32a7b0476">
+                     <title id="d1e741e42f4967a46510d8892128b32a7b0476">Checkbox Symbole</title>
+                     <block id="d1e743e42f4967a46510d8892128b32a7b0476">
+                        <title id="d1e744e42f4967a46510d8892128b32a7b0476">checked und unchecked</title>
+                        <p id="d1e746e42f4967a46510d8892128b32a7b0476">Über den den Platzhalter-Dialog können Checkbox-Symbole eingefügt werden. Diese werden grösser als der gewöhnliche Text dargestellt und eignen sich besonders gut in Tabellenzellen. Dazu wird im Platzhalter-Dialog jeweils ein einzelnes Zeichen <code id="d1e748e42f4967a46510d8892128b32a7b0476">O</code> für <code id="d1e751e42f4967a46510d8892128b32a7b0476">unchecked</code> und <code id="d1e754e42f4967a46510d8892128b32a7b0476">X</code> für <code id="d1e757e42f4967a46510d8892128b32a7b0476">checked</code> eingegeben. Folgend sind die beiden Checkbox-Symbole in einer zweispaltigen Tabelle beispielhaft dargestellt.</p>
+                        <table id="d1e760e42f4967a46510d8892128b32a7b0476" pdfwidth="column"
+                               style="border: 1pt #466F82 solid;"
+                               cellpadding="5"
+                               cellspacing="5"
+                               width="100%">
+                           <caption elemname="title" id="d1e761e42f4967a46510d8892128b32a7b0476">Darstellung der Checkbox-Symbole</caption>
+                           <tbody id="d1e763e42f4967a46510d8892128b32a7b0476">
+                              <tr class="initialized" id="d1e764e42f4967a46510d8892128b32a7b0476">
+                                 <td id="d1e765e42f4967a46510d8892128b32a7b0476" valign="top" width="50%">
+                                    <p id="d1e766e42f4967a46510d8892128b32a7b0476">Im Platzhalter-Dialog wurde ein einzelnes <code id="d1e768e42f4967a46510d8892128b32a7b0476">O</code> eingegeben:</p>
+                                 </td>
+                                 <td id="d1e771e42f4967a46510d8892128b32a7b0476" valign="top" width="50%">
+                                    <p id="d1e772e42f4967a46510d8892128b32a7b0476"/>
+                                 </td>
+                              </tr>
+                              <tr class="initialized" id="d1e774e42f4967a46510d8892128b32a7b0476">
+                                 <td id="d1e775e42f4967a46510d8892128b32a7b0476" valign="top" width="50%">
+                                    <p id="d1e776e42f4967a46510d8892128b32a7b0476">Im Platzhalter-Dialog wurde ein einzelnes <code id="d1e778e42f4967a46510d8892128b32a7b0476">X</code> eingegeben:</p>
+                                 </td>
+                                 <td id="d1e781e42f4967a46510d8892128b32a7b0476" valign="top" width="50%">
+                                    <p id="d1e782e42f4967a46510d8892128b32a7b0476"/>
+                                 </td>
+                              </tr>
+                           </tbody>
+                        </table>
+                     </block>
+                  </content>
+               </chapter>
+               <chapter id="d1e784e42f4967a46510d8892128b32a7b0476" ismodule="yes" hyphenation="yes"
+                        chapterpage="no">
+                  <content id="d1e784e42f4967a46510d8892128b32a7b0476">
+                     <title id="d1e786e42f4967a46510d8892128b32a7b0476">
+		Vorformatierter Text</title>
+                     <block id="d1e788e42f4967a46510d8892128b32a7b0476">
+                        <title id="d1e789e42f4967a46510d8892128b32a7b0476">
+			Verbatim</title>
+                        <p id="d1e791e42f4967a46510d8892128b32a7b0476">
+			Mit dem <b id="d1e793e42f4967a46510d8892128b32a7b0476">Verbatim </b>Element kann man bequem Quelltext oder anderen vorformatierten Text einfügen oder erfassen. Die Auswahl des Elements erfolgt dabei über dasselbe Drop-Down Menü mit dem auch die Sicherheitshinweise erfasst werden, vgl. <doclink id="d2e12f13e4ef02d5683aa0d769a3770cd1391"
+                                    class="d1e710e42f4967a46510d8892128b32a7b0476">Sicherheitshinweise ANSI Z535.6 </doclink>
+                        </p>
+                        <figure id="d1e798e42f4967a46510d8892128b32a7b0476" pdfwidth="margin">
+                           <img id="d2e15f13e4ef02d5683aa0d769a3770cd1391" 
+                                src="sample/images/2012-11-18 17_52_24-www.uwe-editor.de.png"
+                                width="100px" height="70px"/>
+                           <subtitle id="d1e801e42f4967a46510d8892128b32a7b0476">
+				Verbatim Element</subtitle>
+                        </figure>
+                        <p id="d1e803e42f4967a46510d8892128b32a7b0476">
+			Bei der Eingabe ist zu beachten, dass mit der <code id="d1e805e42f4967a46510d8892128b32a7b0476">SHIFT-ENTER</code> Taste ein Zeilenumbruch eingegeben wird. Mit<code id="d1e808e42f4967a46510d8892128b32a7b0476"> ENTER</code> springt man dagegen aus dem Element wieder heraus in einen neuen Absatz. Der <b id="d1e811e42f4967a46510d8892128b32a7b0476">Verbatim </b>Text wird seitenbreit dargestellt. Vgl. folgender Beispiel-Quelltext:</p>
+                        <verbatim id="d1e814e42f4967a46510d8892128b32a7b0476">
+                           <b id="d1e815e42f4967a46510d8892128b32a7b0476">def </b>register_page(request):
+  <b id="d1e818e42f4967a46510d8892128b32a7b0476">if </b>request.method == 'POST':
+     form = RegistrationForm(request.POST)
+     <b id="d1e821e42f4967a46510d8892128b32a7b0476">if </b>form.is_valid():
+       user = User.objects.create_user(
+         username=form.cleaned_data['username'],
+         password=form.cleaned_data['password1'],
+         email=form.cleaned_data['email']
+       )
+      <b id="d1e824e42f4967a46510d8892128b32a7b0476">return </b>HttpResponseRedirect('/register/success/')
+  <b id="d1e827e42f4967a46510d8892128b32a7b0476">else</b>:
+    form = RegistrationForm()
+    variables = RequestContext(request, {
+     'form': form
+   })
+  <b id="d1e830e42f4967a46510d8892128b32a7b0476">return </b>render_to_response(
+     'registration/register.html',
+     variables
+  )</verbatim>
+                        <p id="d1e833e42f4967a46510d8892128b32a7b0476">
+			[[subtitle:Beispiel Quelltext in der Programmiersprache Python]]</p>
+                     </block>
+                  </content>
+               </chapter>
+               <chapter id="d1e835e42f4967a46510d8892128b32a7b0476" ismodule="yes" hyphenation="yes"
+                        chapterpage="no">
+                  <content id="d1e835e42f4967a46510d8892128b32a7b0476">
+                     <title id="d1e837e42f4967a46510d8892128b32a7b0476">Kapitel Inhaltsverzeichnis</title>
+                     <block id="d1e839e42f4967a46510d8892128b32a7b0476">
+                        <title id="d1e840e42f4967a46510d8892128b32a7b0476">chapter-toc</title>
+                        <p id="d1e842e42f4967a46510d8892128b32a7b0476">Mit dem <b id="d1e844e42f4967a46510d8892128b32a7b0476">chapter-toc</b> Element können Inhaltsverzeichnisse auf Kapitel-1 Ebene eingefügt werden. Vgl. das Inhaltsverzeichnis unter Kapitel <doclink id="d1e847e42f4967a46510d8892128b32a7b0476"
+                                    class="d1e249e42f4967a46510d8892128b32a7b0476">3 Funktionen der Webanwendung.</doclink> Dazu wird im gewünschten Kapitel über den Platzhalter-Dialog die Textkennung <b id="d1e850e42f4967a46510d8892128b32a7b0476">chaptertoc</b> eingefügt oder optional einfach die Textkennung mit zwei öffnenden und schliessenden eckigen Klammern im Fliesstext gechrieben.</p>
+                        <figure id="d1e853e42f4967a46510d8892128b32a7b0476" pdfwidth="column">
+                           <img id="d1e971 1"
+                                src="sample/images/2012-11-18 18_16_54-www.uwe-editor.png"
+                                width="336px" height="177px"/>
+                           <subtitle id="d1e856e42f4967a46510d8892128b32a7b0476">Platzhalter-Dialog zur Erfassung eines Kapitel-Inhaltsverzeichnisses</subtitle>
+                        </figure>
+                     </block>
+                  </content>
+               </chapter>
+               <chapter id="d1e858e42f4967a46510d8892128b32a7b0476" ismodule="no" hyphenation="no"
+                        chapterpage="no">
+                  <content id="d1e858e42f4967a46510d8892128b32a7b0476">
+                     <title id="d1e860e42f4967a46510d8892128b32a7b0476">Flexibler Untertitel</title>
+                     <block id="d1e862e42f4967a46510d8892128b32a7b0476">
+                        <title id="d1e863e42f4967a46510d8892128b32a7b0476">subtitle</title>
+                        <p id="d1e865e42f4967a46510d8892128b32a7b0476">Das Element <code id="d1e867e42f4967a46510d8892128b32a7b0476">subtitle</code> formatiert eine Zeile <b id="d1e870e42f4967a46510d8892128b32a7b0476">fett</b> und hält sie mit dem vorangegangenen Block zusammen auf einer Seite. Die <code id="d1e873e42f4967a46510d8892128b32a7b0476">subtitle</code> Elemente werden wie Tabellenüberschriften und Bildunterschriften durchnummeriert. Beispielsweise nach einem <code id="d1e876e42f4967a46510d8892128b32a7b0476">verbatim</code> Element erscheint das <code id="d1e879e42f4967a46510d8892128b32a7b0476">subtitle</code> Element sinnvoll. Das Element wird über den Platzhalter-Dialog eingefügt, vgl. mehr zur <doclink id="d1e883e42f4967a46510d8892128b32a7b0476"
+                                    class="d1e585e42f4967a46510d8892128b32a7b0476">Verwendung des Platzhalter-Dialogs.</doclink>
+                        </p>
+                     </block>
+                  </content>
+               </chapter>
+            </chapter>
+            <chapter id="d1e885e42f4967a46510d8892128b32a7b0476" ismodule="yes" hyphenation="yes"
+                     chapterpage="no">
+               <content id="d1e885e42f4967a46510d8892128b32a7b0476">
+                     <title id="d1e887e42f4967a46510d8892128b32a7b0476">Besonderheiten beim Einfügen von Grafiken und Tabellen</title>
+                     <block id="d1e889e42f4967a46510d8892128b32a7b0476">
+                        <title id="d1e890e42f4967a46510d8892128b32a7b0476">Grafiken und Tabellen</title>
+                        <p id="d1e892e42f4967a46510d8892128b32a7b0476">Grafiken werden wie in anderen Webeditoren auch über Dialoge eingefügt. Dabei gibt es noch eine Besonderheit.[[xe1:Aktionen;xe2:Grafik einfügen]]</p>
+                        <figure id="d1e894e42f4967a46510d8892128b32a7b0476" pdfwidth="column">
+                           <img id="d1e1016 1" src="sample/images/marginoption.png"
+                             width="390px" height=""/>
+                           <subtitle id="d1e896e42f4967a46510d8892128b32a7b0476">Positionierung einer Grafik in Spalte, Seite oder Marginalie</subtitle>
+                        </figure>
+                        <p id="d1e898e42f4967a46510d8892128b32a7b0476">Nach dem Einfügen der Grafik erscheint am unteren Rand des grau selektierten Elementbereichs ein Zahnrad-Icon. Damit kann man zwischen den Positionierungen <code id="d1e900e42f4967a46510d8892128b32a7b0476">Spalte</code>, <code id="d1e903e42f4967a46510d8892128b32a7b0476">Marginalie</code> und <code id="d1e906e42f4967a46510d8892128b32a7b0476">Seite</code> wählen und so die Position der Grafik im PDF festlegen.</p>
+                        <p id="d1e909e42f4967a46510d8892128b32a7b0476">Dieselbe Option gibt es auch wenn man Tabellen einfügt, allerdings nur in den Ausprägungen <code id="d1e911e42f4967a46510d8892128b32a7b0476">Spalte</code> und<code id="d1e914e42f4967a46510d8892128b32a7b0476"> Seite</code>. Initial wird eine zweipaltige und zweizeilige Tabelle aus einer Vorlage eingefügt. Über das Kontextmenü kann man weitere Spalten und Zeilen hinzufügen[[xe1:Aktionen;xe2:Tabelle einfügen]]</p>
+                        <figure id="d1e917e42f4967a46510d8892128b32a7b0476" pdfwidth="page">
+                           <img id="d1e1044 1" src="sample/images/tablecontextmenu.png"
+                             width="480px" height=""/>
+                           <subtitle id="d1e919e42f4967a46510d8892128b32a7b0476">Kontextmenü zum Hinzufügen/Löschen/Ändern von weiteren Zellen in Tabellen</subtitle>
+                        </figure>
+                     </block>
+                  </content>
+            </chapter>
+         </chapter>
+      </chapter>
+      <chapter id="d1e921e42f4967a46510d8892128b32a7b0476" ismodule="no" hyphenation="yes"
+               chapterpage="no">
+         <content id="d1e921e42f4967a46510d8892128b32a7b0476">
+                     <title id="d1e923e42f4967a46510d8892128b32a7b0476">
+		Objekte des Benutzerverzeichnisses</title>
+                     <block id="d1e925e42f4967a46510d8892128b32a7b0476">
+                        <title id="d1e926e42f4967a46510d8892128b32a7b0476">
+			User Verzeichnis</title>
+                        <p id="d1e928e42f4967a46510d8892128b32a7b0476">
+			Nach dem Einloggen oder nach Klick auf den entsprechenden Link in der Menüleiste befinden man sich im Benutzerverzeichnis.[[xe1:Benutzerverzeichnis]]</p>
+                        <figure id="d1e930e42f4967a46510d8892128b32a7b0476" pdfwidth="margin">
+                           <img id="d2e100b5914750c992697f8abf228db44e99a"  
+                       src="sample/images/user_32.png"
+                       width="32px" />
+                           <subtitle id="d1e932e42f4967a46510d8892128b32a7b0476">
+				Benutzer</subtitle>
+                        </figure>
+                        <p id="d1e934e42f4967a46510d8892128b32a7b0476">
+			Hier sieht man eine Auflistung aller Dokumente und Grafiken. Ausserdem hat man die Möglichkeit unter dem Karteireiter<code id="d1e936e42f4967a46510d8892128b32a7b0476"> Einstellungen</code> die Hintergrundfarben im PDF sowie den Copyright-Hinweis auf der PDF-Rückseite festzulegen (vgl. Punkt <doclink id="d2e190b5914750c992697f8abf228db44e99a"
+                           class="d1e1051e42f4967a46510d8892128b32a7b0476">Globale Einstellungen</doclink>).Unter dem Karteireiter <code id="d1e942e42f4967a46510d8892128b32a7b0476">Import</code> verbirgt sich die Import-Funktionalität der Anwendung, die es erlaubt zuvor exportierte <b id="d1e945e42f4967a46510d8892128b32a7b0476">UWE</b> Dokumente (aus einer anderen <b id="d1e948e42f4967a46510d8892128b32a7b0476">UWE</b>-Installation oder für lokale Backup-Zwecke) wieder ins System zu importieren.[[xe1:Aktionen;xe2:Dokument importieren]]</p>
+                        <figure id="d1e951e42f4967a46510d8892128b32a7b0476" pdfwidth="column">
+                           <img id="d2e320b5914750c992697f8abf228db44e99a" 
+                       src="sample/images/uwedit.png"
+                       width="390px" />
+                           <subtitle id="d1e953e42f4967a46510d8892128b32a7b0476">
+				Import Karteireiter zum Importieren exportierter UWE Dokumente</subtitle>
+                        </figure>
+                        <p id="d1e955e42f4967a46510d8892128b32a7b0476">
+			In der Auflistung alle Grafiken hat man neben der Ansicht der Grafik auch die Möglichkeit diese aus der Datenbank zu löschen[[xe1:Aktionen;xe2:Grafik löschen]] (es wird aber nicht geprüft ob diese in anderen Dokumenten verwendet wird) oder eine Beschreibung zur Grafik hinzuzufügen. Dazu klickt man auf das Stift-Icon, vgl. Screenshot:</p>
+                        <figure id="d1e957e42f4967a46510d8892128b32a7b0476" pdfwidth="column">
+                           <img id="d2e390b5914750c992697f8abf228db44e99a"  
+                       src="sample/images/benutzerverzeichnis_grafiken.png"
+                       width="390px" />
+                           <subtitle id="d1e959e42f4967a46510d8892128b32a7b0476">
+				Auflistung aller Grafiken im Benutzerverzeichnis mit der Option eine Beschreibung zur Grafik hinzuzufügen</subtitle>
+                        </figure>
+                        <p id="d2e4391a83b4118d98cd765adcc2b8309a1ce">
+			Seit der Version 0.9 gibt es im Benutzerverzeichnis unter dem Karteireiter<code id="d2e4591a83b4118d98cd765adcc2b8309a1ce"> Symbole</code> eine Auswahl an fest eingebauten Grafiken, die durch den Systemadministrator hinterlegt werden können. Derzeit sind einige Warnsymbole verfügbar, vgl. Screenshot. [[xe1: Boilerplate Grafiken]]</p>
+                        <figure id="d2e4891a83b4118d98cd765adcc2b8309a1ce" pdfwidth="column">
+                           <img id="d2e490b5914750c992697f8abf228db44e99a" 
+                       src="sample/images/warnings-300x230.png"
+                       width="300px" height="230px;"/>
+                           <subtitle id="figure_2013516137137542667362691121">
+				Boilerplate Grafiken einfügen</subtitle>
+                        </figure>
+                        <p id="d2e5391a83b4118d98cd765adcc2b8309a1ce">
+			Diese Boilerplate Symbole werden wie andere Grafiken auch über einen Dialog eingefügt, vgl. <doclink id="d2e550b5914750c992697f8abf228db44e99a"
+                           class="d1e885e42f4967a46510d8892128b32a7b0476">Grafiken und Tabellen</doclink>.</p>
+                     </block>
+                  </content>
+      </chapter>
+      <chapter id="d1e961e42f4967a46510d8892128b32a7b0476" ismodule="no" hyphenation="yes"
+               chapterpage="no">
+         <content id="d1e961e42f4967a46510d8892128b32a7b0476">
+                     <title id="d1e963e42f4967a46510d8892128b32a7b0476">
+		Versionierung und HTML Vorschau</title>
+                     <block id="d1e965e42f4967a46510d8892128b32a7b0476">
+                        <title id="d1e966e42f4967a46510d8892128b32a7b0476">
+			Dokument Versionierung</title>
+                        <p id="d1e968e42f4967a46510d8892128b32a7b0476">
+			Von jedem Dokument und von jedem Kapitel wird bei einer Änderung automatisch eine neue Version erzeugt und in der Datenbank gespeichert.[[xe1:Versionierung]]</p>
+                        <p id="d1e970e42f4967a46510d8892128b32a7b0476">
+			Die Versionen zu einem Dokument werden im Benutzerverzeichnis angezeigt, indem man auf eine Versionsnummer klickt. Bei einem Überfahren mit der Maus wird das Feld <code id="d1e972e42f4967a46510d8892128b32a7b0476">Bemerkung</code> der Dokumentmetadaten eingeblendet.</p>
+                        <figure id="d1e975e42f4967a46510d8892128b32a7b0476" pdfwidth="page">
+                           <img id="d2e1572ef03348486717ceee87431aa1e739d"  
+                       src="sample/images/documentversions.png"
+                       width="490px" />
+                           <subtitle id="d1e977e42f4967a46510d8892128b32a7b0476">
+				Anzeige einer Vorgängerversion des Dokuments</subtitle>
+                        </figure>
+                        <p id="d1e979e42f4967a46510d8892128b32a7b0476">
+			Die HTML Vorschau des Dokuments wird in einem neuen Browsertab geöffnet. Bei Betätigung des Schalters <code id="d1e981e42f4967a46510d8892128b32a7b0476">Diese Version als aktuelle Version setzen</code> wird nach Bestätigung eines Popupdialogs die betrachtete Version als aktuelles Dokument gesetzt, und das aktuelle Dokument als Vorgängerversion angelegt.[[xe1:Aktionen;xe2:Version setzen]]</p>
+                        <p id="d1e984e42f4967a46510d8892128b32a7b0476">
+			Auf diese Weise kann man den Zustand des Dokuments wieder zurücksetzen, wenn man mehre fehlerhafte Änderungen begangen hat.[[xe1:Aktionen;xe2:Version zurücksetzen]]</p>
+                        <p id="d1e986e42f4967a46510d8892128b32a7b0476">
+			In der unteren Leiste der Vorschau werden Dokumentmetadaten angezeigt. Bei Klick auf den Link <code id="d1e988e42f4967a46510d8892128b32a7b0476">Bemerkung</code>
+                           <code id="d1e990e42f4967a46510d8892128b32a7b0476">anzeigen</code> wird das Feld Bemerkung der Dokumentmetadaten eingeblendet.</p>
+                     </block>
+                  </content>
+         <chapter id="d1e993e42f4967a46510d8892128b32a7b0476" ismodule="yes" hyphenation="yes"
+                  chapterpage="no">
+            <content id="d1e993e42f4967a46510d8892128b32a7b0476">
+                     <title id="d1e995e42f4967a46510d8892128b32a7b0476">Versionsvergleich</title>
+                     <block id="d1e997e42f4967a46510d8892128b32a7b0476">
+                        <title id="d1e998e42f4967a46510d8892128b32a7b0476">Diffing</title>
+                        <p id="d1e1000e42f4967a46510d8892128b32a7b0476">Bei Klick auf den Schalter <code id="d1e1002e42f4967a46510d8892128b32a7b0476">Vergleich mit aktueller Version anzeigen</code> wird das aktuelle Dokument mit der gerade betrachteten Version verglichen. Gelöschte Elemente werden rot und durchgestrichen dargestellt. Hinzugefügte Elemente werden grün unterstrichen dargestellt.[[xe1:Aktionen;xe2:Version vergleichen]]</p>
+                        <figure id="d1e1005e42f4967a46510d8892128b32a7b0476" pdfwidth="page">
+                           <img id="d1e1165 1" src="sample/images/diffing2.png"
+                          width="480px" height=""/>
+                           <subtitle id="d1e1007e42f4967a46510d8892128b32a7b0476">HTML Vorschau und Versionsvergleich</subtitle>
+                        </figure>
+                     </block>
+                  </content>
+         </chapter>
+         <chapter id="d1e1009e42f4967a46510d8892128b32a7b0476" ismodule="yes" hyphenation="yes"
+                  chapterpage="no">
+            <content id="d1e1009e42f4967a46510d8892128b32a7b0476">
+                     <title id="d1e1011e42f4967a46510d8892128b32a7b0476">Versionierung einzelner Kapitel</title>
+                     <block id="d1e1013e42f4967a46510d8892128b32a7b0476">
+                        <title id="d1e1014e42f4967a46510d8892128b32a7b0476">Kapitel Versionierung</title>
+                        <p id="d1e1016e42f4967a46510d8892128b32a7b0476">Die Versionen der einzelnen Kapitel werden in der Editoransicht direkt unterhalb des Eingabefensters angezeigt. Eine Option zur Darstellung der Änderungen gibt es hier nicht. Diese Ansicht dient lediglich zum Zurücksetzen der aktuellen Version auf eine Vorgängerversion, wenn man fehlerhafte Änderungen begangen hat.[[xe1:Kapitel Versionierung]]</p>
+                        <figure id="d1e1018e42f4967a46510d8892128b32a7b0476" pdfwidth="page">
+                           <img id="d1e1181 1" src="sample/images/kapitelversionen.png"
+                          width="480px" height=""/>
+                           <subtitle id="d1e1020e42f4967a46510d8892128b32a7b0476">Anzeige der Kapitelversionen direkt unterhalb des Editorfensters</subtitle>
+                        </figure>
+                     </block>
+                  </content>
+         </chapter>
+      </chapter>
+      <chapter id="chapter_201329136282867990063978161" ismodule="no" hyphenation="yes"
+               chapterpage="no">
+         <content id="chapter_201329136282867990063978161">
+                     <title id="d2e28764004c2c095757df04ed0812eb22ba">
+		Kollaborative Features</title>
+                     <block id="d2e48764004c2c095757df04ed0812eb22ba">
+                        <title id="d2e58764004c2c095757df04ed0812eb22ba">
+			Chat und Kommentare</title>
+                        <p id="d2e15aff43fbd8934c77fba22b0c0cb983ce8">
+			Jedes Dokument und insbesondere jede Revision eines Dokuments besitzt im Format <code id="d2e98764004c2c095757df04ed0812eb22ba">HTML Vorschau</code> ein integriertes Chatfenster. Hier können auf einfache Art und Weise Dokument-spezifische Informationen ausgetauscht werden, welche persistent und damit nachvollziehbar in der Datenbank gespeichert werden. Der Chat wird in der linken Randleiste nach Auswahl im <code id="d2e128764004c2c095757df04ed0812eb22ba">Optionen-Menü</code> angezeigt.</p>
+                        <figure id="d2e17aff43fbd8934c77fba22b0c0cb983ce8" pdfwidth="page">
+                           <div id="d2e16344a00829a9725fee522e2fe9097b029"  
+                       src="sample/images/realtime_comments-1024x549.png"
+                       width="480px" height="257px;"/>
+                           <subtitle id="figure_201329136283008690842413881">
+				Chatfenster und Kommetare in der HTML Vorschau</subtitle>
+                        </figure>
+                        <p id="d2e22aff43fbd8934c77fba22b0c0cb983ce8">
+			Sowohl Chatnachrichten als auch eingefügte Kommentare werden in Echtzeit übertragen und Redakteure werden benachrichtigt sobald sie in einem Kommentar bzw. einer Chat-Nachricht erwähnt werden. Nach Klick auf die Nachricht gelangt man sofort zur betreffenden Stelle im ausgewählten Dokument und kann aktiv an der Diskussion teilnehmen.</p>
+                        <p id="d2e22b04cd8035486f102e9ff23cdcafb6319">
+			An jeden Absatz einer HTML Vorschau können Kommentare geheftet werden. Dazu klickt man auf den Link Kommentieren und ein Eingabedialog erscheint. Wie auch in den Chat-Nachrichten ist es hier möglich einerseits einen Redakteur direkt anzusprechen, indem ein @ dem Benutzernamen vorangestellt wird und auch auf bestehende Dokumente zu verlinken, indem die Dokument ID in doppelte eckige Klammern gestellt wird.</p>
+                        <figure id="d2e24aff43fbd8934c77fba22b0c0cb983ce8" pdfwidth="column">
+                           <img id="d2e25344a00829a9725fee522e2fe9097b029" 
+                       src="sample/images/notification.png"
+                       width="390px" height="289px;"/>
+                           <subtitle id="figure_201329136283084539028593481">
+				Benachrichtigungen im Slide-Down Fenster</subtitle>
+                        </figure>
+                        <p id="d2e29be814f1bcff241b0d4f9fb7cf8ddd783">
+			Beim Überfahren eines Dokument-Verweises mit der Maus werden auch im Chat und in den Kommentaren einige Metadaten des betreffenden Dokuments angezeigt.</p>
+                        <figure id="d2e527bb73e6e2b19a71f16074f65be558da5" pdfwidth="column">
+                           <img id="d2e32344a00829a9725fee522e2fe9097b029" 
+                       src="sample/images/link_hover.png"
+                       width="390px" height="180px;"/>
+                           <subtitle id="figure_20132913628317733968440451">
+				Link in einem Kommentar mit Tooltip Infos</subtitle>
+                        </figure>
+                        <figure id="d2e158764004c2c095757df04ed0812eb22ba" pdfwidth="column">
+                           <img id="d2e37344a00829a9725fee522e2fe9097b029" 
+                       src="sample/images/chat-client.png"
+                       width="390px" height="579px;"/>
+                           <subtitle id="figure_201329136282966332439998471">
+				Screenshot des integrierten Chat-Clients</subtitle>
+                        </figure>
+                     </block>
+                  </content>
+         <chapter id="chapter_2013516137137594467767717991" ismodule="yes" hyphenation="yes"
+                  chapterpage="no">
+            <content id="chapter_2013516137137594467767717991">
+                     <title id="d2e2299ac7f37dadfcf767db76a097e352d1">
+		Co-Redakteure</title>
+                     <block id="d2e4299ac7f37dadfcf767db76a097e352d1">
+                        <title id="d2e5299ac7f37dadfcf767db76a097e352d1">
+			Co-Redakteure</title>
+                        <p id="d2e7299ac7f37dadfcf767db76a097e352d1">
+			Seit der Version 0.9 können im Benutzerverzeichnis unter dem Karteireiter <code id="d2e9299ac7f37dadfcf767db76a097e352d1">Co-Redakteure</code> bestimmte Benutzer als Co-Redakteur ausgezeichnet werden. Diese dürfen in ausgwählten Dokumenten ausgewählte Kapitel bearbeiten, können aber die Dokumentstruktur nicht verändern. Bearbeitet ein Co-Redakteur gerade ein Kapitel, dann ist dieses Kapitel für alle anderen Benutzer gesperrt und wird im Kapitelstruktur-Editor (vgl. <doclink id="d2e12fa3c703fab855451e4d7932b2f77ea0f"
+                              class="d1e376e42f4967a46510d8892128b32a7b0476">3.3.1 Funktionen des Kapitelstruktur-Editors</doclink> ) in Echtzeit als <code id="d2e15299ac7f37dadfcf767db76a097e352d1">gesperrt</code> markiert bzw. die Markierung und Sperrung wird wieder aufgehoben, sobald der Co-Redakteur die Bearbeitung abschliesst. [[xe1: Co-Redakteure]]</p>
+                        <figure id="d2e18299ac7f37dadfcf767db76a097e352d1" pdfwidth="page">
+                           <img id="d2e19fa3c703fab855451e4d7932b2f77ea0f" 
+                          src="sample/images/co_redakteurer.png"
+                          width="480px" height="248px;"/>
+                           <subtitle id="figure_2013516137137635808771902221">
+				Auszeichnung von Co-Redakteuren im Benutzerverzeichnis</subtitle>
+                        </figure>
+                     </block>
+                  </content>
+         </chapter>
+      </chapter>
+   </chapter>
+   <chapter id="d1e1022e42f4967a46510d8892128b32a7b0476" ismodule="no" hyphenation="yes"
+            chapterpage="no">
+      <content id="d1e1022e42f4967a46510d8892128b32a7b0476">
+                     <title id="d1e1024e42f4967a46510d8892128b32a7b0476">Optionen der PDF Ausgabe</title>
+                     <block id="d1e1026e42f4967a46510d8892128b32a7b0476">
+                        <title id="d1e1027e42f4967a46510d8892128b32a7b0476">Struktur</title>
+                        <p id="d1e1029e42f4967a46510d8892128b32a7b0476">Bestimmte strukturelle Eigenschaften[[fn:Im Format "Informationsblatt" sind bestimmte strukturelle Eigenschaften voreingestellt und einige Einstellungen greifen nicht. Alle Optionen sind dagegen im Format "Buch" verfügbar.]][[fn:Für das Kapitel Einleitung und die Buchrückseite wird das erste bzw. letzte Kapitel herangezogen. Das sieht man nur im PDF. Im Editor und in der HTML Vorschau werden diese Kapitel wie die anderen auch angezeigt.]] können bei Änderung oder Neu-Anlegen eines Dokuments in den Dokumentmetadaten eingestellt werden, vgl. folgender Screenshot:[[xe1:Optionen;xe2:PDF Ausgabe]]</p>
+                        <figure id="d1e1031e42f4967a46510d8892128b32a7b0476" pdfwidth="page">
+                           <img id="d1e1206 1" src="sample/images/structureoptions.png"
+                    width="480px" height=""/>
+                           <subtitle id="d1e1033e42f4967a46510d8892128b32a7b0476">Einstellung struktureller Eigenschaften im Metadaten Dialog</subtitle>
+                        </figure>
+                     </block>
+                  </content>
+      <chapter id="d1e1035e42f4967a46510d8892128b32a7b0476" ismodule="yes" hyphenation="yes"
+               chapterpage="no">
+         <content id="d1e1035e42f4967a46510d8892128b32a7b0476">
+                     <title id="d1e1037e42f4967a46510d8892128b32a7b0476">
+		Layouteigenschaften</title>
+                     <block id="d1e1039e42f4967a46510d8892128b32a7b0476">
+                        <title id="d1e1040e42f4967a46510d8892128b32a7b0476">
+			Layout</title>
+                        <p id="d1e1042e42f4967a46510d8892128b32a7b0476">
+			Ebenso können Optionen die nur das Layout[[fn:Fussnoten werden aus technischen Gründen nicht im 2-Spaltenlayout angezeigt.]][[fn:Grafiken werden im 2-Spalten Layout auf die Spaltenbreite skaliert.]][[fn:Im Papierformat A5 wird keine Marginalie dargestellt.]] betreffen dokumentweit eingestellt werden. Kapitelweite Einstellungen wurden schon unter Punkt <doclink id="d2e976d6e2205c2b4fe3287fcc1ae6d5ae8f"
+                           class="d1e476e42f4967a46510d8892128b32a7b0476">Checkboxes </doclink> besprochen.[[xe1:Optionen;xe2:Layout]]</p>
+                        <figure id="d1e1047e42f4967a46510d8892128b32a7b0476" pdfwidth="page">
+                           <img id="d2e1376d6e2205c2b4fe3287fcc1ae6d5ae8f" 
+                       src="sample/images/layoutoptions.png"
+                       width="480px" />
+                           <subtitle id="d1e1049e42f4967a46510d8892128b32a7b0476">
+				Dokumentweite Einstellmöglichkeiten bzgl. des PDF Layouts</subtitle>
+                        </figure>
+                     </block>
+                  </content>
+      </chapter>
+      <chapter id="d1e1051e42f4967a46510d8892128b32a7b0476" ismodule="yes" hyphenation="yes"
+               chapterpage="no">
+         <content id="d1e1051e42f4967a46510d8892128b32a7b0476">
+                     <title id="d1e1053e42f4967a46510d8892128b32a7b0476">
+		Dokumentübergreifende Einstellungen</title>
+                     <block id="d1e1055e42f4967a46510d8892128b32a7b0476">
+                        <title id="d1e1056e42f4967a46510d8892128b32a7b0476">
+			Globale Einstellungen</title>
+                        <p id="d2e772787ec8f91044764282856becbbcb55">
+			Einstellungen die alle Dokumente eines Benutzers betreffen sollen, können im Benutzerverzeichnis unter dem Kartereiter <code id="d1e1060e42f4967a46510d8892128b32a7b0476">Einstellungen</code> getroffen werden[[fn:In der Folgeversion werden hier auch mehrsprachige Boilerplatetexte und globale Textvariablen verwaltet.]]. Bis jetzt können die Farben für das Layout <code id="d1e1063e42f4967a46510d8892128b32a7b0476">mit künstlerischer Note</code> und die Tabellenformatierung <code id="d1e1066e42f4967a46510d8892128b32a7b0476">Verwendung von Schattierungen</code>, sowie der Boilerplate-Text für den Copyright-Hinweis auf der Buchrückseite eingestellt werden, vgl. Screenshot[[xe1:Globale Einstellungen]]</p>
+                        <figure id="d2e1872787ec8f91044764282856becbbcb55" pdfwidth="page">
+                           <img id="d2e198037ea57bec076a8036143eee50a7f32" 
+                       src="sample/images/einstellungen.png"
+                       width="480px" height="243px;"/>
+                           <subtitle id="figure_2013516137137394866488871331">
+				Dokumentübergreifende Einstellungen</subtitle>
+                        </figure>
+                        <p id="d2e2372787ec8f91044764282856becbbcb55">
+			Seit der <b id="d2e25a354e34803d41c0caa6f6a641583523d">Version 0.9</b> können auch <code id="d2e28a354e34803d41c0caa6f6a641583523d">globale Textvariablen</code> definiert werden. Diese werden im Dokument durch ihren Bezeichner und einem <b id="d2e31a354e34803d41c0caa6f6a641583523d">Dollarzeichen $</b> vorangestellt referenziert und im Ausgabeformat ersetzt. Auf diese Weise können</p>
+                     </block>
+                  </content>
+      </chapter>
+      <chapter id="chapter_2013516137137455442374528491" ismodule="yes" hyphenation="yes"
+               chapterpage="no">
+         <content id="chapter_2013516137137455442374528491">
+                     <title id="d2e2aa200fb5f8f0bdb4cfefafea92fe0682">
+		Globale Textvariablen</title>
+                     <block id="d2e4aa200fb5f8f0bdb4cfefafea92fe0682">
+                        <title id="d2e5aa200fb5f8f0bdb4cfefafea92fe0682">
+			Textvariablen</title>
+                        <p id="d2e7aa200fb5f8f0bdb4cfefafea92fe0682">
+			Seit der Version 0.9 können auch globale Textvariablen definiert werden. Diese werden im Dokument durch ihren Bezeichner und einem Dollarzeichen $ vorangestellt in einem Platzhalter referenziert und zum Transformationszeitpunkt im Ausgabeformat ersetzt. Auf diese Weise bleiben bestimmte Textinhalte in allen Dokumenten aktuell, wie z.B. die Firmenanschrift, und werden zentral über das Webinterface gepflegt. [[xe1: Textvariablen]]</p>
+                        <figure id="d2e9aa200fb5f8f0bdb4cfefafea92fe0682" pdfwidth="column">
+                           <img id="d2e1031d61141f216fa02378cfea25bfa18f3" 
+                       src="sample/images/textvariables_used.png"
+                       width="390px" height="56px;"/>
+                           <subtitle id="figure_2013516137137477423639156821">
+				Einsetzen einer Textvariablen</subtitle>
+                        </figure>
+                     </block>
+                  </content>
+      </chapter>
+   </chapter>
+   <chapter id="d1e1073e42f4967a46510d8892128b32a7b0476" ismodule="no" hyphenation="yes"
+            chapterpage="no">
+      <content id="d1e1073e42f4967a46510d8892128b32a7b0476">
+                     <title id="d1e1075e42f4967a46510d8892128b32a7b0476">Bedatungsrichtlinien</title>
+                     <block id="d1e1077e42f4967a46510d8892128b32a7b0476">
+                        <title id="d1e1078e42f4967a46510d8892128b32a7b0476">Grafiken</title>
+                        <p id="d1e1080e42f4967a46510d8892128b32a7b0476">Bei zu grossen <b id="d1e1082e42f4967a46510d8892128b32a7b0476">seitenbreiten</b>
+                           <b id="d1e1084e42f4967a46510d8892128b32a7b0476">Grafiken</b> sollte im Format <b id="d1e1087e42f4967a46510d8892128b32a7b0476">A4</b>
+                           <b id="d1e1089e42f4967a46510d8892128b32a7b0476">Marginalienlayout</b> eine Breite von <b id="d1e1092e42f4967a46510d8892128b32a7b0476">480px </b>im Grafikdialog eingestellt werden. Das kann auch später angepasst werden, indem man auf die Grafik klickt und diese selektiert. Ein anschliessender Klick auf die Grafik-Schaltfläche in der Toolbar des Editors öffnet den Grafik-Dialog mit Eingabefeldern für Breite und Höhe der Grafik noch einmal. Für <b id="d1e1095e42f4967a46510d8892128b32a7b0476">spaltenbreite Grafiken</b> sollten dagegen <b id="d1e1099e42f4967a46510d8892128b32a7b0476">390px</b> gewählt werden. Im Format <b id="d1e1102e42f4967a46510d8892128b32a7b0476">Din A5</b> gibt es nur die Textspalte und diese ist<b id="d1e1105e42f4967a46510d8892128b32a7b0476"> 338px</b> breit. Demzufolge sollten zu grosse Grafiken hier auf diesen Wert skaliert werden. Im <b id="d1e1108e42f4967a46510d8892128b32a7b0476">2-Spalten Layout </b>werden Grafiken im Format <b id="d1e1111e42f4967a46510d8892128b32a7b0476">Din A4 und Din A5</b> auf die Spaltenbreite <b id="d1e1114e42f4967a46510d8892128b32a7b0476">automatisch skaliert</b>. Das gilt nicht für Grafiken, für die als Position <code id="d1e1118e42f4967a46510d8892128b32a7b0476">Marginalie</code> angegeben wurde. Diese werden nicht skaliert. Das ist z.B. sinnvoll für<b id="d1e1121e42f4967a46510d8892128b32a7b0476"> Icons</b> oder Grafiken die viel schmäler als eine Spalte sind. Der <b id="d1e1124e42f4967a46510d8892128b32a7b0476">Untertitel einer Marginaliengrafik</b> wird nicht gedruckt. Marginaliengrafiken können <b id="d1e1127e42f4967a46510d8892128b32a7b0476">keine Linkziele</b> sein und erscheinen auch in <b id="d1e1130e42f4967a46510d8892128b32a7b0476">keiner Auflistung</b>.</p>
+                     </block>
+                  </content>
+      <chapter id="d1e1133e42f4967a46510d8892128b32a7b0476" ismodule="yes" hyphenation="yes"
+               chapterpage="no">
+         <content id="d1e1133e42f4967a46510d8892128b32a7b0476">
+                     <title id="d1e1135e42f4967a46510d8892128b32a7b0476">Tabellen</title>
+                     <block id="d1e1137e42f4967a46510d8892128b32a7b0476">
+                        <title id="d1e1138e42f4967a46510d8892128b32a7b0476">Tabellen</title>
+                        <p id="d1e1140e42f4967a46510d8892128b32a7b0476">Die <b id="d1e1142e42f4967a46510d8892128b32a7b0476">Breite einer Zelle</b> wird automatisch<b id="d1e1145e42f4967a46510d8892128b32a7b0476"> proportional zur Anzahl der Spalten</b> gesetzt. Das <b id="d1e1148e42f4967a46510d8892128b32a7b0476">horizontale oder vertikale Verbinden</b> von Zellen funktioniert nur mit zwei Zellen. Eine bereits verbundene Zelle kann nicht mit noch einer weiteren Zelle verbunden werden. <b id="d1e1151e42f4967a46510d8892128b32a7b0476">Zu lange Wörter</b> schreiben über Zellen hinaus, deshalb empfielt es sich für Kapitel mit Tabellen die<b id="d1e1154e42f4967a46510d8892128b32a7b0476"> Silbentrennung </b>einzuschalten.</p>
+                     </block>
+                  </content>
+      </chapter>
+      <chapter id="d1e1157e42f4967a46510d8892128b32a7b0476" ismodule="yes" hyphenation="yes"
+               chapterpage="no">
+         <content id="d1e1157e42f4967a46510d8892128b32a7b0476">
+                     <title id="d1e1159e42f4967a46510d8892128b32a7b0476">Interne und externe Verknüpfungen</title>
+                     <block id="d1e1161e42f4967a46510d8892128b32a7b0476">
+                        <title id="d1e1162e42f4967a46510d8892128b32a7b0476">Links</title>
+                        <p id="d1e1164e42f4967a46510d8892128b32a7b0476">Nachdem Klick auf die Schaltfläche <code id="d1e1166e42f4967a46510d8892128b32a7b0476">Verknüpfung</code> in der Toolbar des Editors wird der Link-Dialog geladen. <b id="d1e1169e42f4967a46510d8892128b32a7b0476">Es dauert eine Weile bis der Dialog erscheint</b>. Dieses Verhalten ist vollkommen normal, denn die Anzeige des Link-Dialogs bzw. die Berechnung der Kapitelstruktur ist etwa vergleichbar mit dem Zeitaufwand für das Anzeigen der HTML Vorschau. Technisch gesehen läuft hierbei in etwa derselbe Prozess ab.</p>
+                        <figure id="d1e1172e42f4967a46510d8892128b32a7b0476" pdfwidth="margin">
+                           <img id="d1e1369 1" src="sample/images/alert_32.gif"
+                       width="32px" height=""/>
+                           <subtitle id="d1e1174e42f4967a46510d8892128b32a7b0476">Achtung</subtitle>
+                        </figure>
+                        <p id="d1e1176e42f4967a46510d8892128b32a7b0476">Wenn Kapitel, Tabellen oder Grafiken gelöscht werden, dann ist <b id="d1e1178e42f4967a46510d8892128b32a7b0476">nach dem Löschen evtl. das Linkziel einer betreffenden internen Verknüpfung nicht mehr vorhanden</b>. Im PDF wird in diesem Fall an der Stelle des Links eine Warnmeldung in rot gedruckt. Der Link sollte dann entfernt oder angepasst werden.</p>
+                     </block>
+                  </content>
+      </chapter>
+      <chapter id="d1e1181e42f4967a46510d8892128b32a7b0476" ismodule="yes" hyphenation="yes"
+               chapterpage="no">
+         <content id="d1e1181e42f4967a46510d8892128b32a7b0476">
+                     <title id="d1e1183e42f4967a46510d8892128b32a7b0476">Cover Text auf zweiter Seite und Buchrückseite</title>
+                     <block id="d1e1185e42f4967a46510d8892128b32a7b0476">
+                        <title id="d1e1186e42f4967a46510d8892128b32a7b0476">Cover-Text</title>
+                        <p id="d1e1188e42f4967a46510d8892128b32a7b0476">Das Feld <code id="d1e1190e42f4967a46510d8892128b32a7b0476">Cover Text </code>der Metadaten des Dokuments wird im Format <code id="d1e1193e42f4967a46510d8892128b32a7b0476">Buch</code> auf der zweiten Seite und auch der Buchrückseite gedruckt. Im Format <code id="d1e1196e42f4967a46510d8892128b32a7b0476">Informationsblatt</code> wird der <code id="d1e1199e42f4967a46510d8892128b32a7b0476">Cover Text </code>am Dokumentende gedruckt. Die erste Zeile der Eingabe wird im PDF <b id="d1e1202e42f4967a46510d8892128b32a7b0476">fett</b> gedruckt. Alle anderen Zeilen werden normal gedruckt und vom der ersten abgesetzt. Ein Zeilenumbrucht wird im PDF als Anfang eines neuen Absatzes ausgewertet.</p>
+                     </block>
+                  </content>
+      </chapter>
+      <chapter id="d1e1205e42f4967a46510d8892128b32a7b0476" ismodule="yes" hyphenation="yes"
+               chapterpage="no">
+         <content id="d1e1205e42f4967a46510d8892128b32a7b0476">
+                     <title id="d1e1207e42f4967a46510d8892128b32a7b0476">Block- und Inline-Elemente</title>
+                     <block id="d1e1209e42f4967a46510d8892128b32a7b0476">
+                        <title id="d1e1210e42f4967a46510d8892128b32a7b0476">WYSIWYG Editor</title>
+                        <p id="d1e1212e42f4967a46510d8892128b32a7b0476">Bzgl. des integrierten Editors gibt es ein paar Sonderregeln zu beachten, vgl. <doclink id="d1e1214e42f4967a46510d8892128b32a7b0476"
+                           class="d1e528e42f4967a46510d8892128b32a7b0476">3.3.2 Funktionen des WYSIWYG-Editor. </doclink>
+                        </p>
+                     </block>
+                  </content>
+      </chapter>
+      <chapter id="d1e1216e42f4967a46510d8892128b32a7b0476" ismodule="yes" hyphenation="yes"
+               chapterpage="no">
+         <content id="d1e1216e42f4967a46510d8892128b32a7b0476">
+                     <title id="d1e1218e42f4967a46510d8892128b32a7b0476">Shortcut bzgl. des Platzhalter-Dialogs</title>
+                     <block id="d1e1220e42f4967a46510d8892128b32a7b0476">
+                        <title id="d1e1221e42f4967a46510d8892128b32a7b0476">Platzhalter-Dialog</title>
+                        <p id="d1e1223e42f4967a46510d8892128b32a7b0476">Anstatt ein Element über den Platzhalter-Dialog einzufügen, kann dieses auch mittels Fliesstext eingefügt werden.</p>
+                        <figure id="d1e1225e42f4967a46510d8892128b32a7b0476" pdfwidth="margin">
+                           <img id="d1e1422 1" src="sample/images/Platzhalter_icon.png"
+                       width="24px" height="24px"/>
+                           <subtitle id="d1e1228e42f4967a46510d8892128b32a7b0476">Platzhalter-Icon</subtitle>
+                        </figure>
+                        <p id="d1e1230e42f4967a46510d8892128b32a7b0476">Dazu wird der Text, der das Element formatiert mit doppelten eckigen Klammern umgeben, so <code id="d1e1232e42f4967a46510d8892128b32a7b0476">[[</code> und so <code id="d1e1235e42f4967a46510d8892128b32a7b0476">]]</code>. Die Anweisungen<code id="d1e1238e42f4967a46510d8892128b32a7b0476"/> und<code id="d1e1241e42f4967a46510d8892128b32a7b0476"/>würden dann Checkboxes formatieren. Die Anweisungen <code id="d1e1244e42f4967a46510d8892128b32a7b0476">[[xe1:Platzhalter]]</code>und <code id="d1e1248e42f4967a46510d8892128b32a7b0476">[[fn:Fussnote]]</code> Indexeinträge und Fussnoten.</p>
+                     </block>
+                  </content>
+      </chapter>
+   </chapter>
+   <chapter id="d1e1251e42f4967a46510d8892128b32a7b0476" ismodule="no" hyphenation="yes"
+            chapterpage="no">
+      <content id="d1e1251e42f4967a46510d8892128b32a7b0476">
+                     <title id="d1e1253e42f4967a46510d8892128b32a7b0476">Informationsmodell</title>
+                     <block id="d1e1255e42f4967a46510d8892128b32a7b0476">
+                        <title id="d1e1256e42f4967a46510d8892128b32a7b0476">DTD</title>
+                        <p id="d1e1258e42f4967a46510d8892128b32a7b0476">Im Gegensatz zu herkömmlichen XML Redaktionssystemen, die meist auf einer Integration eines XML Editors wie XMetal aufbauen, spielt das DTD Content Model in <b id="d1e1260e42f4967a46510d8892128b32a7b0476">UWE</b> eine untergeordnete Rolle. Die Erfassung erfolgt nämlich nicht über XML Tags, sondern über eine "geführte" <code id="d1e1263e42f4967a46510d8892128b32a7b0476">WYSIWYG</code> Eingabe. Der Vollständigkeit halber sei die DTD aber an dieser Stelle aufgeführt. Das folgende Schaubild visualisiert auch sehr gut die Struktur des eigenen Exportformats.</p>
+                        <figure id="d1e1266e42f4967a46510d8892128b32a7b0476" pdfwidth="page">
+                           <img id="d1e1464 1" src="sample/images/uweV05-content-model.png"
+                    width="480px" height="452px"/>
+                           <subtitle id="d1e1269e42f4967a46510d8892128b32a7b0476">UWEv0.5 DTD Schaubild</subtitle>
+                        </figure>
+                     </block>
+                  </content>
+   </chapter>
+   <chapter id="d1e1271e42f4967a46510d8892128b32a7b0476" ismodule="no" hyphenation="yes"
+            chapterpage="no">
+      <content id="d1e1271e42f4967a46510d8892128b32a7b0476">
+                     <title id="d1e1273e42f4967a46510d8892128b32a7b0476">
+		Geplante Features</title>
+                     <block id="d1e1275e42f4967a46510d8892128b32a7b0476">
+                        <title id="d1e1276e42f4967a46510d8892128b32a7b0476">
+			Roadmap</title>
+                        <p id="d1e1278e42f4967a46510d8892128b32a7b0476">
+                           <b id="d1e1279e42f4967a46510d8892128b32a7b0476">UWE</b> steht ab September 2012 auf <url id="d2e116509d226c69a63b53b7459fe44ae189a" address="http://www.uwe-editor.de"> www.uwe-editor.de </url> als Prototyp zum Testen zur Verfügung. Weitere geplante Features, wie z.B. Volltextsuche, kollaborative Zusammenarbeit auf Kapitelebene, Übersetzungsmanagement, Modularisierung/Wiederverwendung von referenzierten Textblöcken und Lokalisierung werden schrittweise bis Ende des Jahres 2013 eingebaut.</p>
+                        <table id="d1e1285e42f4967a46510d8892128b32a7b0476" pdfwidth="page"
+                   style="border: 1pt solid rgb(70, 111, 130);"
+                   cellpadding="5"
+                   cellspacing="5"
+                   width="100%">
+                           <caption elemname="title" id="d1e1286e42f4967a46510d8892128b32a7b0476">
+					Projektplan bis Ende 2013 (Major Release)</caption>
+                           <tbody id="d1e1288e42f4967a46510d8892128b32a7b0476">
+                              <tr class="initialized" id="d1e1289e42f4967a46510d8892128b32a7b0476">
+                                 <td colspan="1" id="d1e1290e42f4967a46510d8892128b32a7b0476" rowspan="2"
+                         valign="top"
+                         width="50%">
+                                    <p id="d1t226509d226c69a63b53b7459fe44ae189a">
+							 </p>
+                                 </td>
+                                 <td id="d1e1292e42f4967a46510d8892128b32a7b0476" valign="top" width="50%">
+                                    <p id="d1e1293e42f4967a46510d8892128b32a7b0476">
+                                       <b id="d1e1294e42f4967a46510d8892128b32a7b0476">Monat</b>
+                                    </p>
+                                 </td>
+                                 <td id="d1e1296e42f4967a46510d8892128b32a7b0476" valign="top" width="50%">
+                                    <p id="d1e1297e42f4967a46510d8892128b32a7b0476">
+								09/2012</p>
+                                 </td>
+                                 <td id="d1e1299e42f4967a46510d8892128b32a7b0476" valign="top" width="50%">
+                                    <p id="d1e1300e42f4967a46510d8892128b32a7b0476">
+								03/2013</p>
+                                 </td>
+                                 <td id="d1e1302e42f4967a46510d8892128b32a7b0476" valign="top" width="50%">
+                                    <p id="d1e1303e42f4967a46510d8892128b32a7b0476">
+								06/2013</p>
+                                 </td>
+                                 <td id="d1e1305e42f4967a46510d8892128b32a7b0476" valign="top" width="50%">
+                                    <p id="d1e1306e42f4967a46510d8892128b32a7b0476">
+								09/2013</p>
+                                 </td>
+                                 <td id="d1e1308e42f4967a46510d8892128b32a7b0476" valign="top" width="50%">
+                                    <p id="d1e1309e42f4967a46510d8892128b32a7b0476">
+                                       <b id="d1e1310e42f4967a46510d8892128b32a7b0476">01/2014</b>
+                                    </p>
+                                 </td>
+                              </tr>
+                              <tr class="initialized" id="d1e1312e42f4967a46510d8892128b32a7b0476">
+                                 <td id="d1e1313e42f4967a46510d8892128b32a7b0476" valign="top" width="50%">
+                                    <p id="d1e1314e42f4967a46510d8892128b32a7b0476">
+                                       <b id="d1e1315e42f4967a46510d8892128b32a7b0476">Release</b>
+                                    </p>
+                                 </td>
+                                 <td id="d1e1317e42f4967a46510d8892128b32a7b0476" valign="top" width="50%">
+                                    <p id="d1e1318e42f4967a46510d8892128b32a7b0476">
+								0.5</p>
+                                 </td>
+                                 <td id="d1e1320e42f4967a46510d8892128b32a7b0476" valign="top" width="50%">
+                                    <p id="d1e1321e42f4967a46510d8892128b32a7b0476">
+								0.8</p>
+                                 </td>
+                                 <td id="d1e1323e42f4967a46510d8892128b32a7b0476" valign="top" width="50%">
+                                    <p id="d1e1324e42f4967a46510d8892128b32a7b0476">
+								0.9</p>
+                                 </td>
+                                 <td id="d1e1326e42f4967a46510d8892128b32a7b0476" valign="top" width="50%">
+                                    <p id="d1e1327e42f4967a46510d8892128b32a7b0476">
+								0.95</p>
+                                 </td>
+                                 <td id="d1e1329e42f4967a46510d8892128b32a7b0476" valign="top" width="50%">
+                                    <p id="d1e1330e42f4967a46510d8892128b32a7b0476">
+                                       <b id="d1e1331e42f4967a46510d8892128b32a7b0476">stillgelegt</b>
+                                    </p>
+                                 </td>
+                              </tr>
+                              <tr class="initialized" id="d1e1333e42f4967a46510d8892128b32a7b0476">
+                                 <td colspan="2" id="d1e1334e42f4967a46510d8892128b32a7b0476" rowspan="1"
+                         valign="top"
+                         width="50%">
+                                    <p id="d1e1335e42f4967a46510d8892128b32a7b0476">
+                                       <b id="d1e1336e42f4967a46510d8892128b32a7b0476">Feature</b>
+                                    </p>
+                                 </td>
+                                 <td id="d1e1338e42f4967a46510d8892128b32a7b0476" valign="top" width="50%">
+                                    <p id="d2e696509d226c69a63b53b7459fe44ae189a">
+								 </p>
+                                 </td>
+                                 <td id="d1e1340e42f4967a46510d8892128b32a7b0476" valign="top" width="50%">
+                                    <p id="d1t736509d226c69a63b53b7459fe44ae189a">
+							 </p>
+                                 </td>
+                                 <td id="d1e1342e42f4967a46510d8892128b32a7b0476" valign="top" width="50%">
+                                    <p id="d1t756509d226c69a63b53b7459fe44ae189a">
+							 </p>
+                                 </td>
+                                 <td id="d1e1344e42f4967a46510d8892128b32a7b0476" valign="top" width="50%">
+                                    <p id="d1t776509d226c69a63b53b7459fe44ae189a">
+							 </p>
+                                 </td>
+                                 <td id="d1e1346e42f4967a46510d8892128b32a7b0476" valign="top" width="50%">
+                                    <p id="d1t796509d226c69a63b53b7459fe44ae189a">
+							 </p>
+                                 </td>
+                              </tr>
+                              <tr class="initialized" id="d1e1348e42f4967a46510d8892128b32a7b0476">
+                                 <td colspan="2" id="d1e1349e42f4967a46510d8892128b32a7b0476" rowspan="1"
+                         valign="top"
+                         width="50%">
+                                    <p id="d1e1350e42f4967a46510d8892128b32a7b0476">
+								Ausgabeformate HTML, HTML-Diffing, RTF, PDF</p>
+                                 </td>
+                                 <td id="d1e1352e42f4967a46510d8892128b32a7b0476" valign="top" width="50%">
+                                    <p id="d2e886509d226c69a63b53b7459fe44ae189a">
+								[[X]]</p>
+                                 </td>
+                                 <td id="d1e1355e42f4967a46510d8892128b32a7b0476" valign="top" width="50%">
+                                    <p id="d1t886509d226c69a63b53b7459fe44ae189a">
+							 </p>
+                                 </td>
+                                 <td id="d1e1357e42f4967a46510d8892128b32a7b0476" valign="top" width="50%">
+                                    <p id="d1t906509d226c69a63b53b7459fe44ae189a">
+							 </p>
+                                 </td>
+                                 <td id="d1e1359e42f4967a46510d8892128b32a7b0476" valign="top" width="50%">
+                                    <p id="d1t926509d226c69a63b53b7459fe44ae189a">
+							 </p>
+                                 </td>
+                                 <td id="d1e1361e42f4967a46510d8892128b32a7b0476" valign="top" width="50%">
+                                    <p id="d1t946509d226c69a63b53b7459fe44ae189a">
+							 </p>
+                                 </td>
+                              </tr>
+                              <tr class="initialized" id="d1e1363e42f4967a46510d8892128b32a7b0476">
+                                 <td colspan="2" id="d1e1364e42f4967a46510d8892128b32a7b0476" rowspan="1"
+                         valign="top"
+                         width="50%">
+                                    <p id="d1e1365e42f4967a46510d8892128b32a7b0476">
+								Papierformate DIN A4 und DIN A5, Marginalienlayout und 2-Spaltenlayout im PDF</p>
+                                 </td>
+                                 <td id="d1e1367e42f4967a46510d8892128b32a7b0476" valign="top" width="50%">
+                                    <p id="d2e1076509d226c69a63b53b7459fe44ae189a">
+								[[X]]</p>
+                                 </td>
+                                 <td id="d1e1370e42f4967a46510d8892128b32a7b0476" valign="top" width="50%">
+                                    <p id="d1t1036509d226c69a63b53b7459fe44ae189a">
+							 </p>
+                                 </td>
+                                 <td id="d1e1372e42f4967a46510d8892128b32a7b0476" valign="top" width="50%">
+                                    <p id="d1t1056509d226c69a63b53b7459fe44ae189a">
+							 </p>
+                                 </td>
+                                 <td id="d1e1374e42f4967a46510d8892128b32a7b0476" valign="top" width="50%">
+                                    <p id="d1t1076509d226c69a63b53b7459fe44ae189a">
+							 </p>
+                                 </td>
+                                 <td id="d1e1376e42f4967a46510d8892128b32a7b0476" valign="top" width="50%">
+                                    <p id="d1t1096509d226c69a63b53b7459fe44ae189a">
+							 </p>
+                                 </td>
+                              </tr>
+                              <tr class="initialized" id="d1e1378e42f4967a46510d8892128b32a7b0476">
+                                 <td colspan="2" id="d1e1379e42f4967a46510d8892128b32a7b0476" rowspan="1"
+                         valign="top"
+                         width="50%">
+                                    <p id="d1e1380e42f4967a46510d8892128b32a7b0476">
+								Einfache Konfiguration der PDF Ausgabe über das Webinterface</p>
+                                 </td>
+                                 <td id="d1e1382e42f4967a46510d8892128b32a7b0476" valign="top" width="50%">
+                                    <p id="d2e1266509d226c69a63b53b7459fe44ae189a">
+								[[X]]</p>
+                                 </td>
+                                 <td id="d1e1385e42f4967a46510d8892128b32a7b0476" valign="top" width="50%">
+                                    <p id="d1t1186509d226c69a63b53b7459fe44ae189a">
+							 </p>
+                                 </td>
+                                 <td id="d1e1387e42f4967a46510d8892128b32a7b0476" valign="top" width="50%">
+                                    <p id="d1t1206509d226c69a63b53b7459fe44ae189a">
+							 </p>
+                                 </td>
+                                 <td id="d1e1389e42f4967a46510d8892128b32a7b0476" valign="top" width="50%">
+                                    <p id="d1t1226509d226c69a63b53b7459fe44ae189a">
+							 </p>
+                                 </td>
+                                 <td id="d1e1391e42f4967a46510d8892128b32a7b0476" valign="top" width="50%">
+                                    <p id="d1t1246509d226c69a63b53b7459fe44ae189a">
+							 </p>
+                                 </td>
+                              </tr>
+                              <tr class="initialized" id="d1e1393e42f4967a46510d8892128b32a7b0476">
+                                 <td colspan="2" id="d1e1394e42f4967a46510d8892128b32a7b0476" rowspan="1"
+                         valign="top"
+                         width="50%">
+                                    <p id="d1e1395e42f4967a46510d8892128b32a7b0476">
+								Grundlegende CMS Funktionalität inkl. Versionierung</p>
+                                 </td>
+                                 <td id="d1e1397e42f4967a46510d8892128b32a7b0476" valign="top" width="50%">
+                                    <p id="d2e1456509d226c69a63b53b7459fe44ae189a">
+								[[X]]</p>
+                                 </td>
+                                 <td id="d1e1400e42f4967a46510d8892128b32a7b0476" valign="top" width="50%">
+                                    <p id="d1t1336509d226c69a63b53b7459fe44ae189a">
+							 </p>
+                                 </td>
+                                 <td id="d1e1402e42f4967a46510d8892128b32a7b0476" valign="top" width="50%">
+                                    <p id="d1t1356509d226c69a63b53b7459fe44ae189a">
+							 </p>
+                                 </td>
+                                 <td id="d1e1404e42f4967a46510d8892128b32a7b0476" valign="top" width="50%">
+                                    <p id="d1t1376509d226c69a63b53b7459fe44ae189a">
+							 </p>
+                                 </td>
+                                 <td id="d1e1406e42f4967a46510d8892128b32a7b0476" valign="top" width="50%">
+                                    <p id="d1t1396509d226c69a63b53b7459fe44ae189a">
+							 </p>
+                                 </td>
+                              </tr>
+                              <tr class="initialized" id="d1e1408e42f4967a46510d8892128b32a7b0476">
+                                 <td colspan="2" id="d1e1409e42f4967a46510d8892128b32a7b0476" rowspan="1"
+                         valign="top"
+                         width="50%">
+                                    <p id="d1e1410e42f4967a46510d8892128b32a7b0476">
+								Webbasierte Eingabe einfacher Block- und Inlineelemente, Kapitelstruktureditor</p>
+                                 </td>
+                                 <td id="d1e1412e42f4967a46510d8892128b32a7b0476" valign="top" width="50%">
+                                    <p id="d2e1646509d226c69a63b53b7459fe44ae189a">
+								[[X]]</p>
+                                 </td>
+                                 <td id="d1e1415e42f4967a46510d8892128b32a7b0476" valign="top" width="50%">
+                                    <p id="d1t1486509d226c69a63b53b7459fe44ae189a">
+							 </p>
+                                 </td>
+                                 <td id="d1e1417e42f4967a46510d8892128b32a7b0476" valign="top" width="50%">
+                                    <p id="d1t1506509d226c69a63b53b7459fe44ae189a">
+							 </p>
+                                 </td>
+                                 <td id="d1e1419e42f4967a46510d8892128b32a7b0476" valign="top" width="50%">
+                                    <p id="d1t1526509d226c69a63b53b7459fe44ae189a">
+							 </p>
+                                 </td>
+                                 <td id="d1e1421e42f4967a46510d8892128b32a7b0476" valign="top" width="50%">
+                                    <p id="d1t1546509d226c69a63b53b7459fe44ae189a">
+							 </p>
+                                 </td>
+                              </tr>
+                              <tr class="initialized" id="d1e1423e42f4967a46510d8892128b32a7b0476">
+                                 <td colspan="2" id="d1e1424e42f4967a46510d8892128b32a7b0476" rowspan="1"
+                         valign="top"
+                         width="50%">
+                                    <p id="d1e1425e42f4967a46510d8892128b32a7b0476">
+								Übersetzung des User-Interfaces in Englisch</p>
+                                 </td>
+                                 <td id="d1e1427e42f4967a46510d8892128b32a7b0476" valign="top" width="50%">
+                                    <p id="d1t1606509d226c69a63b53b7459fe44ae189a">
+							 </p>
+                                 </td>
+                                 <td id="d1e1429e42f4967a46510d8892128b32a7b0476" valign="top" width="50%">
+                                    <p id="d2e1866509d226c69a63b53b7459fe44ae189a">
+								[[X]]</p>
+                                 </td>
+                                 <td id="d1e1432e42f4967a46510d8892128b32a7b0476" valign="top" width="50%">
+                                    <p id="d1t1656509d226c69a63b53b7459fe44ae189a">
+							 </p>
+                                 </td>
+                                 <td id="d1e1434e42f4967a46510d8892128b32a7b0476" valign="top" width="50%">
+                                    <p id="d1t1676509d226c69a63b53b7459fe44ae189a">
+							 </p>
+                                 </td>
+                                 <td id="d1e1436e42f4967a46510d8892128b32a7b0476" valign="top" width="50%">
+                                    <p id="d1t1696509d226c69a63b53b7459fe44ae189a">
+							 </p>
+                                 </td>
+                              </tr>
+                              <tr class="initialized" id="d1e1438e42f4967a46510d8892128b32a7b0476">
+                                 <td colspan="2" id="d1e1439e42f4967a46510d8892128b32a7b0476" rowspan="1"
+                         valign="top"
+                         width="50%">
+                                    <p id="d1e1440e42f4967a46510d8892128b32a7b0476">
+								Lokalisierung der Boilerplate-Texte und Indexsortierung, asiatische Sprachen</p>
+                                 </td>
+                                 <td id="d1e1442e42f4967a46510d8892128b32a7b0476" valign="top" width="50%">
+                                    <p id="d1t1756509d226c69a63b53b7459fe44ae189a">
+							 </p>
+                                 </td>
+                                 <td id="d1e1444e42f4967a46510d8892128b32a7b0476" valign="top" width="50%">
+                                    <p id="d2e2056509d226c69a63b53b7459fe44ae189a">
+								[[X]]</p>
+                                 </td>
+                                 <td id="d1e1447e42f4967a46510d8892128b32a7b0476" valign="top" width="50%">
+                                    <p id="d1t1806509d226c69a63b53b7459fe44ae189a">
+							 </p>
+                                 </td>
+                                 <td id="d1e1449e42f4967a46510d8892128b32a7b0476" valign="top" width="50%">
+                                    <p id="d1t1826509d226c69a63b53b7459fe44ae189a">
+							 </p>
+                                 </td>
+                                 <td id="d1e1451e42f4967a46510d8892128b32a7b0476" valign="top" width="50%">
+                                    <p id="d1t1846509d226c69a63b53b7459fe44ae189a">
+							 </p>
+                                 </td>
+                              </tr>
+                              <tr class="initialized" id="d1e1453e42f4967a46510d8892128b32a7b0476">
+                                 <td colspan="2" id="d1e1454e42f4967a46510d8892128b32a7b0476" rowspan="1"
+                         valign="top"
+                         width="50%">
+                                    <p id="d1e1455e42f4967a46510d8892128b32a7b0476">
+								Weitere Parametrisierungsoptionen bzgl. der PDF Ausgabe</p>
+                                 </td>
+                                 <td id="d1e1457e42f4967a46510d8892128b32a7b0476" valign="top" width="50%">
+                                    <p id="d1t1906509d226c69a63b53b7459fe44ae189a">
+							 </p>
+                                 </td>
+                                 <td id="d1e1459e42f4967a46510d8892128b32a7b0476" valign="top" width="50%">
+                                    <p id="d2e2246509d226c69a63b53b7459fe44ae189a">
+								[[O]]</p>
+                                 </td>
+                                 <td id="d1e1462e42f4967a46510d8892128b32a7b0476" valign="top" width="50%">
+                                    <p id="d1t1956509d226c69a63b53b7459fe44ae189a">
+							 </p>
+                                 </td>
+                                 <td id="d1e1464e42f4967a46510d8892128b32a7b0476" valign="top" width="50%">
+                                    <p id="d1t1976509d226c69a63b53b7459fe44ae189a">
+							 </p>
+                                 </td>
+                                 <td id="d1e1466e42f4967a46510d8892128b32a7b0476" valign="top" width="50%">
+                                    <p id="d1t1996509d226c69a63b53b7459fe44ae189a">
+							 </p>
+                                 </td>
+                              </tr>
+                              <tr class="initialized" id="d1e1469e42f4967a46510d8892128b32a7b0476">
+                                 <td colspan="2" id="d1e1470e42f4967a46510d8892128b32a7b0476" rowspan="1"
+                         valign="top"
+                         width="50%">
+                                    <p id="d1e1471e42f4967a46510d8892128b32a7b0476">
+								Verschiedene Themes, z.B. Diplomarbeit</p>
+                                 </td>
+                                 <td id="d1e1473e42f4967a46510d8892128b32a7b0476" valign="top" width="50%">
+                                    <p id="d1t2066509d226c69a63b53b7459fe44ae189a">
+							 </p>
+                                 </td>
+                                 <td id="d1e1475e42f4967a46510d8892128b32a7b0476" valign="top" width="50%">
+                                    <p id="d2e2446509d226c69a63b53b7459fe44ae189a">
+								[[O]]</p>
+                                 </td>
+                                 <td id="d1e1478e42f4967a46510d8892128b32a7b0476" valign="top" width="50%">
+                                    <p id="d1t2116509d226c69a63b53b7459fe44ae189a">
+							 </p>
+                                 </td>
+                                 <td id="d1e1480e42f4967a46510d8892128b32a7b0476" valign="top" width="50%">
+                                    <p id="d1t2136509d226c69a63b53b7459fe44ae189a">
+							 </p>
+                                 </td>
+                                 <td id="d1e1482e42f4967a46510d8892128b32a7b0476" valign="top" width="50%">
+                                    <p id="d1t2156509d226c69a63b53b7459fe44ae189a">
+							 </p>
+                                 </td>
+                              </tr>
+                              <tr class="initialized" id="d1e1484e42f4967a46510d8892128b32a7b0476">
+                                 <td colspan="2" id="d1e1485e42f4967a46510d8892128b32a7b0476" rowspan="1"
+                         valign="top"
+                         width="50%">
+                                    <p id="d1e1486e42f4967a46510d8892128b32a7b0476">
+								Schablonen für spezifische Elemente der tech. Dokumentation z.B. Warnhinweise</p>
+                                 </td>
+                                 <td id="d1e1488e42f4967a46510d8892128b32a7b0476" valign="top" width="50%">
+                                    <p id="d1t2216509d226c69a63b53b7459fe44ae189a">
+							 </p>
+                                 </td>
+                                 <td id="d1e1490e42f4967a46510d8892128b32a7b0476" valign="top" width="50%">
+                                    <p id="d2e2636509d226c69a63b53b7459fe44ae189a">
+								 </p>
+                                 </td>
+                                 <td id="d1e1492e42f4967a46510d8892128b32a7b0476" valign="top" width="50%">
+                                    <p id="d2e2666509d226c69a63b53b7459fe44ae189a">
+								[[X]]</p>
+                                 </td>
+                                 <td id="d1e1495e42f4967a46510d8892128b32a7b0476" valign="top" width="50%">
+                                    <p id="d1t2296509d226c69a63b53b7459fe44ae189a">
+							 </p>
+                                 </td>
+                                 <td id="d1e1497e42f4967a46510d8892128b32a7b0476" valign="top" width="50%">
+                                    <p id="d1t2316509d226c69a63b53b7459fe44ae189a">
+							 </p>
+                                 </td>
+                              </tr>
+                              <tr class="initialized" id="d1e1499e42f4967a46510d8892128b32a7b0476">
+                                 <td colspan="2" id="d1e1500e42f4967a46510d8892128b32a7b0476" rowspan="1"
+                         valign="top"
+                         width="50%">
+                                    <p id="d1e1501e42f4967a46510d8892128b32a7b0476">
+								Export Format PI-MOD</p>
+                                 </td>
+                                 <td id="d1e1503e42f4967a46510d8892128b32a7b0476" valign="top" width="50%">
+                                    <p id="d1t2376509d226c69a63b53b7459fe44ae189a">
+							 </p>
+                                 </td>
+                                 <td id="d1e1505e42f4967a46510d8892128b32a7b0476" valign="top" width="50%">
+                                    <p id="d1t2396509d226c69a63b53b7459fe44ae189a">
+							 </p>
+                                 </td>
+                                 <td id="d1e1507e42f4967a46510d8892128b32a7b0476" valign="top" width="50%">
+                                    <p id="d2e2856509d226c69a63b53b7459fe44ae189a">
+								[[O]]</p>
+                                 </td>
+                                 <td id="d1e1510e42f4967a46510d8892128b32a7b0476" valign="top" width="50%">
+                                    <p id="d1t2446509d226c69a63b53b7459fe44ae189a">
+							 </p>
+                                 </td>
+                                 <td id="d1e1512e42f4967a46510d8892128b32a7b0476" valign="top" width="50%">
+                                    <p id="d1t2466509d226c69a63b53b7459fe44ae189a">
+							 </p>
+                                 </td>
+                              </tr>
+                              <tr class="initialized" id="d1e1514e42f4967a46510d8892128b32a7b0476">
+                                 <td colspan="2" id="d1e1515e42f4967a46510d8892128b32a7b0476" rowspan="1"
+                         valign="top"
+                         width="50%">
+                                    <p id="d1e1516e42f4967a46510d8892128b32a7b0476">
+								Volltextsuche</p>
+                                 </td>
+                                 <td id="d1e1518e42f4967a46510d8892128b32a7b0476" valign="top" width="50%">
+                                    <p id="d1t2526509d226c69a63b53b7459fe44ae189a">
+							 </p>
+                                 </td>
+                                 <td id="d1e1520e42f4967a46510d8892128b32a7b0476" valign="top" width="50%">
+                                    <p id="d1t2546509d226c69a63b53b7459fe44ae189a">
+							 </p>
+                                 </td>
+                                 <td id="d1e1522e42f4967a46510d8892128b32a7b0476" valign="top" width="50%">
+                                    <p id="d2e3046509d226c69a63b53b7459fe44ae189a">
+								[[O]]</p>
+                                 </td>
+                                 <td id="d1e1525e42f4967a46510d8892128b32a7b0476" valign="top" width="50%">
+                                    <p id="d1t2596509d226c69a63b53b7459fe44ae189a">
+							 </p>
+                                 </td>
+                                 <td id="d1e1527e42f4967a46510d8892128b32a7b0476" valign="top" width="50%">
+                                    <p id="d1t2616509d226c69a63b53b7459fe44ae189a">
+							 </p>
+                                 </td>
+                              </tr>
+                              <tr class="initialized" id="d1e1529e42f4967a46510d8892128b32a7b0476">
+                                 <td colspan="2" id="d1e1530e42f4967a46510d8892128b32a7b0476" rowspan="1"
+                         valign="top"
+                         width="50%">
+                                    <p id="d1e1531e42f4967a46510d8892128b32a7b0476">
+								Kollaborative Zusammenarbeit in Echtzeit</p>
+                                 </td>
+                                 <td id="d1e1533e42f4967a46510d8892128b32a7b0476" valign="top" width="50%">
+                                    <p id="d1t2676509d226c69a63b53b7459fe44ae189a">
+							 </p>
+                                 </td>
+                                 <td id="d1e1535e42f4967a46510d8892128b32a7b0476" valign="top" width="50%">
+                                    <p id="d1t2696509d226c69a63b53b7459fe44ae189a">
+							 </p>
+                                 </td>
+                                 <td id="d1e1537e42f4967a46510d8892128b32a7b0476" valign="top" width="50%">
+                                    <p id="d2e3236509d226c69a63b53b7459fe44ae189a">
+								 </p>
+                                 </td>
+                                 <td id="d1e1539e42f4967a46510d8892128b32a7b0476" valign="top" width="50%">
+                                    <p id="d2e3266509d226c69a63b53b7459fe44ae189a">
+								[[X]]</p>
+                                 </td>
+                                 <td id="d1e1542e42f4967a46510d8892128b32a7b0476" valign="top" width="50%">
+                                    <p id="d1t2776509d226c69a63b53b7459fe44ae189a">
+							 </p>
+                                 </td>
+                              </tr>
+                              <tr class="initialized" id="d1e1544e42f4967a46510d8892128b32a7b0476">
+                                 <td colspan="2" id="d1e1545e42f4967a46510d8892128b32a7b0476" rowspan="1"
+                         valign="top"
+                         width="50%">
+                                    <p id="d1e1546e42f4967a46510d8892128b32a7b0476">
+								Einfache Community-/Publishing Plattform</p>
+                                 </td>
+                                 <td id="d1e1548e42f4967a46510d8892128b32a7b0476" valign="top" width="50%">
+                                    <p id="d1t2836509d226c69a63b53b7459fe44ae189a">
+							 </p>
+                                 </td>
+                                 <td id="d1e1550e42f4967a46510d8892128b32a7b0476" valign="top" width="50%">
+                                    <p id="d1t2856509d226c69a63b53b7459fe44ae189a">
+							 </p>
+                                 </td>
+                                 <td id="d1e1552e42f4967a46510d8892128b32a7b0476" valign="top" width="50%">
+                                    <p id="d1t2876509d226c69a63b53b7459fe44ae189a">
+							 </p>
+                                 </td>
+                                 <td id="d1e1554e42f4967a46510d8892128b32a7b0476" valign="top" width="50%">
+                                    <p id="d2e3456509d226c69a63b53b7459fe44ae189a">
+								[[X]]</p>
+                                 </td>
+                                 <td id="d1e1557e42f4967a46510d8892128b32a7b0476" valign="top" width="50%">
+                                    <p id="d1t2926509d226c69a63b53b7459fe44ae189a">
+							 </p>
+                                 </td>
+                              </tr>
+                              <tr class="initialized" id="d1e1559e42f4967a46510d8892128b32a7b0476">
+                                 <td colspan="2" id="d1e1560e42f4967a46510d8892128b32a7b0476" rowspan="1"
+                         valign="top"
+                         width="50%">
+                                    <p id="d1e1561e42f4967a46510d8892128b32a7b0476">
+								Modularisierung/Wiederverwendung von referenzierten Textblöcken.</p>
+                                 </td>
+                                 <td id="d1e1563e42f4967a46510d8892128b32a7b0476" valign="top" width="50%">
+                                    <p id="d1t2986509d226c69a63b53b7459fe44ae189a">
+							 </p>
+                                 </td>
+                                 <td id="d1e1565e42f4967a46510d8892128b32a7b0476" valign="top" width="50%">
+                                    <p id="d1t3006509d226c69a63b53b7459fe44ae189a">
+							 </p>
+                                 </td>
+                                 <td id="d1e1567e42f4967a46510d8892128b32a7b0476" valign="top" width="50%">
+                                    <p id="d1t3026509d226c69a63b53b7459fe44ae189a">
+							 </p>
+                                 </td>
+                                 <td id="d1e1569e42f4967a46510d8892128b32a7b0476" valign="top" width="50%">
+                                    <p id="d2e3646509d226c69a63b53b7459fe44ae189a">
+								[[O]]</p>
+                                 </td>
+                                 <td id="d1e1572e42f4967a46510d8892128b32a7b0476" valign="top" width="50%">
+                                    <p id="d1t3076509d226c69a63b53b7459fe44ae189a">
+							 </p>
+                                 </td>
+                              </tr>
+                              <tr class="initialized" id="d1e1574e42f4967a46510d8892128b32a7b0476">
+                                 <td colspan="2" id="d1e1575e42f4967a46510d8892128b32a7b0476" rowspan="1"
+                         valign="top"
+                         width="50%">
+                                    <p id="d1e1576e42f4967a46510d8892128b32a7b0476">
+								Intelligente Querverweise</p>
+                                 </td>
+                                 <td id="d1e1578e42f4967a46510d8892128b32a7b0476" valign="top" width="50%">
+                                    <p id="d1t3136509d226c69a63b53b7459fe44ae189a">
+							 </p>
+                                 </td>
+                                 <td id="d1e1580e42f4967a46510d8892128b32a7b0476" valign="top" width="50%">
+                                    <p id="d1t3156509d226c69a63b53b7459fe44ae189a">
+							 </p>
+                                 </td>
+                                 <td id="d1e1582e42f4967a46510d8892128b32a7b0476" valign="top" width="50%">
+                                    <p id="d1t3176509d226c69a63b53b7459fe44ae189a">
+							 </p>
+                                 </td>
+                                 <td id="d1e1584e42f4967a46510d8892128b32a7b0476" valign="top" width="50%">
+                                    <p id="d2e3836509d226c69a63b53b7459fe44ae189a">
+								[[O]]</p>
+                                 </td>
+                                 <td id="d1e1587e42f4967a46510d8892128b32a7b0476" valign="top" width="50%">
+                                    <p id="d1t3226509d226c69a63b53b7459fe44ae189a">
+							 </p>
+                                 </td>
+                              </tr>
+                              <tr class="initialized" id="d1e1589e42f4967a46510d8892128b32a7b0476">
+                                 <td colspan="2" id="d1e1590e42f4967a46510d8892128b32a7b0476" rowspan="1"
+                         valign="top"
+                         width="50%">
+                                    <p id="d1e1591e42f4967a46510d8892128b32a7b0476">
+								Autovervollständigung, Rechtschreibprüfung im Editor</p>
+                                 </td>
+                                 <td id="d1e1593e42f4967a46510d8892128b32a7b0476" valign="top" width="50%">
+                                    <p id="d1t3286509d226c69a63b53b7459fe44ae189a">
+							 </p>
+                                 </td>
+                                 <td id="d1e1595e42f4967a46510d8892128b32a7b0476" valign="top" width="50%">
+                                    <p id="d1t3306509d226c69a63b53b7459fe44ae189a">
+							 </p>
+                                 </td>
+                                 <td id="d1e1597e42f4967a46510d8892128b32a7b0476" valign="top" width="50%">
+                                    <p id="d1t3326509d226c69a63b53b7459fe44ae189a">
+							 </p>
+                                 </td>
+                                 <td id="d1e1599e42f4967a46510d8892128b32a7b0476" valign="top" width="50%">
+                                    <p id="d1t3346509d226c69a63b53b7459fe44ae189a">
+							 </p>
+                                 </td>
+                                 <td id="d1e1601e42f4967a46510d8892128b32a7b0476" valign="top" width="50%">
+                                    <p id="d2e4056509d226c69a63b53b7459fe44ae189a">
+								[[O]]</p>
+                                 </td>
+                              </tr>
+                              <tr class="initialized" id="d1e1604e42f4967a46510d8892128b32a7b0476">
+                                 <td colspan="2" id="d1e1605e42f4967a46510d8892128b32a7b0476" rowspan="1"
+                         valign="top"
+                         width="50%">
+                                    <p id="d1e1606e42f4967a46510d8892128b32a7b0476">
+								Einfaches Übersetzungsmanagement</p>
+                                 </td>
+                                 <td id="d1e1608e42f4967a46510d8892128b32a7b0476" valign="top" width="50%">
+                                    <p id="d1t3436509d226c69a63b53b7459fe44ae189a">
+							 </p>
+                                 </td>
+                                 <td id="d1e1610e42f4967a46510d8892128b32a7b0476" valign="top" width="50%">
+                                    <p id="d1t3456509d226c69a63b53b7459fe44ae189a">
+							 </p>
+                                 </td>
+                                 <td id="d1e1612e42f4967a46510d8892128b32a7b0476" valign="top" width="50%">
+                                    <p id="d1t3476509d226c69a63b53b7459fe44ae189a">
+							 </p>
+                                 </td>
+                                 <td id="d1e1614e42f4967a46510d8892128b32a7b0476" valign="top" width="50%">
+                                    <p id="d1t3496509d226c69a63b53b7459fe44ae189a">
+							 </p>
+                                 </td>
+                                 <td id="d1e1616e42f4967a46510d8892128b32a7b0476" valign="top" width="50%">
+                                    <p id="d2e4246509d226c69a63b53b7459fe44ae189a">
+								 [[O]]</p>
+                                 </td>
+                              </tr>
+                              <tr class="initialized" id="d1e1619e42f4967a46510d8892128b32a7b0476">
+                                 <td colspan="2" id="d1e1620e42f4967a46510d8892128b32a7b0476" rowspan="1"
+                         valign="top"
+                         width="50%">
+                                    <p id="d1e1621e42f4967a46510d8892128b32a7b0476">
+								Unterstützung aller aktuellen Browser</p>
+                                 </td>
+                                 <td id="d1e1623e42f4967a46510d8892128b32a7b0476" valign="top" width="50%">
+                                    <p id="d1t3586509d226c69a63b53b7459fe44ae189a">
+							 </p>
+                                 </td>
+                                 <td id="d1e1625e42f4967a46510d8892128b32a7b0476" valign="top" width="50%">
+                                    <p id="d1t3606509d226c69a63b53b7459fe44ae189a">
+							 </p>
+                                 </td>
+                                 <td id="d1e1627e42f4967a46510d8892128b32a7b0476" valign="top" width="50%">
+                                    <p id="d1t3626509d226c69a63b53b7459fe44ae189a">
+							 </p>
+                                 </td>
+                                 <td id="d1e1629e42f4967a46510d8892128b32a7b0476" valign="top" width="50%">
+                                    <p id="d1t3646509d226c69a63b53b7459fe44ae189a">
+							 </p>
+                                 </td>
+                                 <td id="d1e1631e42f4967a46510d8892128b32a7b0476" valign="top" width="50%">
+                                    <p id="d2e4436509d226c69a63b53b7459fe44ae189a">
+								[[O]]</p>
+                                 </td>
+                              </tr>
+                              <tr class="initialized" id="d1e1635e42f4967a46510d8892128b32a7b0476">
+                                 <td colspan="2" id="d1e1636e42f4967a46510d8892128b32a7b0476" rowspan="1"
+                         valign="top"
+                         width="50%">
+                                    <p id="d1e1637e42f4967a46510d8892128b32a7b0476">
+								Installationsversion</p>
+                                 </td>
+                                 <td id="d1e1639e42f4967a46510d8892128b32a7b0476" valign="top" width="50%">
+                                    <p id="d1t3746509d226c69a63b53b7459fe44ae189a">
+							 </p>
+                                 </td>
+                                 <td id="d1e1641e42f4967a46510d8892128b32a7b0476" valign="top" width="50%">
+                                    <p id="d1t3766509d226c69a63b53b7459fe44ae189a">
+							 </p>
+                                 </td>
+                                 <td id="d1e1643e42f4967a46510d8892128b32a7b0476" valign="top" width="50%">
+                                    <p id="d1t3786509d226c69a63b53b7459fe44ae189a">
+							 </p>
+                                 </td>
+                                 <td id="d1e1645e42f4967a46510d8892128b32a7b0476" valign="top" width="50%">
+                                    <p id="d1t3806509d226c69a63b53b7459fe44ae189a">
+							 </p>
+                                 </td>
+                                 <td id="d1e1647e42f4967a46510d8892128b32a7b0476" valign="top" width="50%">
+                                    <p id="d2e4636509d226c69a63b53b7459fe44ae189a">
+								[[O]]</p>
+                                 </td>
+                              </tr>
+                           </tbody>
+                        </table>
+                     </block>
+                  </content>
+   </chapter>
+      <chapter id="d1e1650e42f5353528b32a7b0476" ismodule="no" hyphenation="yes"
+            chapterpage="no">
+      <content id="d1e1650erferferf2a7b0476">
+                     <title id="d1e1652e3438892128b32a7b0476">Stylesheet-Test</title>
+                     <block id="d1e1654e423452345fwb0476">
+                        <title id="d1e1634343rfef0476">Test-Daten</title>
+                        <p id="d1e1657e4erferferfb0476">Im folgenden werden alle Inline- und Block-Elemente getestet...</p>                          
+                     </block>
+                  </content>
+                        <chapter id="d1e1650e42f5353528b32a7b0476" ismodule="no" hyphenation="yes"
+            chapterpage="no">
+      <content id="d1e1650erferferf2a7b0476">
+                     <title id="d1e1652e3438892128b32a7b0476">Inline Elemente, Inline-Zusammenhalt und Silbentrennung</title>
+                     <block id="d1e1654e423452345fwb0476">
+                        <title id="d1e1634343rfef0476"><code>&lt;sub&gt;</code> <code>&lt;sup&gt;</code> <code>&lt;code&gt;</code> <code>&lt;footnote&gt;</code> <code>&lt;i&gt;</code> <code>&lt;nb&gt;</code> <code>&lt;b&gt;</code></title>
+                        <p id="d1e1657e4erferferfb0476"><b>Inline Elemente</b> <sup>können ineinander <b>verschachtelt</b><sup>werden</sup> <code>irgendwann</code></sup> macht das <b>natürlich</b> <sub>keinen</sub> Sinn <i>mehr</i>... <b>Inline Elemente</b> <sup>können ineinander <b>verschachtelt</b><sup>werden</sup> <code>irgendwann</code></sup> macht das <b>natürlich</b> <sub>keinen</sub> Sinn <i>mehr</i>... <b>Inline Elemente</b> <sup>können ineinander <b>verschachtelt</b><sup>werden</sup> <code>irgendwann</code></sup> macht das <b>natürlich</b> <sub>keinen</sub> Sinn <i>mehr</i>... <b>Inline Elemente</b> <sup>können ineinander <b>verschachtelt</b><sup>werden</sup> <code>irgendwann</code></sup> macht das <b>natürlich</b> <sub>keinen</sub> Sinn <i>mehr</i>... <b>Inline Elemente</b> <sup>können ineinander <b>verschachtelt</b><sup>werden</sup> <code>irgendwann</code></sup> macht das <b>natürlich</b> <sub>keinen</sub> Sinn <i>mehr</i>... </p>
+                        <p><nb>Diese Zeile bricht nicht um...</nb> <nb>Diese Zeile bricht nicht um...</nb> <nb>Diese Zeile bricht nicht um...</nb> <nb>Diese Zeile bricht nicht um...</nb> <nb>Diese Zeile bricht nicht um...</nb> <nb>Diese Zeile bricht nicht um...</nb> <nb>Diese Zeile bricht nicht um...</nb> </p>
+             <table id="d1e12854fr42fr24f243f243f0476" pdfwidth="page"
+                   style="border: 1pt solid rgb(70, 111, 130);"
+                   cellpadding="5"
+                   cellspacing="5"
+                   width="100%">
+                           <caption elemname="title" id="d4r2f23f234f7b0476">Tabelle zum Testen der Silbentrennung</caption>
+                           <tbody id="d1e234f23f23f7b0476">
+                              <tr id="d1e234f234f234f0476">
+                                  <td>In dieser Zeile wird einmal die Silbentrennung ausprobiert. Dieses Feature ist immer wieder sehr kritisch und kann aus diversen Gründen schief gehen</td>
+                                  <td>In dieser Zeile wird einmal die Silbentrennung ausprobiert. Dieses Feature ist immer wieder sehr kritisch und kann aus diversen Gründen schief gehen</td>
+                                  <td>In dieser Zeile wird einmal die Silbentrennung ausprobiert. Dieses Feature ist immer wieder sehr kritisch und kann aus diversen Gründen schief gehen</td>
+                                  <td>Donaudampfschiffahrtskapitän Donaudampfschiffahrtskapitän Donaudampfschiffahrtskapitän Donaudampfschiffahrtskapitän Donaudampfschiffahrtskapitän Donaudampfschiffahrtskapitän Donaudampfschiffahrtskapitän Donaudampfschiffahrtskapitän Donaudampfschiffahrtskapitän Donaudampfschiffahrtskapitän Donaudampfschiffahrtskapitän </td>
+                              </tr>
+                              <tr id="d1e234f234r2f4f24ff234f0476">
+                                  <td>In dieser Zeile wird einmal die Silbentrennung ausprobiert. Dieses Feature ist immer wieder sehr kritisch und kann aus diversen Gründen schief gehen</td>
+                                  <td>In dieser Zeile wird einmal die Silbentrennung ausprobiert. Dieses Feature ist immer wieder sehr kritisch und kann aus diversen Gründen schief gehen</td>
+                                  <td>In dieser Zeile wird einmal die Silbentrennung ausprobiert. Dieses Feature ist immer wieder sehr kritisch und kann aus diversen Gründen schief gehen</td>
+                                  <td>Donaudampfschiffahrtskapitän Donaudampfschiffahrtskapitän Donaudampfschiffahrtskapitän Donaudampfschiffahrtskapitän Donaudampfschiffahrtskapitän Donaudampfschiffahrtskapitän Donaudampfschiffahrtskapitän Donaudampfschiffahrtskapitän Donaudampfschiffahrtskapitän Donaudampfschiffahrtskapitän Donaudampfschiffahrtskapitän </td>
+                              </tr>
+                              </tbody>
+                       </table>
+                     </block>
+                  </content>
+                </chapter>
+                         <chapter id="d1e1650e42f5353528b32a7b0476" ismodule="no" hyphenation="yes"
+            chapterpage="no">
+      <content id="d1e1erferferf476">
+                     <title id="d1e1erferf45t45476">Einige Block-Elemente und Keep-Regeln</title>
+                     <block id="d1eerferferf434r76">
+                        <title id="d1eerferferf34r6">Listen-Zusammenhalt</title>
+                        <ul>
+                            <title>Titel der nummerierten Liste</title>
+                            <li><p>Listenpunkt 1</p></li>
+                            <li><p>Listenpunkt 2</p></li>
+                            <li><p>Listenpunkt 3</p></li>
+                            <li><p>Listenpunkt 4</p></li>
+                            <li><p>Listenpunkt 5</p></li>
+                            <li><p>Listenpunkt 6</p>
+                             <p>mit einem neuen Para drunter und einer margin breiten Grafik</p>
+                                <figure id="d1e141e42f4967234f3a46fgbdffda7b0476" pdfwidth="column">
+                           			<img id="d2e82a02639fdfbfb134f3a7f" src="sample/images/alert_32.gif" width="32px" />
+                           			<subtitle id="d1e14fdbgdfbg128342f231b32a7b0476">Achtung</subtitle>
+                       			 </figure>
+                       			 <p>Noch ein Para unter der Grafik</p>
+                            </li>
+                            <li><p>Listenpunkt 7</p></li>
+                            <li><p>Listenpunkt 8</p></li>
+                            <li><p>Listenpunkt 9</p></li>
+                        </ul>
+                        <ul>
+                            <title>Titel der nummerierten Liste</title>
+                            <li><p>Listenpunkt 1</p></li>
+                            <li><p>Listenpunkt 2</p></li>
+                            <li><p>Listenpunkt 3</p></li>
+                            <li><p>Listenpunkt 4</p></li>
+                            <li><p>Listenpunkt 5</p></li>
+                            <li><p>Listenpunkt 6</p></li>
+                       </ul>
+                        <title id="d1eerferferf34r6">eingefügtes <code>block/title</code> Element</title>
+                        <ul>
+                            <title>Titel der nummerierten Liste</title>
+                            <li><p>Listenpunkt 1</p></li>
+                            <li><p>Listenpunkt 2</p></li>
+                            <li><p>Listenpunkt 3</p></li>
+                            <li>
+                                <p>Listenpunkt 4</p>
+                                <p>mit einem neuen Para drunter und einer margin breiten Grafik</p>
+                                <figure id="d1e141e42f4967a4342f2316fgbdffda7b0476" pdfwidth="column">
+                           			<img id="d2e82a02639fdfbfbf3124f1231a7f" src="sample/images/alert_32.gif" width="32px" />
+                           			<subtitle id="d1e14fdbgdfb34f341f312fg128b32a7b0476">Achtung</subtitle>
+                       			 </figure>
+                       			 <p>Noch ein Para unter der Grafik</p>
+                            </li>
+                            <li><p>Listenpunkt 5</p></li>
+                            <li><p>Listenpunkt 6</p></li>
+                            <li><p>Listenpunkt 7</p></li>
+                            <li><p>Listenpunkt 8</p></li>
+                            <li><p>Listenpunkt 9</p></li>
+                        </ul>
+                        <ul>
+                            <title>Titel der nummerierten Liste</title>
+                            <li><p>Listenpunkt 1</p></li>
+                            <li><p>Listenpunkt 2</p></li>
+                            <li><p>Listenpunkt 3</p></li>
+                            <li><p>Listenpunkt 4</p></li>
+                       </ul>
+                        <ul>
+                            <title>Titel der nummerierten Liste</title>
+                            <li><p>Listenpunkt 1</p></li>
+                            <li><p>Listenpunkt 2</p></li>
+                            <li><p>Listenpunkt 3</p></li>
+                            <li><p>Listenpunkt 4</p></li>
+                            <li><p>Listenpunkt 5</p></li>
+                       </ul>
+                        <ul>
+                            <title>Titel der nummerierten Liste</title>
+                            <li><p>Listenpunkt 1</p></li>
+                            <li><p>Listenpunkt 2</p></li>
+                            <li><p>Listenpunkt 3</p></li>
+                            <li><p>Listenpunkt 4</p></li>
+                            <li><p>Listenpunkt 5</p></li>
+                            <li><p>Listenpunkt 6</p></li>
+                       </ul>
+                        <ul>
+                            <title>Titel der nummerierten Liste</title>
+                            <li><p>Listenpunkt 1</p></li>
+                            <li><p>Listenpunkt 2</p></li>
+                            <li><p>Listenpunkt 3</p></li>
+                       </ul>
+                        <ul>
+                            <title>Titel der nummerierten Liste</title>
+                            <li><p>Listenpunkt 1</p></li>
+                            <li><p>Listenpunkt 2</p></li>
+                       </ul>
+                        <ul>
+                            <title>Titel der nummerierten Liste</title>
+                            <li><p>Listenpunkt 1</p></li>
+                            <li><p>Listenpunkt 2</p></li>
+                            <li><p>Listenpunkt 3</p>
+                                <p>Mit einer folgenden Warnung</p>
+                                                    <warning>
+                        <cause>Die Hinweisvorlage besteht aus zwei Teilen</cause>
+                        <consequence>
+                           <p id="d1e731e42f496erferfe2a7b0476">Wenn man die Grafik mit <code>SHIFT+Entf</code> löscht, dann wird der Text wie eine unnummerierte Liste behandelt und auch so in der XML-Instanz aufgelöst.</p>
+                        </consequence>
+                        <consequence>
+                           <p id="d1e737e42f496erferf76">Wenn man den Text löscht, dann wird die Signalgrafik wie eine gewöhnlich eingefügte Grafik behandelt und auch so in der XML-Instanz aufgelöst. </p>
+                        </consequence>
+                     </warning> 
+                            </li>
+                            <li><p>Listenpunkt 4</p></li>
+                            <li><p>Listenpunkt 5</p></li>
+                       </ul>
+                        <ul>
+                            <title>Titel der nummerierten Liste</title>
+                            <li><p>Listenpunkt 1</p></li>
+                            <li><p>Listenpunkt 2</p></li>
+                            <li><p>Listenpunkt 3</p>
+                                 <caution>
+                        <cause>Die Hinweisvorlage besteht aus zwei Teilen</cause>
+                        <consequence>
+                           <p id="d1e731e42f496erferfe2a7b0476">Wenn man die Grafik mit <code>SHIFT+Entf</code> löscht, dann wird der Text wie eine unnummerierte Liste behandelt und auch so in der XML-Instanz aufgelöst.</p>
+                        </consequence>
+                        <consequence>
+                           <p id="d1e737e42f496erferf76">Wenn man den Text löscht, dann wird die Signalgrafik wie eine gewöhnlich eingefügte Grafik behandelt und auch so in der XML-Instanz aufgelöst. </p>
+                        </consequence>
+                     </caution>
+                            </li>
+                            <li><p>Listenpunkt 4</p></li>
+                            <li><p>Listenpunkt 5</p></li>
+                            <li><p>Listenpunkt 6</p></li>
+                       </ul>
+                       <p>jetzt kommen ein paar <code>&lt;procedure&gt;&lt;step&gt;&lt;action&gt;</code> ... </p>
+                       <procedure>
+                            <title>Titel der nummerierten Liste</title>
+                            <step><action><p>Listenpunkt 1</p></action></step>
+                            <step><action><p>Listenpunkt 2</p></action></step>
+                            <step><action><p>Listenpunkt 3</p></action></step>
+                            <step><action><p>Listenpunkt 4</p></action></step>
+                            <step><action><p>Listenpunkt 5</p></action></step>
+                            <step><action><p>Listenpunkt 6</p>
+                             <p>mit einem neuen Para drunter und einer margin breiten Grafik</p>
+                                <figure id="d1e141e42f4967a46fgbd3412ffffda7b0476" pdfwidth="column">
+                           			<img id="d2e82a02639fdff134fbfb1a7f" src="sample/images/alert_32.gif" width="32px" />
+                           			<subtitle id="d1e14fdbgdfbg12134f3124f8b32a7b0476">Achtung</subtitle>
+                       			 </figure>
+                       			 <p>Noch ein Para unter der Grafik</p>
+                            </action></step>
+                            <step><action><p>Listenpunkt 7</p></action></step>
+                            <step><action><p>Listenpunkt 8</p></action></step>
+                            <step><action><p>Listenpunkt 9</p></action></step>
+                        </procedure>
+                        <procedure>
+                            <title>Titel der nummerierten Liste</title>
+                            <step><action><p>Listenpunkt 1</p></action></step>
+                            <step><action><p>Listenpunkt 2</p></action></step>
+                            <step><action><p>Listenpunkt 3</p></action></step>
+                            <step><action><p>Listenpunkt 4</p></action></step>
+                       </procedure>
+                        <procedure>
+                            <title>Titel der nummerierten Liste</title>
+                            <step><action><p>Listenpunkt 1</p></action></step>
+                            <step><action><p>Listenpunkt 2</p></action></step>
+                            <step><action><p>Listenpunkt 3</p></action></step>
+                            <step><action><p>Listenpunkt 4</p></action></step>
+                            <step><action><p>Listenpunkt 5</p></action></step>
+                       </procedure>
+                        <procedure>
+                            <title>Titel der nummerierten Liste</title>
+                            <step><action><p>Listenpunkt 1</p></action></step>
+                            <step><action><p>Listenpunkt 2</p></action></step>
+                            <step><action><p>Listenpunkt 3</p></action></step>
+                            <step><action><p>Listenpunkt 4</p></action></step>
+                            <step><action><p>Listenpunkt 5</p></action></step>
+                            <step><action><p>Listenpunkt 6</p></action></step>
+                       </procedure>
+                        <procedure>
+                            <title>Titel der nummerierten Liste</title>
+                            <step><action><p>Listenpunkt 1</p>
+                                <warning>
+                        <cause>Die Hinweisvorlage besteht aus zwei Teilen</cause>
+                        <consequence>
+                           <p id="d1e731e42f496erferfe2a7b0476">Wenn man die Grafik mit <code>SHIFT+Entf</code> löscht, dann wird der Text wie eine unnummerierte Liste behandelt und auch so in der XML-Instanz aufgelöst.</p>
+                        </consequence>
+                        <consequence>
+                           <p id="d1e737e42f496erferf76">Wenn man den Text löscht, dann wird die Signalgrafik wie eine gewöhnlich eingefügte Grafik behandelt und auch so in der XML-Instanz aufgelöst. </p>
+                        </consequence>
+                     </warning>
+                            </action></step>
+                            <step><action><p>Listenpunkt 2</p></action></step>
+                            <step><action><p>Listenpunkt 3</p></action></step>
+                       </procedure>
+                        <procedure>
+                            <title>Titel der nummerierten Liste</title>
+                            <step><action><p>Listenpunkt 1</p></action></step>
+                            <step><action><p>Listenpunkt 2</p></action></step>
+                       </procedure>
+                        <procedure>
+                            <title>Titel der nummerierten Liste</title>
+                            <step><action><p>Listenpunkt 1</p></action></step>
+                            <step><action><p>Listenpunkt 2</p></action></step>
+                            <step><action><p>Listenpunkt 3</p></action></step>
+                            <step><action><p>Listenpunkt 4</p></action></step>
+                            <step><action><p>Listenpunkt 5</p></action></step>
+                       </procedure>
+                        <procedure>
+                            <title>Titel der nummerierten Liste</title>
+                            <step><action><p>Listenpunkt 1</p></action></step>
+                            <step><action>
+                                <p>Listenpunkt 2</p>
+                                <p>mit einem neuen Para drunter und einer margin breiten Grafik</p>
+                                <figure id="d1e141e42f4967a46fgbdffda734f12fb0476" pdfwidth="column">
+                           			<img id="d2e82a02639fd134ffbfb1a7f" src="sample/images/alert_32.gif" width="32px" />
+                           			<subtitle id="d1e14fdbgdfbf413fg128b32a7b0476">Achtung</subtitle>
+                       			 </figure>
+                       			 <p>Noch ein Para unter der Grafik</p>
+                               </action></step>
+                            <step><action><p>Listenpunkt 3</p></action></step>
+                            <step><action><p>Listenpunkt 4</p></action></step>
+                            <step><action><p>Listenpunkt 5</p></action></step>
+                            <step><action><p>Listenpunkt 6</p></action></step>
+                       </procedure>
+                       <p>Die anderen Elemente wurden ja schon umfangreich im Rahmen des Textes oben getestet. So dass an dieser Stelle nur noch ein paar Warnhinweise bedatet werden.</p>
+                         <notice>
+                        <cause>Die Hinweisvorlage besteht aus zwei Teilen</cause>
+                        <consequence>
+                           <p id="d1e731e42f496erferfe2a7b0476">Wenn man die Grafik mit <code>SHIFT+Entf</code> löscht, dann wird der Text wie eine unnummerierte Liste behandelt und auch so in der XML-Instanz aufgelöst.</p>
+                        </consequence>
+                        <consequence>
+                           <p id="d1e737e42f496erferf76">Wenn man den Text löscht, dann wird die Signalgrafik wie eine gewöhnlich eingefügte Grafik behandelt und auch so in der XML-Instanz aufgelöst. </p>
+                        </consequence>
+                     </notice>
+                      <note>
+                        <cause>Die Hinweisvorlage besteht aus zwei Teilen</cause>
+                        <consequence>
+                           <p id="d1e731e42f496erferfe2a7b0476">Wenn man die Grafik mit <code>SHIFT+Entf</code> löscht, dann wird der Text wie eine unnummerierte Liste behandelt und auch so in der XML-Instanz aufgelöst.</p>
+                        </consequence>
+                        <consequence>
+                           <p id="d1e737e42f496erferf76">Wenn man den Text löscht, dann wird die Signalgrafik wie eine gewöhnlich eingefügte Grafik behandelt und auch so in der XML-Instanz aufgelöst. </p>
+                        </consequence>
+                     </note>
+                        </block>
+                  </content>
+                </chapter>  
+            </chapter>
+   <chapter id="d1e1650e42f4967a46510d8892128b32a7b0476" ismodule="no" hyphenation="no"
+            chapterpage="no">
+      <content id="d1e1650e42f4967a46510d8892128b32a7b0476">
+                     <title id="d1e1652e42f4967a46510d8892128b32a7b0476">UWE Promo-Text auf der Buchrückseite</title>
+                     <block id="d1e1654e42f4967a46510d8892128b32a7b0476">
+                        <title id="d1e1655e42f4967a46510d8892128b32a7b0476">UWE</title>
+                        <p id="d1e1657e42f4967a46510d8892128b32a7b0476">
+                           <b id="d1e1658e42f4967a46510d8892128b32a7b0476">UWEv0.5</b>ist ein einfach zu bedienendes, aber trotzdem sehr mächtiges Textverabeitungssystem mit automatischem Satz - spezialisiert auf die Erstellung und Pflege von umfangreichen technischen Dokumenten.</p>
+                        <ul id="d1e1661e42f4967a46510d8892128b32a7b0476">
+                           <title id="d1e1662e42f4967a46510d8892128b32a7b0476">Features (v0.5 September 2012)</title>
+                           <li id="d1e1664e42f4967a46510d8892128b32a7b0476">
+                              <p id="d1e1665e42f4967a46510d8892128b32a7b0476">Aus einer Eingabe können mehrere Ausgabeformate erzeugt werden, insbesondere PDF, RTF und HTML.</p>
+                           </li>
+                           <li id="d1e1667e42f4967a46510d8892128b32a7b0476">
+                              <p id="d1e1668e42f4967a46510d8892128b32a7b0476">Die Erfassung der Daten orientiert sich dabei an gängigen Textverarbeitungsprogrammen und Webapplikationen.</p>
+                           </li>
+                           <li id="d1e1670e42f4967a46510d8892128b32a7b0476">
+                              <p id="d1e1671e42f4967a46510d8892128b32a7b0476">In der Ausgabe wird die Dokumentstruktur sowie die Formatierung von Verzeichnissen, lebenden Kolumnentiteln, Kopf- und Fusszeilen automatisiert.</p>
+                           </li>
+                           <li id="d1e1673e42f4967a46510d8892128b32a7b0476">
+                              <p id="d1e1674e42f4967a46510d8892128b32a7b0476">Die Dokumentstruktur und das Layout der Print-Ausgabe ist über das Webinterface parametrisierbar.</p>
+                           </li>
+                           <li id="d1e1676e42f4967a46510d8892128b32a7b0476">
+                              <p id="d1e1677e42f4967a46510d8892128b32a7b0476">Alle Dokumente werden zentral in einem Content-Management-System verwaltet.</p>
+                           </li>
+                           <li id="d1e1679e42f4967a46510d8892128b32a7b0476">
+                              <p id="d1e1680e42f4967a46510d8892128b32a7b0476">Alle Vorgängerversionen der Dokumente werden ebenso verwaltet, und Änderungen werden farblich markiert dargestellt.</p>
+                           </li>
+                        </ul>
+                        <ul id="d1e1682e42f4967a46510d8892128b32a7b0476">
+                           <title id="d1e1683e42f4967a46510d8892128b32a7b0476">Geplante Features (v0.8 März 2013)</title>
+                           <li id="d1e1685e42f4967a46510d8892128b32a7b0476">
+                              <p id="d1e1686e42f4967a46510d8892128b32a7b0476">Übersetzung des User-Intefaces auch in Englisch.</p>
+                           </li>
+                           <li id="d1e1688e42f4967a46510d8892128b32a7b0476">
+                              <p id="d1e1689e42f4967a46510d8892128b32a7b0476">Lokalisierung der Boilerplate-Texte sowie der Indexsortierung in vielen Sprachen, insbesondere auch den asisatischen Sprachen.</p>
+                           </li>
+                           <li id="d1e1691e42f4967a46510d8892128b32a7b0476">
+                              <p id="d1e1692e42f4967a46510d8892128b32a7b0476">Weitere Parameterisierungsoptionen bzgl. der PDF Ausgabe und Auswahlmöglichkeit von verschiedenen Themes (z.B. Diplomarbeit)</p>
+                           </li>
+                        </ul>
+                     </block>
+                  </content>
+   </chapter>
+</document>

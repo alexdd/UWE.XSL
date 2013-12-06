@@ -1,0 +1,1444 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<!-- ============================================================================
+#    UWE.XSL generates good looking customizable PDF output from a single XML source 
+#                  using Apache FOP as PDF formatter
+#
+#    < uwe_localize.xml />
+#    This is the localization XML file which will be read by uwe.xsl and uwe_pretransformation.xsl 
+#
+#    Copyright (C) 2012-2013  by Alex Duesel <alex@alex-duesel.de>
+#                                        homepage: http://www.mandarine.tv
+#                                        See file license.txt for licensing issues
+#
+#    This program is free software: you can redistribute it and/or modify
+#    it under the terms of the GNU Lesser General Public License as published by
+#    the Free Software Foundation, either version 3 of the License.
+#
+#    This program is distributed in the hope that it will be useful,
+#    but WITHOUT ANY WARRANTY; without even the implied warranty of
+#    MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+#    GNU Lesser General Public License for more details.
+#
+#    You should have received a copy of the GNU Lesser General Public License
+#    along with this program.  If not, see <http://www.gnu.org/licenses/>.
+#============================================================================-->
+
+<localize>
+    <boilerplate>
+        <text key="B_TOC">
+            <translation lang="de">Inhalt</translation>
+            <translation lang="fr">Table des matières</translation>
+            <translation lang="it">Contenuto</translation>
+            <translation lang="es">Contenido</translation>
+            <translation lang="ru">Содержание</translation>
+            <translation lang="zh">内容</translation>
+            <translation lang="pt">Conteúdo</translation>
+            <translation lang="ko">목차</translation>
+            <translation lang="ja">目次</translation>
+            <translation lang="cs">Obsah</translation>
+            <translation lang="en">Contents</translation>
+        </text>
+        <text key="B_TABLE">
+            <translation lang="cs">Tabulka</translation>
+            <translation lang="de">Tabelle</translation>
+            <translation lang="fr">Tableau</translation>
+            <translation lang="it">Tabella</translation>
+            <translation lang="es">Tabla</translation>
+            <translation lang="ru">Tабл.</translation>
+            <translation lang="zh">表</translation>
+            <translation lang="pt">Tabela</translation>
+            <translation lang="ko">표</translation>
+            <translation lang="ja">表</translation>
+            <translation lang="en">Table</translation>
+        </text>
+        <text key="B_QUOTE">
+            <translation lang="de">„</translation>
+            <translation lang="en">"</translation>
+            <translation lang="ja">「</translation>
+            <translation lang="ko">"</translation>
+            <translation lang="pt">"</translation>
+            <translation lang="zh">"</translation>
+            <translation lang="ru">«</translation>
+            <translation lang="es">«</translation>
+            <translation lang="it">«</translation>
+            <translation lang="fr">«</translation>
+            <translation lang="cs">„</translation>
+        </text>
+        <text key="B_UNQUOTE">
+            <translation lang="de">“</translation>
+            <translation lang="en">"</translation>
+            <translation lang="ja">」</translation>
+            <translation lang="ko">"</translation>
+            <translation lang="pt">"</translation>
+            <translation lang="zh">"</translation>
+            <translation lang="ru">»</translation>
+            <translation lang="es">»</translation>
+            <translation lang="it">»</translation>
+            <translation lang="fr">»</translation>
+            <translation lang="cs">“</translation>
+        </text>
+        <text key="B_FIG">
+            <translation lang="de">Bild</translation>
+            <translation lang="fr">Figure</translation>
+            <translation lang="it">figura</translation>
+            <translation lang="es">figura</translation>
+            <translation lang="ru">рис.</translation>
+            <translation lang="zh">图</translation>
+            <translation lang="pt">figura</translation>
+            <translation lang="ko">그림</translation>
+            <translation lang="ja">図</translation>
+            <translation lang="cs">obrázek</translation>
+            <translation lang="en">figure</translation>
+        </text>
+        <text key="B_PAGE">
+            <translation lang="fr">page</translation>
+            <translation lang="it">pagina</translation>
+            <translation lang="es">página</translation>
+            <translation lang="ru">стр.</translation>
+            <translation lang="zh">在页面</translation>
+            <translation lang="pt_PT">página</translation>
+            <translation lang="ko">페이지</translation>
+            <translation lang="ja">参照ページ</translation>
+            <translation lang="cs">straně</translation>
+            <translation lang="en">page</translation>
+            <translation lang="de">Seite</translation>
+        </text>
+        <text key="B_ON">
+            <translation lang="de">auf</translation>
+            <translation lang="fr">à la</translation>
+            <translation lang="it">alla</translation>
+            <translation lang="es">en la</translation>
+            <translation lang="ru">на</translation>
+            <translation lang="zh"/>
+            <translation lang="pt">na</translation>
+            <translation lang="ko"/>
+            <translation lang="ja"/>
+            <translation lang="cs">na</translation>
+            <translation lang="en">on</translation>
+        </text>
+        <text key="B_SYMBOLS">
+            <translation lang="cs">Symboly</translation>
+            <translation lang="fr">Symboles</translation>
+            <translation lang="it">Symbols</translation>
+            <translation lang="es">Símbolos</translation>
+            <translation lang="ru">Символы</translation>
+            <translation lang="zh">符号</translation>
+            <translation lang="pt">Símbolos</translation>
+            <translation lang="ko">부호</translation>
+            <translation lang="ja">記号</translation>
+            <translation lang="en">Symbols</translation>
+            <translation lang="de">Symbole</translation>
+        </text>
+        <text key="B_FOOTNOTE_INDEX">
+            <translation lang="de">Fussnoten</translation>
+            <translation lang="en">Footnotes</translation>
+            <translation lang="ja">脚注</translation>
+            <translation lang="ko">각주</translation>
+            <translation lang="pt">Rodapé</translation>
+            <translation lang="zh">脚注</translation>
+            <translation lang="ru">Сноски</translation>
+            <translation lang="es">Notas al pie</translation>
+            <translation lang="it">Note a piè di pagina</translation>
+            <translation lang="fr">Note de bas de page</translation>
+            <translation lang="cs">Poznámky pod čarou</translation>
+        </text>
+        <text key="B_INDEX">
+            <translation lang="it">Indice</translation>
+            <translation lang="es">Índice</translation>
+            <translation lang="ru">Предметный указатель</translation>
+            <translation lang="zh">索引</translation>
+            <translation lang="pt">Índice</translation>
+            <translation lang="ko">색인</translation>
+            <translation lang="ja">索引</translation>
+            <translation lang="de">Index</translation>
+            <translation lang="en">Index</translation>
+            <translation lang="cs">Index</translation>
+        </text>
+        <text key="B_FIGURE_INDEX">
+            <translation lang="it">Indice (figura)</translation>
+            <translation lang="es">Índice (figura)</translation>
+            <translation lang="ru">Предметный указатель (рис.)</translation>
+            <translation lang="zh">索引 ( 图 )</translation>
+            <translation lang="pt">Índice (figura)</translation>
+            <translation lang="ko">색인 ( 그림 )</translation>
+            <translation lang="ja">索引 ( 図 )</translation>
+            <translation lang="de">Index (Abb.)</translation>
+            <translation lang="en">Index (Fig.)</translation>
+            <translation lang="cs">Index (obrázek)</translation>
+        </text>
+        <text key="B_TIP">
+            <translation lang="de">Tipp</translation>
+            <translation lang="en">Tip</translation>
+            <translation lang="fr">Conseil</translation>
+            <translation lang="it">Nota</translation>
+            <translation lang="es">Tip</translation>
+            <translation lang="ru">Подсказка</translation>
+            <translation lang="zh">提示</translation>
+            <translation lang="pt">Dica</translation>
+            <translation lang="ko">팁</translation>
+            <translation lang="ja">ヒント</translation>
+            <translation lang="cs">Rada</translation>
+        </text>
+        <text key="B_NOTE">
+            <translation lang="de">Hinweis</translation>
+            <translation lang="fr">Note</translation>
+            <translation lang="it">nota</translation>
+            <translation lang="es">nota</translation>
+            <translation lang="ru">примечание</translation>
+            <translation lang="zh">注释</translation>
+            <translation lang="pt">nota</translation>
+            <translation lang="ko">메모</translation>
+            <translation lang="ja">ページ)</translation>
+            <translation lang="cs">poznámka</translation>
+            <translation lang="en">note</translation>
+        </text>
+        <text key="B_DANGER">
+            <translation lang="de">GEFAHR!</translation>
+            <translation lang="en">DANGER!</translation>
+            <translation lang="en">DANGER!</translation>
+            <translation lang="fr">DANGER !</translation>
+            <translation lang="it">PERICOLO!</translation>
+            <translation lang="es">¡PELIGRO!</translation>
+            <translation lang="ru">ОПАСНО!</translation>
+            <translation lang="zh">危险!</translation>
+            <translation lang="pt">PERIGO!</translation>
+            <translation lang="ko">위험!</translation>
+            <translation lang="ja">危険！</translation>
+            <translation lang="cs">NEBEZPEČÍ!</translation>
+        </text>
+        <text key="B_WARNING">
+            <translation lang="de">WARNUNG!</translation>
+            <translation lang="en">WARNING!</translation>
+            <translation lang="en">WARNING!</translation>
+            <translation lang="fr">AVERTISSEMENT !</translation>
+            <translation lang="it">AVVERTENZA!</translation>
+            <translation lang="es">¡ADVERTENCIA!</translation>
+            <translation lang="ru">ОСТОРОЖНО!</translation>
+            <translation lang="zh">警告!</translation>
+            <translation lang="pt">AVISO!</translation>
+            <translation lang="ko">경고!</translation>
+            <translation lang="ja">警告！</translation>
+            <translation lang="cs">VÝSTRAHA!</translation>
+            <translation lang="en">WARNING!</translation>
+        </text>
+        <text key="B_CAUTION">
+            <translation lang="de">VORSICHT!</translation>
+            <translation lang="en">CAUTION!</translation>
+            <translation lang="en">CAUTION!</translation>
+            <translation lang="fr">ATTENTION !</translation>
+            <translation lang="it">ATTENZIONE!</translation>
+            <translation lang="es">¡PRECAUCIÓN!</translation>
+            <translation lang="ru">ВНИМАНИЕ!</translation>
+            <translation lang="zh">小心!</translation>
+            <translation lang="pt">CUIDADO!</translation>
+            <translation lang="ko">주의!</translation>
+            <translation lang="ja">注意！</translation>
+            <translation lang="cs">VAROVÁNÍ!</translation>
+        </text>
+        <text key="B_ATTENTION">
+            <translation lang="de">ACHTUNG!</translation>
+            <translation lang="en">NOTICE!</translation>
+            <translation lang="en">NOTICE!</translation>
+            <translation lang="fr">AVIS !</translation>
+            <translation lang="it">AVVISO!</translation>
+            <translation lang="es">¡AVISO!</translation>
+            <translation lang="ru">ПРЕДУПРЕЖДЕНИЕ!</translation>
+            <translation lang="zh">注意!</translation>
+            <translation lang="pt">ATENÇÃO!</translation>
+            <translation lang="ko">주의사항!</translation>
+            <translation lang="ja">注記！</translation>
+            <translation lang="cs">UPOZORNĚNÍ!</translation>
+        </text>
+        <text key="B_LEGAL_NOTICE">
+            <translation lang="de">Impressum</translation>
+            <translation lang="fr">Mentions légales</translation>
+            <translation lang="it">Nota legale</translation>
+            <translation lang="es">Aviso legal</translation>
+            <translation lang="ru">Выходные данные</translation>
+            <translation lang="zh">法律声明</translation>
+            <translation lang="pt">Informação jurídica</translation>
+            <translation lang="ko">법적 공지</translation>
+            <translation lang="ja">法律上の表示</translation>
+            <translation lang="cs">Právní upozornění</translation>
+            <translation lang="en">Legal Notice</translation>
+        </text>
+        <text key="B_EXAMPLE">
+            <translation lang="de">Beispiel</translation>
+            <translation lang="fr">Exemple</translation>
+            <translation lang="it">esempio</translation>
+            <translation lang="es">ejemplo</translation>
+            <translation lang="ru">пример</translation>
+            <translation lang="zh">示例</translation>
+            <translation lang="pt">exemplo</translation>
+            <translation lang="ko">예</translation>
+            <translation lang="ja">ページ)</translation>
+            <translation lang="cs">příklad</translation>
+            <translation lang="en">example</translation>
+        </text>
+        <text key="B_FIRST_STEPS">
+            <translation lang="de">Erste Schritte</translation>
+            <translation lang="fr">Guide de démarrage rapide</translation>
+            <translation lang="it">Guida rapida</translation>
+            <translation lang="es">Guía rápida de inicio</translation>
+            <translation lang="ru">Первые шаги</translation>
+            <translation lang="zh">入门</translation>
+            <translation lang="pt">Primeiros Passos</translation>
+            <translation lang="ko">시작하기</translation>
+            <translation lang="ja">クイック･ガイド</translation>
+            <translation lang="cs">První kroky</translation>
+            <translation lang="en">Getting Started</translation>
+        </text>
+        <text key="B_INSTALLATION_MANUAL">
+            <translation lang="de">Installationshandbuch</translation>
+            <translation lang="fr">Manuel d'installation</translation>
+            <translation lang="it">Manuale di installazione</translation>
+            <translation lang="es">Manual de instalación</translation>
+            <translation lang="ru">Руководство по установке</translation>
+            <translation lang="zh">安装手册</translation>
+            <translation lang="pt">Manual de Instalação</translation>
+            <translation lang="ko">설치 매뉴얼</translation>
+            <translation lang="ja">インストール･マニュアル</translation>
+            <translation lang="cs">Návod k instalaci</translation>
+            <translation lang="en">Installation Manual</translation>
+        </text>
+        <text key="B_MANUAL">
+            <translation lang="de">Handbuch</translation>
+            <translation lang="fr">Manuel</translation>
+            <translation lang="it">Manuale</translation>
+            <translation lang="es">Manual</translation>
+            <translation lang="ru">Руководство</translation>
+            <translation lang="zh">手册</translation>
+            <translation lang="pt">Manual</translation>
+            <translation lang="ko">매뉴얼</translation>
+            <translation lang="ja">マニュアル</translation>
+            <translation lang="cs">Návod</translation>
+            <translation lang="en">Manual</translation>
+        </text>
+        <text key="B_OPERATING_MANUAL">
+            <translation lang="de">Bedienhandbuch</translation>
+            <translation lang="fr">Manuel d'utilisation</translation>
+            <translation lang="it">Manuale d’uso</translation>
+            <translation lang="es">Manual de usuario</translation>
+            <translation lang="ru">Руководство пользователя</translation>
+            <translation lang="zh">使用手册</translation>
+            <translation lang="pt">Manual de Utilização</translation>
+            <translation lang="ko">사용자 매뉴얼</translation>
+            <translation lang="ja">ユーザ･マニュアル</translation>
+            <translation lang="cs">Návod k obsluze</translation>
+            <translation lang="en">User Manual</translation>
+        </text>
+        <text key="B_SERVICE_MANUAL">
+            <translation lang="de">Servicehandbuch</translation>
+            <translation lang="fr">Manuel de service</translation>
+            <translation lang="it">Manuale di service</translation>
+            <translation lang="es">Manual de servicio</translation>
+            <translation lang="ru">Руководство по техническому обслуживанию</translation>
+            <translation lang="zh">维修手册</translation>
+            <translation lang="pt">Manual de Manutenção</translation>
+            <translation lang="ko">서비스 매뉴얼</translation>
+            <translation lang="ja">サービス･マニュアル</translation>
+            <translation lang="cs">Servisní dokumentace</translation>
+            <translation lang="en">Service Manual</translation>
+        </text>
+        <text key="B_SYSTEM_MANUAL">
+            <translation lang="de">Systemhandbuch</translation>
+            <translation lang="fr">Manuel de système</translation>
+            <translation lang="it">Manuale di Sistema</translation>
+            <translation lang="es">Manual del sistema</translation>
+            <translation lang="ru">Руководство по системе</translation>
+            <translation lang="zh">系统手册</translation>
+            <translation lang="pt">Manual do Sistema</translation>
+            <translation lang="ko">시스템 매뉴얼</translation>
+            <translation lang="ja">システム･マニュアル</translation>
+            <translation lang="cs">Systémová příručka</translation>
+            <translation lang="en">System Manual</translation>
+        </text>
+        <text key="B_PRODUCT_TYPE">
+            <translation lang="de">Produkttyp</translation>
+            <translation lang="en">Product type</translation>
+            <translation lang="fr">Type de produit</translation>
+            <translation lang="it">Tipo prodotto</translation>
+            <translation lang="es">Tipo de producto</translation>
+            <translation lang="ru">Тип изделия</translation>
+            <translation lang="zh">产品型号</translation>
+            <translation lang="pt">Tipo de Produto</translation>
+            <translation lang="ko">제품 종류</translation>
+            <translation lang="ja">製品の種類</translation>
+            <translation lang="cs">Typ výrobku</translation>
+        </text>
+        <text key="B_PRODUCT_NAME">
+            <translation lang="de">Produktname</translation>
+            <translation lang="en">Productname</translation>
+            <translation lang="fr">Nom de produit</translation>
+            <translation lang="it">Nome prodotto</translation>
+            <translation lang="es">Modelo</translation>
+            <translation lang="ru">Наименование изделия</translation>
+            <translation lang="zh">产品名称</translation>
+            <translation lang="pt">Nome do Produto</translation>
+            <translation lang="ko">제품명</translation>
+            <translation lang="ja">製品名</translation>
+            <translation lang="cs">Název výrobku</translation>
+        </text>
+    </boilerplate>
+    <index>
+        <variant lang="cs">
+            <collation>
+                <label>A</label>
+                <rule>&lt;a,A;á,Á</rule>
+            </collation>
+            <collation>
+                <label>B</label>
+                <rule>&lt;b,B</rule>
+            </collation>
+            <collation>
+                <label>C</label>
+                <rule>&lt;c,C</rule>
+            </collation>
+            <collation>
+                <label>Č</label>
+                <rule>&lt;Č,č</rule>
+            </collation>
+            <collation>
+                <label>D</label>
+                <rule>&lt;D,d</rule>
+            </collation>
+            <collation>
+                <label>Ď</label>
+                <rule>&lt;Ď,ď</rule>
+            </collation>
+            <collation>
+                <label>E</label>
+                <rule>&lt;e,E;é,É;ě,Ě</rule>
+            </collation>
+            <collation>
+                <label>F</label>
+                <rule>&lt;f,F</rule>
+            </collation>
+            <collation>
+                <label>G</label>
+                <rule>&lt;g,G</rule>
+            </collation>
+            <collation>
+                <label>H</label>
+                <rule>&lt;h,H</rule>
+            </collation>
+            <collation>
+                <label>CH</label>
+                <rule>&lt;ch,Ch,CH</rule>
+            </collation>
+            <collation>
+                <label>I</label>
+                <rule>&lt;i,I;í,Í</rule>
+            </collation>
+            <collation>
+                <label>J</label>
+                <rule>&lt;j,J</rule>
+            </collation>
+            <collation>
+                <label>K</label>
+                <rule>&lt;k,K</rule>
+            </collation>
+            <collation>
+                <label>L</label>
+                <rule>&lt;l,L</rule>
+            </collation>
+            <collation>
+                <label>M</label>
+                <rule>&lt;m,M</rule>
+            </collation>
+            <collation>
+                <label>N</label>
+                <rule>&lt;n,N</rule>
+            </collation>
+            <collation>
+                <label>Ň</label>
+                <rule>&lt;ň,Ň</rule>
+            </collation>
+            <collation>
+                <label>O</label>
+                <rule>&lt;o,O;ó,Ó</rule>
+            </collation>
+            <collation>
+                <label>P</label>
+                <rule>&lt;p,P</rule>
+            </collation>
+            <collation>
+                <label>Q</label>
+                <rule>&lt;q,Q</rule>
+            </collation>
+            <collation>
+                <label>R</label>
+                <rule>&lt;r,R</rule>
+            </collation>
+            <collation>
+                <label>Ř</label>
+                <rule>&lt;ř,Ř</rule>
+            </collation>
+            <collation>
+                <label>S</label>
+                <rule>&lt;s,S</rule>
+            </collation>
+            <collation>
+                <label>Š</label>
+                <rule>&lt;š,Š</rule>
+            </collation>
+            <collation>
+                <label>T</label>
+                <rule>&lt;t,T</rule>
+            </collation>
+            <collation>
+                <label>Ť</label>
+                <rule>&lt;ť,Ť</rule>
+            </collation>
+            <collation>
+                <label>U</label>
+                <rule>&lt;u,U;ů,Ů;ú,Ú</rule>
+            </collation>
+            <collation>
+                <label>V</label>
+                <rule>&lt;v,V</rule>
+            </collation>
+            <collation>
+                <label>W</label>
+                <rule>&lt;w,W</rule>
+            </collation>
+            <collation>
+                <label>X</label>
+                <rule>&lt;x,X</rule>
+            </collation>
+            <collation>
+                <label>Y</label>
+                <rule>&lt;y,Y;ý,Ý</rule>
+            </collation>
+            <collation>
+                <label>Z</label>
+                <rule>&lt;z,Z</rule>
+            </collation>
+            <collation>
+                <label>Ž</label>
+                <rule>&lt;ž,Ž</rule>
+            </collation>
+        </variant>
+        <variant lang="de">
+            <collation>
+                <label>A</label>
+                <rule>&lt;a,A;ä,Ä</rule>
+            </collation>
+            <collation>
+                <label>B</label>
+                <rule>&lt;b,B</rule>
+            </collation>
+            <collation>
+                <label>C</label>
+                <rule>&lt;c,C</rule>
+            </collation>
+            <collation>
+                <label>D</label>
+                <rule>&lt;d,D</rule>
+            </collation>
+            <collation>
+                <label>E</label>
+                <rule>&lt;e,E</rule>
+            </collation>
+            <collation>
+                <label>F</label>
+                <rule>&lt;f,F</rule>
+            </collation>
+            <collation>
+                <label>G</label>
+                <rule>&lt;g,G</rule>
+            </collation>
+            <collation>
+                <label>H</label>
+                <rule>&lt;h,H</rule>
+            </collation>
+            <collation>
+                <label>I</label>
+                <rule>&lt;i,I</rule>
+            </collation>
+            <collation>
+                <label>J</label>
+                <rule>&lt;j,J</rule>
+            </collation>
+            <collation>
+                <label>K</label>
+                <rule>&lt;k,K</rule>
+            </collation>
+            <collation>
+                <label>L</label>
+                <rule>&lt;l,L</rule>
+            </collation>
+            <collation>
+                <label>M</label>
+                <rule>&lt;m,M</rule>
+            </collation>
+            <collation>
+                <label>N</label>
+                <rule>&lt;n,N</rule>
+            </collation>
+            <collation>
+                <label>O</label>
+                <rule>&lt;o,O;ö,Ö</rule>
+            </collation>
+            <collation>
+                <label>P</label>
+                <rule>&lt;p,P</rule>
+            </collation>
+            <collation>
+                <label>Q</label>
+                <rule>&lt;q,Q</rule>
+            </collation>
+            <collation>
+                <label>R</label>
+                <rule>&lt;r,R</rule>
+            </collation>
+            <collation>
+                <label>S</label>
+                <rule>&lt;s,S</rule>
+            </collation>
+            <collation>
+                <label>T</label>
+                <rule>&lt;t,T</rule>
+            </collation>
+            <collation>
+                <label>U</label>
+                <rule>&lt;u,U;ü,Ü</rule>
+            </collation>
+            <collation>
+                <label>V</label>
+                <rule>&lt;v,V</rule>
+            </collation>
+            <collation>
+                <label>W</label>
+                <rule>&lt;w,W</rule>
+            </collation>
+            <collation>
+                <label>X</label>
+                <rule>&lt;x,X</rule>
+            </collation>
+            <collation>
+                <label>Y</label>
+                <rule>&lt;y,Y</rule>
+            </collation>
+            <collation>
+                <label>Z</label>
+                <rule>&lt;z,Z</rule>
+            </collation>
+        </variant>
+        <variant lang="en">
+            <collation>
+                <label>A</label>
+                <rule>&lt;a,A</rule>
+            </collation>
+            <collation>
+                <label>B</label>
+                <rule>&lt;b,B</rule>
+            </collation>
+            <collation>
+                <label>C</label>
+                <rule>&lt;c,C</rule>
+            </collation>
+            <collation>
+                <label>D</label>
+                <rule>&lt;d,D</rule>
+            </collation>
+            <collation>
+                <label>E</label>
+                <rule>&lt;e,E</rule>
+            </collation>
+            <collation>
+                <label>F</label>
+                <rule>&lt;f,F</rule>
+            </collation>
+            <collation>
+                <label>G</label>
+                <rule>&lt;g,G</rule>
+            </collation>
+            <collation>
+                <label>H</label>
+                <rule>&lt;h,H</rule>
+            </collation>
+            <collation>
+                <label>I</label>
+                <rule>&lt;i,I</rule>
+            </collation>
+            <collation>
+                <label>J</label>
+                <rule>&lt;j,J</rule>
+            </collation>
+            <collation>
+                <label>K</label>
+                <rule>&lt;k,K</rule>
+            </collation>
+            <collation>
+                <label>L</label>
+                <rule>&lt;l,L</rule>
+            </collation>
+            <collation>
+                <label>M</label>
+                <rule>&lt;m,M</rule>
+            </collation>
+            <collation>
+                <label>N</label>
+                <rule>&lt;n,N</rule>
+            </collation>
+            <collation>
+                <label>O</label>
+                <rule>&lt;o,O</rule>
+            </collation>
+            <collation>
+                <label>P</label>
+                <rule>&lt;p,P</rule>
+            </collation>
+            <collation>
+                <label>Q</label>
+                <rule>&lt;q,Q</rule>
+            </collation>
+            <collation>
+                <label>R</label>
+                <rule>&lt;r,R</rule>
+            </collation>
+            <collation>
+                <label>S</label>
+                <rule>&lt;s,S</rule>
+            </collation>
+            <collation>
+                <label>T</label>
+                <rule>&lt;t,T</rule>
+            </collation>
+            <collation>
+                <label>U</label>
+                <rule>&lt;u,U</rule>
+            </collation>
+            <collation>
+                <label>V</label>
+                <rule>&lt;v,V</rule>
+            </collation>
+            <collation>
+                <label>W</label>
+                <rule>&lt;w,W</rule>
+            </collation>
+            <collation>
+                <label>X</label>
+                <rule>&lt;x,X</rule>
+            </collation>
+            <collation>
+                <label>Y</label>
+                <rule>&lt;y,Y</rule>
+            </collation>
+            <collation>
+                <label>Z</label>
+                <rule>&lt;z,Z</rule>
+            </collation>
+        </variant>
+        <variant lang="es">
+            <collation>
+                <label>A</label>
+                <rule>&lt;a,A;á,Á;ª;à,À;ă,Ă;â,Â;å,Å;ä,Ä;ã,Ã;ą,Ą;ā,Ā;æ,Æ</rule>
+            </collation>
+            <collation>
+                <label>B</label>
+                <rule>&lt;b,B</rule>
+            </collation>
+            <collation>
+                <label>C</label>
+                <rule>&lt;c,C</rule>
+            </collation>
+            <collation>
+                <label>CH</label>
+                <rule>&lt;ch,Ch,CH</rule>
+            </collation>
+            <collation>
+                <label>D</label>
+                <rule>&lt;d,D</rule>
+            </collation>
+            <collation>
+                <label>E</label>
+                <rule>&lt;e,E;é,É</rule>
+            </collation>
+            <collation>
+                <label>F</label>
+                <rule>&lt;f,F</rule>
+            </collation>
+            <collation>
+                <label>G</label>
+                <rule>&lt;g,G</rule>
+            </collation>
+            <collation>
+                <label>H</label>
+                <rule>&lt;h,H</rule>
+            </collation>
+            <collation>
+                <label>I</label>
+                <rule>&lt;i,I;í,Í</rule>
+            </collation>
+            <collation>
+                <label>J</label>
+                <rule>&lt;j,J;ĵ,Ĵ</rule>
+            </collation>
+            <collation>
+                <label>K</label>
+                <rule>&lt;k,K</rule>
+            </collation>
+            <collation>
+                <label>L</label>
+                <rule>&lt;l,L</rule>
+            </collation>
+            <collation>
+                <label>M</label>
+                <rule>&lt;m,M</rule>
+            </collation>
+            <collation>
+                <label>N</label>
+                <rule>&lt;n,N</rule>
+            </collation>
+            <collation>
+                <label>Ñ</label>
+                <rule>&lt;ñ,Ñ</rule>
+            </collation>
+            <collation>
+                <label>O</label>
+                <rule>&lt;o,O;ó,Ó;º</rule>
+            </collation>
+            <collation>
+                <label>P</label>
+                <rule>&lt;p,P</rule>
+            </collation>
+            <collation>
+                <label>Q</label>
+                <rule>&lt;q,Q</rule>
+            </collation>
+            <collation>
+                <label>R</label>
+                <rule>&lt;r,R</rule>
+            </collation>
+            <collation>
+                <label>S</label>
+                <rule>&lt;s,S</rule>
+            </collation>
+            <collation>
+                <label>T</label>
+                <rule>&lt;t,T</rule>
+            </collation>
+            <collation>
+                <label>U</label>
+                <rule>&lt;u,U;ú,Ú</rule>
+            </collation>
+            <collation>
+                <label>V</label>
+                <rule>&lt;v,V</rule>
+            </collation>
+            <collation>
+                <label>W</label>
+                <rule>&lt;w,W</rule>
+            </collation>
+            <collation>
+                <label>X</label>
+                <rule>&lt;x,X</rule>
+            </collation>
+            <collation>
+                <label>Y</label>
+                <rule>&lt;y,Y</rule>
+            </collation>
+            <collation>
+                <label>Z</label>
+                <rule>&lt;z,Z</rule>
+            </collation>
+        </variant>
+        <variant lang="fr">
+            <collation>
+                <label>A</label>
+                <rule>&lt;a,A;à,À;â,Â</rule>
+            </collation>
+            <collation>
+                <label>B</label>
+                <rule>&lt;b,B</rule>
+            </collation>
+            <collation>
+                <label>C</label>
+                <rule>&lt;c,C;ç,Ç</rule>
+            </collation>
+            <collation>
+                <label>D</label>
+                <rule>&lt;d,D</rule>
+            </collation>
+            <collation>
+                <label>E</label>
+                <rule>&lt;e,E;é,É;è,È;ê,Ê;ë,Ë</rule>
+            </collation>
+            <collation>
+                <label>F</label>
+                <rule>&lt;f,F</rule>
+            </collation>
+            <collation>
+                <label>G</label>
+                <rule>&lt;g,G</rule>
+            </collation>
+            <collation>
+                <label>H</label>
+                <rule>&lt;h,H</rule>
+            </collation>
+            <collation>
+                <label>I</label>
+                <rule>&lt;i,I;î,Î;ï,Ï</rule>
+            </collation>
+            <collation>
+                <label>J</label>
+                <rule>&lt;j,J;ĵ,Ĵ</rule>
+            </collation>
+            <collation>
+                <label>K</label>
+                <rule>&lt;k,K</rule>
+            </collation>
+            <collation>
+                <label>L</label>
+                <rule>&lt;l,L</rule>
+            </collation>
+            <collation>
+                <label>M</label>
+                <rule>&lt;m,M</rule>
+            </collation>
+            <collation>
+                <label>N</label>
+                <rule>&lt;ñ,Ñ</rule>
+            </collation>
+            <collation>
+                <label>O</label>
+                <rule>&lt;o,O;ô,Ô;œ,Œ</rule>
+            </collation>
+            <collation>
+                <label>P</label>
+                <rule>&lt;p,P</rule>
+            </collation>
+            <collation>
+                <label>Q</label>
+                <rule>&lt;q,Q</rule>
+            </collation>
+            <collation>
+                <label>R</label>
+                <rule>&lt;r,R</rule>
+            </collation>
+            <collation>
+                <label>S</label>
+                <rule>&lt;s,S</rule>
+            </collation>
+            <collation>
+                <label>T</label>
+                <rule>&lt;t,T</rule>
+            </collation>
+            <collation>
+                <label>U</label>
+                <rule>&lt;u,U;ù,Ù;û,Û;ü,Ü</rule>
+            </collation>
+            <collation>
+                <label>V</label>
+                <rule>&lt;v,V</rule>
+            </collation>
+            <collation>
+                <label>W</label>
+                <rule>&lt;w,W</rule>
+            </collation>
+            <collation>
+                <label>X</label>
+                <rule>&lt;x,X</rule>
+            </collation>
+            <collation>
+                <label>Y</label>
+                <rule>&lt;y,Y</rule>
+            </collation>
+            <collation>
+                <label>Z</label>
+                <rule>&lt;z,Z</rule>
+            </collation>
+        </variant>
+        <variant lang="it" variant="IT">
+            <collation>
+                <label>A</label>
+                <rule>&lt;a,A</rule>
+            </collation>
+            <collation>
+                <label>B</label>
+                <rule>&lt;b,B</rule>
+            </collation>
+            <collation>
+                <label>C</label>
+                <rule>&lt;c,C</rule>
+            </collation>
+            <collation>
+                <label>D</label>
+                <rule>&lt;d,D</rule>
+            </collation>
+            <collation>
+                <label>E</label>
+                <rule>&lt;e,E</rule>
+            </collation>
+            <collation>
+                <label>F</label>
+                <rule>&lt;f,F</rule>
+            </collation>
+            <collation>
+                <label>G</label>
+                <rule>&lt;g,G</rule>
+            </collation>
+            <collation>
+                <label>H</label>
+                <rule>&lt;h,H</rule>
+            </collation>
+            <collation>
+                <label>I</label>
+                <rule>&lt;i,I</rule>
+            </collation>
+            <collation>
+                <label>J</label>
+                <rule>&lt;j,J</rule>
+            </collation>
+            <collation>
+                <label>K</label>
+                <rule>&lt;k,K</rule>
+            </collation>
+            <collation>
+                <label>L</label>
+                <rule>&lt;l,L</rule>
+            </collation>
+            <collation>
+                <label>M</label>
+                <rule>&lt;m,M</rule>
+            </collation>
+            <collation>
+                <label>N</label>
+                <rule>&lt;n,N</rule>
+            </collation>
+            <collation>
+                <label>O</label>
+                <rule>&lt;o,O</rule>
+            </collation>
+            <collation>
+                <label>P</label>
+                <rule>&lt;p,P</rule>
+            </collation>
+            <collation>
+                <label>Q</label>
+                <rule>&lt;q,Q</rule>
+            </collation>
+            <collation>
+                <label>R</label>
+                <rule>&lt;r,R</rule>
+            </collation>
+            <collation>
+                <label>S</label>
+                <rule>&lt;s,S</rule>
+            </collation>
+            <collation>
+                <label>T</label>
+                <rule>&lt;t,T</rule>
+            </collation>
+            <collation>
+                <label>U</label>
+                <rule>&lt;u,U</rule>
+            </collation>
+            <collation>
+                <label>V</label>
+                <rule>&lt;v,V</rule>
+            </collation>
+            <collation>
+                <label>W</label>
+                <rule>&lt;w,W</rule>
+            </collation>
+            <collation>
+                <label>X</label>
+                <rule>&lt;x,X</rule>
+            </collation>
+            <collation>
+                <label>Y</label>
+                <rule>&lt;y,Y</rule>
+            </collation>
+            <collation>
+                <label>Z</label>
+                <rule>&lt;z,Z</rule>
+            </collation>
+        </variant>
+        <variant lang="pt">
+            <collation>
+                <label>A</label>
+                <rule>&lt;a,A;á,Á;à,À;ª;â,Â;ã,Ã;æ,Æ</rule>
+            </collation>
+            <collation>
+                <label>B</label>
+                <rule>&lt;b,B</rule>
+            </collation>
+            <collation>
+                <label>C</label>
+                <rule>&lt;c,C;ç,Ç</rule>
+            </collation>
+            <collation>
+                <label>D</label>
+                <rule>&lt;d,D</rule>
+            </collation>
+            <collation>
+                <label>E</label>
+                <rule>&lt;e,E;é,É;ê,Ê</rule>
+            </collation>
+            <collation>
+                <label>F</label>
+                <rule>&lt;f,F</rule>
+            </collation>
+            <collation>
+                <label>G</label>
+                <rule>&lt;g,G</rule>
+            </collation>
+            <collation>
+                <label>H</label>
+                <rule>&lt;h,H</rule>
+            </collation>
+            <collation>
+                <label>I</label>
+                <rule>&lt;i,I;í,Í</rule>
+            </collation>
+            <collation>
+                <label>J</label>
+                <rule>&lt;j,J</rule>
+            </collation>
+            <collation>
+                <label>K</label>
+                <rule>&lt;k,K</rule>
+            </collation>
+            <collation>
+                <label>L</label>
+                <rule>&lt;l,L</rule>
+            </collation>
+            <collation>
+                <label>M</label>
+                <rule>&lt;m,M</rule>
+            </collation>
+            <collation>
+                <label>N</label>
+                <rule>&lt;n,N</rule>
+            </collation>
+            <collation>
+                <label>O</label>
+                <rule>&lt;o,O;ó,Ó;º;ô,Ô;õ,Õ</rule>
+            </collation>
+            <collation>
+                <label>P</label>
+                <rule>&lt;p,P</rule>
+            </collation>
+            <collation>
+                <label>Q</label>
+                <rule>&lt;q,Q</rule>
+            </collation>
+            <collation>
+                <label>R</label>
+                <rule>&lt;r,R</rule>
+            </collation>
+            <collation>
+                <label>S</label>
+                <rule>&lt;s,S</rule>
+            </collation>
+            <collation>
+                <label>T</label>
+                <rule>&lt;t,T</rule>
+            </collation>
+            <collation>
+                <label>U</label>
+                <rule>&lt;u,U;ú,Ú;ü,Ü</rule>
+            </collation>
+            <collation>
+                <label>V</label>
+                <rule>&lt;v,V</rule>
+            </collation>
+            <collation>
+                <label>W</label>
+                <rule>&lt;w,W</rule>
+            </collation>
+            <collation>
+                <label>X</label>
+                <rule>&lt;x,X</rule>
+            </collation>
+            <collation>
+                <label>Y</label>
+                <rule>&lt;y,Y</rule>
+            </collation>
+            <collation>
+                <label>Z</label>
+                <rule>&lt;z,Z</rule>
+            </collation>
+        </variant>
+        <variant lang="ru">
+            <collation>
+                <label>A</label>
+                <rule>&lt;a,A</rule>
+            </collation>
+            <collation>
+                <label>B</label>
+                <rule>&lt;b,B</rule>
+            </collation>
+            <collation>
+                <label>C</label>
+                <rule>&lt;c,C</rule>
+            </collation>
+            <collation>
+                <label>D</label>
+                <rule>&lt;d,D</rule>
+            </collation>
+            <collation>
+                <label>E</label>
+                <rule>&lt;e,E</rule>
+            </collation>
+            <collation>
+                <label>F</label>
+                <rule>&lt;f,F</rule>
+            </collation>
+            <collation>
+                <label>G</label>
+                <rule>&lt;g,G</rule>
+            </collation>
+            <collation>
+                <label>H</label>
+                <rule>&lt;h,H</rule>
+            </collation>
+            <collation>
+                <label>I</label>
+                <rule>&lt;i,I</rule>
+            </collation>
+            <collation>
+                <label>J</label>
+                <rule>&lt;j,J</rule>
+            </collation>
+            <collation>
+                <label>K</label>
+                <rule>&lt;k,K</rule>
+            </collation>
+            <collation>
+                <label>L</label>
+                <rule>&lt;l,L</rule>
+            </collation>
+            <collation>
+                <label>M</label>
+                <rule>&lt;m,M</rule>
+            </collation>
+            <collation>
+                <label>N</label>
+                <rule>&lt;n,N</rule>
+            </collation>
+            <collation>
+                <label>O</label>
+                <rule>&lt;o,O</rule>
+            </collation>
+            <collation>
+                <label>P</label>
+                <rule>&lt;p,P</rule>
+            </collation>
+            <collation>
+                <label>Q</label>
+                <rule>&lt;q,Q</rule>
+            </collation>
+            <collation>
+                <label>R</label>
+                <rule>&lt;r,R</rule>
+            </collation>
+            <collation>
+                <label>S</label>
+                <rule>&lt;s,S</rule>
+            </collation>
+            <collation>
+                <label>T</label>
+                <rule>&lt;t,T</rule>
+            </collation>
+            <collation>
+                <label>U</label>
+                <rule>&lt;u,U</rule>
+            </collation>
+            <collation>
+                <label>V</label>
+                <rule>&lt;v,V</rule>
+            </collation>
+            <collation>
+                <label>W</label>
+                <rule>&lt;w,W</rule>
+            </collation>
+            <collation>
+                <label>X</label>
+                <rule>&lt;x,X</rule>
+            </collation>
+            <collation>
+                <label>Y</label>
+                <rule>&lt;y,Y</rule>
+            </collation>
+            <collation>
+                <label>Z</label>
+                <rule>&lt;z,Z</rule>
+            </collation>
+            <collation>
+                <label>А</label>
+                <rule>&lt;а,А</rule>
+            </collation>
+            <collation>
+                <label>Б</label>
+                <rule>&lt;б,Б</rule>
+            </collation>
+            <collation>
+                <label>В</label>
+                <rule>&lt;в,В</rule>
+            </collation>
+            <collation>
+                <label>Г</label>
+                <rule>&lt;г,ѓ,Г,Ѓ</rule>
+            </collation>
+            <collation>
+                <label>Д</label>
+                <rule>&lt;д,Д</rule>
+            </collation>
+            <collation>
+                <label>Е</label>
+                <rule>&lt;е,Е</rule>
+            </collation>
+            <collation>
+                <label>Ё</label>
+                <rule>&lt;ё,Ё</rule>
+            </collation>
+            <collation>
+                <label>Ж</label>
+                <rule>&lt;ж,Ж</rule>
+            </collation>
+            <collation>
+                <label>З</label>
+                <rule>&lt;з,З</rule>
+            </collation>
+            <collation>
+                <label>И</label>
+                <rule>&lt;и,й,И,Й</rule>
+            </collation>
+            <collation>
+                <label>К</label>
+                <rule>&lt;к,К</rule>
+            </collation>
+            <collation>
+                <label>Л</label>
+                <rule>&lt;л,Л</rule>
+            </collation>
+            <collation>
+                <label>М</label>
+                <rule>&lt;м,М</rule>
+            </collation>
+            <collation>
+                <label>Н</label>
+                <rule>&lt;н,Н</rule>
+            </collation>
+            <collation>
+                <label>О</label>
+                <rule>&lt;о,О</rule>
+            </collation>
+            <collation>
+                <label>П</label>
+                <rule>&lt;п,П</rule>
+            </collation>
+            <collation>
+                <label>Р</label>
+                <rule>&lt;р,Р</rule>
+            </collation>
+            <collation>
+                <label>С</label>
+                <rule>&lt;с,С</rule>
+            </collation>
+            <collation>
+                <label>Т</label>
+                <rule>&lt;т,Т</rule>
+            </collation>
+            <collation>
+                <label>У</label>
+                <rule>&lt;у,ў,У,Ў</rule>
+            </collation>
+            <collation>
+                <label>Ф</label>
+                <rule>&lt;ф,Ф</rule>
+            </collation>
+            <collation>
+                <label>Х</label>
+                <rule>&lt;х,Х</rule>
+            </collation>
+            <collation>
+                <label>Ц</label>
+                <rule>&lt;ц,Ц</rule>
+            </collation>
+            <collation>
+                <label>Ч</label>
+                <rule>&lt;ч,Ч</rule>
+            </collation>
+            <collation>
+                <label>Ш</label>
+                <rule>&lt;ш,Ш</rule>
+            </collation>
+            <collation>
+                <label>Щ</label>
+                <rule>&lt;щ,Щ</rule>
+            </collation>
+            <collation>
+                <label>Ъ</label>
+                <rule>&lt;ъ,Ъ</rule>
+            </collation>
+            <collation>
+                <label>Ы</label>
+                <rule>&lt;ы,Ы</rule>
+            </collation>
+            <collation>
+                <label>Ь</label>
+                <rule>&lt;ь,Ь</rule>
+            </collation>
+            <collation>
+                <label>Э</label>
+                <rule>&lt;э,Э</rule>
+            </collation>
+            <collation>
+                <label>Ю</label>
+                <rule>&lt;ю,Ю</rule>
+            </collation>
+            <collation>
+                <label>Я</label>
+                <rule>&lt;я,Я</rule>
+            </collation>
+        </variant>
+        <variant lang="zh">
+            <collation>
+                <label>letters</label>
+
+                <!--
+            the following rule was created using file Unihan_Readings.txt (http://www.unicode.org/Public/UNIDATA/Unihan.zip)
+            it was produced with an automated computer program and therefore the same license applies
+            
+            UNICODE, INC. LICENSE AGREEMENT - DATA FILES AND SOFTWARE
+            
+            Unicode Data Files include all data files under the directories http://www.unicode.org/Public/, http://www.unicode.org/reports/, and http://www.unicode.org/cldr/data/ . Unicode Software includes any source code published in the Unicode Standard or under the directories http://www.unicode.org/Public/, http://www.unicode.org/reports/, and http://www.unicode.org/cldr/data/.
+            
+            NOTICE TO USER: Carefully read the following legal agreement. BY DOWNLOADING, INSTALLING, COPYING OR OTHERWISE USING UNICODE INC.'S DATA FILES ("DATA FILES"), AND/OR SOFTWARE ("SOFTWARE"), YOU UNEQUIVOCALLY ACCEPT, AND AGREE TO BE BOUND BY, ALL OF THE TERMS AND CONDITIONS OF THIS AGREEMENT. IF YOU DO NOT AGREE, DO NOT DOWNLOAD, INSTALL, COPY, DISTRIBUTE OR USE THE DATA FILES OR SOFTWARE.
+            
+            COPYRIGHT AND PERMISSION NOTICE
+            
+            Copyright © 1991-2009 Unicode, Inc. All rights reserved. Distributed under the Terms of Use in http://www.unicode.org/copyright.html.
+            
+            Permission is hereby granted, free of charge, to any person obtaining a copy of the Unicode data files and any associated documentation (the "Data Files") or Unicode software and any associated documentation (the "Software") to deal in the Data Files or Software without restriction, including without limitation the rights to use, copy, modify, merge, publish, distribute, and/or sell copies of the Data Files or Software, and to permit persons to whom the Data Files or Software are furnished to do so, provided that (a) the above copyright notice(s) and this permission notice appear with all copies of the Data Files or Software, (b) both the above copyright notice(s) and this permission notice appear in associated documentation, and (c) there is clear notice in each modified Data File or in the Software as well as in the documentation associated with the Data File(s) or Software that the data or software has been modified.
+            
+            THE DATA FILES AND SOFTWARE ARE PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT OF THIRD PARTY RIGHTS. IN NO EVENT SHALL THE COPYRIGHT HOLDER OR HOLDERS INCLUDED IN THIS NOTICE BE LIABLE FOR ANY CLAIM, OR ANY SPECIAL INDIRECT OR CONSEQUENTIAL DAMAGES, OR ANY DAMAGES WHATSOEVER RESULTING FROM LOSS OF USE, DATA OR PROFITS, WHETHER IN AN ACTION OF CONTRACT, NEGLIGENCE OR OTHER TORTIOUS ACTION, ARISING OUT OF OR IN CONNECTION WITH THE USE OR PERFORMANCE OF THE DATA FILES OR SOFTWARE.
+            
+            Except as contained in this notice, the name of a copyright holder shall not be used in advertising or otherwise to promote the sale, use or other dealings in these Data Files or Software without prior written authorization of the copyright holder.
+            
+            Unicode and the Unicode logo are trademarks of Unicode, Inc., and may be registered in some jurisdictions. All other trademarks and registered trademarks mentioned herein are the property of their respective owners.
+            
+        -->
+                <rule>QT##KWY#####S#########Y#####C####N##Q###XX#XLLXYXZDWP##MQYZNC####ZFAWZ#ZDSYJWLNZ####X###JDNSYLYB###LMYLJYLC###HXHR#Z#HXTAHJMLTXTZYKENQCMHTS#QLS##HPTS#OT#MWDYMJNXY##S#LL#L#J####Q#CLGM#GS##MM#SL#WKCZ###BHDG##LJLX#NX#BJS###YXQ#DFLQJ##YC#L##H#LHTP#JEQYJRJ#CCC#L#LJSXC##ZDJZDXL#CXJ#J#FCBK#BLK#H#JLSPYLBEL##CNSHY#GYXGL#LS#SYJZ#QY#ZJHLHK#JA#ECXCW##HSY#JZXS##K#HGYQYH#FZDFSAFNHYH#CGNHLFHP#S##LLYH#XQE#######NWXTHTBNY######WSBYJTHJDWLSGL#TL#######YSXFCRDZEX#ESWMHGXMBJHZ####BA##GDBBNLXX#####DTCKLZA##Q####CJHTYX#S####YX#XZYC##XTRYZYXJJH#PL#LCHY##YH#CNH#BXWX#YQXNBHJAA####J#ZBJAZCF####NLMD#BB#CHTC####FDYYKHK#K#L#BCXNLY#MZXG##JLYJY##YXHYHCTTZBMGCL#X##QRY#LF##G##HG#GT#SLNFGQB##XXKMC#JNXYYYY#RHS#Y#XB#D#B#SE#MY##Q#P##NJ#ED###D##Q#OSCD#PY#ZPQTXYBL######TLMQZY#L#SM#RFCN#C#SP#KS#XZ###LXXMHM#PYGTQYSFYD#LCCJLSNAAQ####RSMHYEAXM##L#YDWHMNWMNQZLZZHXHXZFCG#CLZSLJXDJRM#GYNYLYY#S#LYMMZYYGMJW##DL#XCQMMQ#WDA#BNLJ#CZB#YTJ#GJW##XNY#BZJWXQYXCQTNQJ###DLZ##YCJHZLNJQD#JX#YDC#MHSKZHCXNCLAC#XYHCQLFDMLTHMB#QH#L#TLQZMPZXG#Q#L#YEQMWQSM##MYJLKGYD#LLQAB#MD#A#XF#JRTQE#JJHJZBMBWJAYHDWNC#LLNHL#L#MY#J##Z#Y#JB#R#FGKJM##T#CBKL#SN#JMXQEM##T#Q##W#CTLB#MXFL#ZCML#Y#ZQLNY#JJZYJHD#LJBZCDLYZXCCCYLDLC#TCAC#YCT#TCYZ##QLQLY##YCJJ#J#D#JHD##H#CMB#XL#SB#B#XWBEJ#ZBYYQZMNS###STMJBRCC#####DTTX#DXT#TSJZ#Y##HZQ##XXZW##T#N###YRSCZ#MJFPAFAQQX##Q#T#Y#BFCZ#C#HNJ#CKLLX#YHLHGKYDH#KJZFQBXCP#XQH##CS#DDTMLSDCDCP#JJLTY#CQYL####YJWMCXXXQH#YQSCDL#PTZY#FSYYHSYMFH#YCNAFLCCMD#L#YH#TEHSNLLXYLMJ##BYHMCH#LJWYHHCLYX#LLQH#W##G#DYJARXSXYHJQT#QM#MYGBXMFY#SWX#GJEZCBW#L##K#H#ZCXX#QPGEGQ#LLCSBWP#D#TTZBG##BZDCZNLPJMWCG#R#B#KLHYZJXXXSQXSHMH##HNSBLJHL#H#HGYCGJJCJMHMCLPYJJQ####JHXX#SFCY###QHT#QXY#MTLHCZPLM###XBHQX##BQBJJKSJEN#DD#G#QC#YQ#KF#DXGHQHTBSBLYNCSDLTLKSZCLM#QKSQB#Y#SSSRZLLC#H##JBHD#L#JKSGZDDZYPC####Y##YGYYSGQG##HMF#GD##Y##Q#CM#B###X###MLNPC##C#QD#KDL####YTCMMH#NHHJBXLJ#MPHY#XSWC#JCH#SL#D#PYB#HDYJJKLYT#WHXH####HF##D#RJ#X##YJH#BM##W#MSBL###HSLPRQLGXX##N###XL#CZFZDJHJ#####TXYTTDJAHYJRB#NTN##YM##NXQ#GTEJQMELC#HJJ#GHG#FS#J#QH#XJHB##Z##S#SZB###LBXBD##PCBSHHYCJNGF##TC#DRKCDHCLJLQPZ#LCQ##TLQLLSGZBJQ###PJBJG###LLLSMJDB#L#XPQLZ#J#S#X#LCYNLY#Y#JKX#ZKHQ###W#X#SKQSXYPZYZLJXYQMJ#CS#YMY#SJY#QCL#Z######C#AXCCZ#JB##LT#LEWLDMLWDKAZHYMZBB#BLLL#D#QC#CJKJL#SKRCN#LB##BR#L##Q##ZTRZYMNB##THZR##P#T#RNLDDZ#LD#GJNYNYWGZYCXJSFP####BBCSYB#DL#C#XYY####T####JXXJ#PTXXN#####MJGW#WYZBM#XFY#LY#JSYJ#S###WMSYZSJL#MZSZBL#######QG#Z#NJXYX#N##LCMQ#N###SXBDC#CCHDH###SMCMHCJHFSCSNFM####YC##BLKDBSGBYXNYZCFXPWLCZ#BYHPS#DJX#G##YXCHL###LXH##LSCBJSFD#BY##NLYD#CC#JN###LMJ#LH#YJCRN##HT####BQ#SCHCDGEWFT#LHYH#YZYQZJT######TLJZ#H#X###CQM##BL##YGMBJDS#WY#J#TH#DJJ###XLFHXNMRCYM#J#TW#LSKKB#T#BYPCHK#ACQB#F#TTZL#G#SHL#S#BRDBLCBJZ#HLYY#CDLJCSPY##HTRYYRYSYJTX##QZ##Y##XSYM##HXW#JTSN#T#CCPDNNGGYH###HY#X#RLZCLPHFHDZ#TZBJYZYL###CL##JPQGZY##RNM#J#XPBM####YY#P#BH###BMLTWLL#JJ#DJDB#####LBSTD#####D##SBTSCTM#L##ZBJC#L##S#S##E####QLYTGYLBNPLQL##LDWZ#XAFPBT#EBQCGTHCJHXDMDERLSODYCR#TCPSLTZLS####GYHXLL#D##T###YN#GJCKWLLLX#AYJRX#CCZYFR#XSJJHZ##SCFJ##GW#QS#TDSRMFLJXXN#JLDJ#LSLLGY#QQCYBHQL##XBKQ#S##ZHTHB###JG#GCMZTTLL###DAX#X#TCS#JFQ#YDJLYLTYPLLB#MB##YHCHNCLTHB#CYDAX###R#ZWTB#Y#ZYFY#TMSJGQQJY#KMXSN#HNC#JXQAMG##FQCSBMSGHHLHJQ#MBG#MAYSLJDJ#PRYDD#LX#XBAMQQWSYJCYYYJJHMLKYYSGHYSCL#XCCNQMHYNHC#QSJAMMZBJJNBSLMLMMXCQJH#XNTHY##BZ#C#J#XHS###YYBJZ#SDDCFMZZ#YDHG#LGLCFCY#J#GSWZNDLTC#G####M#MJY#ZZ##PHGHLWC#LCL#QS##C#HSC#L#NTDWGDL#XPL#NHYXLMB#FB#HYL##JHCDE#YZDQYQHNHJS##PMCLLC#CS#Q#LLLRYNCQYN#JY#C###BDPNZCTTRYLAHQL#ZSYYDW#DYHJRMJ##ASLHQ#D#NCTXJHQJMY#ZT#APCTEHQCSZNTZLMLMGCHM#LDSC##ZBCQ#L#FGCJE#JHJCYTCYSYGHLJC##S#MM#CY#JC#T#Q#C#YCT#Q#JLYR##S#F#MG##HQCQDLBJ#L#Y#HY#ZL#GJZZKNDZYZGY##CLRR#NC##YJBCJCHCZY##LBZHYDZFSLT#MYBKGNG#C#SCZTKQ#DCH#SZQ##W##XNPHJ###PTQ#RLHS#PM#SMSLLJLZD#SHFMSJTX#MFL#CL#CYMYZQDHWTSXSS#LY#LLFLLXY#BXRZ#DBLHQLBMHH#CPQMJBMSM##LQ#EX#S##LHJY#STXZMXM#HTXYBLFLCCCDKC#CMQQZ###GYCGMBKGYMW###RJ#MJ#ZZYB#ZBRY#CEYMQ#WJB#BFYLFQFE###HJQJLCBNYXLXF#NTBZ###OSGTGHT#Y#QHLMM#LFOMJFMHSYNJLBQTLZZYDCCMYLC##GSL##LZ#CJJEYRCRFLSYYDLZTPQJCBGC#HHMHHDFXMMLGZTYZLLWLJLL#BAKT##ZG#XNCD#DGB#HXCLTHXHBRTFL#YSPHC#NACLZT###QS#G##C#EENQSC#YBA#NCB#THZBZWSBEZWWZZLWGQLZSMZQCPL#LSQYF#JDPGNRZGPTCC#CMBQSBJS#HNH#E#M#XZRJDZSMBHYX#NCB#QJNLJHYCCZZD#TZ#C#Z#RBJYDJGJ##SRXHQZCCW#KGKF#CZCL##ZYGHJ#GST#XMDAPWAMPMYZBYWNLYCQZP#TFS#DCRTCTJSHL###JE#FD#E#YD#DBMCLQMC####Y#D#SFJJCBTCFBW#YMPM#MCTKBXXQ##SHNXC#FYARRFFQSHBDMD####CDYH##XLJQ#M####YYYQZXYYE#ZHC#CBKC#TQ#J#CF#MLLT#GL#LDC###J#CMD#CRHR#LX#YM#HJ#H#LZZY#LQGL####SC#XBXJPLXZDCQN#LCSYHL###L##D#YN#HF#CNC#TQBSW#SAEJKF#Y#SDHXZTCZYFE#J#CXM#BLJKJ##L#FLZH#NYXTLZK#QJPBDLMZXHM#ZCGNZYH#YLYRLNYN#YNQQXCJM#NHZXYT##SYCZMYNMSWL#NSBCB#JXGP#XZY###EYTYJL#L#JHZFCGJM#CM#L###YB#HWC#GHB#LCCYXYSGY###Y#ZM##SJGPL#T#LY#CYJ#WXNFG#MFNXWLCM#NC#XNM#K#H##YWZ##Y##FBZZSXN#JX#NRDS##Y###LH#YZZSWNGJBC#DQYGNHXX#H#XBK#XB#C#TCCNGFX#DJHZSDLM#GML#Y#GCLD#E###DDJL#SX#W##HYLLOSJQ#Y#Q#LJMCN#LL#C#XH#ZDDH#CT#NZLFJ#AL#RTPXSXWT#XXPYYNHNYFNCWYXZYSM#GPFHNCMB#NYEZNXLHXNHJDH##CXSMXWQZCXJJHTMJQSLWCCJYHZSGNX##CWMG##ZHLLL##QANSMTXJATCWTJCCXXX###N#YQHSJLJ#ML#CCX#MSCCGY##LLSZ####E#SZJJ#LW#ZL#ZZ#Y#N##YHYHMMQLH#MXZSZZGXYT#JC#BLZJWG#QAFGGXRZBYSDGSXCSQ##CHDCWDS#JZQ#FAFP#TZCQYHHGEJYTQ#FZH#B#JDJFH#YCSC###MCQJB#ZZQZJD#LLLQ#FCTSHQQBNTCCYDCCBMBTMLF#QTFKJ###ZQCCKLBDW#JLC#CLTKCJTHFB#QWJQKHCS##QPBWJR#CDCCMXDBZCCGDZDLTYQSL#QFST#A#QDHSWZLJL#MRYJKFQHFLHTMTJQZJGTLMYLYJP#XB##RSWCGCPM##SKZC#CSBK#ZWML#NLQY#YXC#RCNYJBF##CD#YGXLH#BGJ#YNYSXCYSYSL#YBS#YLLTDYJ#Y###J#C#XX#GYL#TCXQH#DCDY###C#LSMM#TPL#CTECJTJDJBLYCCPLZTPTJXF#XEH#RF##LTM##CMYMTK##MRG#MJPJWJMJXBGCLLQDYYCJR#L#GYHPCDC#KSXWSCYHFYYZ#YDX##QCHMYCQJSM###ZZCYMWC#SPTKCS#JJAJY#YLZBL#HLWXTBZZBMX###XLZM#Y###X###S##SJJF#NACWGXTXD#T#XXBSHZW#RCSHKFCXQQL#Y#Q#CZ#KQHYNZC#S#CJXY##CDDGTHN#L#X#XX###L#MCJBQLHBTDFXS###PHWYY#CH##XCH#HC#QKR##X#HC#QDC##YLB####NBYHCQTYLB#JFXC#S##Y#AHDGDHP##LMML#XZPFNXDDYXY#DBHFFQB##STZJ#HFWMQL#MGHYQDA#BDXDBZPNY#JDDXDTXCYGLB#LJXS#SHYC#RE#BF#ZFGBG#HDTBQLLWZL#NBTJ#BJPXWFHFCHZ#####FDHCBY##BRCY#G#YZY#HMPGB#HMSGBDCCSCRZMBTPF##L#MWQZCXHS#H#FRHPQ#XMKG#ASSLZHC#LNHDJMFENHHXX#B#YYXSYLLYDHQL##GBWW#AXSHY#Y#B#HTL#Z#QCYDYC#BCY#YNSB#BMAES#ZYJYDTWXZYRSHNYJSYBHHX#YL#E#JZYYJCD#KYYJENCQXBMSMLQQSBBBBNWHFQLFAA#QQTYBPB#X##YCLYL#NXW#L#ZZC#AEYLFSHCS#BD#DL#HZGCLMMMADZHFDT#DHWJCL#PJNLJ##NY#WYQB#LGHH#HKC#LBHPOJTS#DAJMGKAMQF#KHD#N#JFP#CNM#C#K#DFTZWFCPS#RQCPBMZCGJL#MMPLC#LYWLLZZHSCXW#HP#MCMCJN#NRLY#Q##B#ZJYXBBT#QYDJMSSQSMDYGGT#XYTTML#L#LXCBLJZJ#ZXZ##Z##L#GEMZDY#G#LY#NHHZ#LCDWXZM#####TCKTNLLYXYQPCXGJLMY#LY##TY##CDH#X#Q#YJYF#HZH##JPGX#DQCDBTWCZBWBDBT##JGCYYLJFNEEXHYTBBKC#QY###HH#JKEJMCBWZXDC#CMKYC#H#LTYHNLFPLAXYXM#LYBDLSJLJJTPGJHBDHYLM###R##PLLYCS#STMHTBPH#GBLCBCMSQZKBAMX#T#W###LCNNLDJJFSZTJNYJGDJMDJSXZMLGYTZYT#HDWYZQ###TG#CFTTTZHPH#ZBLN#PDSTKTQJCPJKLJQLGQQXJSXAHJZY#JCK##Y##TNY#C##########################################################################YDKQSX#MZSSXJBYMGCCZQPSSQBYCDSCDQLDYLYBSGJGYQZJJFGCCLZZ#WDWZJLJPFYYN#JJZYY#ZWZHFYZPPQHGCCYY#MJQYXXGD##S#SJNJ#S##ML#RXYFSNG####GCGGLLYJL#YZSSECYYYYHQWJSSGGYXYQYJTWKTJHYCHM#XJTLXJYQBYXDLDWRRJ#WYSRLDZJPCBZJJBRCFSL#CZSTZFXXTHTRQGYDDLYCCS#YMMRJCYQZPWWJJYFCRWFDFZQPYDDWYXKYJAWJFFXJBDFTZYHHYCCSWCCYXSCLCXXWZ#XNBGNNXBXLZSQSBSJPYSAZDHMDZBQBSCWDZZYYTZHBTSYYFZKNTNXQYWQ#K#PHHLXGYBFMJEBJHHGQTJCYSXSTKZGLYCKGLYSMZXYALMELTCCXGZYRJXJZL#JZCQKCNNJWHJCZZCQLJSTSTBNHBTYXCEQXKKWJYFLZQLYHJXSPSFXLFPBYSXXXYTCC#YLLL#JXFHJXPJBCFFYABYXBJCCBZYCLWLCZGGBTSSMDTJCXPTHYQTGJJSCJFZKJZJQNLZWLSLHDZBWJNCJZYZSQ#YCJYNZCJJWYBRTWPYFTWEXCSKDZCTBYHYZCYYJXZCFBZZMJYXXSDCZOTTBZLJWFCGSZSXFYRLRYGMBDTHJXSQJCCSBXYYTSYFBJDZT#BCNCLCYZZPSACYZCSQJCSHZQYDXLBPJLLMQXTYDZXSQJTZPXLCGLQDCWJFHCJDJJSFXJEJJTLBG#SXJMYJJQPFZASYJNCYDJXKJCDJSZ#BARTCCLNJQMWNQNCLLLKBDBZZSYHCCLTWLCCRSHLLZNTYLNEWYZYXCZXXGDKDMTCEDEXTSYYS#DQDFMSD#JLHRWNQLYBGLX#LGTGXBQJDZ#YJSJYJCJ#RN#MGRCJCZGJMZMGXMMRYXKJNYMSGMZJYMK#FXMBDTGFBHCJHKYLPFMDXLXJJSMTQGZSJLQDLDGJYCYLCM#CSDJLLNXDJFFFFJC#F##FFPFKHKGDPQXKTACJDHHZDDDRRCFQYJKQCCWJDXHWJLYLLZGCFCQJSMLZPBJJBLSBCJGGDCKKDEZSQCCKJGCGKDJTJLGZYCXKLQCCGJCLTFPCQCZGWBJDQYZJJBYJHSJDDWGFSJGZKCJCTLLFSPKJGQJHZZLJPLGJGJJTHJJYJZCCMLZLYQBGJWMLJKXZDZNJQSYZMLJLLJKYWXMKJLHSKJHBMCLYYMKXJQLPMLLKMDXXKWYXWSLMLPSJQQJQYYJFJTJDXMXXLLCRQBSYJBGWY##GGBC#XPJTGPAPFGDJQBHBNCFJYZJKJKHXQBGQZKFHTGGHDGLLSDJQXPQYQYBNQSXQNSZSWHBSXWHXWBZZXDMNDJBSBKBBZQLYLXGWXJJWAQZMYWSJQLSJXXJQWJEQX#HZETLZHLYYYSZZP#HYZCPTLSHTZCFYCYXYLJSDCJQAGYSLCLLYYYSGLQQQ#LDXZSCCCCADYCJYSFSGBFRSSZQSBXJPSGWSDRCKGJLGTKZJZBDKTCSYQPXHSTCLDJ#HMXMCGXYZHJDCTMHLTXZXYLAMOXYJCLTYFBQQJBFBDFEHTHSQHZSWWCNXXCDWHOWGYJLEGMAQCWGFJHCSNTFYDOLBYK#QWESQPWN#LRYDZSZTXYQPZGZWXHNXPYXSHMDQJ#ZTDPPBFYHZHHJYFQZWKGKZBLDN#SXHQEEGZXYLZMMZYJZGSZXKHKHTXEXXWYLYAPSTHXCWHZYDPXAHKYDXBY#H#KD#JNMYHYLPMGECSLNZHKXXLBZZLBMLSFBHHGSGYYGGBHSCYAJTXHLXTZQCWZYDQDQM#HD#LLSZH#SJZWFYHQSWSCELQAJYNYTLSXTHAZNKZZSDHLAXXTWWCSHQQTDDYZBCCHYQZPLXPSLZQGPZSZNGLYDQTBDLX#TCTAJDKYWNSYZLJHHDZCWRYYZYWMHYCHHHXHJKZWSXHDNXLYSCQYDPCLYZWMYP#KXYJLKSHTYHAXQSYSHXYSMCHKTSTRSWJPWXSGZJLWWSCHS#HSQNH#S#GNDA#TBAALCZMSSTDQJCJKTSCJAXPLGGXHHGOXZCXPDMMHLDGTYBY#JMXHMRZPLXJZCKZXSHFLQXXTTMXEZFCHZCCDYTCJYXQHLXDHYPJQXNLSYYDDYZJNYHQEZYSJYAYJKYPDGXDD#SPPYZNDLTHRHXYDXCJJHTC##CTLHBYNYHMHZLL#NXMYLLLFDCPPXHMXDKYCYRDLTXJCHHZNXCLCCLYLNZSX#JZZLNN##WHYQSNJHXYNTTDKYJPYCHHYYGKCWTWLGQRLGGTGTYGYHPYHYLQYQGCWYQKFYYE#TTTLHYYLLTYTTSPL#YZWGYWGPYDQQZZDQ##KCQNMJJZZBXTQFJKTFFBTKPZKBXDJJKDJJTLBWFZPPTKQTZTGPDGNTPJYFALQMKGXBCCLZFHZCLLLLA#P#XDJKLCCLGYHDZFGYDDGCYYFGYDXKJSE#DHWK##DK#NAXXHBPBYYHXCCGAPFQYXJDMLXCYJZLLBC#BSXGJYNDYBYJSPCWJLZKCDDTACSBKZDYZYPJZQSJNKKTKNJDJGYEPGTL#YQ#A#DNTCYHBLGDZHBBYDMJREGKZYHEYYBJMCDTYFZJZFGCJ##XHLD#XJJKYTCYKSSSMTWCTTQZLPBSZDTWCXGZAGYKTYWXL#LCPBCCLOQMMZSSLCMBJQSDZKYDCZXGQJDSMCYTZQQL#ZQZXSSBPKDFQMDDDDSDDTDWFHTDY##YQJQKYPBDJYYBTLJHDRQXLXHAYDHR#LKLYTWHLLRLLR#XYLB#SR#ZZSYMKZZHHKYHXKSMZSYZGCJFB#BSQLFZXX#NXKXWYMSDDYQ#GGQMMYHCDZTTFGYYHGSBTTYBYKJD#KYJPELHDYPQQNFXFD#KZHQKZBYJTZBXXFDXKDASWPAWAJLDYJSFHBLDNNDNQJTJNCHXFJSRFWHZFMDRFJYXWZPDJKZYJYMP#YZNYNXFBYTFYFWYGDBNZZZDNYTXZEMMQBSQEHXFZMBMFLZZSRSYMJGSXWZJSPRYTJSJGSKJJGMJJYNZJJXHGJKYMLPYYYCSYCGQZSWHWLYRJLPXSLCXM#SWWKLCDNXNYNPNJSZHDZEPTHMWYWXYYSYW#XJQSQXZDCLAEELMCPJPCDWBXSQHFEWTF#JTNQJHJQDXHWLBYCCFJLYLKYY#LDX#HYCSTDYWNRJTXYWTRMDRQ#WQCMFJDXZMHMAYX#WMYZQTXTLMRSPWWJHA##XTGZYPXYYRRCLMPAMGKQJSZYCYMYJSNXTPLNBAPPYPYLXMYZKYNLDGYJZCCHNLMZHHANQ#PGWJTZMXXMLLHGDZX#HXHRXYCJMFFXYWJFSBSSQLH#NDYCANNMTCJCYP#XNYTYCN#YM#MSXNDLYLYSLJNLXYSSQMLLYZLZJJJKYZZCSFBZXXMSTBJGNX#ZHLSHMCQSCYZNFZLXBRLNNYLMZRTGZQYSATSWRYHYJZMZDHZGZDWYBSSCSKXSYHYTSXGCQGXZZBHYXJSCRHMKKBSCZJYJYMKQQZJFNBHMQHYSNQNZYBKNQMCJGQHWLSZZSWXKHLJHYYBQCBFCDSXDLDSPFZFSKJJZWZXSDDXJSEEEGJSCSS#GCLXX#WWYLLYMWWWGYDKZJGGGTGGSYCKNJWNJPCXBJJTQTJWDSSPJXCXNZX#MELPTFSXTLLXCLJXJJLJSXCTNS#XLX##LYQRWHSYCSQ#YBYAYWJEJQFYQCQQCJQGXALDBZZYJGKGXBLTJYFXJLTPYDKYQHPMATLC#D#KXMTXY#HKLEFXDLAEGQTYMSAWHZMLJTWY#XLYJZLJEEYYBQQFFNLYXHDSCTGJHXYYLKLLXQKCCT#HJLQMKKZGCYYGLLLJDZGYDHZWYPYSJBZJDZGY#ZHYWYFQDTYZSZYEZKLYMGJJHTSMQWYZLJYYWZCSR#QY#LTDXWCDHJALWSQZWBDCQYNCJ##SZJL#CDCDTLZZZACQQZZDDXYBLXCBQJYLZLLLJDDZJGYQYJZYXNYYYEXJXKXDAZ#NRDLZYYY#JLSLLDYXJCYKYWNQCCLDD#YYYNYCGCZHJXCCLGZQJG#W##CQQJYSBZZXYJXJ#XJFZBSBDSFNSFPZXHDWZTDMPPTFLZZBZDMYYPQJRSDZSQZSQXBDGCPZSWDWCSQZGMDHZXMWWFYBP#GPHDMJTHZSMMBGZMBZJCFZHFCB##MQCFMBCMCJXLGPNQBBXGYHYYJYPTZGZMQBQDCGYBJXLW#KYDPDYMGCFTPFXYZTZXDZXTGKPTYBDCLBJASKYTSSQYYMSCXFJHHLSLLSZPQJJQAKLYLDLYCCTSXMCWFG#KBQXLLLL#YXTYLTYXYTDPJHNHGNKBYQNFJYYZBYYESSESSGDYHFHWTCJBSDZJTFDMXHCNJZYMQWSRXJDZJQPDQBBSDJG#FBK#BXDKQHMKWJJJGDLLTHZHHYYYYHHSXWTYYYCCBDBPYPZYCCZTJPZYWCBCLFWZCWJDXXHYHLHWCZXJTC#LCDPX#QCZCZLYXJJCJBHFXWPYWXZPCDZZBDCCJWJHMLXBQX#BYLRDDGJRRCTTTGQSCZWMXFYTMMZCWJWXYYWCZKYBZQCCTTQNHXNWXXKHKFHTSWOCCJYBCMPZZYKBNNZPBTGHJDLSCDDYTYFJPXYNGFXBYQXCBHXCPXXT#ZD##YCRXSXLHKMZXLTHDHKGHXXS#KQYHHCJYXGLHZXCXNHEKTTGQXQYPKDHE#TYKCNYMYYYPKQYYYJXZLTHHQTBYQHXBMYHSQCHWWYLLHCYYLNNEQXQWMCFBDCCMLJGGXDQKTLXKKNQCDGCLWYJJLYHHQTTTNWCBHXTXWHERZJYDJCCDBQCDGDNYXZDHCQRXCBHZTQCBXWGQWYYBXHMBYMYKDYECMKKYAQYNGYZSLF#KKQGYSSQYSHJGJCNXKZYCSSBKYXHYYLSTYCXQTHYSM#SCPMMGCCCCCMTZTASMGQZJHKLOSJYLSWTMQSYQKDZLJQQYPLCYCZTCQQPBBCJZCLPKHQCYYXXDTDDDSJCXFFLLCHQXMJLWCJCXTSPYCXNDTJSHJWHDQQQCKXYAMYLSJHMLALYGXCYYDMAMDQMLMCZNNYYBZKKYFLMC#CMLHXRCJJHSYLNMTJGGGGYWJXSRXCWJGJQHQZDQJDZJJSKJKGDZCGJJYJYLXZXXCDQHHHESLMHLFSBDJSYYSHFYS#CZQLBBDRF#ZTZDKYKHSCYGKWTQZRKMSYNBCRXQBJYFAXPZZEDZCJYKBCJWHYJBQZZYWNYSZPTDKZPFPBAZTKLQ#HBBZPTPPTYZZYBHNYDCPZMMSYCQMCJFZZDCMNLFPBPLNGQJTBTTAJZPZBBDNJKLJ#YLNBZQHGSJZNGGQSCZKCXCHPZSNBCGZKDDZQANZGJKDRTLZLDWJ#JZLYZTXNDJZJHX#ATNCBGTZCSSKMLJPJYTSNWXCFJWJJTKHTZPLBHSNJZSYJBHBZYZLSTLSBJHD#WQPSLMMFBJDWAJYZCCJTBNNNZWXXCDSLQGDSDPDZGJTQQPSQLYYJZLGYHSZLCTCBJTKTYCZJTQKBSJLG##ZD#XSGPYNJZJJYYKNHRPWSZXMTNCSZZYSHBYHYZAXYWKCJTLLCKJJTJHGCSSXYQYCZBY##LWQCGLZGJGQYQCCZSSBCRBCSKYDZNXJSQGXSSJMECNSTJTPBDLTHZWXQWQTZEXNQCZGWESKSSBYBSTSCSLCCGBFSDQ#ZLTCGLLLZGHZCTHCNMJGYZAZNMSKSSTJMMZXKPJYGQLJYJPPLDXRKZYXCCSNHSQHDZNLZHZJJCDDCBCJXLBFQBCZZTPQDN#XLJCTHQZJGYLKLSZZPCJDSCQJHJQKDXGPBAJY##SMJTZDXLCJYRYYNHJBNGZJKMJXLTBSLLRZPYLSSZNXJHLLHYLLQQZQLSYMRC#CXSLJMLZLTZLDWDJJLLNZGGQXPSSKYGYGGBFZBDKMWGHCXMCGDXJMCJZDYCABXJDLNBCDDYGSKYDQDXDJJYXMSAQAZDZFSLQXXJ#JZYLBLXXWXQQZBJZ#FBBLYLWDSLJHXJYZJWTCJCYFQZQZZDZSXZZQLZCDZFXHYSPY#PQZMLPPLFFXJJNZZYLSJ#YQZFPFZGSYWJJJHRDJZZXTXXXXGHTDXCSKYSWMMTCWYBAZBJKSHFHGCXMHFQHYXXYZFTSJYZBXYXPZLCHMZMBXHZZSSYFDMNCWDABAZLXKTCSHHXKXJJZJSTHYGXSXYYHHHJWXKZXCSBZZWHHHCWTZZZPJXSYXQQJGZYZAWLLCWXZ#XXYXYHFMKHYDWSQMNJNAYCYSJMJKGWCQHYLAJGMZXHMMCNZHBHXCLXDJPLTXYJHTYYLTTXFQZHYXXSJBJYAYRSMXYPLCKD#YHLXRLNLLSTYCYYQYGYHHSCC#MCCTZCXHYQFPYYRPBFLFQ#NTSZLLJMHWTZJQYZWTL#MLMDWMBZZZ#ZRBPDDDLQJJBXTCS#ZQQYGWCSXFWZLXCCRSTDZMCYGGDYQSGT###L#MYMMSYHFBJDGYXCQPSHXCZCSBSJYJGJMPBWAFFYFNXHYDXZYLREMZGZCY#DSZ#L#JC#QFNXXKPYXZGXJJGFMYYYSNBDYLBNLHPFZDCYFBMGQRRMZSZXYSJTZNNYDZZCDG#JAFJBDKNZBLCZSZPSGCYJJSZLM#RZ#BZJLDL#LLYSXSQZQLYXZLSGKBRXBRBZCYJXZJZEEYFGKLZL#YHGZCGZLFJHGTGWKRAAJYZKZQTSSHJJXDZYZ#Y##ZYNZDQQHKJZXSSZBTGJBBFRTJXLLFQWJGCLQTYMBLPZDXTZAGBDHZZRBGJHWNJTJXLHSCFSMWLLDCYSJTJKZSCFWJLB##TZLLJZLLQBZCQMQQCGCTFPBPHZCZJLPYYGHDTGWDXFCZQYYYQYSRCLQZFKLZZZGFFCQNWGLHJYCJJCZLQZZYJBJZZBPDC###JGXDQ###LZ####PZ#TSDYFWWDJZJYSXYYCZCYHZWPBYHXRYLYBHKJKSFXTZJMMCHHLLTNYYMSXXYZPYJJYCSYCWMDJJKQYRHLL##P#GTLYYCLJ###XJYZFNMLRGJJTYZBSYZMSJYJHGFZQMSYXRSZCYTLRTQZSSTKXGQKGSPTGXDNJSGCQCQHMXGGZT#YDJJZ##BZ#XQLHYQGGGTHCSCBYHJHHKYNGKGGCMJDZYLCCLXQSFTGJSLLLMLCSKSTBLJSZSZMMNYTPZSXQHJC##Q#YEXZQZCPSHKZZYZXXDFGMWQNLLQXRFZTLYSTCTMJCSJJTHJNXTNRZCZFQRHCGLLGC####JD#L##YTSJTLNYXSSZXCGJZYQPYLFHDJSBBDCZKJJJQZJQDYBSSL#CMYTTMQ#BHJQMNYGJYEQYQMZGCJKPDC#MYZGQLLSLLCLMHOLJGDYLFZSL#C#ZLYLZCJESHNYLL#X#JXLYJYYYXNBCLJSSWCQQ##YLLZLDJ#LLZLLBNYL#QCHXYYQOXCCCKYJXXXYKLKSXAYQHCQKKKKCS#YXXYQXYGWTJOHTHXPXXXX#LCYKYCHZZCBWQBBWJQCSCSZSSLCYLGDDSJZMMYMCYTSDSXXSCJPQQSQYLYFZYCHDJY#YWCBTJSYDCHCYDDJLBD#JSODZYQYSQKYJDHHGQJYOHDYXWGMMMAZDYBBBPPBCM##P#JZSMTXERXJMHQD#TPJDCBS#MSYYTHJTSLMLTRCPLZSZMLQDSDMJMQPNQDXCFRN#FSDQQYXHYAYKQYDDLQYYYS#ZBYD#LNTFGTZQBZMCHDYCZCWFDXTMQQSPHQWWXSRGJCW##TZCQMYWQJRJHTQJBBGWZFXJH#QFXXQYWYYHYCCDYDHHQMRMTMWCTBSZPPZZGLMZFOLLCFWHMMSJZTTTHLMYFFYTZZGZYSKJJXQYJZQBHMBZCLYGHGFMSHPCFCSNCLPBQSNJYZSLXXFPMTYJYGBXLL#BXPZJYZJYHHZCYWHJYLSJEXFSSZYWXKZJL#ADYMLYMQJMWXXHXSKTQJEZRPXXZGHMHWQPWQLYJJQJJCSZC#KJLCHHNXJLQWZJHBMZYXBDWHYPYLHLHLGFWLCFYYTLHJJCWMSCPXSTKPNHJXSNTYXXTESTJCTLSSLSTDLLLWWYHD#RJZSFGXSSYCZYKWHTDHWJGLHTZDQDJZXYQGGHLTZPHCSQFCLNJTCLZPFSTPDYNYLGMJLLYCQHYNSPCWYLHQYQTMZYMBYWRFQYKJSY#LZD#JMP#YYSSRHZJNYQTQDFZBWWDWWRXCWGGYHXMKMYYYHMXMZHNKSEPMLQQMTCWCTMHMXJPJJHFXYYZSJCHTYBMSTSYQZ#JJ#YTLHYNBYQCLCYCNZWSMY#K#JXLGG##PJGTYSYLYMZSKTDWLGSMZSYLMPWLCWXWQZSSYZSYXYRHSSNTSRWPCCPWCMHDHHXZDZYFJHGZTTSBJHGYGLZYSMYCLLL#BTYSHBBZJKSSDMALHHYCFYGMQYPJYJQXJLLLJGCLZGQLYCJCQTOTYXMTMSHLLWLQFXYMZMKLPSZZCXHKJYCLCTYJCYHXSGYX##XLZWPJJPDHJWPJPGXQQXLXXDHMRSLZZYDWDTCXK#STZSHBSCCSTPLWSSCJCHJLCGCHSSPHYLHFHHXJSX##L#YLMZDWZXYLSXLMZYKCLDYAHZCMDDYSPJTQJZLNGJFSJSHCTSD#ZLBLMSSMNYYMJQPJHRZWTYYDCHJLJAPZWBGQX#KF##JWLZLLYYLSJYDWHXPSBCMLJPSCGBHXLQHYYLJXYSWXHHZLLDFHL##YMJLJYFLYJYCDRJLFSYZFSLLCQYQFGQYH#SZLYLMSTDJC#HBZLLNWLXXYGYYHBMGDHXX#HLZZJZXCZZZCYQZFNJWPYLCPKPYKPMCLGKTGXZ#GWQ#DXZZKZFBDDLZXJTPJPTTBYTHZZDWSLCH#HSLJJXXQLHYXXXYWZYSWTXZKHLXZXZPYHGZHK#FSYH#TJR#XFJCPJZTWHPLSHFCRH#SHXKJXXYHZJDXJW##HYHMJCBFLKHTXCWHJFWJCFPQRXQXZYYYJYGRPG#SCS####CHKZDXHFLXXHJJBYZWTTXNNCYJJYMSWYXQRMHXZWFQSYLZ#GGBHYX##BGTTCSEBHXXWXYHHXYXNS#YXMLYWR##QLXBBZLJSYLFSYTJZYHYZAWLHORJM#SCZJXXXYXCHCYQRYXQZDDSJFSLYLTSFFYXLMTYJM##YYYXLTZCSXQCLHZXLWYXZH##LRXKXJCCYHLBRLMBRLLAXKS#LLJLYXXLY#RYLCJTG#CMTLZ#LCYZ#PZPCYAW#JJFYBDYYZSEQCGZDQYQPBPSJPDCTZBDBBCY#DYCN#PJMTMLRMFMMGWYGBSJGYGSMDQQQZTXMKQWGXLLPJGZBQRDJJJFPKJKCXBLJMSWLDT#J#LDLPPBXCWKCQ#BFQJCCAJZGMYKBHYYHZYKNDQZMBPJNSPXTHLFPNAYGYJDPGXNHHJHZJXSTRSTLDXSHZYSYBMXJLXYSLBZYSLHXJPFYBQNBYLXJQKYGZMCYZZYMCCS##LHZJWFWYXZMWYXTYNXJHBYYMZYSBMHYSMYDYSH#YZCHMJJMZCAAHCFJBBHPLYTYLSX##XGJDHKXXTXXNPHNMLNGSLTXMRHNLXQJXMZLLYSWQGDLBJHDQGJYJYYMGWFWJYFBBYJYJWJMDPWHXQLDYAPDFXXBCGJSPCKRSSYZJMSLBZZJFLJJJLGXZGYXYXLSZQKXBEXYXHGCXBP#D#HWECTWWCJMBTXCHXYQQLLXFLYXLLJLS##WDPZCMYJCLWSWDCZPCHQEKCQBWLCGYDBLQPPQZQF#QDJHYMM#XTXDRMZWRHJCJZYLQXDYYNHYYHRSL#RSYWWJJYMTLTLLGZQCJZYABTCKZCJYCCQLYSQXALMZY#YZLWD#ZXQDLLQSHGPJFJLJ#JABCQZDJGTHHSST#YJLBSWZLXJXRHGLDLZRLZQZGSLLLLZLYMXXGDZHGBDBHZPBRLW#J#FPFDWO###HLYPC#JCC#DMPZPBZZ#CYQXLDOMZPLZWPDWYYGDSTTHCSQSCCRSSSYSLFYBFNTYJSZDFNDPTHTQZMBQLXLCMYFFGTJJQWFTM#PJWDNLBZCMMC#GBDZLQLP#FHYYMJYLYDCHDCJWJSCTLJCL#TLJJCBDDPNDSSZYCNDBJLGGJZXSXNLYCYBJJZXCBYLZCFZPPGKCXQDZFZTJJFQDJXCBNZYJQCTYKWHDYCZHYMDJXTTMPXSPLZCDWSLSHXYPZGTFMLCJDACBBMGDEWYCYZCDSZJYHFLYSTYGWHKJYYLSJCXGYWJCBLLCSNDDPTZBSCLYZCZZSSQDLLMJYYHFLLQLLXFDYHYBXGGNYWYYPLLSDLDLLPJCYXJZ#LHL#DXYYQYTDLLLB#GPFDFBBQBZZMDPJHGCLGMJJPGAEHHBWCQXAJHHHZCHXYPHJAXHLPHJPGPZJQCQZGJJZZGZDMQYYBZZPHYHYBWHAZYJHYKFGDPFQSDLZMLJXJPGALSZDAGLMCGXMMZQRTXDXXPFDMMSSYMPFMDMMKXOSYZYSHDZKJSCSMMZZZMDYDYZZCZXBMLSDMDYEMXCKJMZTYYMZMZZMJSHHDCCJEWXXKLJSTHWLSQLYJZLLSJSSDBBMHNLYJCZYHMXXXG#CJMDHXTKGRMXFWMCKMWKDCKSXQMMMSZZYDOMSCLCMPCJM#RPXQPZDSSLCXKYXTMLKXYAHZJGZQWCSNXYHMMBMLKJXMHLMLGMXCTKZMJLYSCJSYSZHSYJZJCDAJZHBSDQJZGWTKQXFKDMSDJLFMNHKZQKJFEYPZYSZCDPY#FFMZQYLTTDZZAFMZLBNPPLPLPBPSZNLLT#L#CKQZKHENJLWALKXYTPX#HSXQ#WQ#KXQCLHYXXMLICCELYMQYSKY##LCJNSZKPYZKCQZQLJBDMDJHLASQLBYDWQLWDGPQCRYDDDTJYBKBWSZDXDTNPJDTC#Q#FXQQMGNSECLSTBHPWSLCZXQLPWYDZKL#QGZCQAPLLKQCYLBQMQCZQC#JSLQZDJXLDDHPZQDL#J#ZQDXYZHHZLKCJQDYJPPYPQAKJYRMPCB#MCXKLLZLLFQPYLLLMBSGLZYS#LRSYSQTMXXXZQZBDZ#YSYZTFFMZZSMZQHZSSCCMLYXWTPZGXZJGZGSJCGKDDHTQGGZLLBJDZLSBZHYXYZHZFYWXYTYMSD#ZZYJGTSMT#XQYXJSCTKSLNNDLRYTZLRYYCXQHTXSRTZCGYXBNQQCFHYKMZGBZYMKBPNLYZPBLMCNQYZZZSJZHJCTZHHYZZJRDYZHNFXKLFZSLKGGTCTSSYLLGZRZBBJZZKLPKBCZYSL#YXBJFBNJZZXCDWLZYJXZZDJJGGGRS#JKMSMZJLSJYWQS#YHQJSXPJZT#LSNSHRNY#JTWCHGLB#RZLZXWJQXQKYSJYCZTLQZYBBYBWZJQDWGYZCYTJCJXCKCWDKKZXS#KD#YWWYYJQYYTCYTDJLXWKCZ#KLCCPZCQQDZLQLC#F#CHQ###SMJZZLLBJJZ#SJHTSJDYSJQJPDSZCDCHJKJZZLPYCGMZ#DJXBSJZZSYZYHGXCPBJYDSSXDZNCGLQMBTSFCBPDZDLZNFGFJGFSMP#JQL#BLGQCYYXBQGDJJQSRFKZTJDXCZKLBSDZCFYTPLLJGJHTXZCSSZZXSTCYGKGC#GY#QXJPLZBBBGCGYJZGCZJSZLBJLSJFZGKQQJCGYCJBZQTLDXRJ#BSXXPZSHSZYCLWDXJJHXMFCZPFZHQHQMQ#K#LYHTYCGFRZGNQXCGPDLBZCSCZQLLJBLHBDCYPSZPPDYMZZXGYHCKCPCJGSLZLNSC#SLD#XBMSDLDDFJMKDQDHSLZXDSZ#P#PGJDLYBDSKLQLBZL#LKYYHZTTMCJ##TZZFSZ#ZTLLJTYYLL#LLQYZQLBDZLSLYYZXMDFSZSNXLXZNC#Q#BBWSKRFBC#LC##BLGJPMCNZLSTLQSHTZCYZLZB#F###LXFLCGLYLJQCBZLZJG#SSTBRMHXZHJZCLXFNBGXGTQ#CZTMSFZKJMSSNXLJKBH#ZXNTNLZDNTLMSJXGZJYJCZXYHYHWRWWQNZTNFJSCPYSHZJFYRDJSFSCJZ#JFZCZCHZLXFXSBZQLZSGYFTZDZSZXZJBJMSZ#JRHXJZCGBJKHCGGTXKJQGLXBXFGTRTYLXQXLDTSJXHJZJJCMZLCQSBTXWQGXTXXHXFTSDKFJHZYJFJ##ZLDLLLCQSQQZQWQXSWQTWGWBZCGCLLQZBCLMQQTZGZYZXLJFRMYZFLXYZ#XXJKXRMQDZDMMYXBSQBHGCMWFWYGMXLZBYYTGZYCCDXYZX##G#YJYZNBGPZJCQSYXSXRTFYZGRHZTXSZZT#CBFCLSYXZLZQMZLMPLMXZJSSFSBYSMZQH#X#XRXHQZZZSSLYFLCZJRCRXHHZXQ#DSHXSJJHZCJJBCYNSYSXJBQLPXZQPLMLXZKYXLXC#LCYCXXZZLXDLLLSJYHZXHYJWKJRWYHCPSGNRZLFZWFZYNSXGXFLZSXZZZBFZSYJDBRJKRDHHGXJLJJTGXJXXSTJTJXLYXQFCZGSWMSBCTLQZZWLZZKXJMLTMQYHSDDBXGZHDLBMYJFRZFSGCLYJBPMLYSMSXLSZJQZHJZFXGFQF#BPH#GYYQXGZT#QWYLTLGWWGWH#LFMFGZJMGMGBGTJFLYZZGZYZAFNSSPMLBFLCWBJZTLJJMZLPJJLYMQTMYYYFBGYGQZGLYZDXQYXRQQQHZXY#QXYGJTYXFSFSLLGNQCYGYCWFHCCCFXPYLYPLLZQXXXXXQQHHXSHJDCFTSCZJXSPZWHHHHHAPYLQ#LPQAFYHXDYL#KMZQGGGDDESRENZLTZGCHYPPCSCJJHCLLJTOLNGPZLJLHYMHEZTYDSQYCDDHGZ#NDZCLZYWLLZNTEYDG#LHSLPJJBDGWXPC##TYCK#KCLWKLLCASSTKNZDN#JTTLYYZSSYSSZZRYLJQKCGDHHYRXRZYDGRGCWCGZHFFFPPJFZYNHKRGYWYJPQXXFKJTSZZXSWZDDFBBQTBGTZKZNPZFPZXZPJSZBMQHKYYXYLDKLJNYPKYGGGDZXXXEEXPNZ#CTZCMXCXMMJ##KSZQNMNLWBWGQJJRHCLSTMCSXTZCXXTPCNFDTN#PGGLLZCJLZPBLPGKCDTNJJLYARSCFFJFQWDPGZDWMRZZCGODAXNYCNYZRESTYJWJYJDBCFXNMWTTBQLWSTSZGYBLJPXGLB#CLGPCPJFTMXZLJYLZ#CLTPNZLCGXTFZJSWCRXSFYTZDKNTLBYJCYJLLSTGQCBXRHZXBXKLYLHZLQZLNZCQWGZLGZJNCJGCMNZZGJDZXTZJXYCYYCXXJYYXJJXSS#JSTSSTDPPGHTCSXWZDGSY#PTFBCHFBQ#ZJCLZZDBXGCJLHPX#FZFLSYLT#WBMNJHSZBMD#BCYSCCLD#YT#DTLYJJHMQLLCSGLJJSYFPYYC#YLTQANTJJPWYCMMGQYYSQTXQMZHSZXBFTWWZQSWQRFKJLXJQQYFBRXJHHFWJGZYQACMYFRHCYYBY#WLPEXCCMSYYRLTTDMQLYKMPBGMYYJPRKZNBBSQYXBHYZDJDNGHPMFSGBWFZMFQMMBZMZDCJJL#N#XYQGMLRYGQCCYXZLWJKCCCGGMCJJFYZZJHYCFRRCMTZ#ZXHKQGDJXQCJEASCRJTHPLJLSZDJRBZQHQD#RHYLYXJSYMHZYDWCDFRYHBBYDTSSCCWBXGLFZMLZJDQSSCFJMMXJCXJYTDCWHYCJWYNSXLFEMWJNMKLLSW#LHYYY#CMMCWJDQDJZGLLJWJNKHPZGGFLCCSCZMCBLTBHBQJXQDJPDJZTGHGLFJAWBZYJJLTSTDHQHCTCBCHFLQMPWDSHYYTQWCN#TJTL##M###YYYXSQKXWYYFLXYNZWCXYPMAELYHGJMZZJBRXXAQJFLJPFHHHYTZZXSGJJMHSPGDZQWBWPJHZJDYJCQWXKTHXSQLZYYMYSDZG#XCKK#JLWP#SYSCSYZLNMHQSYLJXPCXTLWZQZPCYCYKPPPNSXFYZJJRCEMHSZMHXLXGLRWGCSTLRSXBYGBZG#XC#L#JLCLY#YMDTMTZPALCXPQJCJWTCYYJLBLSBZLJMYLJPGHDSLSSDMXMBDCZSXWHAMLCZCPJMCNHJYJYSYKCHSKQMZ#QDLLKABLWJXSFMOCDXJRRLYQCHJMYBYQLRHETFJZFRFKSRYXFJDWTSXXLY#QJYSLYXYJHSNLXYYXHBHAWHWJCXLMYLJCSQLKYDTTXBZSLFDJGXSJKHSXXY#SSXDPWNCMRPTQZCZENYGCXQFJXKJBDMLJCMQQX#OXSLYXXLYLLXDZBTYMHPFSTTQQWLH#GY#LSCALZXCLHTWRRQHLSTMYPYXJJXM#SJ#NBRYXYJLLYQYLTWYLQYFMLKLJD#LLHFZWKZHLJMLHLJKLJ##LQXYLMBHHLNLSXQCHXCFXXLHYHJJGBYZZKBXSCQDJQCS#DZSYGZHHMGSXCSYMXFEPCQWWRBBYYJQTYQTYJHQQZYCMWFFHGZFRJFCDPXNTQYZPCYHHJLFRZGPBXZDBBGRQSTLGDGYLCQMGCHHMFYWLZYXKJLYPJHSYWMQQGGZM#ZJRSQXLQSYJSCBEHSXFSZFXZWFLLBCYYJDYTDSHGZSFJMQQYJZMQSXLLDTTKGHYBFPWDYYSQQRNQWLGWDEBDWCYYGC#LKJHTMXMYJSXHYBRWFYMWFRXYQMXYSCTZZTFYHMLDHQDLGYJNLQRYJ#LPSXCXYWLSBRRJWQHQYBHTYDNHHHMMYWYTYC##M#SZCCDALWZTCPQPYJLLQZYJSWJWZZMMGLMXCLMX#ZMXMZSQTZPPJQBLPGXJZHFLJJHYCJSRXMCXS#CDLXSYJDCQCXSLQYCLZXLZZXMXQRJMHRHZJBHMFLJLMLCLQNLDXZLLLFYBSGJY#XCQQDCMJJZZXHNPNXZMEKMXXYKY#LXSXTLJXYHWDCWDZHQY#BGYBCYSCFGFSJNZDRZZXQXRZRQJJYMCANHRJTLDBPYZBSTJHSXZYPBDWFGZZRPYM#NKXCQBGX#B#FYCKRJJCMJELRZGYCL##ZD#KKNSJKCLJSPGYYZLQQJYBZSSQLLLKJFCBGTYLCCCDBLCPPFYLGYDXZJQJZGK#TTFCXBDKDXXHYBBFYTYHBCL##YDGDHRYRNJSBTCSNYJQHKLBLZSLYDXXWBCJJSBX#PJZJZJDZFBXXBRMLADGCSNCLBJDSTBLPRZ#SWSBXBCLLXXLZD#ZSJPY#YXXYFT#BFBHJJJGBYGJPMMMMSSZLJMTLYZJXSWXTYLEDQPJMYGQZJGDJLQJWJQLLSDGJGYGMSZLJJXDTYGJQJJJCJZCJGDZDSHQGCJGGHJHQXSNJLZZBXHSGZXCXYLJXYXY#DFQQJHJFXDHCTXJYRXYSQTJXYEFYYSSYXJXNCYZXFXCSXSTXYYSCHSHXZZZGZZZGFQDLDYLNPZGYJAZTYQZPBXQBDZTZCZYXXYHHSCJSHCGGQHJHGXWSCTMZMEHYXGEBTCLZKKWYTJZRSLEKESTDBCYHQQSAYXCJXWWGSPHJSZSD#CSJKQCXSWXFCTYNYDPCCCZJQTZWJQJZZZQZLJZHLSBHPYDXPSXSHHEZDXFPTJQYZCXHYAXNCFZYYHXGNQMYW#TZSJB#HHGYMXMXQCNTSBCQSJYXXTYY#YBCQLMMSZMJZJLLCOGXZAAJZYHJMCHHCXZSXSDZNLEYJJZJBHZMZZSQTZPSXZTDSQJJJLNYAZPHHYYSRNQZTHZHYYJYJHDZXZLSWCLYBZYECWCYCRYLCHZHZYDZYDYJDFRJJHTRSQTXYXJRJHOJYNXELXSFSFJZGHPZSXZSZDZCQZBYYKLSGSJHCZSHDGQGXYZGXCHXZJWYQWGYHKSSAQZZNDZFKWYSSDCLZSTSYMCDHJXNYWEYXCZAYDMPXMDSXYBSQMJMZJMTZQLPJYQZCGQHXJHHHXXHLHDLDJQSLDWBSXFZZYYSCHTYTYJBHECXHJKGQFXBHYZJFXBWHBDZFYZBCHPNPGNYDMSXHKHHMHMLNBYJTMPXEJMCTHJBZYFCGTYHWPHFTGZZEZSBZEGPBMDSKFTYCMHBLRHGPZJXZJGZJYXZSBBQSCZZLZSCSTPGXMJSFTCCZJZDJXSYBZLFCJSAZFGSZLWBCZZZBYZTZY#SWYJGXZBDSY#XLGZBZFYGCZXBZHZFTPBGZGEJBSTGKDMFHYZZJHZRLZZGJQZLSFDJSSSBZGPTLFZFZSZYZYZSYGCXSNXXCHCZXTZZLJFZGQSQQXCJQCCCCDJCDSZZYQJCCGXCTDLGSCXZSYJJQTCCLQDQZTQCHQQYZT#ZZZPBKKDJFCJFZSYPQYQTTYNLMBDKTJCPQZJDZFPJSBNJLGYJDXJDZZKZGQKXCLBZJTCJTQBXDJJJSTCJNXBCQMSLYJCQ#TJQWWZJJNJJLLLHJCWQTBZQJCZCZPZZDZYDDCYZDZCCJGTJFZDPRNTCTJDCXTQZDTJNMLZBCLLCTDSXKJZQDMZLBZNBTJDCXFCZDBCZJJLTQQPLDCKZTBBZJCQDCJWYNLLZLZCCDWLLXWZLXRXNTQJCZXKJLSGD#QTDDGL#LAJJT##Y#KQLLTZ#TD#YCYGJWYXDXFRSQSTCDENQMRRFZHHQHDLDAZFKAPBGKPZREBZZYKYQSPEQJJGLKQZZZSLYSYHYZWFQZNLZZLZHWCGKYPQGNPGBLPLRRJYXCCQGYHSFZFWBZYWTGZXYLJCZWH#CJZPLFFLGSKHYJDEYXHLPLLLLCYGXDRZELRHKKLZZYHZLYQSZZJZQLJZFLNBHGWLCZCFJWSPYXZLCLXGCCPZBLLCXBBBB#BBCBBCRNNZCC#RBB##LDCGQYYQXYGMQZW#ZYTYJHYFWDEHZ#JYWLCCNTZYJJCDEDPWDZTST#JHTYMBJNYJZLXTSGTPHNDJXXBYXQTZQDDTJTDYZTGWSCSZQFLSHL#LBCJBHDLYZJYCKWTYDYLBNYDSDSYCCTYSZYYEBGEXHQDDW#YGYCLXTDCYSTQ#YGZASCCSZZDDLCCLZRQXYYWLJSBYMXSHZTEMBBLLYYLLYTDQYSHYMRQ#KFKBFXN#SBYCHXBWJYHTQBPBSBWDZYLKGZSKYGGXZJXHXJXGNLJKZ#YYCDCLFWFGHLJGJYBXBLYBXQPQG#TZPLNCYBXDJYQYDYMRBEYJYYHKXXSTMXRCZZJWXYHYBMCFLYZHQYZFQXDBXBCWZMSLPDMYCKFMZKLZCYQYCZLHXFZLYDQZPZYHYJYZMDXTZF##YTTQTZHGSPCZMLCCYTZXJCYTXMKSLPZHYXNWLLYTPZCTZCCKTMDHXXTJCYPKSMQCCYYAZHTJPSYLZLYJPJXTPNYLJJYNRXCYLMMNXJXMYBCSYSSLZYLLJ#QYDDZDPQHFZZBLFNDSQKCZFYHHGQMRDSXYCSTXNQ#JPYYBFCXTYYFPNXEJDGYQBJRCNFYJQPGHYJSYZNGRHTK####DZNTSMGELBYGBPYSZBYDJZSSTJZSSXZBHBSCSBZCZPTQFZLQFLYPYBBJGSZMNNDJMDSYSKKBJTXHJCEGBSMJYJZCSTMLJYXRZZQSCXXQPTZHMKYXXXJCLJPRMYYGADYSKQL#ADHRSKQXZXZTCGGZDLMLWXYBWSYCTBHJHCFCWZSXWWTGZLXQSHLXCZJXTMPLPRCGLT#Z#TLZJCYJGDTCLKLBLLQPJMZPAPXYZLAKTKDWCZZBNCQTDQQZQYJGMCTXLTGCSZLMLHBGLK##NWZ#DX#HL#MKYDLGXDTWCFRJERCTZHYDXYKXHWFZCQSHKTMQQHTCHYMJDJSKHXDJZBZZXYMPAJ#MCTBXLSXLZYNWRTSQGSCBPSBSGZWYHTLKSSSWHZZLYYTNXJGMJ##S###NLSOZTXGXLSAMMLBWLDQCYLAKQCQCTMYCFJBSLXCLZJCLXXK#B##ZLHJPHQPLSXSCKSLNHPSFQQYTXJJZLJLDTZJJZDYYDJNTPT##DSKJFSLJHYLZQQZLBTHYDGDJFDBYAZXDZHZJNTHQBYKNXJJ#CZMLLJZKSPLDSCLBBL##LELXJLBJYCXJXGCNLCQPLZLZNJTSLJQYZDZPDTQCSJFDMNXCXGBTJDCZNBGBQYQJWGKFHTNBYQZQGBEPBBYZMDJDYTBLSQLBSXSBNPDXKLEMYYCJYNZDTLDYKZZXTDXHQSJYGMZSJYCCTAYRZLPWLTLKXSLZCGGTXCLFXLKJRTLQJAQDTCMBQDKKCXGLCZJZXJHPTDJJMZQYKQSECQZDSHHADMLZFMMZBGNTJNNLHBYJBRBTMLBYJDZXLTJLPLDLPCQDHLHZLYCBLCXCCJADQLMCMMSSHMYBHB#KKBHRSXXJMX#DZN#PXLBBRHGGGFCHGM#KLLTSJYYCQLCSKYMYEHYWXBXQYWBAWYKQLD##TNTKHQCGDQKTGPKXHCPDHTW#MSSYHBWCRWXHJMKMZNGWTMLKFGHKJYLDYYCXWHYECLQHKQGTTQKHFFLDXQWYTYYDESBPKYRZPJFYYZJCEQDZZDLATTPBFJLLCXDLMJSDXEGYGSXQXCFBXSSZPDYZCX#NYXPPZYDLYJCCPLTXL#XYZYRSCYYYTYLWWNDSAHJSYGYHGYWWAXTJZDAXY#RLTDPSSYXFNEJDXYEHLXLLLZHZZJNYQYQYXYJGHZGJCYJCHZLYCDSHHSGCZYJXCLLNXZJJYYXNFSMWFPYLLALLABMDDXWZXJMCXZTZPMLQCHSFWZYNCTL#DYWLSLXHYMMYLMBWWHYXYADDXYLLDJPYBPW#XJMMMLLHAFDLLAFLB#HHBQQJTZJCQJJDJTFFKMMMPYTHYGDCJRDDWRQJXNBYSNMZDBYYTTJHPY#YJTJXAAHG#DQTWYSTQXKBTZBKJLXRBYQQHXMJJBDJ#TGTBXPGBK#LGQXJJJCDHXQDWJLWRFMJGWQHC#RXSWGBTGY#BWHDWDWRFHWYTJJXXXJYZYSLPHYYPYYXHYDQPXSHXYXGSKQHYWBDDDPPLCJLHQEEWJGSYSHDPPLFJTHKJLTCYJHHJTTPLTZZCDLYHJKCJQYSTEEYHKYZYXXYYSDDJKLLPYMQRHQGXQHZRHBXPLLNQYDQHXSXXWGDQBSHYLLPJJJTHYJHYPHTHYYKTYEZYENMDSHLZRPQFB#FXZBSBTLGXSJBSWYYSKSFLXLPPLBBBL#SFBFYZBSJSSYLPBBFFFFSSCJDSTZSXTRYJCYFFSYZYZBJTLCTSBSDHRTJJBYTCXYYEYLYCBNEBJDSYSYHGSJZBXBYTFZWGENHHHTHJHHXFWGCSTBGXKLSTYYMTMBYXJSKZSCDYJRCYTHXZFHMYMCXLZNSDJTXTXRYCFYJSBSDYERXJLJYBBDEYNJGHXGCKGSCYMBLXJMSZNSKGXFBNBBTHFJAAFXWXFBXMYFHDTTCXZZPXRSYWZDLYBBKTYQ#QJBZYPZJZNJPZJLZTFYSBTTSLMPTZRTDXQSJEHB#YL#DXLJSQMLHTXTJECXALZZSPKTLZKQQYFSYJYWPCPQFHJHYTQXZKRSGTKSQCZLPTXCDYYZSSLZSLXLZMACPCQBZYXHBSXLCDLTZTJTYLZJYYTBZYPLTXJSJXHLBMYTXCQRBLZSSFJZZTNJYTXMYJHLHPBLCYXQJQQKZZSCPZKSWALQSPLCCZJSXGWWWYGYATXBBCTDKHQGKGTGPBKKYSLBXPBCKBMLLNDZSTBKLGGQKQLZBKKTFXRMDKBFTPZFRTPPMFERQ#XGJPZSSTLBZTPSZQZSJDHLJQLZBPMSMMSXLQQNHKNBLRDDNHXDHDDJCYYLJFQGZLGSYGMJQJKHBPMXYXLYTQWLWJCPBMJXCYZYDRJ#GTDJXEESHTMJSFYBLWHLZFFNY##HXQHPLTBQPFBJWJDBYGPNXTBFZJG###TJSHXEAWTZYLLTYQBWJBGXGH##K#DJTMXZSQYNZGG#WQTFWYLSSGM####YNZQQXNCJDQGZDLFNYKLJCJLLZLMZZN###SSHSHXZLZJBBHQZWWYQRDHLYQQJBEYFSJXTH#R#WJHWFSLMSSY#TTYGRQQWR#LALHMJTQJSMXQBJJZJQZYZKXBJQXBJXSHZSSFJLXMX##FGHKZSZGGSLC###RJXH#LLLMZXELGLXYDJYTLFBHBPNLYZFBBHPTGJKWETZHKJJXZXXGLLJLSTGSWJJYQLQZFKCGNNDJSSZFDBCSWWSEQFHQJBSAQTYYFJLBXBMMYWXJSLZHGLZGNYFLJBYFDJF#GSFMBYZHQFFWJSYFYJJPHZBYYZFFWOTJNLMFTWLBZGYZQXZDJYGZYYRYTY#YZWEGAZYHJJLZRYHLRMGRJXZZL###LJJYHTBWJYBXXBXJJTJTEEKHWSL##LPSFAZPQQBDLQJJTYYQLYZKZKSQJYYJZLDQCGJQ##JS#CMRAQTHTEJMFCTYHYPYMHYDMJ#CFGYYXWSHCTXRLJGJZHZZNYYJLTKTTNTMJGTCLZZAYYOCZLRLBSZYWJYQSJYHBYSHFJLYKJXXTMZYYLTXXYPSLQYJZYZYYPNHMYMDYYLBLHLSYYGQLLNJJYMSOYCBZGDLYXYLZQYXTSZEGXHZGLHWBLJHEYXTWQMAKBPQCGYSHHEGQZMMNYWLJNJHYYZLLJJYLXZYHMGSLJLJXCJJYCLYCJBCBZJZJMMWLCJLNQLJJJLXYJMLSZLJJLYCMMGCFMMFPQQMFXLQM#FFQMMMMH#ZNFHHJGTTHXKHSLNCHHYQDXTMMQDCYDYXYQMYJYLDDCYAYTAZDCYMDYDLZFFFMMYCQCWZZMABTBYCTDMNDZGGDFTYPCGQYTTSSFFWBDTTQSSYSTWNJHJYTTXXYLBYQHWWHXGZXWZNNQZJZJJQJCCCHYKXPCSZCNJTLLCQXKNJYCKYCYNCZQNXOEWYCZDCJYCCHKJLPTZKYCQWLPGPYLLGKTLTLGKGQBGYCHJXY########################################################################################################################################################################################################################################################################################################################################################################################################################################################################################################################################################################################################################################################################################################################################################################################################################################################################################################################################################################################################################################################################################################################################################################################################################################################################################################################################################################################################################################################################################################################################################################################################################################################################################################################################################################################################################################################################################################################################################################################################################################################################################################################################################################################################################################################################################################################################################################################################################################################################################################################################################################################################################################################################################################################################################################################################################################################################################################################################################################################################################################################################################################################################################################################################################################################################################################################################################################################################################################################################################################################################################################################################################################################################################################################################################################################################################################################################################################################################################################################################################################################################################################################################################################################################################################################################################################################################################################################################################################################################################################################################################################################################################################################################################################################################################################################################################################################################################################################################################################################################################################################################################################################################################################################################################################################################################################################################################################################################################################################################################################################################################################################################################################################################################################################################################################################################################################################################################################################################################################################################################################################################################################################################################################################################################################################################################################################################################################################################################################################################################################################################################################################################################################################################################################################################################################################################################################################################################################################################################################################################################################################################################################################################################################################################################################################################################################################################################################################################################################################################################################################################################################################################################################################################################################################################################################################################################################################################################################################################################################################################################################################################################################################################################################################################################################################################################################################################################################################################################################################################################################################################################################################################################################################################################################################################################################################################################################################################################################################################################################################################################################################################################################################################################################################################################################################################################################################################################################################################################################################################################################################################################################################################################################################################################################################################################################################################################################################################################################################################################################################################################################################################################################################################################################################################################################################################################################################################################################################################################################################################################################################################################################################################################################################################################################################################################################################################################################################################################################################################################################################################################################################################################################################################################################################################################################################################################################################################################################################################################################################################################################################################################################################################################################################################################################################################################################################################################################################################################################################################################################################################################################################################################################################################################################################################################################################################################################################################################################################################################################################################################################################################################################################################################################################################################################################################################################################################################################################################################################################################################################################################################################################################################################################################################################################################################################################################################################################################################################################################################################################################################################################################################################################################################################################################################################################################################################################################################################################################################################################################################################################################################################################################################################################################################################################################################################################################################################################################################################################################################################################################################################################################################################################################################################################################################################################################################################################################################################################################################################################################################################################################################################################################################################################################################################################################################################################################################################################################################################################################################################################################################################################################################################################################################################################################################################################################################################################################################################################################################################################################################################################################################################################################################################################################################################################################################################################################################################################################################################################################################################################################################################################################################################################################################################################################################################################################################################################################################################################################################################################################################################################################################################################################################################################################################################################################################################################################################################################################################################################################################################################################################################################################################################################################################################################################################################################################################################################################################################################################################################################################################################################################################################################################################################################################################################################################################################################################################################################################################################################################################################################################################################################################################################################################################################################################################################################################################################################################################################################################################################################################################################################################################################################################################################################################################################################################################################################################################################################################################################################################################################################################################################################################################################################################################################################################################################################################################################################################################################################################################################################################################################################################################################################################################################################################################################################################################################################################################################################################################################################################################################################################################################################################################################################################################################################################################################################################################################################################################################################################################################################################################################################################################################################################################################################################################################################################################################################################################################################################################################################################################################################################################################################################################################################################################################################################################################################################################################################################################################################################################################################################################################################################################################################################################################################################################################################################################################################################################################################################################################################################################################################################################################################################################################################################################################################################################################################################################################################################################################################################################################################################################################################################################################################################################################################################################################################################################################################################################################################################################################################################################################################################################################################################################################################################################################################################################################################################################################################################################################L#############################################################################################################################################################################################################################################################WH##Z#Q##XZYLSXFJJY###Z##YD###FSGH</rule>
+            </collation>
+        </variant>
+        <variant lang="ja">
+            <collation>
+                <label>not used for japanese sorting</label>
+                <rule>not used for japanese sorting</rule>
+            </collation>
+        </variant>
+        <variant lang="ko">
+            <collation>
+                <label>not used for korean sorting</label>
+                <rule>not used for korean sorting</rule>
+            </collation>
+        </variant>
+    </index>
+</localize>
