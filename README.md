@@ -2,7 +2,7 @@
 
 UWE.XSL turns **DITA 1.3** maps and topics into **PDF** (via XSL-FO and Apache FOP) and **HTML**, using XSLT and an **XProc 3** orchestration layer. The stylesheets come from the [Tektur CCMS](http://www.tekturcms.de) ecosystem and are suitable for automated builds in CI, Docker, or locally on your machine.
 
-The non-XML infrastructure has been built with AI-assisted coding.
+The non-XML infrastructure has been built using AI-assisted coding.
 
 ## Contents
 
