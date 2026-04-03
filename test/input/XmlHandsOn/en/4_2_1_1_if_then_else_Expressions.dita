@@ -1,0 +1,66 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!DOCTYPE topic
+  PUBLIC "-//OASIS//DTD DITA Topic//EN" "topic.dtd">
+<topic id="id7f9615d0-3d92-4ec1-813b-db4b788b6efd">
+   <title>
+      <codeph>if..then..else</codeph> Expressions </title>
+   <body>
+      <p>In non-functional programming languages, the keywords <codeph>if</codeph> and <codeph>then</codeph>
+         <indexterm>Programming Constructs<indexterm>Conditional Statement - if..then..else</indexterm>
+         </indexterm> are used to tell the compiler or interpreter that a conditional statement should be evaluated.<fn callout="I"><p>UWE test footnote (35/40, callout I): DITA fn maps to UWE footnote/key/desc.</p></fn></p>
+      <p>What may seem a bit strange to the non-functional programmer is the fact that in XQuery, <codeph>if..then</codeph> are evaluated as expressions.</p>
+      <p>On the one hand, this is very practical because, when used correctly, it shortens the code and thus highlights the essentials, but on the other hand it can also further contribute to the general confusion regarding cryptic XQuery code.</p>
+      <section>
+         <title>Example: Conditional Server App</title>
+         <p>Let's consider a simple example: We generate a JSON response on a MarkLogic webapp. Since we use this mechanism in several places in the code, it makes sense to extract the header rendering into a function.</p>
+         <pre xml:space="preserve">declare function common:wrap-response($json)
+{
+  xdmp:add-response-header("Pragma", "no-cache"),
+  xdmp:add-response-header("Cache-Control", "no-cache"),
+  xdmp:add-response-header("Expires", "0"),
+  xdmp:set-response-content-type('text/json; charset=utf-8'),
+  $json
+};</pre>
+         <p>In our request handler, a conditional statement is executed depending 
+on the evaluation of a variable; this looks, for example, like this:</p>
+         <pre xml:space="preserve">let $name := xdmp:get-request-field('name'),
+    $is-afternoon := xs:time(current-dateTime()) gt xs:time('12:00:00')
+return 
+  if ($is-afternoon) then 
+   common:wrap-response(xdmp:unquote(concat('{"greeting":"Good Afternoon! ',$name,'!"}')))
+  else
+   common:wrap-response(xdmp:unquote(concat('{"greeting":"Good Morning! ',$name,'!"}')))</pre>
+         <p>As a procedural programmer, I would be perfectly satisfied with this switch, 
+but the functional programmer immediately recognizes room for optimization.</p>
+         <p>Since the conditional statement is also an expression that returns <codeph>true</codeph> or <codeph>false</codeph>, we can extract the identical function calls:</p>
+         <pre xml:space="preserve">ommon:wrap-response(xdmp:unquote(
+    let $is-afternoon := xs:time(current-dateTime()) gt xs:time('12:00:00')
+        return 
+            if ($is-afternoon) then concat('{"greeting":"Good Afternoon! ',$name,'!"}') 
+            else concat('{"greeting":"Good Morning! ',$name,'!"}')
+)</pre>
+         <p>Here the abstract-thinking programmer will object that abstract
+logic should not be wrapped in a low-level function like <codeph>xdmp:unquote</codeph>.</p>
+         <p>That's true — and furthermore, the escaping with <codeph>xdmp:unquote</codeph> should also be 
+packed into our function. So the code would ultimately look like this:</p>
+         <pre xml:space="preserve">declare function common:render-response($json)
+{
+  xdmp:add-response-header("Pragma", "no-cache"),
+  xdmp:add-response-header("Cache-Control", "no-cache"),
+  xdmp:add-response-header("Expires", "0"),
+  xdmp:set-response-content-type('text/json; charset=utf-8'),
+  xdmp:unquote($json)
+};
+
+common:render-response(
+    let $is-afternoon := xs:time(current-dateTime()) gt xs:time('12:00:00')
+        return 
+            if ($is-afternoon) then concat('{"greeting":"Good Afternoon! ',$name,'!"}') 
+            else concat('{"greeting":"Good Morning! ',$name,'!"}')
+)</pre>
+         <p>One can certainly debate whether the functional approach is more readable or the procedural one above.</p>
+         <p>I think every programmer has developed their own, individual,
+and proven programming style, which they should also maintain.</p>
+      </section>
+   </body>
+</topic>

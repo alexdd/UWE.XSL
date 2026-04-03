@@ -1,0 +1,55 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!DOCTYPE topic
+  PUBLIC "-//OASIS//DTD DITA Topic//EN" "topic.dtd">
+<topic id="id8e2deac6-e32d-4fd3-8478-05002d53efad">
+   <title>EXPath Konsole </title>
+   <body>
+      <p>Die MarkLogic EXPath Konsole <xref format="html" scope="external"
+               href="https://github.com/fgeorges/expath-ml-console">ML EXPath Konsole auf GitHub</xref> ist eine Webanwendung, die ausserhalb des MarkLgic Servers verschiedene Ansichten auf die Daten bereitstellt. Sie umfasst auch einige praktische Tools, wie:</p>
+      <ul>
+         <li>
+            <p>Package Manager<indexterm>Tools für MarkLogic<indexterm>Package Manager</indexterm>
+               </indexterm>
+            </p>
+         </li>
+         <li>
+            <p>Browser (Für Dokumente und Tripel)</p>
+         </li>
+         <li>
+            <p>Document Manager<indexterm>Tools für MarkLogic<indexterm>Document Manager</indexterm>
+               </indexterm>
+            </p>
+         </li>
+         <li>
+            <p>XQuery Profiler<indexterm>Tools für MarkLogic<indexterm>XQuery Profiler</indexterm>
+               </indexterm>
+            </p>
+         </li>
+      </ul>
+      <p>Im Rahmen dieser Lektüre wird nur der Browser kurz vorgestellt, weil man damit unkompliziert die Daten sichten kann. </p>
+      <p>Diese werden in einem Editorfenster mit Syntaxhighlighting dargestellt.</p>
+      <hazardstatement type="caution" status="changed">
+         <messagepanel>
+            <typeofhazard>Das Sichten großer Datenmengen ist mit dem EXPath Browser aus Performanzgründen nicht möglich.</typeofhazard>
+            <howtoavoid>Auf diesen Umstand weist der Autor explizit hin. Die Anwendung sollte nicht produktiv eingesetzt werden, sondern ist für Entwicklungszwecke gedacht.</howtoavoid>
+         </messagepanel>
+      </hazardstatement>
+      <p>Nach der Installation läuft die EXPath Konsole standardmässig auf Port 8010. Über den Reiter <b>Databases</b> kann man sich die definierten Databases anschauen:</p>
+      <fig>
+         <title>Datenbank Ansicht im EXPath Explorer für MarkLogic</title>
+         <desc>Über den Reiter <b>Databases</b> gelangt man zur Datenbank-Ansicht. Hier kann man die einzelnen Verzeichnisse mittels des <b>Browse-Buttons</b> auswählen.</desc>
+         <image href="../images/expath_75.png"/>
+      </fig>
+      <p>Über einen Dateipfad gelangt man zur Datenansicht mit Syntax-Highlighting.</p>
+      <fig>
+         <title>Datensicht mit Syntax-Highlighting in der EXPath Konsole für MarkLogic</title>
+         <image href="../images/dataview_77.png"/>
+      </fig>
+      <hazardstatement type="warning">
+         <messagepanel>
+            <typeofhazard>Die EXPath Konsole erwartet, dass der MarkLogic auf den Standard-Ports läuft. Das ist [[code:8001]] für die Admin-Applikation. Ist dies nicht der Fall, so schlägt eine Installation mittels des Tools [[link]]mlproj[[fn:http://mlproj.org/*Project and Environment Manager für MarkLogic]] fehl.</typeofhazard>
+            <howtoavoid>Wie dieser Umstand korrigiert werden kann, lässt sich bestimmt über die Projekt-Seite auf GitHub erfragen. Da ich aus anderen Gründen MarkLogic von einem exotischen Port wieder auf den Standardport zurückgesetzt habe, habe ich diese Option übersprungen.</howtoavoid>
+         </messagepanel>
+      </hazardstatement>
+   </body>
+</topic>

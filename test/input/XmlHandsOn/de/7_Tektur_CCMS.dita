@@ -1,0 +1,45 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!DOCTYPE topic
+  PUBLIC "-//OASIS//DTD DITA Topic//EN" "topic.dtd">
+<topic id="idd3d7b9b9-8712-4844-bf96-9444ac5bb171">
+   <title>Tektur CCMS </title>
+   <body>
+      <p>Tekur CCMS<indexterm>Tektur CCMS</indexterm> ist ein web-basiertes Component Content Management System und befindet sich noch in der Entwicklung.</p>
+      <p>Hier sind einige Random Features:</p>
+      <ul>
+         <li>
+            <p>Die Inhalte werden nach dem DITA Content Model eingegeben. Die Ausgabe erfolgt über ein automatisches Satzsystem.</p>
+         </li>
+         <li>
+            <p>Grafiken können für die PDF-Ausgabe seitenbreit, spaltenbreit und in der Marginalie gesetzt werden.</p>
+         </li>
+         <li>
+            <p>Die Breite der Marginalie ist stufenlos einstellbar; die PDF-Ausgabe ist bzgl. der Formatierung weitestgehend konfigurierbar.</p>
+         </li>
+         <li>
+            <p>Layoutoptionen bzgl. Papierformat, Bemassung und Schriftgrößen können über einen einfachen Dialog eingestellt werden.</p>
+         </li>
+         <li>
+            <p>TOC und mehrstufige Register werden automatisch in der PDF-Ausgabe erzeugt.</p>
+         </li>
+         <li>
+            <p>Die Zellenbreite von CALS Tabellen kann mit der Maus eingestellt werden; Funktionen auf Zellen sind weitestgehend implementiert.</p>
+         </li>
+         <li>
+            <p>Paras, Listitems und Sections können mit den Pfeilbuttons in der Toolbar nach oben und unten verschoben werden.</p>
+         </li>
+         <li>
+            <p>Verlinkung auf andere Topics funktioniert über Referenzen und ein Linktext wird automatisch aktualisiert, wenn sich der Topic-Titel ändert.</p>
+         </li>
+         <li>
+            <p>Die DITA-Map kann u.a. mittels Drag 'n Drop editiert werden; Im Topic Editor gibt es an jeder Stelle ein dynamisches Kontextmenü für weitere Optionen.</p>
+         </li>
+         <li>
+            <p>Valide DITA Strukturen können exportiert und importiert werden.</p>
+         </li>
+         <li>
+            <p>Topics, Tasks und Maps können vom Autor an Reviewer und Approver für einen Kommentar- und Freigabeprozess überwiesen werden.</p>
+         </li>
+      </ul>
+   </body>
+</topic>

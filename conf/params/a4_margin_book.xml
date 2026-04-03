@@ -1,0 +1,104 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- UWE.XSL - DITA Publishing Stylesheets
+     Copyright (C) 2012-2026 Alex Duesel <tekturcms@gmail.com>
+     SPDX-License-Identifier: LGPL-3.0-only
+     See license.txt for the full license text.
+     PDF/params (merged: former config.xml + a4_margin_book). Input for main.xpl.
+     structure/layout/fcm/cover/theme → pdf/pretransformation.xsl, pdf/uwe.xsl / main.xsl.
+     pdf-config → main.xsl (doc($pdf_config_uri)//custom, //cover-image, //logo-*, etc.). -->
+<params>
+  <!-- Document / status meta for map2uwe (UWE XML + pre_*.xml). -->
+  <publication>
+    <version>1.0</version>
+    <owner/>
+    <description/>
+    <date-created/>
+    <date-updated/>
+    <alphanum-prefix1>AAA</alphanum-prefix1>
+    <alphanum-prefix2>HHH</alphanum-prefix2>
+    <alphanum-prefix3>GGG</alphanum-prefix3>
+  </publication>
+  <structure>
+    <print_appendix>no</print_appendix>
+    <print_supplemental_directives>yes</print_supplemental_directives>
+    <print_toc>yes</print_toc>
+    <print_figure_index>yes</print_figure_index>
+    <print_footnote_index>yes</print_footnote_index>
+    <print_index>yes</print_index>
+    <print_chapter_on_right_page>yes</print_chapter_on_right_page>
+    <print_cover_backpage>yes</print_cover_backpage>
+    <print_watermark>yes</print_watermark>
+  </structure>
+  <layout>
+    <print_format>book</print_format>
+    <print_layout>margin</print_layout>
+    <margin>true</margin>
+    <paper_format>A4</paper_format>
+    <left_gap>true</left_gap>
+    <print_page_margins>leftgap</print_page_margins>
+    <wide_spaces>false</wide_spaces>
+    <print_spaces>small</print_spaces>
+    <short_header>true</short_header>
+    <print_header>shortheader</print_header>
+    <short_footer>false</short_footer>
+    <print_footer>longfooter</print_footer>
+    <fancy_style>true</fancy_style>
+    <print_look_and_feel>fashion</print_look_and_feel>
+    <table_borders_only>true</table_borders_only>
+    <print_table_layout>simple</print_table_layout>
+    <figure_left_aligned>true</figure_left_aligned>
+    <print_figure_layout>left</print_figure_layout>
+  </layout>
+  <fcm>
+    <default_font_family>Noto Sans Regular, Noto Sans Symbols, DejaVu Sans</default_font_family>
+    <!-- A4|A5 -->
+    <default_font_size>10|9</default_font_size>
+    <headline_font_size>16,14,13,11,11|12,11,10,9,9</headline_font_size>
+    <toc_font_size>16,14,13,11,11|12,11,10,9,9</toc_font_size>
+    <margin_width>40</margin_width>
+    <!-- inner,outer A4|A5 -->
+    <outer_inner_margin>25,15|15,10</outer_inner_margin>
+    <!-- top,bottom A4|A5 -->
+    <top_bottom_margin>40,20|20,20</top_bottom_margin>
+    <font_colors>#e2e0e0,#efeded</font_colors>
+    <background_colors>#2f2f2f,#747575</background_colors>
+  </fcm>
+  <cover>
+    <default_manual_title/>
+    <default_cover_text>(c) Alex Düsel 2021
+Creative Commons Namensnennung-Keine Bearbeitungen 4.0 International Public License
+www.github.com/alexdd/Buch
+www.tekturcms.de</default_cover_text>
+    <default_manual_type>none</default_manual_type>
+    <safety_messages>custom</safety_messages>
+  </cover>
+  <theme>
+    <custom_theme>false</custom_theme>
+    <fancy_theme>true</fancy_theme>
+    <clean_theme>false</clean_theme>
+    <two_col_theme>false</two_col_theme>
+    <car_book_theme>false</car_book_theme>
+  </theme>
+  <pdf-config>
+    <!-- Relative to this file (conf/params/); ../../ = project root. Passed through to map2uwe / PDF stack. -->
+    <imagedir>../../test/boilerplate</imagedir>
+    <custom>true</custom>
+    <cover-image>../../test/boilerplate/Lines_xml_handson_2.svg</cover-image>
+    <warning-image>../../test/boilerplate/Lines_warning.svg</warning-image>
+    <caution-image>../../test/boilerplate/caution_animal_chipmunk.svg</caution-image>
+    <danger-image>../../test/boilerplate/Lines_qed.svg</danger-image>
+    <notice-image>../../test/boilerplate/Lines_idea.svg</notice-image>
+    <hint-end-image>../../test/boilerplate/Lines_ending.svg</hint-end-image>
+    <ansi-note-image>../../test/boilerplate/ansi_note.svg</ansi-note-image>
+    <ansi-black-image>../../test/boilerplate/ansi_triangle_black.svg</ansi-black-image>
+    <ansi-white-image>../../test/boilerplate/ansi_triangle_white.svg</ansi-white-image>
+    <cover-image-content-width>140mm</cover-image-content-width>
+    <cover-image-right>-17mm</cover-image-right>
+    <logo-small-odd>../../test/boilerplate/logo_small_odd.png</logo-small-odd>
+    <logo-small-even>../../test/boilerplate/logo_small_even.png</logo-small-even>
+    <logo-memo>../../test/boilerplate/hands_on_logo.png</logo-memo>
+    <logo-small-odd-top>12mm</logo-small-odd-top>
+    <logo-small-even-top>12mm</logo-small-even-top>
+    <copyright-url>www.tekturcms.de</copyright-url>
+  </pdf-config>
+</params>

@@ -1,0 +1,31 @@
+# UWE.XSL - DITA Publishing Stylesheets
+# Copyright (C) 2012-2026 Alex Duesel <tekturcms@gmail.com>
+# SPDX-License-Identifier: LGPL-3.0-only
+# See license.txt for the full license text.
+#
+# Run the pipeline in Docker with bind-mounted input/output.
+#
+# Examples:
+#   UWE_INPUT=./test/input/XmlHandsOn UWE_OUTPUT=./test/output/XmlHandsOn docker compose run --rm pipeline
+#   UWE_INPUT=/abs/path/to/dita UWE_OUTPUT=/abs/path/out docker compose run --rm pipeline
+#
+# Defaults (if UWE_INPUT / UWE_OUTPUT unset) use the bundled sample under test/.
+
+services:
+  pipeline:
+    build: .
+    image: uwe-xsl-pipeline:latest
+    volumes:
+      - type: bind
+        source: ${UWE_INPUT:-./test/input/XmlHandsOn}
+        target: /data/input
+        read_only: true
+      - type: bind
+        source: ${UWE_OUTPUT:-./test/output/XmlHandsOn}
+        target: /data/output
+    environment:
+      UWE_INPUT_BASE: file:///data/input/
+      UWE_OUTPUT_BASE: file:///data/output/
+      UWE_LOG_BASE: file:///data/output/.logs/
+      UWE_TMP_BASE: file:///tmp/uwe-pipeline/
+      UWE_VALIDATE_OUTPUT_BASE: file:///data/output/validate/

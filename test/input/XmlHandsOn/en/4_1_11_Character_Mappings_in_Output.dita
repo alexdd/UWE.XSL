@@ -1,0 +1,66 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!DOCTYPE topic
+  PUBLIC "-//OASIS//DTD DITA Topic//EN" "topic.dtd">
+<topic id="id03bfaa9b-236e-40da-8e73-d45cf9cded54">
+   <title>Character Mappings in the Output </title>
+   <body>
+      <p>The transition from XHTML to HTML5 was not necessarily a step forward when it comes to processing structures with XSLT. Unlike XHTML, an HTML5 document can contain unclosed tags.<fn callout="Q"><p>UWE test footnote (17/40, callout Q): DITA fn maps to UWE footnote/key/desc.</p></fn></p>
+      <p>So you first need to make the HTML5 valid using, for example, HTML Tidy <xref format="html" scope="external" href="https://www.html-tidy.org/">HTML Tidy</xref> and convert it to XHTML before you can process it with XSLT. Of course, the discerning reader may now ask why you would want to do that — after all, HTML5 is already an output format. </p>
+      <p>Two use cases come to mind immediately:</p>
+      <ul>
+         <li>
+            <p>Reverse engineering a competitor's output package to import the data into your own CCMS</p>
+         </li>
+         <li>
+            <p>Web scraping with XSLT</p>
+         </li>
+      </ul>
+      <p>But even one step earlier, when Saxon writes the output tree for HTML5, problems can arise. Especially when unescaped special characters that are allowed in XML — but not in HTML — need to be output.</p>
+      <hazardstatement type="warning" status="changed">
+         <messagepanel>
+            <typeofhazard>Unescaped special characters that are not allowed in HTML appear in the XML input.</typeofhazard>
+            <howtoavoid>With an [[code:&lt;xsl:output&gt; declaration for HTML]], this will cause a Saxon error.</howtoavoid>
+         </messagepanel>
+      </hazardstatement>
+      <section>
+         <title>Removing Characters</title>
+         <p>One approach would be to keep the HTML5 declaration but map the few known characters that can appear in the XML input to allowed entities, or remove them. I have seen the latter approach in the wild, for example:</p>
+         <pre xml:space="preserve">&lt;xsl:character-map name="html"&gt;
+   &lt;xsl:output-character character="&amp;#148;" string=""/&gt;
+   &lt;xsl:output-character character="&amp;#149;" string=""/&gt;
+[...]</pre>
+         <p>Hex entity no. 148, for example, is a special quotation mark that in the above example source code is simply removed from the output tree using the <i>Character Map</i>. The character can then be logged in an error log, and the transformation completes. Of course, one should also consider why such a character ended up unescaped in the XML input.</p>
+         <p>In my opinion, it is best to use an XHTML doctype and to prohibit unclosed HTML5 tags.</p>
+      </section>
+      <section>
+         <title>Making Characters Visible as Entities</title>
+         <p>Another use case for such a <i>Character Map</i> would be to make invisible characters visible. For example, XML editors like XMetal display invisible characters as plain text. So you cannot tell whether a non-breaking space or a non-breaking hyphen has been entered. The following <i>Character Map</i> declaration would make these characters visible as entities — this is possible, for example, as a preprocessing step for XMetal input when these characters are inserted via copy and paste:</p>
+         <pre xml:space="preserve">&lt;xsl:character-map name="desired-entities"&gt;
+  &lt;xsl:output-character character="&amp;#x00A0;" string="&amp;amp;nbsp;"/&gt;
+  &lt;xsl:output-character character="&amp;#x2011;" string="&amp;amp;nbhy;"/&gt;
+&lt;/xsl:character-map&gt;</pre>
+         <p>Also helpful in this context is the possibility for Saxon to write entities directly into the output tree. For this, there is the extension <codeph>saxon:character-representation</codeph>, see Saxon documentation <xref format="html" scope="external" href="https://www.saxonica.com/html/documentation9.8/extensions/output-extras/serialization-parameters.html">Saxon serialization</xref>
+         </p>
+      </section>
+      <section>
+         <title>Excursus</title>
+         <p>
+            <b>Special Character Issues in Browsers</b>
+         </p>
+         <p>As a final example of using a <i>Character Map</i>, I would like to mention legacy problems with character rendering in different browsers. </p>
+         <p>Before the Unicode standard existed — it only reached version 1.0 in 1991 — Adobe assigned its own code points to certain characters in the Symbol and Zapf Dingbats fonts, which may collide with Unicode characters. There are mapping tables for Symbol <xref format="html" scope="external" href="http://www.unicode.org/Public/MAPPINGS/VENDORS/ADOBE/symbol.txt">Symbol font mapping</xref> and Zapf Dingbats. However, some code points in these tables are in the so-called "Private Use Area" of the Unicode standard, which is reserved for proprietary applications. Browsers support these PUA characters incompletely, and Firefox, Chrome, and Internet Explorer render certain characters incorrectly. Firefox performs the worst here. I had to look in the Internet Archive to find a good source that describes this problem in more detail, see here <xref format="html" scope="external" href="https://web.archive.org/web/20060924061009/http://ppewww.ph.gla.ac.uk/~flavell/charset/fontface-harmful.html">font-face and Symbol (Internet Archive)</xref>.</p>
+         <p>Let's note the following:</p>
+         <ul>
+            <li>
+               <p>The default character set for the HTML5 doctype is UTF-8. </p>
+            </li>
+            <li>
+               <p>Via XSLT, characters are normally written out as hex entities. This is a number that should indicate a position in the Unicode standard character set. However, some glyph numbers of the affected non-Unicode problem fonts do not match the Unicode specification, and the characters are rendered incorrectly.</p>
+            </li>
+            <li>
+               <p>Adobe's mapping tables unfortunately fix the problem only partially, as certain glyphs are mapped to a vendor-dependent area "Private Use Area" designated in Unicode. These are approximately 43 characters that do not work when viewed in the Firefox browser; unfortunately, important symbols like Copyright, Registered, and Trademark are among them.</p>
+            </li>
+         </ul>
+      </section>
+   </body>
+</topic>

@@ -1,0 +1,66 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!DOCTYPE topic
+  PUBLIC "-//OASIS//DTD DITA Topic//EN" "topic.dtd">
+<topic id="id03bfaa9b-236e-40da-8e73-d45cf9cded54">
+   <title>Character Mappings in der Ausgabe </title>
+   <body>
+      <p>Die Umstellung von XHTML auf HTML5 war nicht unbedingt ein Fortschritt, wenn es um die Verarbeitung der Strukturen mittels XSLT geht. Denn ein HTML5 Dokument kann im Gegensatz zu XHTML auch nicht abgeschlossene Tags beinhalten.<fn callout="Q"><p>UWE-Testfußnote (17/40, Callout Q): DITA-fn wird in UWE zu footnote/key/desc.</p></fn></p>
+      <p>Man muss also zunächst das HTML5 mittels z.B. HTML Tidy <xref format="html" scope="external" href="https://www.html-tidy.org/">HTML Tidy</xref> valide machen und nach XHTML überführen, bevor man es dann per XSLT weiterverarbeiten kann. Natürlich frägt sich jetzt der geneigte Leser, warum man das will - schließlich handelt es sich bei HTML5 ja schon um ein Ausgabeformat. </p>
+      <p>Mir fallen auf Anhieb zwei Use Cases ein:</p>
+      <ul>
+         <li>
+            <p>Reverse Engineering eines Ausgabepakets der Konkurrenz, um die Daten in das eigene CCMS zu importieren</p>
+         </li>
+         <li>
+            <p>Web scraping mittels XSLT</p>
+         </li>
+      </ul>
+      <p>Aber auch schon einen Schritt vorher, wenn Saxon den Ausgabebaum für HTML5 schreibt, können Probleme auftreten. Insbesondere wenn sich unmaskierte Sonderzeichen, die im XML erlaubt sind - aber im HTML nicht - ausgegeben werden sollen.</p>
+      <hazardstatement type="warning" status="changed">
+         <messagepanel>
+            <typeofhazard>Unmaskierte Sonderzeichen, die in HTML nicht erlaubt sind, kommen in der XML Eingabe vor.</typeofhazard>
+            <howtoavoid>Bei einer [[code:&lt;xsl:output&gt; Deklaration für HTML]] wird es in diesem Fall zu einem Saxon Fehler kommen.</howtoavoid>
+         </messagepanel>
+      </hazardstatement>
+      <section>
+         <title>Zeichen entfernen</title>
+         <p>Ein Lösungsweg wäre die HTML5 Deklaration zu lassen, aber die wenigen bekannten Zeichen, die in der XML Eingabe vorkommen können, auf erlaubte Entities zu mappen oder zu entfernen. Letzteres habe ich z.B. so in der freien Wildbahn gesehen:</p>
+         <pre xml:space="preserve">&lt;xsl:character-map name="html"&gt;
+   &lt;xsl:output-character character="&amp;#148;" string=""/&gt;
+   &lt;xsl:output-character character="&amp;#149;" string=""/&gt;
+[...]</pre>
+         <p>Das Hex Entity No. 148 ist z.B. ein spezielles Anführungszeichen, das im obigen Beispielquelltext einfach mittels der <i>Character Map</i> aus dem Ausgabebaum entfernt wird. Das Zeichen kann dann in einem Fehlerlog ausgegeben werden, und die Transformation läuft durch. Natürlich sollte man sich aber auch überlegen, warum ein solches Zeichen unmaskiert in die XML Eingabe gelangt ist.</p>
+         <p>M.E. ist es am besten einen XHTML Doctype zu verwenden und nicht abgeschlossene HTML5 Tags zu verbieten.</p>
+      </section>
+      <section>
+         <title>Zeichen als Entity sichtbar machen</title>
+         <p>Ein anderer Use Case für so eine <i>Character Map</i> wäre, unsichtbare Zeichen sichtbar zu machen. Z.B. stellen XML Editoren, wie XMetal, auch unsichtbare Zeichen im Klartext dar. Man sieht also nicht, ob z.B. ein geschütztes Leerzeichen oder ein geschützter Bindestrich bedatet ist. Die folgende <i>Character Map</i> Deklaration würde diese Zeichen als Entität sichtbar machen - möglich ist das z.B. als Vorprozessierung der XMetal Eingabe, wenn diese Zeichen per Copy 'n Paste eingefügt werden:</p>
+         <pre xml:space="preserve">&lt;xsl:character-map name="desired-entities"&gt;
+  &lt;xsl:output-character character="&amp;#x00A0;" string="&amp;amp;nbsp;"/&gt;
+  &lt;xsl:output-character character="&amp;#x2011;" string="&amp;amp;nbhy;"/&gt;
+&lt;/xsl:character-map&gt;</pre>
+         <p>Hilfreich ist in diesem Zusammenhang vielleicht auch die Möglichkeit, dass Saxon direkt Entities in den Ausgabebaum schreiben kann. Hierzu gibt es die Erweiterung <codeph>saxon:character-representation</codeph>, vgl. Saxon Doku <xref format="html" scope="external" href="https://www.saxonica.com/html/documentation9.8/extensions/output-extras/serialization-parameters.html">Saxon Serialization</xref>
+         </p>
+      </section>
+      <section>
+         <title>Exkurs</title>
+         <p>
+            <b>Sonderzeichen-Probleme in Browsern</b>
+         </p>
+         <p>Als letztes Beispiel für die Verwendung einer <i>Character Map</i> möchte ich Legacy Probleme bei der Zeichendarstellung in den verschiedenen Browsern anführen. </p>
+         <p>Bevor es den Unicodestandard gab - dieser erreichte erst 1991 die Version 1.0 - hat Adobe für bestimmte Zeichen in den Fonts Symbol und Zapf Dingbats eigene Codepunkte vergeben, die mit Unicodezeichen ggf.  kollidieren. Es gibt Mapping Tabelle für Symbol <xref format="html" scope="external" href="http://www.unicode.org/Public/MAPPINGS/VENDORS/ADOBE/symbol.txt">Symbol-Font-Mapping</xref> und Zapf Dingbats. Einige Codepunkte in diesen Tabellen befinden sich aber in der sogenannten "Private Use Area" des Unicode Standards, die proprietären Anwendungen vorbehalten ist. Die Browser unterstützen diese PUA Zeichen unvollständig und Firefox, Chrome und Internet Explorer stellen bestimmte Zeichen fehlerhaft dar. Firefox schneidet hier am schlechtesten ab. Ich musste im Internet Archive nachschlagen, um eine gut Quelle zu finden, die dieses Problem genauer beschreibt, vgl. hier <xref format="html" scope="external" href="https://web.archive.org/web/20060924061009/http://ppewww.ph.gla.ac.uk/~flavell/charset/fontface-harmful.html">font-face und Symbol (Internet Archive)</xref>.</p>
+         <p>Wir halten einmal fest:</p>
+         <ul>
+            <li>
+               <p>Das Default Character Set für den HTML5 Doctype UTF-8. </p>
+            </li>
+            <li>
+               <p>Per XSLT werden die Zeichen normalerweise als Hex-Entities herausgeschrieben. Das ist eine Nummer, die eine Position im Unicode Standard Zeichensatz angeben sollte. Einige Glyphennummern der betreffenden Nicht-Unicode-Problemfonts passen aber nicht auf die Unicodevorgabe und die Zeichen werden fehlerhaft dargestellt.</p>
+            </li>
+            <li>
+               <p>Die Mapping Tabellen von Adobe korrigieren das Problem aber leider unvollständig, denn hier werden bestimmte Glyphen auf einen, in Unicode vorgesehenen, Vendor-abhängigen Bereich "Private Use Area" abgebildet. Das sind c.a. 43 Zeichen, die bei Ansicht im Browser Firefox nicht gehen, leider sind darunter auch wichtige Symbole, wie Copyright, Registered und Trademark.</p>
+            </li>
+         </ul>
+      </section>
+   </body>
+</topic>

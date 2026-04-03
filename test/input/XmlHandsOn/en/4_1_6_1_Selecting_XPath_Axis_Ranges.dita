@@ -1,0 +1,83 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!DOCTYPE topic
+  PUBLIC "-//OASIS//DTD DITA Topic//EN" "topic.dtd">
+<topic id="idd9eb7249-f8f7-4dbb-bf77-fe1f1833b66b">
+   <title>Selecting an XPath Axis Range </title>
+   <body>
+      <p>With the following expressions, you select all nodes that lie on the respective XPath axes, starting from the current context node:<fn callout="B"><p>UWE test footnote (28/40, callout B): DITA fn maps to UWE footnote/key/desc.</p><p outputclass="fn-add">UWE supplement (fn-add) for the footnote index.</p></fn></p>
+      <ul>
+         <li>
+            <p>
+               <codeph>preceding-sibling::*</codeph>
+            </p>
+         </li>
+         <li>
+            <p>
+               <codeph>following-sibling::*</codeph>
+            </p>
+         </li>
+         <li>
+            <p>
+               <codeph>ancestor::*</codeph>
+            </p>
+         </li>
+         <li>
+            <p>
+               <codeph>descendant::*</codeph>
+            </p>
+         </li>
+         <li>
+            <p>
+               <codeph>ancestor-or-self::*</codeph>
+            </p>
+         </li>
+         <li>
+            <p>
+               <codeph>descendant-or-self::*</codeph>
+            </p>
+         </li>
+      </ul>
+      <p>It becomes more difficult when you want to select only a specific range and not all nodes up to the beginning or end of the axis.</p>
+      <p>Selecting a range can be useful, for example, when structuring a sequence of headings and paragraphs:</p>
+      <pre xml:space="preserve">&lt;body&gt;
+   &lt;h1&gt;Überschrift 1&lt;/h1&gt;
+   &lt;p&gt;Para 1.1&lt;/p&gt;
+   &lt;p&gt;Para 1.2&lt;/p&gt;
+   &lt;h1&gt;Überschrift 2&lt;/h1&gt;
+   &lt;p&gt;Para 2.1&lt;/p&gt;
+   &lt;p&gt;Para 2.2&lt;/p&gt;
+   &lt;h1&gt;Überschrift 3&lt;/h1&gt;
+   &lt;p&gt;Para 3.1&lt;/p&gt;
+   &lt;p&gt;Para 3.2&lt;/p&gt;
+&lt;/body&gt;</pre>
+      <p>The task is now to introduce a <codeph>section</codeph> wrapper, like this:</p>
+      <pre xml:space="preserve">&lt;section&gt;
+   &lt;h1&gt;Überschrift 1&lt;/h1&gt;
+   &lt;p&gt;Para 1.1&lt;/p&gt;
+   &lt;p&gt;Para 1.2&lt;/p&gt;
+&lt;/section&gt;
+&lt;section&gt;
+   &lt;h1&gt;Überschrift 2&lt;/h1&gt;
+   &lt;p&gt;Para 2.1&lt;/p&gt;
+   &lt;p&gt;Para 2.2&lt;/p&gt;
+&lt;/section&gt;
+&lt;section&gt;
+   &lt;h1&gt;Überschrift 3&lt;/h1&gt;
+   &lt;p&gt;Para 3.1&lt;/p&gt;
+   &lt;p&gt;Para 3.2&lt;/p&gt;
+&lt;/section&gt;</pre>
+      <p>An XSLT template that could accomplish this task looks, for example, like this:</p>
+      <pre xml:space="preserve">&lt;xsl:template match="body"&gt; 
+  &lt;xsl:copy&gt;
+    &lt;xsl:for-each select="h1"&gt;
+      &lt;section&gt;
+        &lt;xsl:copy/&gt;
+        &lt;xsl:apply-templates select="following-sibling::*[not(self::h1)]
+                                    [preceding-sibling::h1[1] is current()]"/&gt;                
+      &lt;/section&gt;
+    &lt;/xsl:for-each&gt;
+  &lt;/xsl:copy&gt;
+&lt;/xsl:template&gt;</pre>
+      <p>Here, in the <codeph>apply-templates</codeph> call, all following sibling nodes starting from the current context node are selected that are not headings and that have the current context node as their first preceding heading. This is exactly the range up to the next heading. </p>
+   </body>
+</topic>

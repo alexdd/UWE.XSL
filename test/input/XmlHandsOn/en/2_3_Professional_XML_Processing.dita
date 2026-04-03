@@ -1,0 +1,112 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!DOCTYPE topic
+  PUBLIC "-//OASIS//DTD DITA Topic//EN" "topic.dtd">
+<topic id="id0ede2c7f-f0c8-4212-9c31-cf3caefa613c">
+   <title>Professional XML Processing </title>
+   <body>
+      <p>From single-source publishing to the generation of Java code from class diagrams. XSLT is present in many large software projects. Today, a search for <codeph>&lt;xsl:stylesheet</codeph> yields, for example, 14,868,501 results. <xref format="html" scope="external" href="https://github.com/search?q=xsl%3Astylesheet&amp;type=Code">GitHub search for XSLT code snippets with 14 million results</xref>
+      <fn callout="D"><p>UWE test footnote (4/40, callout D): DITA fn maps to UWE footnote/key/desc.</p><p outputclass="fn-add">UWE supplement (fn-add) for the footnote index.</p></fn></p>
+      <section>
+         <title>Single Source Publishing</title>
+         <p>
+            <indexterm>Single-Sourcing</indexterm>Many output formats are generated from a single source. Common formats in technical documentation are electronic output formats such as: <b>CHM</b>, <b>EclipseHelp</b>, <b>JavaHelp</b>, <b>ePub</b>, ..., print output formats such as <b>PDF</b> or <b>Adobe Framemaker</b>, or <b>XML</b> standard exchange formats such as <b>DITA</b>, <b>S1000D</b>, <b>PI-MOD</b>
+            <indexterm>Standards<indexterm>PI-MOD</indexterm>
+            </indexterm> or <b>TEI</b>
+            <indexterm>Standards<indexterm>TEI</indexterm>
+            </indexterm>. </p>
+         <p>
+            <b>Advantages:</b>
+         </p>
+         <fig expanse="spread" frame="all" scale="50" status="changed">
+            <image href="../images/papapishu-avocet_6.svg"/>
+         </fig>
+         <ul>
+            <li>
+               <p>When a change is made to the XML source, all subsequent formats are automatically updated as well.</p>
+            </li>
+            <li>
+               <p>Strict separation of content/semantics and layout/design.</p>
+            </li>
+            <li>
+               <p>XML features are possible on the XML source, such as:</p>
+               <ul>
+                  <li>
+                     <p>
+                        <b>Modularization</b> allows fine-grained reuse<indexterm>Concepts<indexterm>Reuse</indexterm>
+                        </indexterm> of content building blocks, as well as linking, filtering, searching and exporting them.</p>
+                  </li>
+                  <li>
+                     <p>
+                        <b>Generalization</b>
+                        <indexterm>Concepts<indexterm>Generalization and Specialization</indexterm>
+                        </indexterm>
+                     </p>
+                     <p> is a DITA concept that enables the reuse of customized topics in other DITA systems.</p>
+                  </li>
+                  <li>
+                     <p>
+                        <b>Applicability</b>
+                        <indexterm>Concepts<indexterm>Applicability</indexterm>
+                        </indexterm> allows the conditional application of content components at the sentence and word level.</p>
+                  </li>
+                  <li>
+                     <p>
+                        <b>Versioning</b>
+                        <indexterm>Concepts<indexterm>Versioning</indexterm>
+                        </indexterm> and Diffing<indexterm>Concepts<indexterm>Diffing</indexterm>
+                        </indexterm> - comparison of changes between versions.</p>
+                  </li>
+                  <li>
+                     <p>
+                        <b>Intelligent Cross-References</b>
+                        <indexterm>Concepts<indexterm>Intelligent Cross-References</indexterm>
+                        </indexterm>: A link between individual XML topics remains version-consistent.</p>
+                  </li>
+                  <li>
+                     <p>
+                        <b>Automatic Typesetting</b>, including keep-together and break rules for pages, paragraphs and blocks (lists, tables, etc.).</p>
+                  </li>
+               </ul>
+            </li>
+            <li>
+               <p>Obsolete formats can be replaced without having to change or lose the content.</p>
+            </li>
+            <li>
+               <p>The XML source can be reused in other systems without any preparation.</p>
+            </li>
+            <li>
+               <p>There are widely adopted <b>standards</b> for the structure of the XML source.</p>
+            </li>
+            <li>
+               <p>Only the XML is persisted in the data store.</p>
+            </li>
+            <li>
+               <p>There are specialized <xref format="dita" scope="local" type="concept" href="4_3_XML_Databases.dita">XML databases</xref> that work particularly well with tree structures. (Documents are inherently tree-structured and are actually unsuitable for a relational database)</p>
+            </li>
+         </ul>
+         <hazardstatement type="notice" status="changed">
+            <messagepanel>
+               <typeofhazard>The editorial systems of leading manufacturers in Germany have XML under the hood and rely on the single-source strategy.</typeofhazard>
+               <howtoavoid/>
+            </messagepanel>
+         </hazardstatement>
+      </section>
+      <section>
+         <title>Code Generation</title>
+         <p>Since the output format in XSLT is unrestricted, plain text can also be generated directly with XSLT rules. Therefore, it is natural to have any form of source code generated from an XML representation.<indexterm>Application Areas<indexterm>Code Generation</indexterm>
+            </indexterm>
+         </p>
+         <p>For example, common <b>CASE tools</b> (Computer Aided Software Engineering) store UML diagrams in XML format, such as ArgoUML <xref format="html" scope="external" href="http://argouml.tigris.org">ArgoUML</xref>.</p>
+         <p>These class diagrams can be transformed directly into Java code using XSLT, as in a small open source project (from the past): Butterfly Code Generator <xref format="html" scope="external" href="http://butterflycode.sourceforge.net">Butterfly Code Generator</xref>
+         </p>
+         <p>There is also a nice article about this in the Java World Journal <xref format="html" scope="external" href="https://www.javaworld.com/article/2073998/java-web-development/generate-javabean-classes-dynamically-with-xslt.html">Further reading on the topic of code generation with XSLT</xref>.</p>
+      </section>
+      <section>
+         <title>Migrations</title>
+         <p>For every conceivable type of migration<indexterm>Application Areas<indexterm>Migration</indexterm>
+            </indexterm> of an XML data set or a database dump/export in XML format, between product versions or between service provider and service consumer systems, XSLT is well suited for the transformation.</p>
+         <p>It should be noted that XSLT works particularly fast and well on nested structures. If a tree degenerates into a list and/or only minor structural adjustments are needed, a fast SAX parser will be easier to work with. </p>
+         <p> Using the XSLT 3.0 streaming option, very large XML sources (Big Data) can also be processed. Saxon, for example, offers this streaming option <xref format="html" scope="external" href="http://www.saxonica.com/html/documentation/sourcedocs/streaming/">Streaming is a technique for processing large XML data - keyword Big Data - with XSLT 3.0</xref>.</p>
+      </section>
+   </body>
+</topic>

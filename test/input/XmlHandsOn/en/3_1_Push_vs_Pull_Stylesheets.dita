@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!DOCTYPE topic
+  PUBLIC "-//OASIS//DTD DITA Topic//EN" "topic.dtd">
+<topic id="id17f5bbad-c12b-4da2-a847-29aba6fa0b48">
+   <title>Push vs. Pull Stylesheets</title>
+   <body>
+      <p>XSLT is an event-driven,<indexterm>Concepts<indexterm>Push vs. Pull</indexterm>
+         </indexterm> rule-based environment for converting XML data. The advantage of the rule-based approach in particular is not apparent to many developers, and source code is produced that looks like <b>PHP</b> code enriched with XPath. <fn callout="G"><p>Apache FOP renders XSL-FO to PDF in two passes.</p></fn></p>
+      <p>So why use XSLT at all if you do not use template-match rules, or use them only sparingly?</p>
+      <p>To clarify this matter, a bit of theory is necessary:</p>
+      <fig>
+         <title>Pull Stylesheet</title>
+         <desc>In the "Pull" approach, elements in the source instance are selected and inserted at an appropriate position in the target instance. This approach is comparable to that of template engines such as <b>JSP</b> or <b>ASP</b>. This can be done in multiple stages until the source instance has been gradually converted into the final target instance.</desc>
+         <image href="../images/pull_9.svg"/>
+      </fig>
+      <fig>
+         <title>Push Stylesheet</title>
+         <desc>In the "Push" approach, the source data is converted step by step into the target data. This approach can be exploratory, and during transformation into an intermediate step, insights are gained that are useful for further processing. Remember: XSLT stands for eXtensible Stylesheet Transformation.</desc>
+         <image href="../images/pusch-x_14.svg"/>
+      </fig>
+      <p>What has been said so far illustrates the "Pull" approach, but what exactly is being "pushed" is probably still unclear. Let us consider XML in its tree representation.</p>
+      <fig>
+         <title>Transformation of the source tree into the target tree</title>
+         <desc>The XSLT processor performs a depth-first traversal and checks at each node it enters whether a rule exists in its rule base that "matches" this node. There are three fundamental ways in which the nodes of the source tree can be copied - or not copied - into the target tree.</desc>
+         <image href="../images/pushi-x_15.svg"/>
+      </fig>
+      <p><indexterm>Depth-First Traversal</indexterm>Pull stylesheets are commonly programmed with <codeph>xsl:for-each</codeph> loops. In my view, this approach is appropriate when no major <b>DTD</b> changes are expected, the XML tree is flat-structured, and the conversion requirements are relatively simple, e.g. when evaluating/converting configuration files. In all other cases, push stylesheets are preferable, i.e. as few <codeph>xsl:for-each</codeph> loops as possible and as many template-match rules as possible.</p>
+   </body>
+</topic>

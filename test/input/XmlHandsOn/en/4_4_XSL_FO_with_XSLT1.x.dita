@@ -1,0 +1,278 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!DOCTYPE topic
+  PUBLIC "-//OASIS//DTD DITA Topic//EN" "topic.dtd">
+<topic id="id3ae54ff5-319d-41d7-ba96-17b9e76f881b">
+   <title>XSL-FO with XSLT1.x</title>
+   <body>
+      <p>XSL-FO<indexterm>XSL-FO</indexterm> is an XML-based markup language that is processed by an XSL-FO processor,
+such as the commercial AntennaHouse Formatter <xref format="html" scope="external" href="https://www.antennahouse.com/formatter/">AntennaHouse Formatter</xref>
+         <indexterm>Software<indexterm>AntennaHouse Formatter</indexterm>
+         </indexterm> or the free open source solution Apache FOP <xref format="html" scope="external" href="https://xmlgraphics.apache.org/fop/">Apache FOP</xref> 
+         <indexterm>Software<indexterm>Apache FOP</indexterm>
+         </indexterm>.</p>
+      <p>The output is usually 
+PDF, but other formats such as the outdated RTF (Rich Text Format) or hardware-specific formats like 
+PCL <xref format="html" scope="external"
+               href="https://en.wikipedia.org/wiki/Printer_Command_Language">PCL</xref>, are also supported.</p>
+      <section>
+         <title>XSL Developers</title>
+         <p>XSL-FO is a science in itself, as the very extensive specification <xref format="html" scope="external" href="https://www.w3.org/TR/xsl/">XSL-FO specification</xref> demonstrates.
+Therefore, the XSL developer (stylesheet developer) usually holds a special role in an XML company.</p>
+         <hazardstatement type="caution" status="changed">
+            <messagepanel>
+               <typeofhazard>When choosing a career, it is important to note that a [[nb:"stylesheet developer"]] in an XML company does something entirely different from a [[nb:"stylesheet specialist"]] in a web company. Additionally, the XML field of application is divided into two sectors:</typeofhazard>
+               <howtoavoid>Publishing</howtoavoid>
+               <howtoavoid>Data Conversion</howtoavoid>
+            </messagepanel>
+         </hazardstatement>
+         <p>Both areas overlap, and XML developers are urgently sought after in both publishing and data conversion. 
+However, a publisher less frequently comes into contact with <xref format="dita" scope="local" type="concept"
+                  href="4_3_XML_Databases.dita">XML Databases</xref>, and their query language <xref format="dita" scope="local" type="concept"
+                  href="4_2_1_XQuery_as_Programming_Language.dita">XQuery as a Programming Language</xref>. 
+On the other hand, the data converter will have to deal less with tricky layout problems.</p>
+         <p>This differentiation is probably comparable to backend and frontend development.</p>
+      </section>
+      <section>
+         <title>XSLT1.x</title>
+         <p>In version 1.x of XSLT, many XPath features were not yet available. For example, iterating over a node set was accomplished recursively
+using template calls. Also, in terms of arithmetic, there were not as many functions, as can be easily verified
+by looking at the function catalog <xref format="html" scope="external"
+                  href="https://www.w3.org/TR/2010/REC-xpath-functions-20101214/">XPath Functions</xref>.</p>
+         <p>Presumably, it may be due to the limited capabilities that my stylesheet from back then (10 years ago) looks somewhat more complicated ...</p>
+      </section>
+      <section>
+         <title>Grade Tables</title>
+         <p>Below is a grade table for grading according to the 15-point system for the upper secondary level.</p>
+         <fig>
+            <title>Excerpt from a PDF XSL-FO Demo</title>
+            <desc>Grade table for grading according to the 15-point system at the Gymnasium (upper secondary school). With just a few lines of code, even in version 1.0 of the XSLT programming language combined with the XSL-FO markup language, impressive PDF layouts could be generated.</desc>
+            <image href="../images/noten-table_79.png"/>
+         </fig>
+         <p>(Link to the PDF with the complete grade table <xref format="html" scope="external"
+                  href="http://www.tekturcms.de/stylesheets/margits_noten.pdf">grade table (XSL-FO)</xref>)</p>
+         <p>
+            <i>The grade 6 is designated as "0 points" in the upper secondary level at the Gymnasium. 
+The grade 5 is divided into the levels "1 point", "2 points", and "3 points". 
+To achieve the grade 5, at least one third of the total points must be reached. 
+The grade 4 is subdivided into "4 points", "5 points", and "6 points". 
+To achieve the grade 4, at least 50% of the total points must be achieved. 
+The remaining 50% of total points are then distributed as evenly as possible across the grades "7 points" through "15 points".</i>
+         </p>
+         <p>
+            <i>The grade "15 points" corresponds to a "grade 1 with distinction". Half points can be awarded. 
+The goal is a homogeneous distribution of a given total score 
+across the 15 grade levels according to the above rules. The stylesheet generates over 200 tables with various 
+values for the total score distributed across 5 DIN A4 pages.</i>
+         </p>
+         <p>The logic for this looks as follows:</p>
+         <pre xml:space="preserve">
+&lt;xsl:template name="note-runden"&gt;
+  &lt;xsl:param name="note"/&gt;
+  &lt;xsl:variable name="rest" select="$note * 10 mod 10"/&gt;
+  &lt;xsl:choose&gt;
+    &lt;xsl:when test="$rest &amp;gt; 2.5"&gt;
+      &lt;xsl:value-of select="floor(number($note))"/&gt;
+    &lt;/xsl:when&gt;
+    &lt;xsl:otherwise&gt;
+      &lt;xsl:value-of select="floor(number($note))-0.5"/&gt;
+    &lt;/xsl:otherwise&gt;
+  &lt;/xsl:choose&gt;
+&lt;/xsl:template&gt;
+
+&lt;xsl:template name="noten-tabelle"&gt;
+  &lt;xsl:param name="von-punkte"/&gt;
+  &lt;xsl:param name="bis-punkte"/&gt;
+  &lt;xsl:if test="$von-punkte &amp;lt; $bis-punkte+1"&gt;
+    &lt;xsl:variable name="note6" select="$von-punkte div 3"/&gt;
+    &lt;xsl:variable name="note4" select="$von-punkte div 2"/&gt;
+    &lt;xsl:variable name="note5-schrittweite" select="($note4 +(-$note6)) div 3"/&gt;
+    &lt;xsl:variable name="schrittweite" select="$note4 div 12"/&gt;
+    &lt;xsl:variable name="note-6"&gt;
+      &lt;xsl:call-template name="note-runden"&gt;
+        &lt;xsl:with-param name="note" select="$note6"/&gt;
+      &lt;/xsl:call-template&gt;
+    &lt;/xsl:variable&gt;
+    &lt;xsl:variable name="note6-korrigiert"&gt;
+      &lt;xsl:choose&gt;
+        &lt;xsl:when test="3*($note-6+0.5) &amp;lt; $von-punkte"&gt;
+          &lt;xsl:value-of select="$note6+0.5"/&gt;
+        &lt;/xsl:when&gt;
+        &lt;xsl:otherwise&gt;
+          &lt;xsl:value-of select="$note6"/&gt;
+        &lt;/xsl:otherwise&gt;
+      &lt;/xsl:choose&gt;                          
+    &lt;/xsl:variable&gt;
+    &lt;fo:block border="1pt solid grey" space-after="3pt" 
+              keep-together.within-column="always" padding="2pt"&gt;
+    &lt;fo:block text-align="center" background-color="#999" color="white" 
+              padding-bottom="0pt" padding-top="2pt" space-after="2pt"&gt;
+      &lt;xsl:text&gt;Gesamt: &lt;/xsl:text&gt;
+      &lt;fo:inline  font-weight="bold"&gt;
+        &lt;xsl:value-of select="$von-punkte"/&gt;
+      &lt;/fo:inline&gt;
+    &lt;/fo:block&gt;
+    &lt;fo:block&gt;
+      &lt;fo:inline font-weight="bold"&gt;
+        &lt;xsl:text&gt;0 P: &lt;/xsl:text&gt;
+      &lt;/fo:inline&gt;
+      &lt;xsl:text&gt;bis &lt;/xsl:text&gt;
+      &lt;xsl:call-template name="note-runden"&gt;
+        &lt;xsl:with-param name="note" select="$note6-korrigiert"/&gt;
+      &lt;/xsl:call-template&gt;
+    &lt;/fo:block&gt;
+    &lt;xsl:call-template name="note5"&gt;
+      &lt;xsl:with-param name="i" select="0"/&gt;
+      &lt;xsl:with-param name="note6" select="$note6-korrigiert"/&gt;
+      &lt;xsl:with-param name="note5-schrittweite" select="$note5-schrittweite"/&gt;
+      &lt;xsl:with-param name="gesamt" select="$von-punkte"/&gt;
+    &lt;/xsl:call-template&gt;
+    &lt;xsl:call-template name="ab-note4"&gt;
+      &lt;xsl:with-param name="i" select="0"/&gt;
+      &lt;xsl:with-param name="note4" select="$note4"/&gt;
+      &lt;xsl:with-param name="schrittweite" select="$schrittweite"/&gt;
+    &lt;/xsl:call-template&gt;
+    &lt;fo:block/&gt;
+    &lt;fo:block/&gt;
+    &lt;/fo:block&gt;
+    &lt;xsl:call-template name="noten-tabelle"&gt;
+      &lt;xsl:with-param name="von-punkte" select="$von-punkte+1"/&gt;
+      &lt;xsl:with-param name="bis-punkte" select="$bis-punkte"/&gt;
+    &lt;/xsl:call-template&gt;
+  &lt;/xsl:if&gt;
+&lt;/xsl:template&gt;
+
+&lt;xsl:template name="note5"&gt;
+  &lt;xsl:param name="i"/&gt;
+  &lt;xsl:param name="note6"/&gt;
+  &lt;xsl:param name="note5-schrittweite"/&gt;
+  &lt;xsl:param name="gesamt"/&gt;
+  &lt;xsl:if test="$i &amp;lt; 3"&gt;
+    &lt;xsl:variable name="note-von-gerundet"&gt;
+      &lt;xsl:call-template name="note-runden"&gt;
+        &lt;xsl:with-param name="note" select="number($note6) + 
+                                    number($i)*number($note5-schrittweite)"/&gt;
+      &lt;/xsl:call-template&gt;
+    &lt;/xsl:variable&gt;
+    &lt;xsl:variable name="von" select="$note-von-gerundet+0.5"/&gt;
+    &lt;xsl:variable name="bis"&gt;
+      &lt;xsl:call-template name="note-runden"&gt;
+        &lt;xsl:with-param name="note" select="number($note6)+
+                                   (number($i)+1)*number($note5-schrittweite)"/&gt;
+      &lt;/xsl:call-template&gt;
+    &lt;/xsl:variable&gt;
+    &lt;xsl:variable name="bis-korrigiert"&gt;
+      &lt;xsl:choose&gt;
+        &lt;xsl:when test="$i=2 and (2*$bis)=number($gesamt)"&gt;
+          &lt;xsl:value-of select="$bis+(-0.5)"/&gt;
+        &lt;/xsl:when&gt;
+        &lt;xsl:otherwise&gt;
+          &lt;xsl:value-of select="$bis"/&gt;
+        &lt;/xsl:otherwise&gt;
+      &lt;/xsl:choose&gt;
+    &lt;/xsl:variable&gt;
+    &lt;fo:block&gt;
+      &lt;fo:inline font-weight="bold"&gt;
+        &lt;xsl:value-of select="$i+1"/&gt;
+        &lt;xsl:text&gt; P: &lt;/xsl:text&gt;
+      &lt;/fo:inline&gt;
+      &lt;xsl:value-of select="$von"/&gt;
+      &lt;xsl:text&gt; - &lt;/xsl:text&gt;
+      &lt;xsl:value-of select="$bis-korrigiert"/&gt;
+    &lt;/fo:block&gt;
+    &lt;xsl:call-template name="note5"&gt;
+      &lt;xsl:with-param name="i" select="$i+1"/&gt;
+      &lt;xsl:with-param name="note6" select="$note6"/&gt;
+      &lt;xsl:with-param name="note5-schrittweite" select="$note5-schrittweite"/&gt;
+      &lt;xsl:with-param name="gesamt" select="$gesamt"/&gt;
+    &lt;/xsl:call-template&gt;
+  &lt;/xsl:if&gt;
+&lt;/xsl:template&gt;
+
+&lt;xsl:template name="ab-note4"&gt;
+  &lt;xsl:param name="i"/&gt;
+  &lt;xsl:param name="note4"/&gt;
+  &lt;xsl:param name="schrittweite"/&gt;
+  &lt;xsl:if test="$i &amp;lt; 12"&gt;
+    &lt;xsl:variable name="note-von-gerundet"&gt;
+      &lt;xsl:call-template name="note-runden"&gt;
+        &lt;xsl:with-param name="note" select="number($note4) + 
+                                    number($i)*number($schrittweite)"/&gt;
+      &lt;/xsl:call-template&gt;
+    &lt;/xsl:variable&gt;
+    &lt;xsl:variable name="von" select="$note-von-gerundet+0.5"/&gt;
+    &lt;xsl:variable name="bis"&gt;
+      &lt;xsl:call-template name="note-runden"&gt;
+        &lt;xsl:with-param name="note" select="number($note4)+
+                                           (number($i)+1)*number($schrittweite)"/&gt;
+      &lt;/xsl:call-template&gt;
+    &lt;/xsl:variable&gt;
+    &lt;fo:block&gt;
+      &lt;fo:inline font-weight="bold"&gt;
+        &lt;xsl:value-of select="$i+4"/&gt;
+        &lt;xsl:text&gt; P: &lt;/xsl:text&gt;
+      &lt;/fo:inline&gt;
+      &lt;xsl:value-of select="$von"/&gt;
+      &lt;xsl:text&gt; - &lt;/xsl:text&gt;
+      &lt;xsl:value-of select="if ($i=11) then ($bis+0.5) else $bis"/&gt;
+    &lt;/fo:block&gt;
+    &lt;xsl:call-template name="ab-note4"&gt;
+      &lt;xsl:with-param name="i" select="$i+1"/&gt;
+      &lt;xsl:with-param name="note4" select="$note4"/&gt;
+      &lt;xsl:with-param name="schrittweite" select="$schrittweite"/&gt;
+    &lt;/xsl:call-template&gt;
+  &lt;/xsl:if&gt;
+&lt;/xsl:template&gt;</pre>
+         <p>The three templates call themselves until a termination condition is reached. In the templates where the two special cases
+grade 4 and grade 5 are handled, the termination condition is determined by a loop variable <codeph>$i</codeph>, which has its threshold value at 3 (1P + 2P) and 12 (3P + 4P + 5P)
+respectively. The template <codeph>notentabelle</codeph> dispatches to the special cases and handles grades 1 through 3 itself.</p>
+         <p>Without extensively reviewing and questioning my logic from back then, I do think that XSLT has matured significantly over the years.
+In the past, one had to deal with various Saxon bugs related to XPath evaluation, but this is now extremely stable and even
+complex predicates and nested selectors succeed on the first try.</p>
+         <p>Iteration via tail recursion <xref format="html" scope="external"
+                  href="https://de.wikipedia.org/wiki/Endrekursion">tail recursion</xref> 
+            <indexterm>Programming Constructs<indexterm>Tail Recursion</indexterm>
+            </indexterm> is no longer necessary in most
+cases today. Also, templates that merely implement a helper function, like the above template <codeph>note-runden</codeph>, are 
+better implemented using <codeph>xsl:function</codeph>, which can also be evaluated within an XPath expression.</p>
+      </section>
+      <section>
+         <title>XSL-FO Page Template</title>
+         <p>To integrate this logic into an XSL-FO transformation, you simply wrap the typical XSL-FO scaffold around it:</p>
+         <pre xml:space="preserve">&lt;xsl:stylesheet xmlns:xsl="http://www.w3.org/1999/XSL/Transform" xmlns:fo="http://www.w3.org/1999/XSL/Format" xmlns:html="http://www.w3.org/1999/xhtml" version="1.0"&gt;
+   &lt;xsl:output method="xml" indent="no"/&gt;
+   &lt;!-- Logik von oben hier einfuegen --&gt;
+   &lt;xsl:template name="noten"&gt;
+      &lt;fo:root xmlns:fo="http://www.w3.org/1999/XSL/Format" font-size="6pt"&gt;
+         &lt;fo:layout-master-set&gt;
+            &lt;fo:simple-page-master master-name="my-page"&gt;
+               &lt;fo:region-body margin="5mm" column-gap="2mm" column-count="10"/&gt;
+               &lt;fo:region-start extent="5mm"/&gt;
+               &lt;fo:region-end extent="5mm"/&gt;
+            &lt;/fo:simple-page-master&gt;
+         &lt;/fo:layout-master-set&gt;
+         &lt;fo:page-sequence master-reference="my-page"&gt;
+            &lt;fo:flow flow-name="xsl-region-body"&gt;
+               &lt;fo:block font-size="12pt" color="#999" font-weight="bold" span="all" text-align="center" line-height="20pt" letter-spacing="5mm"&gt;
+                  &lt;xsl:text&gt;Notentabellen&lt;/xsl:text&gt;
+               &lt;/fo:block&gt;
+               &lt;xsl:call-template name="noten-tabelle"&gt;
+                  &lt;xsl:with-param name="von-punkte"&gt;12&lt;/xsl:with-param&gt;
+                  &lt;xsl:with-param name="bis-punkte"&gt;261&lt;/xsl:with-param&gt;
+               &lt;/xsl:call-template&gt;
+            &lt;/fo:flow&gt;
+         &lt;/fo:page-sequence&gt;
+      &lt;/fo:root&gt;
+   &lt;/xsl:template&gt;
+&lt;/xsl:stylesheet&gt;</pre>
+         <p>In the page template <codeph>fo:simple-page-master</codeph>, the page layout is defined. 
+In the page flow <codeph>fo:page-sequence</codeph>, this template is referenced.</p>
+         <p>This example already demonstrates the flexibility of the approach:
+You create a set of page templates for the different layout areas of a publication and reference them as needed.
+This reduces redundancy. Furthermore, the templates can potentially be reused with parameterization in a different
+output pipeline.</p>
+         <p>Relatively new is the specification of layout and design in the PDF domain using CSS. The technical term for this is "CSS for Paged Media". <indexterm>CSS for Paged Media</indexterm>
+AntennaHouse Formatter supports this technology and initial output pipelines are being implemented with it. However, as the developers
+of AntennaHouse confirmed (at XML Prague 2019), XSL-FO will retain its unique position when it comes to implementing complex layouts.</p>
+      </section>
+   </body>
+</topic>

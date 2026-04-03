@@ -1,0 +1,73 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!DOCTYPE topic
+  PUBLIC "-//OASIS//DTD DITA Topic//EN" "topic.dtd">
+<topic id="id51877293-95b9-4486-b8f6-c006615a8109">
+   <title>XSLT Accumulator</title>
+   <body>
+      <p>A simple streaming stylesheet could look like this, for example:<fn callout="V"><p>UWE test footnote (22/40, callout V): DITA fn maps to UWE footnote/key/desc.</p></fn></p>
+      <pre xml:space="preserve">&lt;xsl:stylesheet xmlns:xsl="http://www.w3.org/1999/XSL/Transform" xmlns:xs="http://www.w3.org/2001/XMLSchema" version="3.0" exclude-result-prefixes="#all"&gt;
+   &lt;xsl:output method="xml" indent="yes"/&gt;
+   &lt;xsl:mode on-no-match="shallow-copy" use-accumulators="entry-count" streamable="true"/&gt;
+   &lt;xsl:accumulator name="entry-count" as="xs:integer" initial-value="0" streamable="yes"&gt;
+      &lt;xsl:accumulator-rule match="entry" select="$value + 1"/&gt;
+   &lt;/xsl:accumulator&gt;
+   &lt;xsl:template match="/"&gt;
+      &lt;result&gt;
+         &lt;xsl:apply-templates/&gt;
+         &lt;count&gt;
+            &lt;xsl:value-of select="accumulator-after('entry-count')"/&gt;
+         &lt;/count&gt;
+      &lt;/result&gt;
+   &lt;/xsl:template&gt;
+&lt;/xsl:stylesheet&gt;</pre>
+      <p>This stylesheet has some noteworthy features:</p>
+      <p>First, a default mode is declared that copies every node of the input instance to the output instance via
+an implicit identity transformation (shallow-copy) <xref format="html" scope="external" href="https://www.saxonica.com/html/documentation/xsl-elements/mode.html">Mode options in XSLT3.0</xref>
+         <indexterm>Processing Methods<indexterm>Shallow Copy</indexterm>
+         </indexterm>.</p>
+      <p>(The conventional way would be to use a template like this:)</p>
+      <pre xml:space="preserve">&lt;xsl:template match="node()|@*"
+  &lt;xsl:copy&gt;
+    &lt;xsl:apply-templates select="node()|@*"/&gt;
+  &lt;/xsl:copy&gt;
+&lt;/xsl:template&gt;</pre>
+      <p>Additionally, an accumulator<indexterm>Processing Methods<indexterm>Accumulator</indexterm>
+         </indexterm> is used. </p>
+      <hazardstatement type="caution" status="changed">
+         <messagepanel>
+            <typeofhazard>Normally, there are no variables in XSLT, only constants, as is also the case with functional programming languages.</typeofhazard>
+            <howtoavoid>There has been a Saxon extension for some time that allowed multiple assignments of a value to a variable. In normal circumstances, however, this capability is not needed.</howtoavoid>
+         </messagepanel>
+      </hazardstatement>
+      <p>When processing very large data sets, however, assignable variables are indispensable, because otherwise
+the runtime stack would quickly reach its limits.</p>
+      <p>An accumulator accumulates values. These can be atomic types,
+as in the example above, but data structures can also be built up, such as 
+the currently processed subtree in a dictionary.</p>
+      <p>The accumulator must have the <codeph>streamable="yes"</codeph> property set if it is to
+work in streaming mode. In this mode, the accumulator value can only be read
+once the examined tree has been fully traversed.</p>
+      <p>To identify the differences from "normal" XSLT operation, some changes can be made in the above example 
+that the streaming processor will not accept. Saxon responds to this supposedly erroneous input with the following error message:</p>
+      <pre xml:space="preserve">Cannot call accumulator-after except during the post-descent 
+phase of a streaming template</pre>
+      <hazardstatement type="notice" status="changed">
+         <messagepanel>
+            <typeofhazard>This error message appears when you remove the [[code:apply-templates]] call. The accumulator is only filled when the tree has also been explicitly traversed.</typeofhazard>
+            <howtoavoid/>
+         </messagepanel>
+      </hazardstatement>
+      <p>This traversal can also be a pure copy, for example, the <codeph>apply-templates</codeph> call can also be replaced by a... </p>
+      <pre xml:space="preserve">&lt;xsl:copy-of select="."/&gt;</pre>
+      <p>... which would be equivalent to the mode setting</p>
+      <pre xml:space="preserve">on-no-match="deep-copy"</pre>
+      <p>As you can see, much has changed in XSLT 3.0 regarding the handling of different
+processing modes. Instead of writing default match rules, you set specific mode properties in the stylesheet declaration that realize the tree traversal in different ways.</p>
+      <hazardstatement type="caution" status="changed">
+         <messagepanel>
+            <typeofhazard>Processing large data sets with streaming is, however, somewhat tricky!</typeofhazard>
+            <howtoavoid>It should always be checked whether a possibly conventional performance-optimized XSLT is sufficient for the use case.</howtoavoid>
+         </messagepanel>
+      </hazardstatement>
+   </body>
+</topic>

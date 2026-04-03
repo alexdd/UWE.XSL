@@ -1,0 +1,124 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!DOCTYPE topic
+  PUBLIC "-//OASIS//DTD DITA Topic//EN" "topic.dtd">
+<topic id="id4ef71a8e-d651-4aa7-87b7-12c2bc7c88cf">
+   <title>Wikipedia Scraper Application</title>
+   <body>
+      <p>In this chapter, we want to build an XSLT transformation that, while traversing an XML tree, sends requests
+to an XQuery script on a MarkLogic server<indexterm>Scraper Application</indexterm>. Via a GET request, a <codeph>&lt;title&gt;</codeph> field is transmitted
+for persistence in an ML collection.</p>
+      <section>
+         <title>App Server Authentication</title>
+         <p>To realize this scenario, we need to set the permissions in MarkLogic so that web requests are accepted without
+authentication. This means our application is intended more for <i>internal</i> use.</p>
+         <p>Since the Saxon XSLT processor currently delegates URI resolution to the Java URI Resolver <xref format="html" scope="external"
+                  href="https://sourceforge.net/p/saxon/mailman/message/13252035/">Saxon URI Resolver</xref>, which does not yet support authentication with credentials in the URL, as in</p>
+         <pre xml:space="preserve">fn:json-to-xml('http://admin:admin@localhost:8088')</pre>
+         <p>we need to disable authentication for our MarkLogic web app. </p>
+         <p>To do this, we set 
+the <codeph>authentication</codeph> setting of our App Server to <codeph>application-level</codeph> and assign 
+the default user role to an <codeph>admin</codeph> user.</p>
+         <fig>
+            <title>Setting MarkLogic App Server Authentication</title>
+            <desc>In the App Server configuration you can set the level at which the access mechanism should apply. Here we set [[code:application-level]] with an admin user to disable authentication for the intranet.</desc>
+            <image href="../images/authentication_71.png"/>
+         </fig>
+         <p>A more sophisticated configuration is described in the chapter <xref format="dita" scope="local" type="concept"
+                  href="4_3_4_Document_Permissions_in_MarkLogic.dita">Document Permissions in MarkLogic </xref>.</p>
+      </section>
+      <section>
+         <title>XML Input</title>
+         <p>To make the experiment a bit more exciting, we use XML streaming on a Wikipedia dump with 5.3 GB 
+file size <xref format="html" scope="external"
+                  href="https://dumps.wikimedia.org/enwiki/latest/">Wikipedia dumps</xref>. 
+The XML looks as follows:</p>
+         <pre xml:space="preserve">&lt;mediawiki xmlns="http://www.mediawiki.org/xml/export-0.10/" 
+             xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" 
+             xsi:schemaLocation="http://www.mediawiki.org/xml/export-0.10/ 
+                                 http://www.mediawiki.org/xml/export-0.10.xsd" 
+             version="0.10" 
+             xml:lang="en"&gt;
+    
+   &lt;siteinfo&gt;
+     &lt;sitename&gt;Wikipedia&lt;/sitename&gt;
+     &lt;dbname&gt;enwiki&lt;/dbname&gt;
+     &lt;base&gt;https://en.wikipedia.org/wiki/Main_Page&lt;/base&gt;
+     &lt;generator&gt;MediaWiki 1.29.0-wmf.12&lt;/generator&gt;
+     &lt;case&gt;first-letter&lt;/case&gt;
+     &lt;namespaces&gt;
+       [...]
+     &lt;/namespaces&gt;
+   &lt;/siteinfo&gt;
+   &lt;page&gt;
+     &lt;title&gt;AccessibleComputing&lt;/title&gt;
+     &lt;ns&gt;0&lt;/ns&gt;
+     &lt;id&gt;10&lt;/id&gt;
+     &lt;redirect title="Computer accessibility" /&gt;
+     &lt;revision&gt;
+       &lt;id&gt;631144794&lt;/id&gt;
+       &lt;parentid&gt;381202555&lt;/parentid&gt;
+       &lt;timestamp&gt;2014-10-26T04:50:23Z&lt;/timestamp&gt;
+       &lt;contributor&gt;
+         &lt;username&gt;Paine Ellsworth&lt;/username&gt;
+         &lt;id&gt;9092818&lt;/id&gt;
+       &lt;/contributor&gt;
+[...]</pre>
+         <p>We want to store all titles in a database, so we match on the <codeph>&lt;title&gt;</codeph> element.</p>
+      </section>
+      <section>
+         <title>XSLT Transformation</title>
+         <p>The streaming transformation using the <xref format="dita" scope="local" type="concept"
+                  href="4_1_3_2_XSLT_Iterator.dita">Iterator concept</xref> looks like this:</p>
+         <pre xml:space="preserve">template name="main"&gt;
+  &lt;xsl:source-document href="{$input-file}" streamable='yes'&gt;
+    &lt;result&gt;
+      &lt;xsl:iterate select="page/title"&gt;
+        &lt;xsl:variable name="json-call" select="json-to-xml(
+                                               unparsed-text(
+                                               concat($server-url,'/scrap-title.xqy?',
+                                                      'title=',encode-for-uri(.))))"/&gt;
+        &lt;state&gt;
+          &lt;xsl:sequence select="$json-call/descendant::*[@key='state']/text()"/&gt;
+        &lt;/state&gt;
+      &lt;/xsl:iterate&gt;
+    &lt;/result&gt;
+  &lt;/xsl:source-document&gt; 
+&lt;/xsl:template&gt;</pre>
+         <p>Here, individual <codeph>&lt;state&gt;</codeph> elements are output within a result structure with a <codeph>&lt;result&gt;</codeph> element.</p>
+         <p>The content of these elements is the return value of a web request via the <codeph>fn:unparsed-text()</codeph> function.</p>
+         <p>A parameter <codeph>title</codeph> is passed to the script <codeph>scrap-title.xqy</codeph>:</p>
+         <pre xml:space="preserve">xquery version "1.0-ml";
+
+import module namespace json = "http://marklogic.com/xdmp/json" 
+                            at "/MarkLogic/json/json.xqy";
+
+declare namespace local = 'local:';
+declare variable $title := xdmp:get-request-field('title');
+
+declare function local:render-response($response)
+{
+  xdmp:add-response-header("Pragma", "no-cache"),
+  xdmp:add-response-header("Cache-Control", "no-cache"),
+  xdmp:add-response-header("Expires", "0"),
+  xdmp:set-response-content-type('text/json; charset=utf-8'),
+  xdmp:unquote($response)
+};
+
+let $root := &lt;title&gt;{ $title }&lt;/title&gt;,
+$options :=
+&lt;options xmlns="xdmp:document-insert"&gt;  
+  &lt;permissions&gt;{ xdmp:default-permissions() }&lt;/permissions&gt;
+  &lt;collections&gt;
+    &lt;collection&gt;/wikimedia-titles&lt;/collection&gt;
+  &lt;/collections&gt;
+&lt;/options&gt;,
+$fname := concat('/wikimedia-titles/', xdmp:md5($title), ".xml"),
+$td := xdmp:document-insert($fname, $root, $options)
+return 
+  local:render-response(concat('{"state":"success","title":"',$title,'"}'))</pre>
+         <p>If everything goes well, the transformation should be completed after about half an hour. The</p>
+         <p>collection <codeph>/wikimedia-titles</codeph> should contain many entries, with filenames like:</p>
+         <pre xml:space="preserve">&lt;fname&gt;/wikimedia-titles/b00bb36cf9dd18f12141f463f59947e6.xml&lt;/fname&gt;</pre>
+      </section>
+   </body>
+</topic>

@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!DOCTYPE topic
+  PUBLIC "-//OASIS//DTD DITA Topic//EN" "topic.dtd">
+<topic id="id40a639ea-9dea-4971-815a-ad610eee748d">
+   <title>Source Code Version Control</title>
+   <body>
+      <p>In order to trace what has been delivered to the customer, what milestones were reached on the way to the finished
+product - and in general, to keep an overview of source code changes, the use of a version control system is recommended.</p>
+      <p>By now, <b>GIT</b> by Linux creator Linus Torvalds is the gold standard. Depending on the use case, there are also (historical) alternatives.</p>
+   </body>
+</topic>

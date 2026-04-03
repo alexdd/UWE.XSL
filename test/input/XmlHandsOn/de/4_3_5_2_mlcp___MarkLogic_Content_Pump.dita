@@ -1,0 +1,76 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!DOCTYPE topic
+  PUBLIC "-//OASIS//DTD DITA Topic//EN" "topic.dtd">
+<topic id="id6f1d988d-2a6f-4ce7-82ab-8d7857e00610">
+   <title>mlcp - MarkLogic Content Pump</title>
+   <body>
+      <p>Die Content Pump für MarkLogic ist ein Java Tool<indexterm>Tools für MarkLogic<indexterm>Content Pump</indexterm>
+         </indexterm>, das den Bulk-Import von Daten über die Kommadozeile realisiert.</p>
+      <p>Das betreffende GitHub Projekt befindet sich hier <xref format="html" scope="external"
+               href="https://github.com/marklogic/marklogic-contentpump">GitHub Projekt zur MarkLogic Content Pump</xref>.</p>
+      <p>Zur einfachen Installation kann man sich aber auch die Binaries auf den </p>
+      <p>Developer Seiten <xref format="html" scope="external"
+               href="https://developer.marklogic.com/products/mlcp">Binaries zur Installation der MarkLogic Content Pump</xref> herunterladen.</p>
+      <p>Folgendes Bash Skript benutze ich, um Daten nach MarkLogic hochzuladen:</p>
+      <pre xml:space="preserve">#!/bin/bash
+
+set -eo pipefail
+
+mlcp_opts="-database alex-test -host localhost -username admin -password admin"
+
+mlcp import $mlcp_opts \
+     -input_file_path input-files \
+     -input_file_type aggregates \
+     -aggregate_record_element chapter \
+     -output_collections /chapter \
+     -output_uri_prefix /chapter/ \
+     -output_uri_suffix .xml</pre>
+      <p>Dabei werden alle Dateien im Ordner <codeph>input-files</codeph> importiert. Der Dateityp
+der hochzuladenen Daten ist mit <codeph>aggregates</codeph> angegeben. Das sind XML Daten. </p>
+      <note>
+         <p>Mehr Infos zu den Kommandozeilen-Optionen befinden sich auf der 
+entsprechenden Dokuseite <xref format="html" scope="external"
+                  href="https://docs.marklogic.com/guide/mlcp/import">Dokuseite zu den Import Optionen der MarkLogic Content Pump</xref>
+von MarkLogic. </p>
+      </note>
+      <p>Mit der Option <codeph>-aggregate_record_element</codeph> wird definiert, dass die Eingabe bzgl. des Elements <codeph>&lt;chapter&gt;</codeph> aufgesplittet werden soll.
+D.h. eine Datei mit folgendem Inhalt: </p>
+      <pre xml:space="preserve">&lt;test&gt;
+   &lt;title&gt;Test Datei&lt;/title&gt;
+   &lt;chapter&gt;
+      &lt;title&gt;Test Kapitel 1&lt;/title&gt;
+      &lt;content&gt;Kapitel Inhalt 1&lt;/content&gt;
+   &lt;/chapter&gt;
+   &lt;chapter&gt;
+      &lt;title&gt;Test Kapitel 2&lt;/title&gt;
+      &lt;content&gt;Kapitel Inhalt 2&lt;/content&gt;
+   &lt;/chapter&gt;
+   &lt;chapter&gt;
+      &lt;title&gt;Test Kapitel 2&lt;/title&gt;
+      &lt;content&gt;Kapitel Inhalt 2&lt;/content&gt;
+   &lt;/chapter&gt;
+&lt;/test&gt;</pre>
+      <p>wird in drei Records aufgesplittet:</p>
+      <fig>
+         <title>Ergebnis einer MarkLogic Content Pump Sitzung</title>
+         <desc>Auf der Konsole kann man sich das Ergebnis der [[code:mlcp]] Sitzung anschauen. Es wurden - wie gewünscht - drei XML Fragmente separat in die Collection gespeichert.</desc>
+         <image href="../images/mlcp_78.png"/>
+      </fig>
+      <note>
+         <p>Um in MarkLogic keine Speicherpobleme zu erzeugen empfielt es sich große Dokumente, die man nur "speichern" will mit der Option <codeph>-document_type binary</codeph> zu importieren. In diesem Zusammenhang ist ebenfalls die Option <codeph>-streaming true</codeph> interessant.</p>
+      </note>
+      <p>Ein weiterer wichtiger Punkt, der mir bei der Arbeit mit <codeph>mlcp</codeph> aufgefallen ist:</p>
+      <hazardstatement type="warning">
+         <messagepanel>
+            <typeofhazard>Kommt es zu Inkonsistenzen in der Datenhaltung, mag das daran liegen, dass in verschiedenen [[code:mlcp]] Sitzungen von der gleichen Datei (gleicher Dateiname im Filesystem) importiert wurde.</typeofhazard>
+            <howtoavoid>Es ist darauf zu achten, dass die Dateinamen eindeutig sind. Das kann zum Beispiel durch die Vergabe einer eindeutige ID im Dateinamen geschehen. Auf der Dokuseite zu den [[code:mlcp]] Optionen steht dazu folgendes:</howtoavoid>
+            <howtoavoid>
+               <i>"If your aggregate URI id's are not unique, you can overwrite one document in your input set with another. Importing documents with non-unique URI id's from multiple threads can also cause deadlocks."</i>
+            </howtoavoid>
+            <howtoavoid>
+               <i>"The generated URIs are unique across a single import operation, but they are not globally unique. For example, if you repeatedly import data from some file /tmp/data.csv, the generated URIs will be the same each time (modulo differences in the number of documents inserted by the job)"</i>
+            </howtoavoid>
+         </messagepanel>
+      </hazardstatement>
+   </body>
+</topic>

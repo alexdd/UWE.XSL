@@ -1,0 +1,44 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!DOCTYPE topic
+  PUBLIC "-//OASIS//DTD DITA Topic//EN" "topic.dtd">
+<topic id="idec84a734-21a0-44a3-bc8c-5ceadf36d3f0">
+   <title>Mit <codeph>translate</codeph> Zeichen ersetzen</title>
+   <body>
+      <p>Die <codeph>fn:translate()</codeph> XPath Funktion gibt es schon seit XSLT1.0. Mit den moderneren Varianten, wie <codeph>fn:replace()</codeph> die auch <xref format="dita" scope="local" type="concept" href="4_1_4_Regulre_Ausdrcke.dita">Reguläre Ausdrücke</xref> verstehen, gibt es aber für die meisten Anwendungsfälle mächtigere Alternativen. <fn callout="P"><p>UWE-Testfußnote (16/40, Callout P): DITA-fn wird in UWE zu footnote/key/desc.</p><p outputclass="fn-add">UWE Zusatz (fn-add) für den Fußnotenindex.</p></fn></p>
+      <p>Jedoch kann man mit <codeph>translate</codeph> mehrere Zeichen auf einmal ersetzen. Mit <codeph>replace</codeph> müsste man dagegen die Funktionen verschachteln, so wie in diesem Beispiel:</p>
+      <pre xml:space="preserve">&lt;xsl:function name="dy:make-url"&gt;
+        &lt;xsl:param name="root"/&gt;
+        &lt;xsl:value-of select="replace(replace(replace(replace($url-pattern,
+                                '%id%', $root/@id),
+                                '%version%',$root/@version),
+                                '%language%',$root/@language),
+                                '%variant%',$root/@variant)"/&gt;
+    &lt;/xsl:function&gt;</pre>
+      <p>Priscilla Walmsley<indexterm>XML Gurus<indexterm>Priscilla Walmsley</indexterm>
+         </indexterm> bietet aber auch eine Funktion, die mehrere Replacements vornehmen kann <xref format="html" scope="external" href="http://www.xsltfunctions.com/xsl/functx_replace-multi.html">Die Multi-Replace XPath Funktion von Priscilla Walmsley auf der Website der xsltfunctions Bibliothek</xref>.</p>
+      <p>Das Ersetzen von Einzel-Zeichen macht man am besten mit <codeph>fn:translate()</codeph>. </p>
+      <p>In der Indexsortierung des Buchindex wurden in XSLT1.0 Stylesheets die Gruppentitel der Indexrubriken mittels dieser Funktion normalisiert. Um bspw. die Zeichen <codeph>AÄÅaäå</codeph> (beachte das schwedische Bolle-A <xref format="html" scope="external" href="https://de.wikipedia.org/wiki/%C3%85">Wikipediaseite zum Bolle-A</xref> auf den Gruppentitel <codeph>A</codeph> abzubilden, würde folgender <codeph>translate</codeph>-Aufruf genügen:</p>
+      <pre xml:space="preserve">&lt;xsl:value-of select="translate(.,'AÄÅaäå','A')/&gt;</pre>
+      <p>Das große <codeph>A</codeph> wäre nun der Gruppentitel für unsere Zeichen. Natürlich will man nicht jedes Zeichen einzeln mappen, sondern eine globale Regel für das ganze Alphabet angeben. Das könnte bspw. für die französischen Kleinbuchstaben so aussehen:</p>
+      <pre xml:space="preserve">&lt;xsl:variable name="kleinbuchstaben" 
+              select="'abcdefghijklmnopqrstuvwxyzÀàÆæÇçÉéÈèÊêËëÎîÏïÖöÔôŒœÙùÜüÛûŸÿ'/&gt;
+&lt;xsl:variable name="gruppentitel" 
+              select="'ABCDEFGHIJKLMNOPQRSTUVWXYZAAAACCEEEEEEEEIIIIOOOOOOUUUUUUYY'/&gt;
+&lt;xsl:value-of select="translate(.,$kleinbuchstaben,$gruppentitel)"/&gt;</pre>
+      <hazardstatement type="warning" status="changed">
+         <messagepanel>
+            <typeofhazard>Hier kommt es auf die Reihenfolge der Zeichenketten an. Ausserdem müssen die Strings gleich lang sein.</typeofhazard>
+            <howtoavoid>Solche Zeichenketten schreibt man am besten in eine sprachabhängige separate XML Datei, die auch ausserhalb des Quelltexts gepflegt werden könnte.</howtoavoid>
+         </messagepanel>
+      </hazardstatement>
+      <p>Auch die Prüfung, ob ein Wort mittels Leerzeichen im Satz abgesetzt ist, lässt sich mittels <codeph>fn:translate</codeph> realisieren. Hier wird sicherlich auch eine Prüfung notwendig sein, die prüft, ob eine Zeichenkette schon mit einem Leerzeichen (unter Ausschluss von Interpunktionszeichen) beginnt: </p>
+      <pre xml:space="preserve">test="not(starts-with(replace(
+                      replace(.,$common-punctuation-marks,''),$whitespaces,' '),' '))"</pre>
+      <p>mit dieser Variablenbelegung:</p>
+      <pre xml:space="preserve">&lt;sch:let name="common-punctuation-marks" 
+         value="'.,!?()[]{}&amp;#xFF02;&amp;#x60;&amp;#x22;:;⟨⟩©–—-+…=«»¿&amp;lt;&amp;gt;&amp;quot;%‰®™|/'"/&gt;
+&lt;sch:let name="whitespaces" 
+         value="'&amp;#32;&amp;#160;&amp;#8192;&amp;#8193;&amp;#8194;&amp;#8195;&amp;#8201;&amp;#8196;&amp;#8197;&amp;#8198;'"/&gt;</pre>
+      <p>Dem Einsatzbereich von <codeph>fn:translate()</codeph> ist mit genügend Lösungsphantasie keine Grenzen gesetzt.</p>
+   </body>
+</topic>

@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!DOCTYPE topic
+  PUBLIC "-//OASIS//DTD DITA Topic//EN" "topic.dtd">
+<topic id="id6da095b0-be8a-4477-8792-76a4961ade76">
+   <title>Important Concepts </title>
+   <body>
+      <p>
+         <b>XSLT </b>and <b>XQuery</b> allow problems to be solved in many different ways. Certainly every programmer will develop their own style over time. This is not least because as an XSLT developer you typically hold an expert role in many companies.<fn callout="N"><p>UWE test footnote (14/40, callout N): DITA fn maps to UWE footnote/key/desc.</p></fn></p>
+      <p>All the more important is it to adhere to general concepts, patterns and best practices to avoid a hard-to-maintain proliferation of code.</p>
+      <p>The following pages attempt to compile some of these concepts and combine them with personal experiences and ideas.</p>
+      <p>No claim to completeness or 100% accuracy of this information is made. The chapter is rather intended as food for thought - with hopefully some usable ideas.</p>
+      <p/>
+   </body>
+</topic>

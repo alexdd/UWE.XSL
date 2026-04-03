@@ -1,0 +1,66 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- __FONT_DIR__ is replaced at build time with absolute path to lib/fonts/noto. -->
+<fop version="1.0" strict-configuration="true">
+  <renderers>
+    <renderer mime="application/X-fop-areatree">
+      <fonts>
+        <directory>__FONT_DIR__</directory>
+        <font kerning="yes" embed-url="__FONT_DIR__/NotoSans-Regular.ttf" embedding-mode="subset">
+          <font-triplet name="Noto Sans Regular" style="normal" weight="normal"/>
+          <font-triplet name="Noto Sans" style="normal" weight="normal"/>
+        </font>
+        <font kerning="yes" embed-url="__FONT_DIR__/NotoSans-Bold.ttf" embedding-mode="subset">
+          <font-triplet name="Noto Sans Regular" style="normal" weight="bold"/>
+          <font-triplet name="Noto Sans Bold" style="normal" weight="bold"/>
+          <font-triplet name="Noto Sans" style="normal" weight="bold"/>
+        </font>
+        <font kerning="yes" embed-url="__FONT_DIR__/NotoSans-Italic.ttf" embedding-mode="subset">
+          <font-triplet name="Noto Sans Regular" style="italic" weight="normal"/>
+          <font-triplet name="Noto Sans Italic" style="italic" weight="normal"/>
+          <font-triplet name="Noto Sans" style="italic" weight="normal"/>
+        </font>
+        <font kerning="yes" embed-url="__FONT_DIR__/NotoSans-BoldItalic.ttf" embedding-mode="subset">
+          <font-triplet name="Noto Sans Regular" style="italic" weight="bold"/>
+          <font-triplet name="Noto Sans Bold" style="italic" weight="bold"/>
+          <font-triplet name="Noto Sans" style="italic" weight="bold"/>
+        </font>
+        <font kerning="yes" embed-url="__FONT_DIR__/NotoSansSymbols-Regular.ttf" embedding-mode="subset">
+          <font-triplet name="Noto Sans Symbols" style="normal" weight="normal"/>
+          <font-triplet name="Noto Sans Symbols" style="normal" weight="bold"/>
+          <font-triplet name="Noto Sans Symbols" style="italic" weight="normal"/>
+          <font-triplet name="Noto Sans Symbols" style="italic" weight="bold"/>
+        </font>
+      </fonts>
+    </renderer>
+    <renderer mime="application/pdf">
+      <fonts>
+        <directory>__FONT_DIR__</directory>
+        <font kerning="yes" embed-url="__FONT_DIR__/NotoSans-Regular.ttf" embedding-mode="subset">
+          <font-triplet name="Noto Sans Regular" style="normal" weight="normal"/>
+          <font-triplet name="Noto Sans" style="normal" weight="normal"/>
+        </font>
+        <font kerning="yes" embed-url="__FONT_DIR__/NotoSans-Bold.ttf" embedding-mode="subset">
+          <font-triplet name="Noto Sans Regular" style="normal" weight="bold"/>
+          <font-triplet name="Noto Sans Bold" style="normal" weight="bold"/>
+          <font-triplet name="Noto Sans" style="normal" weight="bold"/>
+        </font>
+        <font kerning="yes" embed-url="__FONT_DIR__/NotoSans-Italic.ttf" embedding-mode="subset">
+          <font-triplet name="Noto Sans Regular" style="italic" weight="normal"/>
+          <font-triplet name="Noto Sans Italic" style="italic" weight="normal"/>
+          <font-triplet name="Noto Sans" style="italic" weight="normal"/>
+        </font>
+        <font kerning="yes" embed-url="__FONT_DIR__/NotoSans-BoldItalic.ttf" embedding-mode="subset">
+          <font-triplet name="Noto Sans Regular" style="italic" weight="bold"/>
+          <font-triplet name="Noto Sans Bold" style="italic" weight="bold"/>
+          <font-triplet name="Noto Sans" style="italic" weight="bold"/>
+        </font>
+        <font kerning="yes" embed-url="__FONT_DIR__/NotoSansSymbols-Regular.ttf" embedding-mode="subset">
+          <font-triplet name="Noto Sans Symbols" style="normal" weight="normal"/>
+          <font-triplet name="Noto Sans Symbols" style="normal" weight="bold"/>
+          <font-triplet name="Noto Sans Symbols" style="italic" weight="normal"/>
+          <font-triplet name="Noto Sans Symbols" style="italic" weight="bold"/>
+        </font>
+      </fonts>
+    </renderer>
+  </renderers>
+</fop>

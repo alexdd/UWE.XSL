@@ -1,0 +1,207 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!DOCTYPE topic
+  PUBLIC "-//OASIS//DTD DITA Topic//EN" "topic.dtd">
+<topic id="ida619c6d9-57c8-4fde-a3c0-cf6002905cc1">
+   <title>Pre-Transformations </title>
+   <body>
+      <p>For a complex transformation, it is advisable and sometimes even indispensable to divide the conversion into individual stages. This has the following advantages:<fn callout="S"><p>UWE test footnote (19/40, callout S): DITA fn maps to UWE footnote/key/desc.</p></fn></p>
+      <fig expanse="spread" frame="all" scale="50" status="changed">
+         <image href="../images/Flicker-281_25.svg"/>
+      </fig>
+      <ul>
+         <li>
+            <p>The process is more transparent, as the individual stages are easier to oversee.</p>
+         </li>
+         <li>
+            <p>The intermediate results can be analyzed for debugging purposes or serve as input for other processes.</p>
+         </li>
+         <li>
+            <p>Non-relevant or invalid subtrees can be filtered from the input instance, thus speeding up further processing.</p>
+         </li>
+         <li>
+            <p>Helper constructs can be generated. These facilitate further processing.</p>
+         </li>
+      </ul>
+      <p>There are two ways in which a pre-transformation<indexterm>Processing Methods<indexterm>Pre-Transformation</indexterm>
+         </indexterm> can be integrated:</p>
+      <ul>
+         <li>
+            <p>In a separate file or XML instance that is called by the XSLT processor before the actual transformation and produces an intermediate result. This can then serve as input for the main transformation step.</p>
+         </li>
+         <li>
+            <p>Within the actual XSLT stylesheet itself. Here, the result of the pre-transformation is generated in a variable.</p>
+         </li>
+      </ul>
+      <p>I would like to demonstrate the second point using an example XSLT script. Consider the following input data:</p>
+      <pre xml:space="preserve">&lt;education-system&gt;
+   &lt;administrative-regions&gt;
+    [...]
+      &lt;dministrative-region id="31" name="Bavaria"&gt;
+         &lt;shools&gt;
+            &lt;school id="45"&gt;
+               &lt;teachers&gt;
+                  &lt;teacher id="576"/&gt;
+                  &lt;teacher id="345"/&gt;
+                  &lt;teacher id="12"/&gt;
+               &lt;/teachers&gt;
+            &lt;/school&gt;
+            &lt;school id="36"&gt;
+               &lt;teachers&gt;
+                  &lt;teacher id="576"/&gt;
+                  &lt;teacher id="8"/&gt;
+               &lt;/teachers&gt;
+            &lt;/school&gt;
+        [...]
+         &lt;/shools&gt;
+      &lt;/dministrative-region&gt;
+    [...]
+   &lt;/administrative-regions&gt;
+&lt;/education-system&gt;</pre>
+      <p>The first file contains an assignment of teachers to schools in various administrative districts. To view the data for the two referenced objects, two additional files must be consulted. The file that lists the teachers:</p>
+      <pre xml:space="preserve">&lt;teachers&gt;
+  [...]
+   &lt;teacher id="576"&gt;
+      &lt;first-name&gt;Alfons&lt;/first-name&gt;
+      &lt;last-name&gt;Blimetsrieder&lt;/last-name&gt;
+      &lt;subjects&gt;
+         &lt;subject&gt;Biology&lt;/subject&gt;
+         &lt;subject&gt;Math&lt;/subject&gt;
+         &lt;subject&gt;Sport&lt;/subject&gt;
+      &lt;/subjects&gt;
+      &lt;suspended&gt;2017-12-31&lt;/suspended&gt;
+    [...]
+   &lt;/teacher&gt;
+  [...]
+&lt;/teachers&gt;</pre>
+      <p>And the file that lists the schools:</p>
+      <pre xml:space="preserve">&lt;schools&gt;
+  [...]
+   &lt;school id="45"&gt;
+      &lt;name&gt;Gymnasium Bad Aibling&lt;/name&gt;
+      &lt;type&gt;Oberschule&lt;/type&gt;
+    [...]
+   &lt;/school&gt;
+  [...]
+&lt;/schools&gt;</pre>
+      <p>To process this data, it makes sense to merge the three files in a first "resolver" step and, if necessary, remove irrelevant structures. Teachers from the above example may, for instance, have been suspended. The following script accomplishes this by means of an additional transformation into a variable:</p>
+      <pre xml:space="preserve">&lt;?xml version="1.0" ?&gt;
+&lt;xsl:stylesheet xmlns:xsl="http://www.w3.org/1999/XSL/Transform" version="2.0" exclude-result-prefixes="#all"&gt;
+   &lt;xsl:output indent="yes" method="xml"/&gt;
+   &lt;xsl:strip-space elements="*"/&gt;
+   &lt;xsl:param name="file-1" required="yes"/&gt;
+   &lt;xsl:param name="file-2" required="yes"/&gt;
+   &lt;xsl:param name="file-3" required="yes"/&gt;
+   &lt;xsl:variable name="files" select="(doc($file-1), doc($file-2), doc($file-3))"/&gt;
+   &lt;xsl:variable name="bavaria-region-ids" select="(31, 58)"/&gt;
+   &lt;xsl:key name="teachers" match="teacher" use="@id"/&gt;
+   &lt;xsl:key name="schools" match="school" use="@id"/&gt;
+   &lt;xsl:template name="main"&gt;
+      &lt;xsl:variable name="resolve-result"&gt;
+         &lt;xsl:apply-templates select="$files/administrative-regions" mode="resolve"/&gt;
+      &lt;/xsl:variable&gt;
+      &lt;xsl:apply-templates select="$resolve-result/administrative-regions"/&gt;
+   &lt;/xsl:template&gt;
+   &lt;xsl:template match="administrative-region[not(@id = $bavaria-region-ids)]" mode="resolve"/&gt;
+   &lt;xsl:template match="school" mode="resolve"&gt;
+      &lt;xsl:copy&gt;
+         &lt;xsl:copy-of select="key('schools',@id, $files/schools[1]/root())/node()"/&gt;
+         &lt;xsl:apply-templates select="node()|@*" mode="resolve"/&gt;
+      &lt;/xsl:copy&gt;
+   &lt;/xsl:template&gt;
+   &lt;xsl:template match="teacher" mode="resolve"&gt;
+      &lt;xsl:copy-of select="key('teachers',@id, $files/teachers[1]/root())/node()"/&gt;
+   &lt;/xsl:template&gt;
+   &lt;xsl:template match="teacher[suspended/xs:date(.) le current-date()]"/&gt;
+   &lt;xsl:template match="node()|@*" mode="#all"&gt;
+      &lt;xsl:copy&gt;
+         &lt;xsl:apply-templates mode="#current"/&gt;
+      &lt;/xsl:copy&gt;
+   &lt;/xsl:template&gt;
+&lt;/xsl:stylesheet&gt;</pre>
+      <p>In the first resolve step, the references to the teacher and school objects are resolved, i.e., the attributes of the school object are copied into the structure from the first file. </p>
+      <p>The list of teachers at these school objects is preserved and populated with the content from the second file. </p>
+      <p>Additionally, all administrative districts that do not belong to Bavaria are removed - which will significantly speed up further processing. Teachers who have been suspended are also removed ...</p>
+      <section>
+         <title>In-Situ Pre-Transformation</title>
+         <p>When I recently revisited my code from ten years ago, I noticed a very peculiar piece of XSLT, roughly:</p>
+         <pre xml:space="preserve">Datei: common/semantic-tables.xsl
+
+&lt;xsl:template name="maintenance-table"&gt;
+    &lt;cals-table-structure&gt;
+        [...]
+            &lt;&lt;xsl:apply-templates select="maint-int"/&gt;
+        [...]
+    &lt;/cals-table-structure&gt;
+&lt;/xsl:template&gt;
+
+&lt;xsl:template match="maintenance-table"&gt;
+    &lt;xsl:variable name="maintenance-table"&gt;
+        &lt;xsl:call-template name="maintenance-table"/&gt;
+    &lt;/xsl:variable&gt;
+    &lt;xsl:apply-templates select="$maintenance-table"/&gt;
+&lt;/xsl:template&gt;</pre>
+         <p>What was I thinking? I eventually figured it out... The trick here is a pre-transformation within a match rule.</p>
+         <p>The transformation within the variable renders the semantic elements of the maintenance table, such as the maintenance interval <codeph>maint-int</codeph>, into a CALS table.</p>
+         <p>This is then transformed in the next transformation step either to XSL-FO or to HTML, depending on which main file <codeph>main.xsl</codeph> imports the module <codeph>semantic-tables.xsl</codeph>.</p>
+         <pre xml:space="preserve">Datei html/main.xsl
+
+&lt;xsl:import href="common/semantic-tables.xsl"/&gt;
+
+&lt;xsl:template match="cals-table-structure"&gt;
+    &lt;html-tabllen-struktur&gt;
+        [...]
+    &lt;/html-tabllen-struktur&gt;
+&lt;/xsl:template&gt;
+
+Datei pdf/main.xsl
+
+&lt;xsl:import href="common/semantic-tables.xsl"/&gt;
+
+&lt;xsl:template match="cals-table-structure"&gt;
+    &lt;pdf-tabllen-struktur&gt;
+        [...]
+    &lt;/pdf-tabllen-struktur&gt;
+&lt;/xsl:template&gt;</pre>
+         <p>This approach is very flexible, because in the factored-out table algorithm, special cases such as duplicate elimination or special merge operations can easily be handled. Furthermore, both the named template for the maintenance table and the match rule in the importing stylesheet can be overridden, which leaves no limits to creativity.</p>
+      </section>
+      <section>
+         <title>Multi-Stage Transformations</title>
+         <p>For some conversions, one or two sequential transformation steps are not sufficient. </p>
+         <p>Perhaps you are dealing with a structure that does not fit the target format at all... Whether it is because you are transforming to a very restrictive content model, or because <xref format="dita" scope="local" type="concept" href="3_5_2_DITA_Content_Model.dita">the content model</xref> is only gradually being understood, as an overview of the data is still missing. </p>
+         <p>In any case, for some elements a decision must be made in a later step about where they should be relocated, because they are currently in the way.</p>
+         <p>
+            <b>Examples:</b>
+         </p>
+         <ol>
+            <li>
+               <p>Transformations to a more restrictive content model<indexterm>Content Model<indexterm>Restrictive Content Model</indexterm>
+                  </indexterm>
+               </p>
+               <ul>
+                  <li>
+                     <p>The XHTML from a web editor, where the user can arbitrarily enter a wide variety of structures, is mapped to the restrictive DTD of an XML editorial system.</p>
+                  </li>
+               </ul>
+            </li>
+            <li>
+               <p>A restrictive, structured content model<indexterm>Content Model<indexterm>Structured Content Model</indexterm>
+                  </indexterm> is to be converted into a freer, structured content model:</p>
+               <ul>
+                  <li>
+                     <p>This form of transformation is often found in the output pipelines of an XML editorial system. Here, 2-3 transformation steps suffice. These are used to facilitate the conversion, not for "space reasons" as in point 1.)</p>
+                  </li>
+               </ul>
+            </li>
+            <li>
+               <p>Transformations of relatively unstructured data. Here, the structures must first be formed. This can happen by collecting similar elements, which are then hierarchically organized into a tree structure.</p>
+               <ul>
+                  <li>
+                     <p>Tree structures can, for example, also be generated from file paths, which are then enriched with other data sources, e.g. CSV files.</p>
+                  </li>
+               </ul>
+            </li>
+         </ol>
+         <p>Multi-stage transformations are used in <xref format="dita" scope="local" type="concept" href="4_1_1_Pre_Transformations.dita">this chapter</xref>. </p>
+      </section>
+   </body>
+</topic>

@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!DOCTYPE topic
+  PUBLIC "-//OASIS//DTD DITA Topic//EN" "topic.dtd">
+<topic id="idaaf86c32-9113-4007-a352-4f0fde370520">
+   <title>MarkLogic Tools </title>
+   <body>
+      <p>MarkLogic already comes with a wide variety of views and tools out-of-the-box. </p>
+      <p>A production application server should not provide developer tools, and it should be prevented that any half-finished things run in production.</p>
+      <p>Therefore, it is not surprising that certain views are missing in MarkLogic, such as a data browser <indexterm>Tools for MarkLogic<indexterm>Data Browser</indexterm>
+         </indexterm> with syntax highlighting.</p>
+      <p>
+         <indexterm>Tools for MarkLogic<indexterm>Data Browser</indexterm>
+         </indexterm>
+      </p>
+      <p>This is where diligent developers step in and provide tools.</p>
+      <p/>
+   </body>
+</topic>

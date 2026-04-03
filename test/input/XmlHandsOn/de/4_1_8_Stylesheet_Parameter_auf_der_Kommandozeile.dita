@@ -1,0 +1,73 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!DOCTYPE topic
+  PUBLIC "-//OASIS//DTD DITA Topic//EN" "topic.dtd">
+<topic id="id3428ba06-d592-42a8-8480-4093057c0f89">
+   <title>Stylesheet-Parameter auf der Kommandozeile</title>
+   <body>
+      <p>
+         <indexterm>Parameterisierung<indexterm>Stylesheet-Parameter</indexterm>
+         </indexterm>Beim XSLT-Call auf die Einsprungdatei (Hauptstylesheet) könnnen auf der Konsole Parameter mitgegeben werden.
+Diese werden normalerweise im Hauptstylesheet deklariert, können aber auch in Sub-Stylesheets<indexterm>Parameterisierung<indexterm>Sub-Stylesheet</indexterm>
+         </indexterm> untergebracht werden,
+wenn diese nur lokal verfügbar sein sollen.<fn callout="E"><p>UWE-Testfußnote (31/40, Callout E): DITA-fn wird in UWE zu footnote/key/desc.</p></fn></p>
+      <p>Ein Parameter kann z.B. so aussehen:</p>
+      <pre xml:space="preserve">&lt;xsl:param name="test-param" required="no" select="'Hallo'"/&gt;</pre>
+      <p>Wenn das Feld <codeph>@required</codeph> den Wert <codeph>yes</codeph> zugewiesen bekommt, dann darf kein Default-Wert im <codeph>@select</codeph> Attribut 
+angegeben werden. (Der Default könnte natürlich auch als PCDATA Inhalt innerhalb der Tags stehen.)</p>
+      <p>Ein Saxon-Aufruf auf der Kommandozeile, der diesen Parameter bedient, sieht z.B. so aus:</p>
+      <pre xml:space="preserve">saxon -it:main -o:out.xml testparam="Servus!"</pre>
+      <section>
+         <title>XPath als Parameterwert</title>
+         <p>Jetzt gib es hier aber auch noch einige versteckte Funktionalitäten, bspw. möchte man einen XPath-Ausdruck an das Stylesheet übergeben,
+der vom Hauptprogramm vllt. unter Zuhilfenahme einer Datenbankabfrage berechnet wird.</p>
+         <p>Im einfachsten Fall ist so ein XPath ein boolscher Wert <codeph>true()</codeph> Dieser wird an das Stylesheet korrekt übergeben, indem der XPath Kennzeichner <codeph>?</codeph> vorangestellt wird, so:</p>
+         <pre xml:space="preserve">saxon -it:main -o:out.xml ?testparam=true()</pre>
+         <p>Wegen des <codeph>?</codeph>-Prefix versteht Saxon sofort, dass es sich um einen XPath handelt. Ein <codeph>xsl:choose</codeph> Statement wie
+das folgende würde den korrekten Fall liefern:</p>
+         <pre xml:space="preserve">[...]
+&lt;xsl:param name="test-param" required="yes"/&gt;
+[...]
+&lt;xsl:choose&gt;
+    &lt;xsl:when test="$test-param"&gt;Gut&lt;/xsl:when&gt;
+    &lt;xsl:otheriwse&gt;Schlecht&lt;/xsl:otheriwse&gt;
+&lt;/xsl:choose&gt;
+[...]</pre>
+         <p>Würde man das Prefix nicht setzen und bspw. dieses <codeph>Name=Wert</codeph> Paar senden:</p>
+         <pre xml:space="preserve">saxon -it:main -o:out.xml testparam=false</pre>
+         <p>So würde auch der gute Zweig ausgeführt, da der Nicht-Leerstring als wahr interpretiert werden würde, was aber falsch ist.</p>
+         <p>Typsicher kann man natürlich auch programmieren und an den Parameter noch eine Typendeklaration heften, was die Fehlersuche erleichtert:</p>
+         <pre xml:space="preserve">&lt;xsl:param name="test-param" required="yes" as="xs:boolean"/&gt;</pre>
+         <p>Um noch ein komplexeres Szenario für einen übergebenen XPath zu zeigen, betrachten wir die folgende Parameterübergabe:</p>
+         <pre xml:space="preserve">saxon -it:main -o:out.xml ?testparam="//descendant::buch[id=$id-aus-webservice-abfrage]"</pre>
+         <p>Die Shell Variable <codeph>$id-aus-webservice-abfrage</codeph> wird bei der Ausfühung des Shell-Skripts mit dem Ergebniswert
+eines vorangegangenen Webservice-Calls bestückt und an das XSLT Stylesheet übergeben. Dieses arbeitet auf einer Bücher-Liste und formatiert
+das ausgewählte Buch z.B. als HTML Seite:</p>
+         <pre xml:space="preserve">&lt;xsl:param name="test-param" required="yes" /&gt;
+
+&lt;xsl:template name="main"&gt;
+    &lt;xsl:apply-templates select="$test-param"/&gt;
+&lt;/xsl:template&gt;</pre>
+      </section>
+      <section>
+         <title>Clark Notation</title>
+         <p>
+            <indexterm>Clark Notation</indexterm>Bei der Clark Notation <xref format="html" scope="external" href="http://www.jclark.com/xml/xmlns.htm">Webpage von James Clark bezüglich XML Namespaces</xref> kann dem Elementbezeichner
+mittels geschweifter Klammerung der benötigte Namespace vorangestellt werden. Das sieht z.B. wie folgt aus - wenn man auch gleich noch
+das <codeph>?</codeph>-Prefix voranstellt:</p>
+         <pre xml:space="preserve">?{http://www.tekturcms.de/namespaces/mein-namespace}spezieller-verarbeitungs-modus=true()</pre>
+         <p>Im aufgerufenen Stylesheet wird zunächst der Namespace deklariert, dann der Parameter gesetzt und schliesslich die Logik angegeben:</p>
+         <pre xml:space="preserve">&lt;xsl:stylesheet xmlns:xsl="http://www.w3.org/1999/XSL/Transform" xmlns:xs="http://www.w3.org/2001/XMLSchema" xmlns:tk="http://www.tekturcms.de/namespaces/mein-namespace" exclude-result-prefixes="xs" version="2.0"&gt;
+   &lt;xsl:param name="tk:spezieller-verarbeitungs-modus" select="false()" as="xs:boolean"/&gt;
+   &lt;xsl:template name="main"&gt;
+      &lt;xsl:choose&gt;
+         &lt;xsl:when test="$tk:spezieller-verarbeitungs-modus"&gt;Gut&lt;/xsl:when&gt;
+         &lt;xsl:otheriwse&gt;Schlecht&lt;/xsl:otheriwse&gt;
+      &lt;/xsl:choose&gt;
+   &lt;/xsl:template&gt;
+&lt;/xsl:stylesheet&gt;</pre>
+         <p>Diesen Sonderfall braucht man eigentlich nur, wenn man in eine bestehende Transformation einen
+Parameter einführen will, dessen Bezeichner schon existiert, um so einen Namenskonflikt zu vermeiden
+- gesehen bspw. bei komplexen Schematron Regeln.</p>
+      </section>
+   </body>
+</topic>

@@ -1,0 +1,113 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!DOCTYPE topic
+  PUBLIC "-//OASIS//DTD DITA Topic//EN" "topic.dtd">
+<topic id="id51a4584a-9a43-4f8f-ad89-d1c2d88ab6e6">
+   <title>Functions and Modules</title>
+   <body>
+      <section>
+         <title>Functions</title>
+         <p>To make certain sections of the XQuery program reusable, function declarations<indexterm>Programming Constructs<indexterm>Functions</indexterm>
+            </indexterm> are available. A simple function would be, for example, this one:<fn callout="A"><p>UWE test footnote (27/40, callout A): DITA fn maps to UWE footnote/key/desc.</p></fn></p>
+         <pre xml:space="preserve">declare function local:wrap-header($json) {
+  xdmp:add-response-header("Pragma", "no-cache"),
+  xdmp:add-response-header("Cache-Control", "no-cache"),
+  xdmp:add-response-header("Expires", "0"),
+  xdmp:set-response-content-type('text/json; charset=utf-8'),
+  $json
+};</pre>
+         <p>It wraps a JSON string with appropriate header information.</p>
+         <p>For the function to be included, a matching namespace<indexterm>XML Constructs<indexterm>Namespaces</indexterm>
+            </indexterm> must be declared:</p>
+         <pre xml:space="preserve">declare namespace local = 'local:';</pre> |  |                                                    Rejected by , .       <p>Functions are not only practical for reusability, but also
+for implementing quite elementary constructs, such as <codeph>while...do</codeph>
+            <indexterm>Programming Constructs<indexterm>Loops - while..do</indexterm>
+            </indexterm> loops.</p>
+         <p>For this, you use - as is common in functional programming - recursion:</p>
+         <pre xml:space="preserve">declare function local:ist-letzter-wert-in-kette($glied) {
+  let $wert := local:komplizierte-berechnung($glied),
+    $naechstes-glied := local:komplizierte-berechnung-der-position($glied),
+  return
+    if ($naechstes-glied and not($wert = 'foobar')) then
+      local:durchlaufe-kette($naechstes-glied)
+    else
+      $wert = 'foobar'
+};</pre>
+         <p>In this small snippet, several characteristics of 
+XQuery are already visible. Variable assignments are done with a colon,
+comparisons on the other hand with just a simple "=". Statements are separated by a
+comma.</p>
+      </section>
+      <section>
+         <title>Function Calls in XPath</title>
+         <p>If a function operates on a node set, the function call can also be appended to a path selector, for example like this:</p>
+         <pre xml:space="preserve">&lt;xsl:value-of select="sum($current/betrag[xs:decimal(.) gt 0]<b>/xs:decimal(.)</b>)"/&gt;</pre>
+         <p>Here, the <codeph>betrag</codeph> nodes of a previously selected subtree, stored in the variable <codeph>$current</codeph>, are summed up - but only if the value is greater than 0. </p>
+         <p>The function call here is a type cast to a decimal value to ensure a certain computational precision.</p>
+         <p>The filtering for positive values is still conventionally formulated:</p>
+         <pre xml:space="preserve">[xs:decimal(.) gt 0]</pre>
+         <p>
+            <codeph>xs:decimal</codeph> takes the currently selected node and converts it to a decimal value for comparison with 0. </p>
+         <p>If an unsupported format is passed to the type constructor <codeph>xs:decimal</codeph>, e.g. a string, a <b>fatal error is thrown and the program aborts</b>.</p>
+         <p>The function call can, however, also be attached as a path selection to an XPath:</p>
+         <pre xml:space="preserve">/xs:decimal(.)</pre>
+         <p>In case of an error, <b>the erroneous value is not summed and the program continues</b>.</p>
+         <pre xml:space="preserve">$current/betrag[xs:decimal(.) gt 0]</pre>
+         <p>The conventional way would be to use a loop that maps all values to their decimal value:</p>
+         <pre xml:space="preserve">sum(for $x in $current/betrag[xs:decimal(.) gt 0]
+return xs:decimal($x))</pre>
+         <p>This is a bit more complicated, but ensures better robustness of the program.</p>
+         <hazardstatement type="notice" status="changed">
+            <messagepanel>
+               <typeofhazard>Function calls as path selectors do <b>not</b> abort on an error in the function - without explicit exception handling.</typeofhazard>
+               <howtoavoid>If more robustness is required, you should iterate over result node sets and issue function calls in the conventional way.</howtoavoid>
+            </messagepanel>
+         </hazardstatement>
+         <p>Consider the following XQuery snippet:</p>
+         <pre xml:space="preserve">collection("/abrechnung")[vorgangsnummer[.=(3, 8,9,10)]/xdmp:node-collections(.)
+                         [starts-with(., '/buchung')]/xdmp:collection-delete(.)</pre>
+         <fig expanse="spread" frame="all" scale="50" status="changed">
+            <image href="../images/oksmith-screech-owl_31.svg"/>
+         </fig>
+         <p>Here, all billings are stored in a collection <codeph>/abrechnung</codeph>. The billings with transaction numbers <codeph>3,8,9</codeph> and <codeph>10</codeph> are to be
+retrieved. These billings can also be managed in different collections, e.g. via a collection type
+"booking". A booking collection gathers all billings that were made on a specific booking date. We now assume
+that all billings <codeph>3,8,9,10</codeph> were made on a specific booking date - and only these. For some reason, we want to 
+delete this booking. That is exactly what the above one-liner does. The filter:</p>
+         <pre xml:space="preserve">collection("/abrechnung")[vorgangsnummer[.=(3, 8,9,10)]</pre>
+         <p>returns a node set. The filtered function result</p>
+         <pre xml:space="preserve">xdmp:node-collections(.)[starts-with(., '/buchung')]</pre>
+         <p>is also a node set. Normally, we would need loops to iterate over these sets. That would look something like this</p>
+         <pre xml:space="preserve">let 
+  $filtered-collection := collection("/abrechnung")[vorgangsnummer[.=(3, 8,9,10)],
+  $collections-to-be-deleted :=
+  distinct-values(
+    for $x in $collection
+       return (
+         for $y in xdmp:document-get-collections(fn:document-uri($x))
+                                                 [starts-with(., '/buchung')]
+           return 
+             $y
+       )
+    )
+return (
+      for $culprit in $collections-to-be-deleted
+        return xdmp:collection-delete($culprit)
+    )</pre>
+         <p>The source code is much longer this way, but even less experienced XPath experts can easily see what it is about.</p>
+      </section>
+      <section>
+         <title>Modules</title>
+         <p>To modularize<indexterm>Programming Constructs<indexterm>Modules</indexterm>
+            </indexterm> an XQuery application, individual scripts can be
+outsourced into modules. A module, e.g. <codeph>common.xqy</codeph>, is declared via its own
+namespace:</p>
+         <pre xml:space="preserve">module namespace common = "https://www.tekturcms.de/common";</pre>
+         <p>This module can then be included in other scripts:</p>
+         <pre xml:space="preserve">import module namespace common = "https://www.tekturcms.de/common" at "common.xqy";</pre>
+         <p>Functions and variables are then called with the namespace<indexterm>XML Constructs<indexterm>Namespaces</indexterm>
+            </indexterm> prefix:</p>
+         <pre xml:space="preserve">Funktionsaufruf: common:wrap-response-header(...)
+Variablenauswertung: $common:collection-books</pre>
+      </section>
+   </body>
+</topic>

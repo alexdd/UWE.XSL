@@ -1,0 +1,41 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!DOCTYPE topic
+  PUBLIC "-//OASIS//DTD DITA Topic//EN" "topic.dtd">
+<topic id="id70e9195f-8072-415d-986a-6550ed24a577">
+   <title>Anwendungsgebiete </title>
+   <body>
+      <p>
+         <b>XML,</b>
+         <b>XSLT</b>, <b>XPATH</b>, <b>XSL-FO</b> und <b>XQuery</b> sind Techniken um baumstrukturierte Daten - im Vergleich zu relationalen Daten - aus verschiedenen Quellen ineinader zu überführen, abzuspeichern, zu versenden, darzustellen und auszuwerten können.<fn callout="F"><p>UWE-Testfußnote (6/40, Callout F): DITA-fn wird in UWE zu footnote/key/desc.</p></fn></p>
+      <fig expanse="spread" frame="all" scale="50" status="changed">
+         <image href="../images/Killdeer_4.svg"/>
+      </fig>
+      <p>Vom Aussehen her sind XML Daten im Prinzip Textdaten. Sie können sehr einfach mit einem Texteditor erstellt werden. Im Gegensatz zu Multimedia-Daten sind keine komplexen Tools, wie z.B. ein Grafikeditor, erforderlich. Auch relationale Daten können in Form von Tabellen, als Excel Tabelle, oder bspw. als kommaseparierte Textdatei, aus einem System ausgespult und weiterverarbeitet werden. XML erlaubt es jedoch die Daten semantisch auszuzeichnen. Das geschieht durch das Klammern semantisch zusammengehöriger Elemente mittels Klammer-Tags und Kategorisierung dieser Informationseinheiten mittels weiterer Properties (Attribute) an diesen Tags. Durch das Verschachteln dieser geklammerten Komponenten entsteht ein Baum, der die Hierarchische Ordnung der Daten widerspiegelt. Diese Baumstrukturen sind maschinell lesbar und die Daten können, bevor sie von einem Versender zu einem Empfänger gehen, mittels eines automatischen Prozesses validiert werden. Dabei können sowohl der Inhalt als auch die Syntax anhand von definierten Regeln (Schemas) genau überprüft werden.</p>
+      <p>Der XML Standard ist mittlerweile 20 Jahre alt. Zuvor gab es SGML, das zum Beispiel auch nicht abgeschlossene Tags erlaubte. SGML ist die konzeptionelle Basis von HTML.</p>
+      <p>Der Übergang von SGML zu XML brachte eine längst fällige konzeptionelle Vereinfachung. JSON als defakto Standard bei Webapplikationen vereinfacht den Einsatz von baumstrukturierten Daten noch weiter. JSON ist jedoch nicht so gut maschinenlesbar, und es fehlen noch viele Werkzeuge, wie ausgefeiltere Code Editoren oder Validierungstools.</p>
+      <p>Folgend eine kurze Erläuterung zu den eingangs erwähnten Schlüsselwörtern:</p>
+      <ul>
+         <li>
+            <p>
+               <b>XML</b> ist das Datenformat. Auf XML arbeiten die anderen Technologien. XML ist immer Input für diese Tools.</p>
+         </li>
+         <li>
+            <p>
+               <b>XSLT</b> ist eine Programmiersprache. Mit XSLT kann man XML Daten in ein anderes Format transformieren, d.h. Inhalt und Struktur anpassen.</p>
+         </li>
+         <li>
+            <p>
+               <b>XPATH</b> erlaubt es, bestimmte Knoten in einem XML Dokument über bedingte Pfadausdrücke zu selektieren und dann mittels XSLT zu verändern.</p>
+         </li>
+         <li>
+            <p>
+               <b>XSL-FO</b> ist eine weitere XML basierte Auszeichnungssprache, die ein XSL-FO Prozessor einlesen kann, um daraus z.B. ein PDF zu generieren.</p>
+         </li>
+         <li>
+            <p>
+               <b>XQuery</b> ist eine Abfragesprache ählich zu SQL, jedoch werden damit nicht relationale Daten abgefragt sondern baumstrukturierte.</p>
+         </li>
+      </ul>
+      <p/>
+   </body>
+</topic>

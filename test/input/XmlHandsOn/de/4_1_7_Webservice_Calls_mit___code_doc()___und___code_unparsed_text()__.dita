@@ -1,0 +1,77 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!DOCTYPE topic
+  PUBLIC "-//OASIS//DTD DITA Topic//EN" "topic.dtd">
+<topic id="id7f03cc5e-675a-4371-b3e9-5d79b981ff95">
+   <title>Webservice Calls mit <codeph>doc()</codeph> und <codeph>unparsed-text()</codeph>
+   </title>
+   <body>
+      <p>Eine verbreitete Paxis ist es, mit der Funktion <codeph>document()</codeph> oder kurz <codeph>doc()</codeph> 
+entfernte Ressourcen in die Transformation einzubinden. 
+Bei einer Schematron-Validierung, würde bspw. eine Regel, wie:<fn callout="D"><p>UWE-Testfußnote (30/40, Callout D): DITA-fn wird in UWE zu footnote/key/desc.</p></fn></p>
+      <pre xml:space="preserve">&lt;sch:not-assert id="personal-check"
+    role="error"
+    test="doc(concat('https://tekturcms.de/personal.xqy?personal-id=',personal-id))/kuendigung"&gt;
+        Angestellter mit ID "&lt;sch:value-of select="personal-id"/&gt;" hat gekündigt!
+&lt;/sch:not-assert&gt;</pre>
+      <p>einen entferneten Webservice aufrufen und prüfen, ob für den Angestellten mit <codeph>personal-id</codeph>
+eine Kündigung vorliegt. Ist dies der Fall, so ist die negative Zusicherung <codeph>not-assert</codeph> nicht
+erfüllt, und die Schematron Regel feuert - was sich wohl im einfachsten Fall in einem 
+Logfile Eintrag äussern sollte.</p>
+      <p>Was vermutlich viele noch nicht kennen - ich nehme jetzt einfach mal an, dass mein 
+bisheriger Kenntnisstand dem der Mehrheit der XML-Entwickler entspricht - ist der Umstand,
+dass auch die Funktion <codeph>unparsed-text()</codeph> eine URL als Parameter nimmt:</p>
+      <pre xml:space="preserve">&lt;xsl:template match="angestellter"
+    &lt;xsl:copy&gt;
+        &lt;xsl:apply-templates select="node()|@*"/&gt;
+        &lt;hat-gekuendigt&gt;
+            &lt;xsl:sequence select="json-to-xml(
+                                  unparsed-text(
+                                  concat('https://tekturcms.de/personal.xqy?personal-id=',
+                                  personal-id))))/descendant::*[@key='gekuendigt']/text()"/&gt;
+        &lt;/hat-gekuendigt&gt;
+    &lt;/xsl:copy&gt;
+&lt;/xsl:template&gt;</pre>
+      <p>Während mit <codeph>doc()</codeph> oder <codeph>document()</codeph> ein zurückgeliefertes XML Fragment 
+prozessiert wird, erwartet <codeph>unparsed-text()</codeph> z.B. einen <b>JSON-String</b>, der dann mittels
+der Funktion <codeph>json-to-xml()</codeph> nach XML konvertiert werden kann.</p>
+      <p>Beispielsweise könnte die Gegenseite zum <codeph>angestellter</codeph> Template mittels XQuery
+folgendermassen realisiert sein:</p>
+      <pre xml:space="preserve">xquery version "1.0-ml";
+
+declare variable $personal-id := xdmp:get-request-field('personal-id');
+
+let $gekuendigt := if (collection('/personal')/*[personal-id = $personal-id and 
+                                                 fn:exists(kuendingung)] then 
+                                                 'ja' else 'nein'
+return 
+    common:render-response(concat('{"gekuendigt":"',$gekuendigt,'",
+                                    "personal-id":"',$personal-id,'"}'))</pre>
+      <p>(<xref format="dita" scope="local" type="concept" href="4_2_1_XQuery_als_Programmiersprache.dita">Mehr zu XQuery und den hier verwendeten Konstrukten</xref>, wie <codeph>render-response()</codeph>)</p>
+      <p>Das zurückgeklieferte JSON Dokument sieht dann so aus:</p>
+      <pre xml:space="preserve">{"gekuendig":"ja","personal-id":"q5687500"}</pre>
+      <p>Konvertiert nach XML erhält man eine Map Struktur:</p>
+      <pre xml:space="preserve">&lt;map xmlns="http://www.w3.org/2005/xpath-functions"&gt;
+   &lt;string key="gekuedigt"&gt;ja&lt;/string&gt;
+   &lt;string key="personal-id"&gt;q5687500&lt;/string&gt;
+&lt;/map&gt;</pre>
+      <p>was den Selektorausdruck im obigen XPATH erklärt:</p>
+      <pre xml:space="preserve">json-to-xml(
+unparsed-text(
+concat('https://tekturcms.de/personal.xqy?personal-id=',
+personal-id))))/descendant::*[@key='gekuendigt']/text()</pre>
+      <p>Resultat der Konvertierung wäre - wie erwartet - ein um 
+das <codeph>gekuendigt</codeph> Flag erweitertes <codeph>&lt;angestellter&gt;</codeph>
+Element:</p>
+      <pre xml:space="preserve">&lt;angestellter&gt;
+   &lt;perosnal-id&gt;q5687500&lt;/perosnal-id&gt;
+   &lt;name&gt;Alex&lt;/name&gt;
+    [...]
+   &lt;gekuendigt&gt;nein&lt;/gekuendigt&gt;
+&lt;/angestellter&gt;</pre>
+      <p>Sicherlich wird der XML Entwickler eine <xref format="dita" scope="local" type="concept" href="4_3_XML_Datenbanken.dita">XML Datenbank</xref>, wie MarkLogic, vorziehen
+und sich gleich XML Fragmente ausliefern lassen. <ph outputclass="nb">Tektur</ph> ist aber bspw. mit
+MongoDB <xref format="html" scope="external" href="https://www.mongodb.com/">Homepage der NoSQL Datenbank MongoDB</xref>
+realisiert, die auf JSON arbeitet... Nicht zuletzt deshalb finde ich JSON Verarbeitung
+mit XSLT recht spannend.</p>
+   </body>
+</topic>

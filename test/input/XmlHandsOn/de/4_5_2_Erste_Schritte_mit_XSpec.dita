@@ -1,0 +1,72 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!DOCTYPE topic
+  PUBLIC "-//OASIS//DTD DITA Topic//EN" "topic.dtd">
+<topic id="id821f8271-e9a1-43e8-ba9a-b1e8aa0ce4f4">
+   <title>Erste Schritte mit XSpec </title>
+   <body>
+      <p>XSpec<indexterm>Tools<indexterm>XSpec</indexterm>
+         </indexterm> ist ein Test-Framework <xref format="html" scope="external" href="https://github.com/xspec">XSpec auf GitHub</xref>
+         <indexterm>Test-Framework</indexterm> für XSLT, XQuery und Schematron. 
+Um beispielsweise komplexe Schematron Regeln zu testen, hinterlegt man in einem <b>Test-Szenario</b> 
+Erwartungswerte für positive und negative Testfälle in Form von XML Schnippseln.</p>
+      <pre xml:space="preserve">&lt;test-szenario&gt;
+   &lt;testfall&gt;
+      &lt;personen&gt;
+         &lt;person&gt;
+            &lt;vorname&gt;Horst&lt;/vorname&gt;
+            &lt;nachname&gt;Schlämmer&lt;/nachname&gt;
+            &lt;gewicht&gt;100&lt;/gewicht&gt;
+         &lt;/person&gt;
+         &lt;person&gt;
+            &lt;vorname&gt;Gundula&lt;/vorname&gt;
+            &lt;nachname/&gt;
+            &lt;gewicht&gt;60&lt;/gewicht&gt;
+         &lt;/person&gt;
+      &lt;/personen&gt;
+   &lt;/testfall&gt;
+&lt;/test-szenario&gt;</pre>
+      <p>in einer XSpec Datei <codeph>*.xspec</codeph> werden <b>Assert- und Not-Assert-Methoden</b>
+         <indexterm>Assert- und Not-Assert</indexterm>deklariert:</p>
+      <pre xml:space="preserve">&lt;x:description xmlns:x="http://www.jenitennison.com/xslt/xspec" xslt-version="2.0" schematron="test.sch"&gt;
+   &lt;x:scenario label="ALL"&gt;
+      &lt;x:context href="test.xml"/&gt;
+      &lt;x:expect-not-assert id="person-nachname-rule" location="//person[1]/nachname"/&gt;
+      &lt;x:expect-assert id="person-nachname-rule" location="//person[2]/nachname"/&gt;
+   &lt;/x:scenario&gt;
+&lt;/x:description&gt;</pre>
+      <p>Grds. bdeutet ein Assert, dass das Mapping zwischen tatsächlichem Wert und Erwartungswert des
+Testfalls<indexterm>Testfall</indexterm> positiv erfüllt ist. Beim Not-Assert ist das Gegenteil der Fall. Im obigen Beispiel
+reichen zwei Regeln, um den Testfall vollständig abzudecken.</p>
+      <p>Wenn man Schematron<indexterm>Tools<indexterm>Schematron</indexterm>
+         </indexterm> Regeln mit Hilfe von XSpec testen will, dann muss man ein bisschen um 
+die Ecke denken. Denn auch diese Regeln werden mittels Assert und Not-Assert modelliert.</p>
+      <pre xml:space="preserve">&lt;sch:schema xmlns:sch="http://purl.oclc.org/dsdl/schematron" xmlns:xsl="http://www.w3.org/1999/XSL/Transform" queryBinding="xslt2"&gt;
+   &lt;sch:pattern id="main"&gt;
+      &lt;sch:rule context="nachname"&gt;
+         &lt;sch:assert id="person-nachname-rule" role="error" test="normalize-space(.)"&gt;
+        Der Nachname der Person mit ID: 
+            &lt;sch:value-of select="@id"/&gt;
+             fehlt! 
+         &lt;/sch:assert&gt;
+      &lt;/sch:rule&gt;
+   &lt;/sch:pattern&gt;
+&lt;/sch:schema&gt;</pre>
+      <p>In der Schematron-Regel wird zugesichert (Assert), dass jede Person einen Nachnamen hat.</p>
+      <p>Hat sie keinen Nachnamen, so wird der Bericht zum Fehlerfall in die Schematron Ergebnisdatei
+geschrieben. Diese Datei wertet nun XSpec aus.</p>
+      <note>
+         <p>Erscheint ein Fehler (= das Feld <b>nachname</b> ist leer), so greift bei XSpec die Assert-Regel! Das ist die umgekehrte Logik zu den Schematron Regeln.</p>
+      </note>
+      <p>Als Eselsbrücke kann man
+ein Assert in der XSpec Datei gleichsetzen mit <b>Appear</b> und ein Not-Assert mit
+<b>Not-Appear</b>. <indexterm>Tipps und Tricks<indexterm>Appear- und Not-Appear</indexterm>
+         </indexterm>
+      </p>
+      <p>Ein Assert sichert also zu, dass sich ein Fehlerbericht in der
+Schematron Ergebnisdatei zum Testfall befindet. Ein Not-Assert sichert zu, dass
+sich kein Fehlerbericht befindet. </p>
+      <p> Wie man sich leicht vorstellen kann, sind Assert-Regeln in diesem Fall leicht zu finden,
+dazu muss man nur die Schematron Testregeln ins Leere zeigen lassen. Alles ist grün
+und alles ist gut - dem Augenschein nach.</p>
+   </body>
+</topic>

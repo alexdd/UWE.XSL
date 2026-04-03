@@ -1,0 +1,114 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!DOCTYPE topic
+  PUBLIC "-//OASIS//DTD DITA Topic//EN" "topic.dtd">
+<topic id="id9d32e957-a332-40f5-bcbd-52fd6ed7f7da">
+   <title>Validation with Schematron </title>
+   <body>
+      <p>To check the correctness of an XML instance, there are various schemas such as <b>XSD</b>, <b>RNG</b>, or <b>DTD</b>
+         <indexterm>Schemas</indexterm>, which the parser consults when building the DOM tree, cf. chapter <xref format="dita" scope="local" type="concept" href="3_4_Schemas.dita">Schemas</xref>. A validation<indexterm>Processing Methods<indexterm>Validation</indexterm>
+         </indexterm> with Apache Xerces could, for example, be initiated as Java code<indexterm>Programming Languages<indexterm>Java</indexterm>
+         </indexterm> as follows:</p>
+      <pre xml:space="preserve">URL schemaFile = new URL("http://host:port/filename.xsd");
+Source xmlFile = new StreamSource(new File("web.xml"));
+SchemaFactory schemaFactory = SchemaFactory
+    .newInstance(XMLConstants.W3C_XML_SCHEMA_NS_URI);
+try {
+  Schema schema = schemaFactory.newSchema(schemaFile);
+  Validator validator = schema.newValidator();
+  validator.validate(xmlFile);
+  System.out.println(xmlFile.getSystemId() + " is valid");
+} catch (SAXException e) {
+  System.out.println(xmlFile.getSystemId() + " is NOT valid reason:" + e);
+} catch (IOException e) {</pre>
+      <p>Schema files can also be integrated into XML editors to verify correctness already during input of the XML instance. </p>
+      <p>This is possible on one hand <xref format="html" scope="external" href="http://www.heise.de">short description</xref> via specifying the doctype<indexterm>XML Constructs<indexterm>Doctype</indexterm>
+         </indexterm> in the XML instance, and on the other hand all editors also offer the option to explicitly select a specific schema in order to validate against it on demand.</p>
+      <p>When it comes to verifying more complex business rules that go beyond syntax, consistency, and simple correctness checks, validation with Schematron rules is recommended.</p>
+      <section>
+         <title>Schematron is XSLT</title>
+         <p>In a Schematron validation, an XML instance is checked using an automatically generated XSLT stylesheet. This context-dependent stylesheet is generated from a rule base written in Schematron syntax by the author, which is itself in XML, via a second XSLT stylesheet - this second XSLT stylesheet is essentially the actual Schematron program. </p>
+         <p>The following diagram illustrates the approach using a filter scenario<indexterm>Processing Methods<indexterm>Filter Scenario</indexterm>
+            </indexterm>, in which an XML document with some invalid passages is converted into a filtered representation.</p>
+         <fig>
+            <title>Schematron Validation with Filter</title>
+            <desc>Simple batch process for validation with Schematron followed by filtering of the results</desc>
+            <image href="../images/schematron-1_81.svg"/>
+         </fig> |   |                                                    Rejected by , .       <p>The Schematron repo can be found on GitHub <xref format="html" scope="external" href="https://github.com/Schematron/schematron">Schematron on GitHub</xref>. This repo is somewhat confusing. The relevant part of the source code is located under: <codeph>schematron/code</codeph>
+         </p>
+      </section>
+      <section>
+         <title>CLI Usage</title>
+         <p>To integrate the Schematron XSLT scripts into your own XSLT application via the command line, you could proceed as follows: </p>
+         <ul>
+            <li>
+               <p>Reference the Schematron project as a submodule in your own GIT project.</p>
+            </li>
+            <li>
+               <p>Create a rule base, for example <codeph>$project_name.sch</codeph>.</p>
+            </li>
+            <li>
+               <p>Create two batch scripts, for example <codeph>generate_schema.sh</codeph> and <codeph>validate.sh</codeph>.</p>
+            </li>
+         </ul>
+         <p>Using the script <codeph>generate_schema.sh</codeph>, the Schematron XSLT stylesheet is generated from the Schematron rule base. The content of this batch file could look like this, for example:</p> |   |                                                    Rejected by , .           |   |                                                    Rejected by , .           |   |                                                    Rejected by , .           |   |                                                    Rejected by , .       <pre xml:space="preserve">saxon $script_dir/$project_name_validation.sch $script_dir/schematron/iso_dsdl_include.xsl
+ | \ saxon -s:- $script_dir/schematron/iso_abstract_expand.xsl | \
+saxon -s:- $script_dir/schematron/iso_svrl_for_xslt2.xsl \
+  <b>generate-fired-rule</b>=false &gt; $script_dir/$project_name_validation.xsl</pre>
+         <p>The process for generating the project-specific validation XSLT script consists of three stages and is processed through the following XSLT steps.</p>
+         <ul>
+            <li>
+               <p>
+                  <codeph>iso_dsdl_include.xsl</codeph>
+               </p>
+            </li>
+            <li>
+               <p>
+                  <codeph>iso_abstract_expand.xsl</codeph>
+               </p>
+            </li>
+            <li>
+               <p>
+                  <codeph>iso_svrl_for_xslt2.xsl</codeph>
+               </p>
+            </li>
+         </ul>
+         <p>Finding out what happens in these scripts is left as an exercise for the interested reader. At this point, we are only interested in the result, namely the XSLT stylesheet <codeph>$project_name_validation.xsl</codeph>.</p>
+         <p>This script is called in the batch file <codeph>validate.sh</codeph>:</p>
+         <pre xml:space="preserve">saxon $xml_instance_to_check.xml $script_dir/$project_name_validation.xsl \
+  &gt; $validation-result.xml</pre>
+         <p>The output of this validation process is an XML file containing the errors in the input XML instance, which can be further processed, for example as a filter criterion for a subsequent processing step. The content of this file looks like this, for example:</p> |   |                                                    Rejected by , .           |   |                                                    Rejected by , .           |   |                                                    Rejected by , .           |   |                                                    Rejected by , .       <pre xml:space="preserve">&lt;svrl:schematron-output xmlns:svrl="http://purl.oclc.org/dsdl/svrl" [...]
+  &lt;svrl:active-pattern document="file:/Users/alex/xml_instance_to_check.xml" 
+   id="default" name="default"/&gt;
+  &lt;svrl:failed-assert test="count(key('unique-ids', current()))=1"&gt;
+    &lt;svrl:text&gt;ID is not unique!&lt;/svrl:text&gt;
+    &lt;svrl:diagnostic-reference diagnostic="default"&gt;
+      &lt;bk:id xmlns:bk="http://tekturcms/namespaces/book"&gt;1234-5678-9&lt;/my:id&gt;
+    &lt;/svrl:diagnostic-reference&gt;
+  &lt;/svrl:failed-assert&gt;
+  [...]</pre>
+         <p>In addition to the <codeph>svrl:failed-assert</codeph> elements, which indicate what failed during validation of the XML instance, there is also the option to display positive results - via the <codeph>svrl:successful-report</codeph> element.</p>
+         <p>Specifically, the above XML snippet tells us that our <codeph>id</codeph> with the value <codeph>1234-5688-9</codeph> is not unique in the checked XML document. The Schematron rule base that we specified for the check looks like this:</p>
+         <pre xml:space="preserve">&lt;schema xmlns:sch="http://purl.oclc.org/dsdl/schematron" [...]
+  &lt;xsl:key name="unique-ids" match="bk:id" use="."/&gt;
+  &lt;sch:let name="date-regex" value="'^((19|2[0-9])[0-9]{2})-(0[1-9]|1[012])
+                                     -(0[1-9]|[12][0-9]|3[01])$'"/&gt;
+  &lt;sch:pattern id="default"&gt;
+    &lt;sch:rule context="book"&gt;
+      &lt;sch:assert id="check-book-id" role="error" test="count(key('unique-ids', bk:id))=1" 
+                  diagnostics="default"&gt;ID is not unique!&lt;/sch:assert&gt;
+      &lt;sch:assert id="check-book-published" role="error" 
+                  test="matches(bk:published,$date-regex)
+    &lt;/sch:rule&gt;
+    [...]
+  &lt;/sch:pattern&gt;
+  &lt;sch:diagnostics&gt;
+    &lt;sch:diagnostic id="default"&gt;
+      &lt;xsl:element name="bk:id"&gt;
+        &lt;xsl:value-of select="bk:id"/&gt;
+      &lt;/xsl:element&gt;
+    &lt;/sch:diagnostic&gt;
+  &lt;/sch:diagnostics&gt;</pre>
+         <p>In addition to the "successful" and "failed" rules, the declaration of functions and variables in the body of the rule base is also permitted. This enables complex conditions to be checked, for example by looking up values in a lookup table. </p>
+      </section>
+   </body>
+</topic>

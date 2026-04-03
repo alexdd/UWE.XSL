@@ -1,0 +1,202 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!DOCTYPE topic
+  PUBLIC "-//OASIS//DTD DITA Topic//EN" "topic.dtd">
+<topic id="ide0d7eb79-068d-4266-9982-c759fd052fec">
+   <title>Komplexe XML-2-XML Transformationen </title>
+   <body>
+      <p>Der erfahrene XML-Entwickler schreibt schlanken, performanten und einfachen Code, den auch andere gut verstehen. Er meistert alle Bereiche der XML-Entwicklung und hat sich mit Publishing Standards befasst, wie Docbook<indexterm>Standards<indexterm>Docbook</indexterm>
+         </indexterm>, DITA<indexterm>Standards<indexterm>DITA</indexterm>
+         </indexterm> und JATS<indexterm>Standards<indexterm>JATS</indexterm>
+         </indexterm>. Er erstellt mittels XSL-FO<indexterm>XSL-FO</indexterm> und verschiedenen Seitenvorlagen schöne PDF Dokumente und hat auch schon in anderen Anwendungsbereichen geabeitet, wie bspw. im EDI <xref format="html" scope="external" href="https://de.wikipedia.org/wiki/Elektronischer_Datenaustausch">Wikipediaseite zum Elekronischen Datenaustausch / EDI</xref>
+         <indexterm>Anwendungsgebiete<indexterm>EDI</indexterm>
+         </indexterm> Umfeld. Er beherrscht XML Datenbanken, wie Marklogic<indexterm>XML Datenbank<indexterm>MarkLogic</indexterm>
+         </indexterm> oder eXist<indexterm>XML Datenbank<indexterm>eXist</indexterm>
+         </indexterm> und deren Abfragesprache XQuery<indexterm>Programmiersprachen<indexterm>XQuery</indexterm>
+         </indexterm>.<fn callout="U"><p>UWE-Testfußnote (21/40, Callout U): DITA-fn wird in UWE zu footnote/key/desc.</p></fn></p>
+      <p>Als Königsdisziplin stellen sich komplexe XML-2-XML Transformationen<indexterm>XML-2-XML Transformationen</indexterm> heraus. Insbesondere solche, die von einem relativ freien Inhaltsmodell auf ein restriktives Inhaltsmodell<indexterm>Inhaltsmodell<indexterm>Restriktives Inhaltsmodell</indexterm>
+         </indexterm> abbilden. Dabei können diese ausserhalb und auch innerhalb einer XML Datenbank ablaufen - oder über Webrequests verteilt statt finden. </p>
+      <p>Es hat sich bewährt solche komplexen Transformationen auf mehrere Schritte aufzuteilen, die jeder für sich genommen, eine abgeschlossene und leicht zu testende Einheit bildet.</p>
+      <p>Schritt-für-Schritt wird dabei die XML Eingabeinstanz transformiert, bis schliesslich das validierbare Ergebnis herauskommt. Das XML der Zwischenschritte kann dabei meistens nicht gegen ein Schema validiert werden, weshalb eine besondere Sorgfalt bei der Entwicklung erforderlich ist.</p>
+      <section>
+         <title>Schritt-für-Schritt Python Skript</title>
+         <p>Bei einer mehrstufigen Transformation möchte man bei der Entwicklung leicht die Zwischenschritte überprüfen können. Dabei hilft eine andere Skriptsprache, wie bspw. Python<indexterm>Programmiersprachen<indexterm>Python</indexterm>
+            </indexterm>. Das folgende Skript nimmt die XML Daten in einem Ordner <codeph>input</codeph>, transformiert diese in Sortierreihenfolge mit den XSLT Skripten, die im Ordner <codeph>xslt</codeph> liegen und schreibt die Ausgabe übersichtlich in den Ordner <codeph>output</codeph>.</p>
+         <pre xml:space="preserve">import glob, os, shutil, getopt, sys, subprocess
+
+SAXON_JAR = "/mnt/c/saxon/saxon9pe_98.jar"
+JAVA_CMD = "java"
+
+def transform(): 
+    for fpath in glob.glob('input/*'):
+        file_name= os.path.basename(fpath)
+        input_folder = os.path.dirname(os.path.realpath(fpath))
+        input_file =  os.path.join(input_folder, file_name)
+  
+        steps = os.listdir("xslt")
+        steps.sort()
+        step = None
+        
+        for step_file in steps:
+            if not step_file.startswith("step"): continue 
+            step = step_file.split("_")[0]
+            output_folder = input_folder.replace("input","output/"+step)
+            current_step = os.path.join(output_folder, file_name)
+            os.makedirs(output_folder,exist_ok=True)
+            args = [
+                JAVA_CMD,
+                "-classpath",
+                SAXON_JAR,
+                "net.sf.saxon.Transform",
+                "-s:"+input_file,
+                "-o:"+current_step,
+                "-xsl:xslt/"+step_file,
+                "filename="+os.path.basename(input_file).replace(".xml","")
+                ]
+            try:
+                subprocess.call(args)
+            except:
+                print ("ERROR: Could not transform file: "+fpath+" with: "+step_file)
+            input_file = current_step
+            print ("Transformed "+step+": "+fpath)
+        
+transform()
+print ("Done")</pre>
+         <p>Das Skript kann natürlich noch um weitere Funktionen erweitert werden, wie bspw. einer Validierung für den letzten Schritt oder einem Deltavergleich der Zwischenergebnisse mit denen des vorherigen Transformationslaufs. </p>
+         <p>Will man das Ganze noch weiter treiben, kann man auch eine BPMN Engine<indexterm>Business Process Management<indexterm>Camunda BPMN Engine</indexterm>
+            </indexterm> 
+            <xref format="html" scope="external" href="https://de.wikipedia.org/wiki/Prozessmanagement">Wikipediaseite zum Prozessmanagement</xref>, wie Camunda <xref format="html" scope="external" href="https://camunda.com/">Website der Camunda BPMN Engine</xref> verwenden (einen speziellen Task-Executor für Camunda, der genau für diese XML Zwecke gemacht wurde, findet man auch in meinem Github Repository <xref format="html" scope="external" href="https://github.com/alexdd/tektur_worker">tektur_worker</xref>).</p>
+      </section>
+      <section>
+         <title>Patterns für wiederkehrende Schritte</title>
+         <p>Eine mehrstufige Transformation, die auf ein restriktives Inhaltsmodell abbildet, funktioniert vielleicht wie eine Goldschürfer-Pipeline, in der gesiebt und gerüttelt wird, bis das erwartete Ergebnis vorliegt. </p>
+         <p>Folgende Patterns für wiederkehrende Schritte lassen sich dabei identifizieren:</p>
+      </section>
+      <section>
+         <title>Elemente markieren</title>
+         <p>
+            <indexterm>Transformation-Patterns<indexterm>Markieren</indexterm>
+            </indexterm>Wenn man alles auf einmal transformieren will, kommt man schnell in Bedrängnis. Es empfiehlt sich zunächst zu markieren und im nächsten Schritt dann auf den markierten Elementen bestimmte Operationen auszuführen. </p>
+         <pre xml:space="preserve">&lt;xsl:template match="*[name()=$outline-element-names]"&gt;
+  &lt;xsl:copy&gt;
+    &lt;xsl:apply-templates select="@*"/&gt;
+    &lt;xsl:if test="preceding-sibling::*[1][@otherprops=$list-fragment-marker]"&gt;
+      &lt;xsl:attribute name="<b>copy-target-id</b>" 
+                     select="preceding-sibling::*[@otherprops=$list-fragment-marker][1]/
+                             descendant::*[<b>@copy-id</b>][last()]/<b>@copy-id</b>"/&gt;
+    &lt;/xsl:if&gt;
+    &lt;xsl:apply-templates select="node()|@*"/&gt;
+  &lt;/xsl:copy&gt;
+&lt;/xsl:template&gt;</pre>
+         <p>Hier wird ein künstliches Attribut <codeph>@copy-target-id</codeph> mit einem Wert von <codeph>@copy-id</codeph> an ein Outline Element gesetzt, das im folgenden Schritt an die Stelle nach der<codeph>@copy-id</codeph> kopiert wird.</p>
+      </section>
+      <section>
+         <title>Elemente kopieren</title>
+         <p>
+            <indexterm>Transformation-Patterns<indexterm>Kopieren</indexterm>
+            </indexterm>Ein wiederverwendbarer Schritt, der mit <codeph>@copy-target-id</codeph> markierte Elemente nach eine Stelle kopiert, die mit <codeph>@copy-id</codeph> markiert wurde, könnte z.B. so aussehen:</p>
+         <pre xml:space="preserve">&lt;xsl:stylesheet xmlns:xsl="http://www.w3.org/1999/XSL/Transform"
+    xmlns:xs="http://www.w3.org/2001/XMLSchema"
+    exclude-result-prefixes="xs"
+    version="2.0"&gt;
+    
+    &lt;xsl:key name="targets" match="*[<b>@copy-target-id</b>]" use="<b>@copy-target-id</b>"/&gt;
+    
+    &lt;!-- copy elements from src to target --&gt;
+    
+    &lt;xsl:template match="*[<b>@copy-id</b>]"&gt;
+        &lt;xsl:copy&gt;
+            &lt;xsl:apply-templates select="node()|@*"/&gt;
+            &lt;xsl:apply-templates select="key('targets',<b>@copy-id</b>)" mode="copied"/&gt;
+        &lt;/xsl:copy&gt;
+    &lt;/xsl:template&gt;
+
+    &lt;!-- remove original position and attributes --&gt;
+	
+    &lt;xsl:template match="*[<b>@copy-target-id</b>]"/&gt;
+    &lt;xsl:template match="<b>@copy-target-id</b>|<b>@copy-id</b>" mode="copied"/&gt;
+   
+    &lt;xsl:template match="node()|@*" mode="#all"&gt;
+        &lt;xsl:copy&gt;
+            &lt;xsl:apply-templates select="node()|@*" mode="#current"/&gt;
+        &lt;/xsl:copy&gt;
+    &lt;/xsl:template&gt;
+ 
+&lt;/xsl:stylesheet&gt;</pre>
+         <p>Mit so einer Vorgehensweise kann man sukkzessive und mittels einzelner Kopierschritte die XML Instanz umbauen und die Zwischenergebnisse verfolgen. So eine explorative Herangehensweise hat enorme Vorteile, wenn man sich über den Algorithmus noch nicht ganz im Klaren ist.</p>
+      </section>
+      <section>
+         <title>Elemente nach oben ziehen</title>
+         <p>
+            <indexterm>Transformation-Patterns<indexterm>Nach oben ziehen</indexterm>
+            </indexterm>Falls ein tieferliegendes Element nicht an die Stelle in der Ziel-DTD passt, kann man es mit folgenden Templates "nach oben ziehen":</p>
+         <pre xml:space="preserve">&lt;xsl:template match="table[descendant::table or descendant::ol]"&gt;
+  &lt;xsl:copy&gt;
+    &lt;xsl:apply-templates <b>mode="remove-table-ol</b>"/&gt;
+  &lt;/xsl:copy&gt;
+  &lt;xsl:apply-templates select="descendant::ol | descendant::table"/&gt;
+&lt;/xsl:template&gt;
+    
+&lt;xsl:template match="*[self::ol or self::table]" mode="remove-table-ol"/&gt;</pre>
+         <p>Hier werden Tabellen und Listen in einer Tabelle nach der Tabelle gesetzt. Über einen Modus (vgl. auch ein Beispiel zum Modus hier: <xref format="dita" scope="local" type="concept" href="4_1_5_Modus_vs._Tunnel_Lsung.dita">Modus vs. Tunnel Lösung </xref> werden diese Knoten aus dem XML Zielbaum "ausgeschnitten".</p>
+      </section>
+      <section>
+         <title>Blöcke auszeichnen</title>
+         <p>
+            <indexterm>Transformation-Patterns<indexterm>Blöcke auszeichnen</indexterm>
+            </indexterm>Falls Blockstrukturen geklammert werden sollen, bspw. wenn diese im HTML Kapitel nur mittels <codeph>h1</codeph> Überschriften-Tags gekennzeichnet sind, dann hilft vielleicht ein Template wie dieses weiter:</p>
+         <pre xml:space="preserve">&lt;xsl:template match="body"&gt;       
+  &lt;xsl:for-each select="h1"&gt;
+    &lt;block&gt;
+      &lt;title&gt;
+        &lt;xsl:apply-templates /&gt;
+      &lt;/title&gt;
+      &lt;xsl:apply-templates select="following-sibling::*[not(self::h1)]
+          [preceding-sibling::h1[1][<b>generate-id()=current()/generate-id()</b>]]"/&gt;                
+    &lt;/block&gt;
+  &lt;/xsl:for-each&gt;
+&lt;/xsl:template&gt;</pre>
+         <p>Mittels der XPath <codeph>fn:is()</codeph> Funktion liesse sich der <codeph>generate-id()</codeph> Vergleich sogar noch abkürzen.</p>
+      </section>
+      <section>
+         <title>Mixed Content wrappen</title>
+         <p>
+            <indexterm>Transformation-Patterns<indexterm>Mixed Content wrappen</indexterm>
+            </indexterm> Sehr unangenehm ist sporadisch auftretender XML Mixed Content, z.B. zwischen Paras. Mit folgenden Templates lässt sich das handeln. Zuerst kann man den Mixed Content in einem vorhergehenden Schritt markieren und in einen künstlichen Para packen ...</p>
+         <pre xml:space="preserve">&lt;!-- wrap a p around PCDATA in li --&gt;
+    
+&lt;xsl:template match="text()[parent::li]"&gt;
+  &lt;p content="mixed"&gt;
+    &lt;xsl:value-of select="."/&gt;
+  &lt;/p&gt;
+&lt;/xsl:template&gt;</pre>
+         <p>... hier markiert mit <codeph>@content="mixed"</codeph>. Im folgenden Schritt werden dann die ursprünglichen Paras, die jetzt verschachtelt im künstlichen Para liegen wieder ausgepackt:</p>
+         <pre xml:space="preserve">&lt;xsl:variable name="inline-elements" select="('sub','sup','b','i','br','u')"/&gt;
+
+&lt;xsl:template match="p[<b>@content='mixed'</b> and not(preceding-sibling::p[@content='mixed'])]"&gt;
+  &lt;xsl:variable name="first-p-id" select="(preceding-sibling::*[1]/generate-id(), 
+                                                                   generate-id())[1]"/&gt;
+  &lt;p&gt;
+    &lt;xsl:copy-of select="preceding-sibling::*[name()=$inline-elements]"/&gt;
+      &lt;xsl:apply-templates select="node()|following-sibling::*[(self::p[<b>@content='mixed'</b>]
+                           or name()=$inline-elements) and 
+			   not(preceding-sibling::p[not(<b>@content='mixed'</b>)][1]/
+                           generate-id()!=$first-p-id)]"<b> mode="unwrap"</b>/&gt;
+   &lt;/p&gt;
+&lt;/xsl:template&gt;
+	
+&lt;xsl:template match="p[<b>@content='mixed'</b> and preceding-sibling::p[<b>@content='mixed'</b>]]"/&gt;
+	
+&lt;xsl:template match="p" <b>mode="unwrap"</b>&gt;
+  &lt;xsl:apply-templates/&gt;
+&lt;/xsl:template&gt;
+	
+&lt;xsl:template match="*[not(self::p)]" <b>mode="unwrap"</b>&gt;
+  &lt;xsl:copy&gt;
+    &lt;xsl:apply-templates select="node()|@*"/&gt;
+  &lt;/xsl:copy&gt;
+&lt;/xsl:template&gt;
+	
+&lt;xsl:template match="li[p[<b>@content='mixed'</b>]]/*[name()=$inline-elements]"/&gt;</pre>
+      </section>
+   </body>
+</topic>

@@ -1,0 +1,204 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!DOCTYPE topic
+  PUBLIC "-//OASIS//DTD DITA Topic//EN" "topic.dtd">
+<topic id="ida204cfce-f0e0-4a46-b5ca-5d58a0700931">
+   <title>Whitespace Handling</title>
+   <body>
+      <p>
+         <indexterm>Concepts<indexterm>Whitespace Handling</indexterm>
+         </indexterm>Whitespace handling is a hot topic in the publishing domain. On the one hand, the author should ensure that no superfluous whitespace enters the data, but on the other hand, these are sneaked in by editors and transformation pipelines.<fn callout="F"><p>UWE test footnote (32/40, callout F): DITA fn maps to UWE footnote/key/desc.</p><p outputclass="fn-add">UWE supplement (fn-add) for the footnote index.</p></fn></p>
+      <p>You want to get rid of these unwanted whitespace characters during publication. XSLT provides various means for this:</p>
+      <ol>
+         <li>
+            <p>With <codeph>xsl:strip-space</codeph> and <codeph>xsl:preserve-space</codeph>
+               <indexterm>XSLT Constructs<indexterm>xsl:strip-space and xsl:preserve-space</indexterm>
+               </indexterm>, it can be specified in the stylesheet declaration in which elements whitespace-like characters, such as spaces and line breaks, should potentially be normalized to a single space. Conversely, you can also specify where this should explicitly not happen.</p>
+         </li>
+         <li>
+            <p>The function <codeph>fn:normalize-space</codeph> enables this functionality in XPath queries, and with <codeph>fn:translate</codeph>, whitespace can be mapped to other characters, such as the empty string.</p>
+         </li>
+         <li>
+            <p>If you only want to remove whitespace at the beginning or end of a PCDATA element, it may also be worth looking at the FunctX library by <ph outputclass="nb">Priscillia Wamsley</ph>
+               <indexterm>XML Gurus<indexterm>Priscillia Walmsley</indexterm>
+               </indexterm> on the topic of trimming <xref format="html" scope="external" href="http://www.xsltfunctions.com/xsl/functx_trim.html">FunctX trim</xref>.</p>
+         </li>
+      </ol>
+      <section>
+         <title>Whitespace at the Beginning of a Sentence</title>
+         <p>You quickly discover that these built-in tools are not sufficient when you want to remove whitespace at the beginning of a nested inline structure, such as this one:</p>
+         <pre xml:space="preserve">&lt;title&gt;
+   •
+   &lt;i&gt;
+      ••
+      &lt;!-- comment --&gt;
+      &lt;cap&gt;•A&lt;/cap&gt;
+      lfons Bliemetsrieders 
+   &lt;/i&gt;
+   Tagebuch
+&lt;/title&gt;</pre>
+         <p>The whitespace characters, marked as black dots (bullet), have crept in. You cannot simply apply the above functions across the board, because for example the space after <codeph>Bliementsrieder</codeph> was caused by an editing problem. Here, the space was accidentally formatted as italic. If you were to normalize on the <codeph>&lt;i&gt;</codeph> tag, this space would be swallowed.</p>
+      </section>
+      <section>
+         <title>Two-Stage Whitespace Elimination</title>
+         <p>My ambition for this problem was sparked by the very good solution of my colleague, who has a different programming style. So I had to prove that you can also arrive at a reasonable solution "old-school" rule-based with XSLT. Fortunately, there are now very sophisticated XSLT constructs<indexterm>XSLT Constructs</indexterm>. </p>
+         <p>If you look at the above example, the task can be broken down into two parts:</p>
+         <ol>
+            <li>
+               <p>Remove all text nodes below <codeph>&lt;title&gt;</codeph> up to the first text node that also contains letters and visible characters.</p>
+            </li>
+            <li>
+               <p>After that, you can trim the leading whitespace from the first text node below <codeph>&lt;title&gt;</codeph>.</p>
+            </li>
+         </ol>
+         <p>Sounds simple, but unfortunately it is not. </p>
+         <p>First, I researched whether a PCDATA element really has only one text node attached. This information was necessary because my first algorithm was not yet as refined as described in the two points above.</p>
+         <p>You can generate multiple text nodes in sequence within a transformation, like:</p>
+         <pre xml:space="preserve">&lt;xsl:value-of select="'erster Textknoten'"/&gt;&lt;xsl:value-of select="'zweiter Textknoten'"/&gt;</pre>
+         <p>However, these are normalized into a single text node during a <i>"save-load cycle"</i>. At least that is what the DOM Core specification states <xref format="html" scope="external" href="https://www.w3.org/TR/DOM-Level-3-Core/core.html#Document3-normalizeDocument">DOM 3 Core</xref>. The extent to which this is then implemented in the XML processors still needed to be verified. For this, I consulted the Saxon source code:</p>
+         <fig>
+            <title>endElement() function in the Saxon XSLT processor</title>
+            <desc>Source code snippet from the Saxon XSLT processor, showing that the EndElement listener in the parser calls a normalization step on the involved DOM nodes.</desc>
+            <image href="../images/normalisiere_32.png"/>
+         </fig>
+         <p>Mike Kay<indexterm>XML Gurus<indexterm>Michael Kay</indexterm>
+            </indexterm> then leaves the normalization function with an informative comment...</p>
+         <fig>
+            <title>normalize() function in the Saxon XSLT processor</title>
+            <desc>Method body of the normalization function in the Saxon XSLT processor</desc>
+            <image href="../images/normalisiert_33.png"/>
+         </fig>
+         <p>I was satisfied with that - whether it is correct or not is fortunately irrelevant for the final solution.</p>
+         <p>My first attempt to cut out all text nodes that contain only whitespace looked like this:</p>
+         <pre xml:space="preserve">
+&lt;!-- Entferne alle Leerzeichen-Only Knoten, die kein Vorgänger Inline-Element haben --&gt;
+&lt;xsl:template match="text()[ancestor::title 
+                            and not((.|..)/preceding-sibling::node()[1][self::*]) and
+                                not(translate(.,' ','')]"/&gt;</pre>
+         <ul>
+            <li>
+               <p>The first condition checks whether the text node is located somewhere below <codeph>&lt;title&gt;</codeph>.</p>
+            </li>
+            <li>
+               <p>The second condition checks whether an inline element exists as the immediate predecessor. Assuming that adjacent text nodes are merged into one text node - as researched above - in the negative case this would mean that we are at the beginning of the sentence.</p>
+            </li>
+            <li>
+               <p>The third condition checks whether the node consists only of whitespace. Strictly speaking, line breaks should also be listed here.</p>
+            </li>
+         </ul>
+         <p>Unfortunately, the following - non-real-world - test case could not be solved this way:</p>
+         <pre xml:space="preserve">&lt;title&gt;
+   •
+   &lt;b&gt;•Fettes&lt;/b&gt;
+   &lt;b&gt;
+      &lt;i&gt;
+         &lt;b&gt;
+            &lt;i&gt; &lt;/i&gt;
+         &lt;/b&gt;
+      &lt;/i&gt;
+      Editierproblem
+   &lt;/b&gt;
+&lt;/title&gt;</pre>
+         <p>The space in the <codeph>&lt;i&gt;</codeph> tag was swallowed. This happened because of the second condition, which only considers at most one nesting level. You could extend the expression further, e.g. like this:</p>
+         <pre xml:space="preserve">not((.|..|../..|../../..)/preceding-sibling::node()[1][self::*])</pre>
+         <p>But that already looks really ugly.</p>
+         <p>Since I had already figured out the second step, which looks like this:</p>
+         <pre xml:space="preserve">
+&lt;!-- Entferne am ersten Textknoten unterhalb von title führende Leerzeichen --&gt;
+&lt;xsl:template match="text()[current() is ancestor::title[1]/(descendant::text())[1]]" 
+              priority="10"  mode="pass-2"&gt;
+    &lt;xsl:value-of select="replace(.,'^\s+','')"/&gt;
+&lt;/xsl:template&gt;</pre>
+         <p>...the correction for the first step came easily:</p>
+         <pre xml:space="preserve">&lt;xsl:template match="text()[current() &amp;lt;&amp;lt; ancestor::title[1]/
+                           (descendant::text()[normalize-space(.)])[1]]" mode="pass-1"/&gt;</pre>
+         <fig expanse="spread" frame="all" scale="50" status="changed">
+            <image href="../images/Sandpiper_35.svg"/>
+         </fig>
+         <ul>
+            <li>
+               <p>A test <codeph>text()[normalize-space(.)</codeph> is sufficient to determine whether the text node does not consist only of whitespace.</p>
+            </li>
+            <li>
+               <p>Conversely, you check with <codeph>text()[not(translate(.,' ',''))</codeph> whether the text node consists only of whitespace.</p>
+            </li>
+            <li>
+               <p>Flattening a sequence set with <codeph>()</codeph>, as in <codeph>(descendant::text())</codeph>, is necessary so that you really only get the first element of the descendant lookup.</p>
+            </li>
+            <li>
+               <p>The <codeph>fn:current()</codeph> function is used far too rarely... it saves you a variable declaration in the body of the rule.</p>
+            </li>
+            <li>
+               <p>The cool <codeph>&lt;&lt;</codeph> operator, which checks whether a node comes before another, must be escaped in a match statement.</p>
+            </li>
+         </ul>
+         <p>Finally, the complete source code of the solution is shown below. It also demonstrates the pattern regarding <xref format="dita" scope="local" type="concept" href="4_1_1_Pre_Transformations.dita">Pre-Transformations</xref>:</p>
+         <pre xml:space="preserve">&lt;?xml version="1.0" ?&gt;
+&lt;xsl:stylesheet xmlns:xsl="http://www.w3.org/1999/XSL/Transform" xmlns:xs="http://www.w3.org/2001/XMLSchema" exclude-result-prefixes="xs" version="2.0"&gt;
+   &lt;xsl:template match="text()[current() &amp;lt;&amp;lt; ancestor::title[1]/                                (descendant::text()[normalize-space(.)])[1]]" mode="pass-1"/&gt;
+   &lt;xsl:template match="text()[current() is ancestor::title[1]/(descendant::text())[1]]" priority="10" mode="pass-2"&gt;
+      &lt;xsl:value-of select="replace(.,'^\s+','')"/&gt;
+   &lt;/xsl:template&gt;
+   &lt;xsl:template match="/"&gt;
+      &lt;xsl:variable name="pass-1"&gt;
+         &lt;xsl:apply-templates mode="pass-1"/&gt;
+      &lt;/xsl:variable&gt;
+      &lt;xsl:apply-templates select="$pass-1" mode="pass-2"/&gt;
+   &lt;/xsl:template&gt;
+   &lt;xsl:template match="node()|@*" mode="#all"&gt;
+      &lt;xsl:copy&gt;
+         &lt;xsl:apply-templates select="node()|@*" mode="#current"/&gt;
+      &lt;/xsl:copy&gt;
+   &lt;/xsl:template&gt;
+&lt;/xsl:stylesheet&gt;</pre>
+      </section>
+      <section>
+         <title>Excursion: Performance of the Descendant Axis</title>
+         <p>Out of convenience, I had replaced the more complex match condition of the first step with a simple path selector, i.e. this...</p>
+         <pre xml:space="preserve">match="text()[current() is ancestor::title[1]/(descendant::text())[1]]"</pre>
+         <p>... with this ...</p>
+         <pre xml:space="preserve">match="title/(descendant::text())[1]"</pre>
+         <p>... replaced. </p>
+         <hazardstatement type="warning" status="changed">
+            <messagepanel>
+               <typeofhazard>This, however, caused the transformation to run into an exponential performance problem!</typeofhazard>
+               <howtoavoid>The descendant axis should never appear in a path selector within a match condition!</howtoavoid>
+            </messagepanel>
+         </hazardstatement>
+         <p>Otherwise, the solution also performs in fractions of a second even with several thousand titles.</p>
+      </section>
+      <section>
+         <title>Whitespace Before an Inline Element</title>
+         <p>The whitespace before an inline element is also worth checking. In particular, to see whether one has been forgotten. A naive approach would be, for example, starting from the inline element, to check whether a predecessor text node ends with a space:</p>
+         <pre xml:space="preserve">ends-with(preceding-sibling::text()[1],' ')</pre>
+         <p>However, only the text predecessor nodes on the same level are considered; any inline elements are left out. I.e. the following paragraph would still be recognized as valid by this XPath expression, since there is a space after "Hallo ".</p>
+         <pre xml:space="preserve">&lt;p&gt;Hallo &lt;b&gt;fetter Text&lt;/b&gt;&lt;link&gt;link text&lt;/link&gt;</pre>
+         <p>Obviously, a space is missing before the <codeph>&lt;link&gt;</codeph> element. </p>
+         <p>To check whether the immediate predecessor node is a text node and whether it ends with a space, you can use this XPath expression:</p>
+         <pre xml:space="preserve">ends-with(preceding-sibling::node()[1][self::text()],' ')</pre>
+         <p>Or more clearly:</p>
+         <pre xml:space="preserve">preceding-sibling::node()[1][self::text()]/ends-with(.,' ')</pre>
+         <p>Since we have so far only been looking at the preceding-sibling axis, we miss whitespace that occurs in previously set inline elements, for example here:</p>
+         <pre xml:space="preserve">&lt;p&gt;
+   Hallo 
+   &lt;b&gt;fetter Text &lt;/b&gt;
+   &lt;link&gt;link Text&lt;/link&gt;
+&lt;/p&gt;</pre>
+         <p>Therefore, you would actually need to extend the XPath expression further:</p>
+         <pre xml:space="preserve">preceding-sibling::node()[1][self::* or self::text()]/ends-with(string(.),' ')</pre>
+         <p>Note that the string() cast would also flatten nested inline structures. </p>
+         <p>Now you might think that you could actually shorten this expression to:</p>
+         <pre xml:space="preserve">preceding-sibling::node()[1]/ends-with(string(.),' ')</pre>
+         <p>But then the following line would also pass the check:</p>
+         <pre xml:space="preserve">&lt;p&gt;
+   Hallo 
+   &lt;b&gt;
+       fetter Text 
+      &lt;i&gt;Hallo&lt;/i&gt;
+   &lt;/b&gt;
+   &lt;!-- Hallo --&gt;
+   &lt;link&gt;link Text&lt;/link&gt;
+&lt;/p&gt;</pre>
+         <p>Because the comment ends with a space. Comments and processing instructions are also of type <codeph>node()</codeph>.</p>
+      </section>
+   </body>
+</topic>

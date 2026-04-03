@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!DOCTYPE topic
+  PUBLIC "-//OASIS//DTD DITA Topic//EN" "topic.dtd">
+<topic id="id393fb2a6-4167-4c6d-b725-54cbdb77bbb6">
+   <title>Standards</title>
+   <body>
+      <p>
+         <xref format="dita" scope="local" type="concept" href="3_4_Schemata.dita">Schemata</xref> wären ohne Standards  nur ein Mittel um die syntaktische und 
+strukturelle Korrektheit der XML Daten zu überprüfen
+ - in einem unternehmensweiten Kontext.<fn callout="M"><p>UWE-Testfußnote (13/40, Callout M): DITA-fn wird in UWE zu footnote/key/desc.</p></fn></p>
+      <p>Sollen die Daten dagegen
+ über Unternehmensgrenzen hinweg kommuniziert werden, so empfielt sich
+ die Informationsarchitektur bzw. das Schemata an einem Standard auszurichten, der
+ auch anderen gut zugänglich ist.</p>
+      <p>Wie die Praxis zeigt, gibt es aber immer irgendwelche anwendungsspezifischen
+ Sondertüten, die nicht von einem Standard abgefangen werden können.</p>
+      <p>Deshalb ist darauf zu achten, dass der Standard anwendungsspezifisch
+ erweitert werden kann, ohne dabei die standardisierte Information zu verfälschen.</p>
+   </body>
+</topic>

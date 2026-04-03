@@ -1,0 +1,45 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!DOCTYPE topic
+  PUBLIC "-//OASIS//DTD DITA Topic//EN" "topic.dtd">
+<topic id="id0cbf3589-fc55-423c-93f1-80bea9b197bd">
+   <title>Document Permissions in MarkLogic </title>
+   <body>
+      <p>MarkLogic offers a very sophisticated permissions and roles system.<indexterm>Concepts<indexterm>Document Permissions</indexterm>
+         </indexterm> Since we primarily use MarkLogic as a database and not as a Content Management System, it is sufficient to know the basic functionality.</p>
+      <note>
+         <p>Without further measures, documents are assigned the permissions of their creator.</p>
+      </note>
+      <p>If you load documents into the database via the MarkLogic Content Pump, for example with this command:</p>
+      <pre xml:space="preserve">mlcp_opts="-database alex-test -host localhost -username admin -password admin"
+
+mlcp import $mlcp_opts \
+     -<b>output_permissions xml-scrapper,read,xml-scrapper,update</b>
+     -input_file_path input-files \
+     -input_file_type aggregates \
+     -aggregate_record_element chapter \
+     -output_collections /chapter \
+     -output_uri_prefix /chapter/ \
+     -output_uri_suffix .xml</pre>
+      <p>It is particularly important to set the option:</p>
+      <pre xml:space="preserve">-output_permissions role1,read,role2,update</pre>
+      <p>if, for example, you only provide a single user with a specific role for a web app. </p>
+      <hazardstatement type="warning" status="changed">
+         <messagepanel>
+            <typeofhazard>If you forget the [[code:-output_permissions]] option, you may not be able to display the documents from a web app.</typeofhazard>
+            <howtoavoid>In this case, no permissions are set on the uploaded documents. You can then only download them in a web app when logged in as an admin.</howtoavoid>
+         </messagepanel>
+      </hazardstatement>
+      <p>There is a simple way to check the permissions on a document. To do this, you run the "Browse" action on a database in the console and switch to the Permissions tab:</p>
+      <fig>
+         <title>Display of Document Permissions in the MarkLogic Database</title>
+         <desc>The "Browse" button in the MarkLogic console is often overlooked, but offers many useful features, such as displaying the set document permissions.</desc>
+         <image href="../images/rights_73.png"/>
+      </fig>
+      <hazardstatement type="notice" status="changed">
+         <messagepanel>
+            <typeofhazard>An XQuery script that runs a web app can not only be called in a browser, but can also be accessed by an external program. For this to work, the permissions of the web app must be set as described in chapter <i>Wikipedia Scraper Application</i>.</typeofhazard>
+            <howtoavoid>Ideally, you should also assign a role [[nb:xml-scrapper]] to the user [[nb:xml-scrapper]], which can only read and modify documents with the permissions [[nb:-output_permissions xml-scrapper,read,xml-scrapper,update]], cf. above — and not the admin role.</howtoavoid>
+         </messagepanel>
+      </hazardstatement>
+   </body>
+</topic>

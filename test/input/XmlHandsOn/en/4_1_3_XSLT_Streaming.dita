@@ -1,0 +1,42 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!DOCTYPE topic
+  PUBLIC "-//OASIS//DTD DITA Topic//EN" "topic.dtd">
+<topic id="iddbe0e394-aeee-4b28-ace0-72dcd590c0f2">
+   <title>XSLT Streaming</title>
+   <body>
+      <p>For large, flat-structured data sets, there are two options:<fn callout="X"><p>UWE test footnote (24/40, callout X): DITA fn maps to UWE footnote/key/desc.</p><p outputclass="fn-add">UWE supplement (fn-add) for the footnote index.</p></fn></p>
+      <ol>
+         <li>
+            <p>For simple collection and evaluation tasks, it is best to write a small parser, e.g. with the Python<indexterm>Programming Languages<indexterm>Python</indexterm>
+               </indexterm> sgmllib <xref format="html" scope="external" href="https://docs.python.org/2/library/sgmllib.html">Simple SGML parser from the Python standard library</xref>.</p>
+         </li>
+         <li>
+            <p>For more complex tasks, where you do not need to navigate the entire XML tree at every point and gather values, you can use the streaming feature of the Saxon XSLT processor.</p>
+         </li>
+      </ol>
+      <p>XSLT Streaming<indexterm>Processing Methods<indexterm>XSLT Streaming</indexterm>
+         </indexterm> was newly introduced in XSLT version 3.0 <xref format="html" scope="external" href="https://www.saxonica.com/html/documentation/sourcedocs/streaming/xslt-streaming.html">XSLT3.0 Streaming API</xref> and is implemented in the
+commercial Saxon-EE solution by Michael Kay
+         <indexterm>XML Gurus<indexterm>Michael Kay</indexterm>
+         </indexterm>. With this method, no input tree is built in memory, which leads to a drastic performance improvement<indexterm>Performance Improvement</indexterm>.</p>
+      <p>There are a few rules to keep in mind when processing large data sets via the streaming features:</p>
+      <fig expanse="spread" frame="all" scale="50" status="changed">
+         <image href="../images/Coot-_27.svg"/>
+      </fig>
+      <ul>
+         <li>
+            <p>When evaluating an XPath expression, only a simple expression with at most one consuming selection should be given. Consuming means that a node set is selected downward from the context node. In contrast, the information on the ancestor axis is preserved.</p>
+         </li>
+         <li>
+            <p>When making a selection, care should be taken to select only atomic values.</p>
+         </li>
+         <li>
+            <p>Node sets that have been read via the streaming option cannot be passed to a function. They are also not assignable to a variable.</p>
+         </li>
+         <li>
+            <p>"Crawler" expressions, such as <codeph>//section</codeph>, must not be used, nor a recursive descent with selection, e.g. with an <codeph>apply-templates</codeph> call.</p>
+         </li>
+      </ul>
+      <p>At the beginning of the streaming action, you can conventionally store subtrees - that are not performance-intensive to build - in a variable and evaluate them during the streaming processing, e.g. for a comparison.</p>
+   </body>
+</topic>

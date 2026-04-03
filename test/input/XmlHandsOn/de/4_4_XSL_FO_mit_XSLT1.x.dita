@@ -1,0 +1,279 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!DOCTYPE topic
+  PUBLIC "-//OASIS//DTD DITA Topic//EN" "topic.dtd">
+<topic id="id3ae54ff5-319d-41d7-ba96-17b9e76f881b">
+   <title>XSL-FO mit XSLT1.x</title>
+   <body>
+      <p>XSL-FO<indexterm>XSL-FO</indexterm> ist eine XML basierte Auszeichnungssprache, die von einem XSL-FO Prozessor,
+wie dem kommerziellen AntennaHouse Formatter <xref format="html" scope="external" href="https://www.antennahouse.com/formatter/">AntennaHouse Formatter</xref>
+         <indexterm>Software<indexterm>AntennaHouse Formatter</indexterm>
+         </indexterm> oder der freien Open Source Lösung Apache FOP <xref format="html" scope="external" href="https://xmlgraphics.apache.org/fop/">Homepage des Apache Formatting Objects (FOP) Projekts</xref> 
+         <indexterm>Software<indexterm>Apache FOP</indexterm>
+         </indexterm> verarbeitet wird.</p>
+      <p>Ausgabe ist meistens 
+PDF, aber auch andere Formate, wie das veraltete RTF (Rich Text Format) oder auch spezielle Hardware spezifische Formate, wie 
+PCL <xref format="html" scope="external"
+               href="https://en.wikipedia.org/wiki/Printer_Command_Language">PCL</xref>, werden unterstützt.</p>
+      <section>
+         <title>XSL Entwickler</title>
+         <p>XSL-FO ist eine Wissenschaft für sich, wie die sehr umfangreiche Spezifikation <xref format="html" scope="external" href="https://www.w3.org/TR/xsl/">XSL-FO-Spezifikation</xref> belegt.
+Deshalb nimmt der XSL-Entwickler (Stylesheet-Entwickler) meistens eine Sonderrolle in einer XML Company ein.</p>
+         <hazardstatement type="caution" status="changed">
+            <messagepanel>
+               <typeofhazard>Bei der Berufswahl gilt es zu beachten, dass ein [[nb:"Stylesheet-Entwickler"]] in einer XML Company etwas ganz anderes macht, als ein [[nb:"Stylesheet Spezialist"]] in einer Web Company. Ausserdem ist der XML Anwendungsbereich in zwei Sparten aufgeteilt:</typeofhazard>
+               <howtoavoid>Publishing</howtoavoid>
+               <howtoavoid>Datenkonvertierung</howtoavoid>
+            </messagepanel>
+         </hazardstatement>
+         <p>Beide Bereiche überlappen, und XML Entwickler werden sowohl im Publishing als auch in der Datenkonvertierung händeringend gesucht. 
+Jedoch kommt ein Publisher seltener mit <xref format="dita" scope="local" type="concept"
+                  href="4_3_XML_Datenbanken.dita">XML Datenbanken</xref>, und deren Abfragesprache <xref format="dita" scope="local" type="concept"
+                  href="4_2_1_XQuery_als_Programmiersprache.dita">XQuery als Programmiersprache</xref> in Berührung. 
+Dagegen wird sich der Konvertierer weniger mit kniffeligen Layoutproblemen herumschlagen müssen.</p>
+         <p>Diese Differenzierung ist wohl vergleichbar mit Backend- und Frontend-Entwicklung.</p>
+      </section>
+      <section>
+         <title>XSLT1.x</title>
+         <p>In der Version 1.x von XSLT musste man noch auf viele XPath Features verzichten. Bspw. wurde das Iterieren über eine Knotenmenge rekursiv
+mittels Template-Calls realisiert. Auch bzgl. der Arithmetik gab es noch nicht so viele Funktionen, wie man leicht anhand
+des Funktionskatalogs <xref format="html" scope="external"
+                  href="https://www.w3.org/TR/2010/REC-xpath-functions-20101214/">XPath Functions</xref>
+überprüfen kann.</p>
+         <p>Vermutlich mag es also an den begrenzten Möglichkeiten liegen, warum mein damaliges Stylesheet (vor 10 Jahren) etwas komplizierter aussieht ...</p>
+      </section>
+      <section>
+         <title>Notentabellen</title>
+         <p>Folgend ist eine Notentabelle zur Benotung nach dem 15-Punkte-Schema für die Kollegstufe abgebildet.</p>
+         <fig>
+            <title>Ausschnitt aus einer PDF XSL-FO Demo</title>
+            <desc>Notentabelle zur Benotung nach dem 15-Punkte Schema am Gymnasium. Mit ein paar Zeilen Code liessen sich schon in der Version 1.0 der Programmiersprache XSLT in Verbindung mit der Auszeichnungssprache XSL-FO beeindruckende PDF Layouts erzeugen.</desc>
+            <image href="../images/noten-table_79.png"/>
+         </fig>
+         <p>(Link zum PDF mit der vollständigen Notentabelle <xref format="html" scope="external"
+                  href="http://www.tekturcms.de/stylesheets/margits_noten.pdf">Notentabelle (XSL-FO)</xref>)</p>
+         <p>
+            <i>Die Note 6 ist in der Kollegstufe am Gymnasium mit "0 Punkte" bezeichnet. 
+Die Note 5 ist aufgeteilt auf die Stufen "1 Punkt", "2 Punkte" und "3 Punkte". 
+Um die Note 5 zu erzielen muss mindestens ein Drittel der Gesamtpunktzahl erreicht werden. 
+Die Note 4 ist unterteilt in "4 Punkte", "5 Punkte" und "6 Punkte". 
+Um die Note 4 zu erreichen müssen mindestens 50% der Gesamtpunktzahl erzielt werden. 
+Die restlichen 50% der Gesamtpunkte werden dann möglichst gleichverteilt auf die Noten "7 Punkte" bis "15 Punkte".</i>
+         </p>
+         <p>
+            <i>Die Note "15 Punkte" entspricht dabei der "Note 1 mit Stern". Es können halbe Punkte vergeben werden. 
+Gesucht ist eine homogene Verteilung nach obigen Regeln einer vorgegebenen Gesamtpunktzahl 
+auf die 15 Notenstufen. Das Stylesheet generiert über 200 Tabellen mit verschiedene 
+Werten für die Gesamtpunktzahl aufgeteilt auf 5 DIN A4 Seiten.</i>
+         </p>
+         <p>Die Logik dazu sieht folgendermassen aus:</p>
+         <pre xml:space="preserve">
+&lt;xsl:template name="note-runden"&gt;
+  &lt;xsl:param name="note"/&gt;
+  &lt;xsl:variable name="rest" select="$note * 10 mod 10"/&gt;
+  &lt;xsl:choose&gt;
+    &lt;xsl:when test="$rest &amp;gt; 2.5"&gt;
+      &lt;xsl:value-of select="floor(number($note))"/&gt;
+    &lt;/xsl:when&gt;
+    &lt;xsl:otherwise&gt;
+      &lt;xsl:value-of select="floor(number($note))-0.5"/&gt;
+    &lt;/xsl:otherwise&gt;
+  &lt;/xsl:choose&gt;
+&lt;/xsl:template&gt;
+
+&lt;xsl:template name="noten-tabelle"&gt;
+  &lt;xsl:param name="von-punkte"/&gt;
+  &lt;xsl:param name="bis-punkte"/&gt;
+  &lt;xsl:if test="$von-punkte &amp;lt; $bis-punkte+1"&gt;
+    &lt;xsl:variable name="note6" select="$von-punkte div 3"/&gt;
+    &lt;xsl:variable name="note4" select="$von-punkte div 2"/&gt;
+    &lt;xsl:variable name="note5-schrittweite" select="($note4 +(-$note6)) div 3"/&gt;
+    &lt;xsl:variable name="schrittweite" select="$note4 div 12"/&gt;
+    &lt;xsl:variable name="note-6"&gt;
+      &lt;xsl:call-template name="note-runden"&gt;
+        &lt;xsl:with-param name="note" select="$note6"/&gt;
+      &lt;/xsl:call-template&gt;
+    &lt;/xsl:variable&gt;
+    &lt;xsl:variable name="note6-korrigiert"&gt;
+      &lt;xsl:choose&gt;
+        &lt;xsl:when test="3*($note-6+0.5) &amp;lt; $von-punkte"&gt;
+          &lt;xsl:value-of select="$note6+0.5"/&gt;
+        &lt;/xsl:when&gt;
+        &lt;xsl:otherwise&gt;
+          &lt;xsl:value-of select="$note6"/&gt;
+        &lt;/xsl:otherwise&gt;
+      &lt;/xsl:choose&gt;                          
+    &lt;/xsl:variable&gt;
+    &lt;fo:block border="1pt solid grey" space-after="3pt" 
+              keep-together.within-column="always" padding="2pt"&gt;
+    &lt;fo:block text-align="center" background-color="#999" color="white" 
+              padding-bottom="0pt" padding-top="2pt" space-after="2pt"&gt;
+      &lt;xsl:text&gt;Gesamt: &lt;/xsl:text&gt;
+      &lt;fo:inline  font-weight="bold"&gt;
+        &lt;xsl:value-of select="$von-punkte"/&gt;
+      &lt;/fo:inline&gt;
+    &lt;/fo:block&gt;
+    &lt;fo:block&gt;
+      &lt;fo:inline font-weight="bold"&gt;
+        &lt;xsl:text&gt;0 P: &lt;/xsl:text&gt;
+      &lt;/fo:inline&gt;
+      &lt;xsl:text&gt;bis &lt;/xsl:text&gt;
+      &lt;xsl:call-template name="note-runden"&gt;
+        &lt;xsl:with-param name="note" select="$note6-korrigiert"/&gt;
+      &lt;/xsl:call-template&gt;
+    &lt;/fo:block&gt;
+    &lt;xsl:call-template name="note5"&gt;
+      &lt;xsl:with-param name="i" select="0"/&gt;
+      &lt;xsl:with-param name="note6" select="$note6-korrigiert"/&gt;
+      &lt;xsl:with-param name="note5-schrittweite" select="$note5-schrittweite"/&gt;
+      &lt;xsl:with-param name="gesamt" select="$von-punkte"/&gt;
+    &lt;/xsl:call-template&gt;
+    &lt;xsl:call-template name="ab-note4"&gt;
+      &lt;xsl:with-param name="i" select="0"/&gt;
+      &lt;xsl:with-param name="note4" select="$note4"/&gt;
+      &lt;xsl:with-param name="schrittweite" select="$schrittweite"/&gt;
+    &lt;/xsl:call-template&gt;
+    &lt;fo:block/&gt;
+    &lt;fo:block/&gt;
+    &lt;/fo:block&gt;
+    &lt;xsl:call-template name="noten-tabelle"&gt;
+      &lt;xsl:with-param name="von-punkte" select="$von-punkte+1"/&gt;
+      &lt;xsl:with-param name="bis-punkte" select="$bis-punkte"/&gt;
+    &lt;/xsl:call-template&gt;
+  &lt;/xsl:if&gt;
+&lt;/xsl:template&gt;
+
+&lt;xsl:template name="note5"&gt;
+  &lt;xsl:param name="i"/&gt;
+  &lt;xsl:param name="note6"/&gt;
+  &lt;xsl:param name="note5-schrittweite"/&gt;
+  &lt;xsl:param name="gesamt"/&gt;
+  &lt;xsl:if test="$i &amp;lt; 3"&gt;
+    &lt;xsl:variable name="note-von-gerundet"&gt;
+      &lt;xsl:call-template name="note-runden"&gt;
+        &lt;xsl:with-param name="note" select="number($note6) + 
+                                    number($i)*number($note5-schrittweite)"/&gt;
+      &lt;/xsl:call-template&gt;
+    &lt;/xsl:variable&gt;
+    &lt;xsl:variable name="von" select="$note-von-gerundet+0.5"/&gt;
+    &lt;xsl:variable name="bis"&gt;
+      &lt;xsl:call-template name="note-runden"&gt;
+        &lt;xsl:with-param name="note" select="number($note6)+
+                                   (number($i)+1)*number($note5-schrittweite)"/&gt;
+      &lt;/xsl:call-template&gt;
+    &lt;/xsl:variable&gt;
+    &lt;xsl:variable name="bis-korrigiert"&gt;
+      &lt;xsl:choose&gt;
+        &lt;xsl:when test="$i=2 and (2*$bis)=number($gesamt)"&gt;
+          &lt;xsl:value-of select="$bis+(-0.5)"/&gt;
+        &lt;/xsl:when&gt;
+        &lt;xsl:otherwise&gt;
+          &lt;xsl:value-of select="$bis"/&gt;
+        &lt;/xsl:otherwise&gt;
+      &lt;/xsl:choose&gt;
+    &lt;/xsl:variable&gt;
+    &lt;fo:block&gt;
+      &lt;fo:inline font-weight="bold"&gt;
+        &lt;xsl:value-of select="$i+1"/&gt;
+        &lt;xsl:text&gt; P: &lt;/xsl:text&gt;
+      &lt;/fo:inline&gt;
+      &lt;xsl:value-of select="$von"/&gt;
+      &lt;xsl:text&gt; - &lt;/xsl:text&gt;
+      &lt;xsl:value-of select="$bis-korrigiert"/&gt;
+    &lt;/fo:block&gt;
+    &lt;xsl:call-template name="note5"&gt;
+      &lt;xsl:with-param name="i" select="$i+1"/&gt;
+      &lt;xsl:with-param name="note6" select="$note6"/&gt;
+      &lt;xsl:with-param name="note5-schrittweite" select="$note5-schrittweite"/&gt;
+      &lt;xsl:with-param name="gesamt" select="$gesamt"/&gt;
+    &lt;/xsl:call-template&gt;
+  &lt;/xsl:if&gt;
+&lt;/xsl:template&gt;
+
+&lt;xsl:template name="ab-note4"&gt;
+  &lt;xsl:param name="i"/&gt;
+  &lt;xsl:param name="note4"/&gt;
+  &lt;xsl:param name="schrittweite"/&gt;
+  &lt;xsl:if test="$i &amp;lt; 12"&gt;
+    &lt;xsl:variable name="note-von-gerundet"&gt;
+      &lt;xsl:call-template name="note-runden"&gt;
+        &lt;xsl:with-param name="note" select="number($note4) + 
+                                    number($i)*number($schrittweite)"/&gt;
+      &lt;/xsl:call-template&gt;
+    &lt;/xsl:variable&gt;
+    &lt;xsl:variable name="von" select="$note-von-gerundet+0.5"/&gt;
+    &lt;xsl:variable name="bis"&gt;
+      &lt;xsl:call-template name="note-runden"&gt;
+        &lt;xsl:with-param name="note" select="number($note4)+
+                                           (number($i)+1)*number($schrittweite)"/&gt;
+      &lt;/xsl:call-template&gt;
+    &lt;/xsl:variable&gt;
+    &lt;fo:block&gt;
+      &lt;fo:inline font-weight="bold"&gt;
+        &lt;xsl:value-of select="$i+4"/&gt;
+        &lt;xsl:text&gt; P: &lt;/xsl:text&gt;
+      &lt;/fo:inline&gt;
+      &lt;xsl:value-of select="$von"/&gt;
+      &lt;xsl:text&gt; - &lt;/xsl:text&gt;
+      &lt;xsl:value-of select="if ($i=11) then ($bis+0.5) else $bis"/&gt;
+    &lt;/fo:block&gt;
+    &lt;xsl:call-template name="ab-note4"&gt;
+      &lt;xsl:with-param name="i" select="$i+1"/&gt;
+      &lt;xsl:with-param name="note4" select="$note4"/&gt;
+      &lt;xsl:with-param name="schrittweite" select="$schrittweite"/&gt;
+    &lt;/xsl:call-template&gt;
+  &lt;/xsl:if&gt;
+&lt;/xsl:template&gt;</pre>
+         <p>Die drei Templates rufen sich so lange selbst auf, bis eine Abbruchbedingung erreicht ist. In den Templates, in denen die zwei Sonderfälle
+Note 4 und Note 5 behandelt werden, bestimmt die Abbruchbedingung eine Laufvariable <codeph>$i</codeph>, die jeweils mit 3 (1P + 2P) und 12 (3P + 4P + 5P)
+ihren Schwellenwert hat. Das Template <codeph>notentabelle</codeph> dispatched auf die Sonderfälle und kümmert sich selbst um die Noten 1 bis 3.</p>
+         <p>Ohne jetzt groß meine Logik von damals zu überprüfen und in Frage zu stellen, finde ich doch, dass sich XSLT in den letzten Jahren sehr gemausert hat.
+Musste man sich früher noch mit diversen Saxon Bugs bzgl. der XPath Auswertung herumschlagen, ist diese nun doch äusserst stabil und es gelingen
+auch komplizierte Prädikate und verschachtelte Selektoren auf Anhieb.</p>
+         <p>Eine Iteration mittels Endrekursion <xref format="html" scope="external"
+                  href="https://de.wikipedia.org/wiki/Endrekursion">Endrekursion</xref> 
+            <indexterm>Programmierkonstrukte<indexterm>Endrekursion</indexterm>
+            </indexterm> ist heute in den meisten
+Fällen nicht mehr notwendig. Auch Templates, die nur eine Hilfsfunktion realisieren, wie das obige Template <codeph>note-runden</codeph>, werden 
+besser mittels <codeph>xsl:function</codeph> umgesetzt, was auch innerhalb eines XPath Ausdrucks ausgewertet werden kann.</p>
+      </section>
+      <section>
+         <title>XSL-FO Seitenvorlage</title>
+         <p>Um diese Logik nun in eine XSL-FO Transformation einzubauen, wickelt man einfach das typische XSL-FO Gerüst herum:</p>
+         <pre xml:space="preserve">&lt;xsl:stylesheet xmlns:xsl="http://www.w3.org/1999/XSL/Transform" xmlns:fo="http://www.w3.org/1999/XSL/Format" xmlns:html="http://www.w3.org/1999/xhtml" version="1.0"&gt;
+   &lt;xsl:output method="xml" indent="no"/&gt;
+   &lt;!-- Logik von oben hier einfuegen --&gt;
+   &lt;xsl:template name="noten"&gt;
+      &lt;fo:root xmlns:fo="http://www.w3.org/1999/XSL/Format" font-size="6pt"&gt;
+         &lt;fo:layout-master-set&gt;
+            &lt;fo:simple-page-master master-name="my-page"&gt;
+               &lt;fo:region-body margin="5mm" column-gap="2mm" column-count="10"/&gt;
+               &lt;fo:region-start extent="5mm"/&gt;
+               &lt;fo:region-end extent="5mm"/&gt;
+            &lt;/fo:simple-page-master&gt;
+         &lt;/fo:layout-master-set&gt;
+         &lt;fo:page-sequence master-reference="my-page"&gt;
+            &lt;fo:flow flow-name="xsl-region-body"&gt;
+               &lt;fo:block font-size="12pt" color="#999" font-weight="bold" span="all" text-align="center" line-height="20pt" letter-spacing="5mm"&gt;
+                  &lt;xsl:text&gt;Notentabellen&lt;/xsl:text&gt;
+               &lt;/fo:block&gt;
+               &lt;xsl:call-template name="noten-tabelle"&gt;
+                  &lt;xsl:with-param name="von-punkte"&gt;12&lt;/xsl:with-param&gt;
+                  &lt;xsl:with-param name="bis-punkte"&gt;261&lt;/xsl:with-param&gt;
+               &lt;/xsl:call-template&gt;
+            &lt;/fo:flow&gt;
+         &lt;/fo:page-sequence&gt;
+      &lt;/fo:root&gt;
+   &lt;/xsl:template&gt;
+&lt;/xsl:stylesheet&gt;</pre>
+         <p>In der Seitenvorlage <codeph>fo:simple-page-master</codeph> wird das Layout der Seite festgelegt. 
+Im Seitenfluss<codeph>fo:page-sequence</codeph> wird diese Vorlage referenziert.</p>
+         <p>Dieses Beispiel zeigt schon die Flexibilität des Ansatzes:
+Man erstellt für eine Publikation eine Reihe von Seitenvorlagen für die unterschiedlichen Layoutbereiche und referenziert bei Bedarf.
+Dadurch wird Redundanz vermindert. Ausserdem können die Vorlagen in einer anderen Ausgabestrecke ggf. parameterisiert wiederverwendet
+werden.</p>
+         <p>Relativ neu ist die Auszeichnung von Layout und Design im PDF Bereich mittels CSS. Der Fachbegriff hierzu lautet "CSS for Paged Media". <indexterm>CSS for Paged Media</indexterm>
+AntennaHouse Formatter unterstützt diese Technologie und erste Ausgabestrecken werden damit umgesetzt. Wie aber die Entwickler
+von AntennaHouse bestätigen (Auf der XML Prag 2019) wird XSL-FO bzgl. der Umsetzung komplexer Layouts seine Alleinstellung behalten.</p>
+      </section>
+   </body>
+</topic>

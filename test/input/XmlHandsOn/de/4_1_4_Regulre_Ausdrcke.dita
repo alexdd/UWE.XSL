@@ -1,0 +1,46 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!DOCTYPE topic
+  PUBLIC "-//OASIS//DTD DITA Topic//EN" "topic.dtd">
+<topic id="id1baa0c4a-6cde-4033-9e48-ee47dc16c287">
+   <title>Reguläre Ausdrücke</title>
+   <body>
+      <p>Manchmal reicht für das Durchsuchen des XML Baums XPATH nicht mehr aus und man will auf den Textknoten reguläre Ausdrücke aufrufen. Ich kenne drei XPATH Funktionen, in denen man reguläre Ausdrücke angeben kann:<fn callout="Y"><p>UWE-Testfußnote (25/40, Callout Y): DITA-fn wird in UWE zu footnote/key/desc.</p></fn></p>
+      <ul>
+         <li>
+            <p>
+               <codeph>fn:matches(subject, pattern, flags)</codeph>
+            </p>
+         </li>
+         <li>
+            <p>
+               <codeph>fn:replace(subject, pattern, replacement, flags)</codeph>
+            </p>
+         </li>
+         <li>
+            <p>
+               <codeph>fn:tokenize(subject, pattern, flags)</codeph>
+            </p>
+         </li>
+      </ul>
+      <p>Bei der Eingabe des regulären Ausdrucks muss man natürlich Zeichen, wie <codeph>&gt;,&lt;,&amp;</codeph> maskieren, was den Ausdruck im Gegensatz zur herkömmlichen Nicht-XML Programmierung noch ein bisschen komplizierter macht.</p>
+      <p>Der Audruck, der bspw. auf alle XML Tags matched ist folgender: <codeph>&amp;lt;[&amp;gt;!]&amp;gt;</codeph> Hier sind, die für XML reservierten, Zeichen bereits maskiert.</p>
+      <section>
+         <title>XSLT Analyze String</title>
+         <p>Es gibt aber auch ein eigenes XSLT Konstrukt, unabhängig von XPATH, um reguläre Ausdrücke anwenden zu können. Der Quelltext dazu sieht so aus:</p>
+         <pre xml:space="preserve">&lt;xsl:template match="text()[parent::xml-code]"&gt;
+  &lt;xsl:analyze-string select="." regex="&amp;lt;[^&amp;gt;^!]+&amp;gt;"&gt;
+    &lt;xsl:matching-substring&gt;
+      &lt;b&gt;&lt;xsl:value-of select="."/&gt;&lt;/b&gt;     
+    &lt;/xsl:matching-substring&gt;
+    &lt;xsl:non-matching-substring&gt;
+      &lt;xsl:value-of select="."/&gt;
+    &lt;/xsl:non-matching-substring&gt;
+&lt;/xsl:template&gt;</pre>
+         <p>Hier wird jeder Textknoten eines Elements untersucht und falls ein XML-Tag enthalten ist, so wird dieses über die <codeph>xsl:matching-substring</codeph> Anweisung in ein <codeph>&lt;b&gt;</codeph> Tag gewrapped. Im nächsten Transformationsschritt wird dieses wiederum in Fettschrift dargestellt.</p>
+         <p>Das ist ein einfacher Syntax-Highlighter für XML Quelltexte. Auf diese Weise ist der Syntax-Highlighter für dieses PDF realisiert.</p>
+         <note>
+            <p>Man kann auch die <codeph>xsl:analyze-string</codeph> Elemente in den <codeph>xsl:matching-substring</codeph> und <codeph>xsl:non-matching-substring</codeph> Elementen verschachteln, was natürlich noch wesentlich kompliziertere Problemstellungen erlaubt.</p>
+         </note>
+      </section>
+   </body>
+</topic>

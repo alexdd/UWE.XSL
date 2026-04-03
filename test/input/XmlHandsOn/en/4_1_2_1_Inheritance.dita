@@ -1,0 +1,85 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!DOCTYPE topic
+  PUBLIC "-//OASIS//DTD DITA Topic//EN" "topic.dtd">
+<topic id="id86c96e00-9a1f-4187-beba-e5d9bd3a938b">
+   <title>Inheritance</title>
+   <body>
+      <p>With XSLT<indexterm>Concepts<indexterm>Inheritance</indexterm>
+         </indexterm>, constructs from other programming paradigms can be replicated, for example inheritance. In a specialization, an already existing implementation is adopted and extended or restricted.<fn callout="T"><p>UWE test footnote (20/40, callout T): DITA fn maps to UWE footnote/key/desc.</p><p outputclass="fn-add">UWE supplement (fn-add) for the footnote index.</p></fn></p>
+      <p>The advantage is that you do not have to rewrite everything from scratch. This reduces redundancy, leads to better maintainability, and lower error-proneness.</p>
+      <section>
+         <title>Example: Parameterization</title>
+         <p>Typically, you implement a stylesheet for a specific output format and a product variant. Additional variants and formats are then added step by step.</p>
+         <p>Ideally, a complete specification would be available at the start of the implementation... But of course, that is rarely the case.</p>
+         <p>For this reason, it is important to think of a good strategy so that the architecture does not degenerate into spaghetti code.</p>
+         <p>A good option would be to leverage the XSLT import precedence, cf. chapter <xref format="dita" scope="local" type="concept" href="3_2_Uniqueness_of_Rule_Base.dita">Uniqueness of the Rule Base</xref>.</p>
+         <p>If you want to introduce additional parameters at a later point, a switch like the following would have to be updated in multiple places in the code.</p>
+         <pre xml:space="preserve">&lt;xsl:choose&gt;
+    &lt;xsl:when test="$myParameter='this_option'"&gt;
+        &lt;!-- do this --&gt;
+    &lt;/xsl:when&gt;
+    &lt;xsl:when test="$myParameter='that_option'"&gt;
+        &lt;!-- do that --&gt;
+    &lt;/xsl:when&gt;
+        [...]
+&lt;/xsl:choose&gt;</pre>
+         <p>It is better to maintain a core stylesheet<indexterm>Parameterization<indexterm>Core Stylesheet</indexterm>
+            </indexterm> that is well-tested for one format and one product variant<indexterm>Format and Product Variants</indexterm>. This core stylesheet is then simply imported for a new variant and relevant parts are overridden for the new "specialization"<indexterm>Concepts<indexterm>Generalization and Specialization</indexterm>
+            </indexterm>. For example, a rule for setting the header on each page might be implemented as follows:</p>
+         <pre xml:space="preserve">&lt;xsl:template name="render-header"&gt;
+    &lt;!-- print logo on the left side spanning two rows--&gt;
+    &lt;!-- print some metadata right side first row --&gt;
+    &lt;!-- print a running header right side second row --&gt;
+&lt;/xsl:template&gt;</pre>
+         <p>If in a new format, e.g. A5, this logic is swapped out and only a single line is printed, e.g. because there is not much space, then in a "derived" stylesheet the rule would simply be reimplemented.<indexterm>Parameterization<indexterm>Sub-Stylesheet</indexterm>
+            </indexterm>
+         </p>
+         <pre xml:space="preserve">&lt;xsl:choose&gt;
+&lt;xsl:template name="render-header"&gt;
+    &lt;!-- print a running header on left side --&gt;
+    &lt;!-- print logo on right side --&gt;
+&lt;/xsl:template&gt;</pre>
+         <p>This template now takes precedence and is used for evaluation, with the consequence that the header is printed as a single line only. The nice thing about these "named templates"<indexterm>Concepts<indexterm>Named Template</indexterm>
+            </indexterm> is that they can also be used within variables:</p>
+         <pre xml:space="preserve">&lt;xsl:variable name="margin-width"&gt;
+    &lt;xsl:call-template name="get-margin-width"/&gt;
+&lt;/xsl:variable&gt;</pre>
+         <p>The template <codeph>get-margin-width</codeph> can be overridden in a "sub" stylesheet without having to modify the variable accesses in the core stylesheet. An assignment like:</p>
+         <pre xml:space="preserve">width="{$margin-width}"</pre>
+         <p>would not need to be touched anywhere else in the code, which is of course very convenient.</p>
+      </section>
+      <section>
+         <title>Example: Specialized Case Distinction</title>
+         <p>
+            <indexterm>Concepts<indexterm>Specialized Case Distinction</indexterm>
+            </indexterm>If an output format is added at a later point, you can use inheritance to cleverly distinguish between output formats. An existing template <codeph>"cover"</codeph>:</p>
+         <pre xml:space="preserve">&lt;xsl:template match="cover"&gt;
+  &lt;fo:page-sequence master-reference="coverFront" force-page-count="auto"&gt;
+    &lt;fo:flow flow-name="xsl-region-body"&gt;
+    [...]
+  &lt;fo:page-sequence master-reference="coverBack" force-page-count="auto"&gt;
+    &lt;fo:flow flow-name="xsl-region-body"&gt;
+    [...]</pre>
+         <p>can be split into a template for a front and back cover:</p>
+         <pre xml:space="preserve">
+&lt;xsl:template match="cover"&gt;
+  &lt;fo:page-sequence master-reference="coverFront" force-page-count="auto"&gt;
+    &lt;fo:flow flow-name="xsl-region-body"&gt;
+      [...]
+&lt;/xsl:template&gt;
+    
+&lt;xsl:template name="cover-back-switch"&gt;
+  &lt;xsl:call-template name="cover-back"/&gt;
+&lt;/xsl:template&gt;
+    
+&lt;xsl:template name="cover-back"&gt;
+  &lt;fo:page-sequence master-reference="coverBack" force-page-count="auto"&gt;
+    &lt;fo:flow flow-name="xsl-region-body"&gt;
+      [...]</pre>
+         <p>The template <codeph>"cover-back-switch"</codeph> can then be overridden in an output format to, for example, toggle the back cover conditionally. </p>
+         <p>
+            <indexterm>Design Pattern</indexterm>Roughly structuring an algorithm in a superclass and refining details in subclasses is a common design pattern in object-oriented programming. This methodology can also be beautifully realized using named templates in XSLT. It is no coincidence that the corresponding OO pattern is called Template Method <xref format="html" scope="external" href="https://en.wikipedia.org/wiki/Template_method_pattern">Wikipedia page on the Template Method Pattern</xref>
+         </p>
+      </section>
+   </body>
+</topic>

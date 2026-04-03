@@ -1,0 +1,116 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!DOCTYPE topic
+  PUBLIC "-//OASIS//DTD DITA Topic//EN" "topic.dtd">
+<topic id="idae325776-f861-42c4-9a68-95d2d1c756a5">
+   <title>Querying with XQuery</title>
+   <body>
+      <p>XQuery<indexterm>Programming Languages<indexterm>XQuery</indexterm>
+         </indexterm> leads a shadowy existence in the publishing field. During my time as an XSL programmer for two publishing companies, I never had anything to do with it. Only when I was closer to the actual data and worked with <xref format="dita" scope="local" type="concept" href="4_3_XML_Databases.dita">XML databases</xref> did I come into contact with XQuery.<fn callout="L"><p>UWE test footnote (38/40, callout L): DITA fn maps to UWE footnote/key/desc.</p></fn></p>
+      <p>While relational databases are queried with SQL, XML databases such as eXist <xref format="html" scope="external" href="http://exist-db.org/exist/apps/homepage/index.html">eXist</xref> or MarkLogic <xref format="html" scope="external" href="https://de.marklogic.com/">MarkLogic</xref> use XQuery as their query language.</p>
+      <p>Individual XML documents can also be queried, for example, in Oxygen XML Editor<indexterm>Tools<indexterm>oXygen XML Editor</indexterm>
+         </indexterm> using the XQuery Builder tool <xref format="html" scope="external" href="https://www.oxygenxml.com/xml_editor/xquery_builder.html">XQuery Builder (oXygen)</xref> or via the Saxon command line:</p>
+      <pre xml:space="preserve">java -cp usr/lib/saxon/saxon.jar net.sf.saxon.Query 
+     -s:"schulen.xml" 
+     -qs:"/schulen/schule[id='6']" 
+     -o:"/Users/Alex/Desktop/schule_6.xml"</pre>
+      <p>The <codeph>-qs</codeph> option allows you to specify the query string. </p>
+      <p>As the simple example already shows, XQuery is related to XPath. XQuery encompasses the XPath language scope but additionally offers the FLOWR syntax for more powerful queries. Using further extensions <xref format="html" scope="external" href="http://cs.au.dk/~amoeller/XML/querying/flwrexp.html">XQuery extensions</xref>, entire programs can be created that go far beyond the functionality of a "query language".</p>
+      <section>
+         <title>XQuery Builder</title>
+         <p>Oxygen XML Editor <xref format="html" scope="external" href="https://www.oxygenxml.com/xml_editor">oXygen XML Editor</xref> offers a convenient way to execute XQuery queries 
+on a loaded XML document. You can write 
+your query in the corresponding input window.</p>
+         <fig>
+            <title>oXygen XQuery Builder</title>
+            <desc>The oXygen XQuery Builder allows you to easily test queries</desc>
+            <image href="../images/xquery-builder-1_37.png"/>
+         </fig>
+         <p>With the following result:</p>
+         <pre xml:space="preserve">&lt;dates&gt;
+   &lt;today&gt;2019-01-16+01:00&lt;/today&gt;
+   &lt;formatted&gt;Wednesday, 16th January 2019&lt;/formatted&gt;
+&lt;/dates&gt;</pre>
+      </section>
+      <section>
+         <title>FLOWR Expression</title>
+         <p>FLOWR<indexterm>FLOWR Expression</indexterm> stands for <codeph>for, let, where, order by, return</codeph>. These are the query instructions allowed in 
+the expression — in exactly this order.</p>
+         <pre xml:space="preserve">let $bibliothek := .
+for $x in $bibliothek//buecher,
+    $y in $bibliothek//autoren/autor
+where starts-with($autor, 'Grass')
+    and $x/@autorId = $y/@id
+return $x/titel</pre>
+         <p>This query returns the titles of all books by Grass.
+Notable here is the syntax.</p>
+         <note>
+            <p>Normally, you would expect a block terminator 
+such as a semicolon between individual statements.
+But since we are programming functionally here, things are a bit different...</p>
+         </note>
+      </section>
+      <section>
+         <title>XML via XQuery</title>
+         <p>It is also possible to generate XML, although for transformations XSLT 
+is of course preferable. Tags are written directly into the expression, as shown here:</p>
+         <pre xml:space="preserve">declare variable $nachname as xs:string external;
+&lt;buecher autor="{$nachname}"&gt;
+{
+  let $bibliothek := .
+  for $x in $bibliothek/buecher//buch,
+      $y in $bibliothek/autoren//autor
+  where starts-with($y, $nachname)
+      and $x/@autorId = $y/@id
+  order by $x/ausgabe
+  return
+  &lt;buch ausgabe="{$x/ausgabe}"&gt;
+    {$x/titel}
+  &lt;/buch&gt;
+}
+&lt;/buecher&gt;</pre>
+         <p>If you save this snippet in a file <codeph>buecher.xquery</codeph>,
+you can search a <codeph>buecher.xml</codeph> input file using the following command line:</p>
+         <pre xml:space="preserve">java -cp usr/lib/saxon/saxon.jar net.sf.saxon.Query -t -s:buecher.xml 
+                                                       -q:buecher.xquery 
+                                                       -o:ergebnis.xml 
+                                                       nachname=grass</pre>
+      </section>
+      <section>
+         <title>Document Projection</title>
+         <p>Document Projection <xref format="html" scope="external" href="http://www.saxonica.com/documentation/#!sourcedocs/projection">Verstecktes Saxon Feature: Dokument Projektion bei einer XQuery Abfrage</xref>
+            <indexterm>Tips and Tricks<indexterm>Document Projection</indexterm>
+            </indexterm>  is a hidden Saxon XQuery feature. It works only for a single query.
+This can be quite helpful when you want to search a document that is several 100 MB in size.</p>
+         <p>Without projection, the above example would be processed as follows:</p>
+         <pre xml:space="preserve">java -cp usr/lib/saxon/saxon.jar net.sf.saxon.Query -t 
+     -s:buecher.xml 
+     -q:buecher.xquery 
+     -o:ergebnis.xml 
+     -projection:off 
+     nachname=grass
+Saxon-EE 9.7.0.20J from Saxonica
+Java version 1.8.0_60
+Using license serial number V005095
+Analyzing query from Desktop/buecher.xquery
+Generating byte code...
+Analysis time: 201.10095 milliseconds
+Processing file:/Users/Alex/buecher.xml
+Using parser com.sun.org.apache.xerces.internal.jaxp.SAXParserImpl$JAXPSAXParser
+Building tree for file:/Users/Alex/buecher.xml 
+using class net.sf.saxon.tree.tiny.TinyBuilder
+Tree built in 3.482278ms
+Tree size: 46 nodes, 58 characters, 6 attributes
+Execution time: 27.137589ms
+Memory used: 67031664</pre>
+         <p>With the <codeph>-projection:on</codeph> option, the execution time changes significantly:</p>
+         <pre xml:space="preserve">[...]
+
+Document projection for file:/Users/Alex/buecher.xml
+-- Input nodes 50; output nodes 27; reduction = 46%
+Tree built in 3.80615ms
+Tree size: 26 nodes, 58 characters, 3 attributes
+Execution time: 15.83463ms
+Memory used: 64339064</pre>
+      </section>
+   </body>
+</topic>

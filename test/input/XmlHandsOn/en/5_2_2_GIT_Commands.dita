@@ -1,0 +1,144 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!DOCTYPE topic
+  PUBLIC "-//OASIS//DTD DITA Topic//EN" "topic.dtd">
+<topic id="idb1719307-52da-4e1d-9aee-a3a6bb139d92">
+   <title>GIT Commands</title>
+   <body>
+      <p>The most important GIT commands - "note-to-self" section:</p>
+      <dl>
+         <dlhead>
+            <dthd>Description</dthd>
+            <ddhd>Command / Example</ddhd>
+         </dlhead>
+         <dlentry>
+            <dt>Clone an existing GIT repository</dt>
+            <dd>
+               <pre xml:space="preserve">git clone https://git.tekturcms.de/tekturcms/tektur.git</pre>
+               <note>
+                  <p>When working on the command line, you may not have access to the HTTP endpoint of GitHub. On the GitHub website, you can also get the URL for the SSH connection.</p>
+                  <fig>
+                     <image href="../images/clone_82.png"/>
+                  </fig>
+               </note>
+            </dd>
+         </dlentry>
+         <dlentry>
+            <dt>Clone a GIT repository and clone all GIT submodules at the same time</dt>
+            <dd>
+               <pre xml:space="preserve">git clone --recurse-submodules git://github.com/foo/bar.git</pre>
+            </dd>
+         </dlentry>
+         <dlentry>
+            <dt>Add a file change to GIT tracking so it will be captured in the next commit</dt>
+            <dd>
+               <pre xml:space="preserve">git add pfad/im/git/projekt/zur/datei.txt</pre>
+               <p>Wildcards also work</p>
+               <pre xml:space="preserve">git add *</pre>
+            </dd>
+         </dlentry>
+         <dlentry>
+            <dt>Check in all changes to the local cloned repository</dt>
+            <dd>
+               <pre xml:space="preserve">git commit -m "Form validation added"</pre>
+               <p>without explicitly registering files beforehand via [[code:add]</p>
+               <pre xml:space="preserve">git commit -a -m "Form Validation added"</pre>
+            </dd>
+         </dlentry>
+         <dlentry>
+            <dt>Fetch all existing branches from the remote repository</dt>
+            <dd>
+               <pre xml:space="preserve">git fetch</pre>
+            </dd>
+         </dlentry>
+         <dlentry>
+            <dt>Check out a specific branch</dt>
+            <dd>
+               <pre xml:space="preserve">git checkout "TEKTUR-experimental-branch"</pre>
+            </dd>
+         </dlentry>
+         <dlentry>
+            <dt>Create a branch</dt>
+            <dd>
+               <pre xml:space="preserve">git branch "TEKTUR-experimental-branch"</pre>
+            </dd>
+         </dlentry>
+         <dlentry>
+            <dt>List all existing branches</dt>
+            <dd>
+               <pre xml:space="preserve">git branch</pre>
+            </dd>
+         </dlentry>
+         <dlentry>
+            <dt>Push local changes to the remote branch</dt>
+            <dd>
+               <pre xml:space="preserve">git push origin "TEKTUR-experimental-branch"</pre>
+            </dd>
+         </dlentry>
+         <dlentry>
+            <dt>Create a pull request on GitHub</dt>
+            <dd>
+               <fig>
+                  <image href="../images/pr_83.png"/>
+               </fig>
+            </dd>
+         </dlentry>
+         <dlentry>
+            <dt>Target the pull request to a specific base branch</dt>
+            <dd>
+               <fig>
+                  <image href="../images/compare_84.png"/>
+               </fig>
+            </dd>
+         </dlentry>
+         <dlentry>
+            <dt>Switch to the predecessor of any commit</dt>
+            <dd>
+               <pre xml:space="preserve">git checkout '67b7474a773c4d6f76dc0915b290400b313c0bf5^'</pre>
+               <p>The caret symbol is important here, indicating that the previous commit should be checked out</p>
+            </dd>
+         </dlentry>
+         <dlentry>
+            <dt>Revert a commit</dt>
+            <dd>
+               <pre xml:space="preserve">git revert '67b74'</pre>
+               <p>
+                  <codeph>git revert</codeph> creates a new commit that undoes the specified commit </p>
+            </dd>
+         </dlentry>
+         <dlentry>
+            <dt>Merge the checked-out branch with another branch</dt>
+            <dd>
+               <pre xml:space="preserve">git merge experimental</pre>
+            </dd>
+         </dlentry>
+         <dlentry>
+            <dt>Launch graphical tool</dt>
+            <dd>
+               <pre xml:space="preserve">gitk</pre>
+            </dd>
+         </dlentry>
+         <dlentry>
+            <dt>Undo local changes</dt>
+            <dd>
+               <pre xml:space="preserve">git stash</pre>
+            </dd>
+         </dlentry>
+         <dlentry>
+            <dt>Reset to the version of the Git repo on the server</dt>
+            <dd>
+               <pre xml:space="preserve">git reset --hard origin/master</pre>
+            </dd>
+         </dlentry>
+         <dlentry>
+            <dt>Update branch with master</dt>
+            <dd>
+               <p>In the branch: This creates a new commit...</p>
+               <pre xml:space="preserve">git merge origin/master</pre>
+               <p>This way no new commit appears...</p>
+               <pre xml:space="preserve">git fetch
+git rebase origin/master</pre>
+            </dd>
+         </dlentry>
+      </dl>
+   </body>
+</topic>

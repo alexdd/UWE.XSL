@@ -1,0 +1,44 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!DOCTYPE topic
+  PUBLIC "-//OASIS//DTD DITA Topic//EN" "topic.dtd">
+<topic id="id8cdcf3f1-7456-4043-bfec-894e823a9a06">
+   <title>XSLT - The Programming Language in the XML Domain </title>
+   <body>
+      <p>XSLT is very prominent in the XML domain. Outside of it, however, it is hardly known. In the TIOBE Index <xref format="html" scope="external" href="https://de.wikipedia.org/wiki/TIOBE-Index">TIOBE Index</xref> of 2003, XSLT once ranked at position 60, the last place on the list <xref format="html" scope="external" href="https://bit.ly/2ARgKCJ">TIOBE evidence</xref>.<fn callout="B"><p>UWE test footnote (2/40, callout B): DITA fn maps to UWE footnote/key/desc.</p></fn></p>
+      <p>In the XML domain, however, not much would be possible without XSLT. There are some exotic application areas in which XML is efficiently 
+processed with LISP dialects, e.g. the processing of - converted to XML - EDI X12 <xref format="html" scope="external" href="https://en.wikipedia.org/wiki/ASC_X12">ASC X12</xref> messages.</p>
+      <p>SGML, the predecessor of XML, has held its ground as the S1000D standard <xref format="html" scope="external" href="https://en.wikipedia.org/wiki/S1000D">S1000D</xref> in the aerospace sector. Here, proprietary programming languages such as <b>Metamorphosis</b> are still partially used.</p>
+      <p>Alternatives to XSLT can be found in the corresponding Wikipedia article <xref format="html" scope="external" href="https://de.wikipedia.org/wiki/XSL_Transformation">XSLT</xref>.</p>
+      <p>In this book, we focus on XSLT and XSL stylesheets - which generally refers to the combination of XSLT, XSL-FO and XPath, used to convert XML data into other formats, e.g. PDF.</p>
+      <p>For example, the car manuals of leading manufacturers are typeset using XSL, their input data prepared and transformed for further processing. </p>
+      <p>A few interesting points:</p>
+      <fig expanse="spread" frame="all" scale="50" status="changed">
+         <image href="../images/Sandpiper_5.svg"/>
+      </fig>
+      <ul>
+         <li>
+            <p>XSLT just barely qualifies as a "programming language" because you can program a Turing machine <xref format="html" scope="external" href="http://www.unidex.com/turing/utm.htm">Turing machine (XSLT)</xref> with it.</p>
+         </li>
+         <li>
+            <p>This would not work with HTML or a templating language (e.g. JSP).</p>
+         </li>
+         <li>
+            <p>XSLT is not an imperative language, i.e. instructions are not executed sequentially, but rather a declarative language, i.e. for each event - or more precisely - for each DOM node traversed, a matching rule declared by the programmer is applied.</p>
+         </li>
+         <li>
+            <p>Additionally, there are functional aspects, e.g. to be able to apply the declared rules recursively. This way, larger programs can also be structured sensibly.</p>
+         </li>
+         <li>
+            <p>XSLT is often equated with XSL. But XSL <xref format="html" scope="external" href="https://de.wikipedia.org/wiki/XSL_Transformation">XSL</xref> is more:</p>
+            <ul>
+               <li>
+                  <p>On one hand, there is also XPath: XPath allows complex calculations and selections on the DOM <xref format="html" scope="external" href="https://de.wikipedia.org/wiki/Document_Object_Model">DOM</xref> nodes of an XML document.</p>
+               </li>
+               <li>
+                  <p>On the other hand, XSL-FO is also part of the XSL specification <xref format="html" scope="external" href="https://www.w3.org/TR/xsl/">XSL-FO specification</xref>. XSL-FO tags are instructions for an XSL-FO processor that generates a PDF document from an XSL-FO document. Other output formats, such as RTF, are also possible.</p>
+               </li>
+            </ul>
+         </li>
+      </ul>
+   </body>
+</topic>

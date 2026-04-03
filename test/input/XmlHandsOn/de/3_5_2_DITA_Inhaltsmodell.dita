@@ -1,0 +1,521 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!DOCTYPE topic
+  PUBLIC "-//OASIS//DTD DITA Topic//EN" "topic.dtd">
+<topic id="id891586a0-eb77-4f39-a512-b7d243a774e2">
+   <title>DITA Inhaltsmodell</title>
+   <body>
+      <p>
+         <indexterm>DITA<indexterm>Inhaltsmodell</indexterm>
+         </indexterm>An dieser Stelle sei kurz auf das umfangreiche Inhaltsmodell von DITA in Form von XML Schnippseln eingegangen. Gerade soviel DITA wie nötig ist, um mit Tektur CCMS arbeiten zu können.<fn callout="L"><p>UWE-Testfußnote (12/40, Callout L): DITA-fn wird in UWE zu footnote/key/desc.</p><p outputclass="fn-add">UWE Zusatz (fn-add) für den Fußnotenindex.</p></fn></p>
+      <fig expanse="column" frame="all" scale="50" status="changed">
+         <image href="../images/Cormorant-_23.svg"/>
+      </fig>
+      <section>
+         <title>Inlineelemente</title>
+         <p>
+            <indexterm>DITA<indexterm>&lt;fn&gt;</indexterm>
+            </indexterm>
+            <indexterm>DITA<indexterm>&lt;p&gt;</indexterm>
+            </indexterm>
+            <indexterm>DITA<indexterm>&lt;u&gt;</indexterm>
+            </indexterm>
+            <indexterm>DITA<indexterm>&lt;i&gt;</indexterm>
+            </indexterm>
+            <indexterm>DITA<indexterm>&lt;b&gt;</indexterm>
+            </indexterm>
+            <indexterm>DITA<indexterm>&lt;sub&gt;</indexterm>
+            </indexterm>
+            <indexterm>DITA<indexterm>&lt;sup&gt;</indexterm>
+            </indexterm>
+            <indexterm>DITA<indexterm>&lt;link&gt;</indexterm>
+            </indexterm>
+            <indexterm>DITA<indexterm>&lt;indexterm&gt;</indexterm>
+            </indexterm>
+            <indexterm>DITA<indexterm>&lt;image&gt;</indexterm>
+            </indexterm>
+            <indexterm>DITA<indexterm>&lt;codeph&gt;</indexterm>
+            </indexterm>
+         </p>
+         <dl>
+            <dlhead>
+               <dthd>Buchwelt</dthd>
+               <ddhd>DITA</ddhd>
+            </dlhead>
+            <dlentry>
+               <dt>Paragraph</dt>
+               <dd>
+                  <p>Paras erlauben die gängigen Inlineelemente, z.B. <codeph>&lt;b&gt;</codeph>,<codeph>&lt;i&gt;</codeph>,<codeph>&lt;u&gt;</codeph>,<codeph>&lt;sup&gt;</codeph>,<codeph>&lt;sub&gt;</codeph>, und werden mittels <codeph>&lt;p&gt;</codeph> Tag ausgezeichnet.</p>
+                  <pre xml:space="preserve">&lt;p&gt;
+   Das ist ein Para mit 
+   &lt;b&gt;fettem&lt;/b&gt;
+    und 
+   &lt;i&gt;kursiven&lt;/i&gt;
+    Text, 
+   sowie mit hochgestellter
+   &lt;sup&gt;Quadratzahl&lt;/sup&gt;
+    und 
+   tiefgestellter
+   &lt;sub&gt;Zahlenuntergrenze&lt;/sub&gt;
+   .
+&lt;/p&gt;</pre>
+               </dd>
+            </dlentry>
+            <dlentry>
+               <dt>Fußnote</dt>
+               <dd>
+                  <p>Fußnoten werden mittels <codeph>&lt;fn&gt;</codeph> Tag ausgezeichnet. Das Attribut <codeph>@callout</codeph> ist optional und gibt den Fußnotenschlüssel an. Ohne Angabe wird die Fußnote meist fortlaufend nummeriert.</p>
+                  <pre xml:space="preserve">&lt;fn callout="#1"&gt;
+    Das ist Text in einer Fußnote. Hier sind auch Links erlaubt 
+   &lt;link href="http://www.tekturcms.de"&gt;Tektur Homepage&lt;/link&gt;
+&lt;/fn&gt;</pre>
+               </dd>
+            </dlentry>
+            <dlentry>
+               <dt>Link</dt>
+               <dd>
+                  <p>Links können sowohl extern auf eine Ressource im Internet verweisen, aber auch intern auf einen anderen Topic. Hierbei würde die Syntax so aussehen:</p>
+                  <pre xml:space="preserve">&lt;link href="#topicid" format="dita"&gt;Link auf anderen Topic&lt;/link&gt;</pre>
+               </dd>
+            </dlentry>
+            <dlentry>
+               <dt>Indexeintrag</dt>
+               <dd>
+                  <p>Indexeinträge werden mit dem <codeph>&lt;indexterm&gt;</codeph> Element ausgezeichnet. Sie können u.a. direkt im Content vorkommen und bei Tektur CCMS auch einen verschachtelten Untereintrag aufweisen.</p>
+                  <pre xml:space="preserve">&lt;indexterm&gt;
+   Verarbeitungsmethoden
+   &lt;indexterm&gt;Vortransformation&lt;/indexterm&gt;
+&lt;/indexterm&gt;</pre>
+               </dd>
+            </dlentry>
+            <dlentry>
+               <dt>Icon</dt>
+               <dd>
+                  <p>Inzeilige Icons können über das Element <codeph>&lt;image&gt;</codeph> bedatet werden.</p>
+                  <pre xml:space="preserve">&lt;p&gt;
+   Jetzt kommt ein Icon 
+   &lt;image href="icon.png"/&gt;
+   .
+&lt;/p&gt;</pre>
+               </dd>
+            </dlentry>
+            <dlentry>
+               <dt>Code</dt>
+               <dd>
+                  <p>Inzeilige Codeschnippsel oder Dateipfade, etc. werden über das Element <codeph>&lt;codeph&gt;</codeph> gesetzt.</p>
+                  <pre xml:space="preserve">&lt;p&gt;Windows Fonts Ordner: &lt;codeph&gt;C:\Windows\Fonts&lt;/codeph&gt;.</pre>
+               </dd>
+            </dlentry>
+         </dl>
+      </section>
+      <section>
+         <title>Blockelemente</title>
+         <p>
+            <indexterm>DITA<indexterm>&lt;fig&gt;</indexterm>
+            </indexterm>
+            <indexterm>DITA<indexterm>&lt;pre&gt;</indexterm>
+            </indexterm>
+            <indexterm>DITA<indexterm>&lt;hazardstatement&gt;</indexterm>
+            </indexterm>
+            <indexterm>DITA<indexterm>&lt;note&gt;</indexterm>
+            </indexterm>
+            <indexterm>DITA<indexterm>&lt;ul&gt;</indexterm>
+            </indexterm>
+            <indexterm>DITA<indexterm>&lt;ol&gt;</indexterm>
+            </indexterm>
+            <indexterm>DITA<indexterm>&lt;dl&gt;</indexterm>
+            </indexterm>
+         </p>
+         <dl>
+            <dlhead>
+               <dthd>Buchwelt</dthd>
+               <ddhd>DITA</ddhd>
+            </dlhead>
+            <dlentry>
+               <dt>Grafik</dt>
+               <dd>
+                  <p>Die Grafik kann seitenbreit, spaltenbreit oder in der Marginalie angebracht werden. Das wird in Tektur CCMS über das Attribut @expanse gesteuert.</p>
+                  <pre xml:space="preserve">&lt;fig <b>expanse="column"</b> frame="all" scale="50"&gt;
+    &lt;image href="Cormorant.svg"/&gt;
+&lt;/fig&gt;</pre>
+               </dd>
+            </dlentry>
+            <dlentry>
+               <dt>Quelltext</dt>
+               <dd>
+                  <p>Quelltexte oder vorformatierter Text können einerseits inzeilig über das <codeph>&lt;codeph&gt;</codeph> Element bedatet werden oder als Blockelement mittels des <codeph>&lt;pre&gt;</codeph> Elements.</p>
+                  <pre xml:space="preserve">&lt;pre xml:space="preserve"&gt;
+for i in range(10):
+  print i
+&lt;/pre&gt;</pre>
+               </dd>
+            </dlentry>
+            <dlentry>
+               <dt>Warnhinweis</dt>
+               <dd>
+                  <p>Warnhinweise werden mittels des Elements <codeph>&lt;hazardstatement&gt;</codeph> bedatet. Es gibt vier verschiedene Ausprägungen:</p>
+                  <ul>
+                     <li>
+                        <p>warning</p>
+                     </li>
+                     <li>
+                        <p>danger</p>
+                     </li>
+                     <li>
+                        <p>caution </p>
+                     </li>
+                     <li>
+                        <p>notice</p>
+                     </li>
+                  </ul>
+                  <p>Diese wird über das Attribut <codeph>@type</codeph> gesteuert.</p>
+                  <pre xml:space="preserve">&lt;hazardstatement type="warning"&gt;
+   &lt;messagepanel&gt;
+      &lt;typeofhazard&gt;
+            Heisse Flächen sollte nicht berührt werden.
+        &lt;/typeofhazard&gt;
+      &lt;howtoavoid&gt;Warnschilder anbringen&lt;/howtoavoid&gt;
+      &lt;howtoavoid&gt;Temperaturregler einschalten&lt;/howtoavoid&gt;
+   &lt;/messagepanel&gt;
+&lt;/hazardstatement&gt;</pre>
+                  <p>Der Beschreibung der Gefahrenstelle <codeph>&lt;typeofhazard&gt;</codeph> können dabei mehrere Maßnahmen (<codeph>&lt;howtoavoid</codeph>) folgen.</p>
+               </dd>
+            </dlentry>
+            <dlentry>
+               <dt>Hinweis</dt>
+               <dd>
+                  <p>Der einfache Hinweis wird über das Element <codeph>&lt;note&gt;</codeph> bedatet.</p>
+                  <pre xml:space="preserve">&lt;note&gt;
+   &lt;p&gt;Ohne weitere Maßnahmen werden Dokumente
+       mit den Rechten des Erzeugers versehen.&lt;/p&gt;
+&lt;/note&gt;</pre>
+               </dd>
+            </dlentry>
+            <dlentry>
+               <dt>Listen</dt>
+               <dd>
+                  <p>Es stehen geordnete, ungeordnete und Definitionslisten zur Verfügung. <codeph>&lt;ul&gt;</codeph> und <codeph>&lt;ol&gt;</codeph> Listen können analog zu bspw. HTML gesetzt werden. Zusätzlich erlaubt DITA auch Paras in Listenpunkten. Die folgenden Beispiele sind von der DITA Dokupage <xref format="html" scope="external" href="https://docs.oasis-open.org/dita/v1.0/langspec/ul.html">DITA Doku zum &lt;ul&gt; Element</xref>:</p>
+                  <pre xml:space="preserve">&lt;ol&gt;
+   &lt;li&gt;Red&lt;/li&gt;
+   &lt;li&gt;Orange&lt;/li&gt;
+   &lt;li&gt;
+      &lt;p&gt;Yellow&lt;/p&gt;
+   &lt;/li&gt;
+   &lt;li&gt;Green&lt;/li&gt;
+   &lt;li&gt;Blue&lt;/li&gt;
+   &lt;li&gt;Indigo&lt;/li&gt;
+   &lt;li&gt;Violet&lt;/li&gt;
+&lt;/ol&gt;
+&lt;ul&gt;
+   &lt;li&gt;This is an item in an unordered list.&lt;/li&gt;
+   &lt;li&gt;To separate it from other items in the list, 
+        the formatter puts a bullet beside it.&lt;/li&gt;
+   &lt;li&gt;
+      The following paragraph, contained in the list item
+         element, is part of the list item which contains it.
+      &lt;p&gt;This is the contained paragraph.&lt;/p&gt;
+   &lt;/li&gt;
+   &lt;li&gt;This is the last list item in our unordered list.&lt;/li&gt;
+&lt;/ul&gt;</pre>
+                  <p>Außerdem steht noch die Definitionsliste <codeph>&lt;dl&gt;</codeph> zur Verfügung mit der auch dieses Kapitel realisiert ist:</p>
+                  <pre xml:space="preserve">&lt;dl&gt;
+   &lt;dlhead&gt;
+      &lt;dthd&gt;Image File View Selection&lt;/dthd&gt;
+      &lt;ddhd&gt;Resulting Information&lt;/ddhd&gt;
+   &lt;/dlhead&gt;
+   &lt;dlentry&gt;
+      &lt;dt&gt;File Type&lt;/dt&gt;
+      &lt;dd&gt;Image's file extension&lt;/dd&gt;
+   &lt;/dlentry&gt;
+   &lt;dlentry&gt;
+      &lt;dt&gt;Image Class&lt;/dt&gt;
+      &lt;dd&gt;Image is raster, vector, metafile or 3D&lt;/dd&gt;
+   &lt;/dlentry&gt;
+   &lt;dlentry&gt;
+      &lt;dt&gt;Number of pages&lt;/dt&gt;
+      &lt;dd&gt;Number of pages in the image&lt;/dd&gt;
+   &lt;/dlentry&gt;
+   &lt;dlentry&gt;
+      &lt;dt&gt;Fonts&lt;/dt&gt;
+      &lt;dd&gt;Fonts contained within a vector image&lt;/dd&gt;
+   &lt;/dlentry&gt;
+&lt;/dl&gt;</pre>
+               </dd>
+            </dlentry>
+         </dl>
+      </section>
+      <section>
+         <title>Strukturelemente</title>
+         <p>
+            <indexterm>DITA<indexterm>&lt;topic&gt;</indexterm>
+            </indexterm>
+            <indexterm>DITA<indexterm>&lt;section&gt;</indexterm>
+            </indexterm>
+            <indexterm>DITA<indexterm>&lt;map&gt;</indexterm>
+            </indexterm>
+            <indexterm>DITA<indexterm>&lt;topicref&gt;</indexterm>
+            </indexterm>
+            <indexterm>DITA<indexterm>&lt;topicmeta&gt;</indexterm>
+            </indexterm>
+         </p>
+         <dl>
+            <dlhead>
+               <dthd>Buchwelt</dthd>
+               <ddhd>DITA</ddhd>
+            </dlhead>
+            <dlentry>
+               <dt>Kapitel</dt>
+               <dd>
+                  <p>Ein Topic sollte eine in sich abgeschlossene Informationseinheit bilden, die in verschiedenen Kontexten eingebunden werden kann.</p>
+                  <pre xml:space="preserve">&lt;topic&gt;
+   &lt;title&gt;Der Titel des Topics&lt;/title&gt;
+   &lt;body&gt;
+      &lt;p&gt;Ein einleitender Satz vor der Grafik&lt;/p&gt;
+      &lt;fig&gt;
+         &lt;image href="schöne_grafik.svg"/&gt;
+      &lt;/fig&gt;
+      &lt;p&gt;Ein abschliessender Satz zum Topic&lt;/p&gt;
+   &lt;/body&gt;
+&lt;/topic&gt;</pre>
+               </dd>
+            </dlentry>
+            <dlentry>
+               <dt>Abschnitt</dt>
+               <dd>
+                  <p>Eine Section ist ein Abschnitt mit einer Unterüberschrift innerhalb eines Topics.</p>
+                  <pre xml:space="preserve">&lt;section&gt;
+   &lt;title&gt;Unterabschnitt&lt;/title&gt;
+   &lt;p&gt;Blockelemente, wie Paras, folgen direkt dem Titel&lt;/p&gt;
+&lt;/section&gt;</pre>
+               </dd>
+            </dlentry>
+            <dlentry>
+               <dt>Kapitelstruktur</dt>
+               <dd>
+                  <p>Die Kapitelstruktur wird in DITA mittels einer verschachtelten Topic-Struktur definiert, die sogenannte DITA Map. Hierbei werden <codeph>&lt;topicref&gt;</codeph> Elemente verwendet, die mittels des Attributs <codeph>@href</codeph> auf vorhandene Topics verweisen. Die Titel der einzelnen Topics sind im Attribut <codeph>@navtitle</codeph> zur Erzeugung des Inhaltsverzeichnisses vorgehalten.</p>
+                  <pre xml:space="preserve">&lt;?xml version="1.0" encoding="utf-8"?&gt;
+&lt;map title="XML Entwicklerhandbuch"&gt;
+   &lt;topicmeta&gt;
+      &lt;navtitle&gt;XSLT - XQuery - MarkLogic&lt;/navtitle&gt;
+      &lt;shortdesc/&gt;
+      &lt;keywords&gt;
+         &lt;keyword&gt;XML&lt;/keyword&gt;
+         &lt;keyword&gt;XSLT&lt;/keyword&gt;
+         &lt;keyword&gt;XQUERY&lt;/keyword&gt;
+      &lt;/keywords&gt;
+   &lt;/topicmeta&gt;
+   &lt;topicref href="1_Intro.dita" navtitle="Intro"/&gt;
+   &lt;topicref href="2_Anwendungsgebiete.dita"
+      navtitle="Anwendungsgebiete"&gt;
+      &lt;topicref 
+      href="2_1_XSLT___die_Programmiersprache_im_XML_Bereich.dita"
+      navtitle="XSLT - die Programmiersprache im XML Bereich"/&gt;
+      &lt;topicref 
+      href="2_2_Aktuelle_und_vergangene_Anwendungen.dita"
+      navtitle="Aktuelle und vergangene Anwendungen"/&gt;
+[...]</pre>
+               </dd>
+            </dlentry>
+         </dl>
+      </section>
+      <section>
+         <title>Taskelemente</title>
+         <p>Das Element <codeph>task</codeph>
+            <indexterm>
+               <indexterm/>
+            </indexterm> beschreibt eine Handlungsanweisung oder Prozedur. Da es sehr komplex ist, wird dafür eine separate <codeph>section</codeph> in diesem Buch reserviert. </p>
+         <p>Ein gut ausgefüllter Task mit jeweils nur einem Kindelement ist im folgenden als XML Schnippsel dargestellt. Natürlich sind in den Elementen an bestimmten Stellen noch weitere Blockelemente erlaubt, wie Warnhinweise, Listen, Tabellen, etc.</p>
+         <pre xml:space="preserve">&lt;task&gt;
+   &lt;title&gt;Ein Task&lt;/title&gt;
+   &lt;abstract&gt;
+      &lt;p&gt;Abstract-Element in Task&lt;/p&gt;
+   &lt;/abstract&gt;
+   &lt;taskbody&gt;
+      &lt;prereq&gt;
+         &lt;p&gt;Prereq-Element in Task&lt;/p&gt;
+      &lt;/prereq&gt;
+      &lt;context&gt;
+         &lt;p&gt;Context-Element in Task&lt;/p&gt;
+      &lt;/context&gt;
+      &lt;steps&gt;
+         &lt;stepsection&gt;
+            &lt;p&gt;Stepsection-Element in Task&lt;/p&gt;
+         &lt;/stepsection&gt;
+         &lt;step&gt;
+            &lt;cmd&gt;Cmd-Element in Step&lt;/cmd&gt;
+            &lt;substeps&gt;
+               &lt;substep&gt;
+                  &lt;cmd&gt;Substep-Element in Step&lt;/cmd&gt;
+                  &lt;info&gt;
+                     &lt;p&gt;Info-Element in Substep&lt;/p&gt;
+                  &lt;/info&gt;
+                  &lt;stepresult&gt;
+                     &lt;p&gt;Stepresult-Element in Substep&lt;/p&gt;
+                  &lt;/stepresult&gt;
+               &lt;/substep&gt;
+            &lt;/substeps&gt;
+            &lt;choices&gt;
+               &lt;choice&gt;
+                  &lt;p&gt;Choice-Element in Step&lt;/p&gt;
+               &lt;/choice&gt;
+               &lt;choice&gt;
+                  &lt;p&gt;Zweites Choice-Element in Step&lt;/p&gt;
+               &lt;/choice&gt;
+            &lt;/choices&gt;
+            &lt;choicetable&gt;
+               &lt;chhead&gt;
+                  &lt;choptionhd&gt;
+                     &lt;p&gt;Choicetable mit leeren Zellen in Step&lt;/p&gt;
+                  &lt;/choptionhd&gt;
+                  &lt;chdeschd/&gt;
+               &lt;/chhead&gt;
+               &lt;chrow&gt;
+                  &lt;choption/&gt;
+                  &lt;chdesc/&gt;
+               &lt;/chrow&gt;
+            &lt;/choicetable&gt;
+            &lt;info&gt;
+               &lt;p&gt;Info-Element in Step&lt;/p&gt;
+            &lt;/info&gt;
+            &lt;stepresult&gt;
+               &lt;p&gt;Stepresult-Element in Step&lt;/p&gt;
+            &lt;/stepresult&gt;
+         &lt;/step&gt;
+      &lt;/steps&gt;
+      &lt;result&gt;
+         &lt;p&gt;Result-Element in Task&lt;/p&gt;
+      &lt;/result&gt;
+      &lt;postreq&gt;
+         &lt;p&gt;Postreq-Element in task&lt;/p&gt;
+      &lt;/postreq&gt;
+   &lt;/taskbody&gt;
+&lt;/task&gt;</pre>
+         <p>Aus diesem XML Schnippsel kann man sich leicht die zugrundeliegende Grammatik als Grafik erzeugen lassen, z.B. mit dem oXygen XML Editor. (Da es sich um eine SVG Grafik handelt, sollte man auf einem Rechner verlustfrei reinzoomen können)</p>
+         <fig>
+            <image href="../images/dita_24.svg"/>
+         </fig>
+         <p>
+            <indexterm>DITA<indexterm>&lt;abstract&gt;</indexterm>
+            </indexterm>
+            <indexterm>DITA<indexterm>&lt;taskbody&gt;</indexterm>
+            </indexterm>
+            <indexterm>DITA<indexterm>&lt;prereq&gt;</indexterm>
+            </indexterm>
+            <indexterm>DITA<indexterm>&lt;context&gt;</indexterm>
+            </indexterm>
+            <indexterm>DITA<indexterm>&lt;steps&gt;</indexterm>
+            </indexterm>
+            <indexterm>DITA<indexterm>&lt;step&gt;</indexterm>
+            </indexterm>
+            <indexterm>DITA<indexterm>&lt;substeps&gt;</indexterm>
+            </indexterm>
+            <indexterm>DITA<indexterm>&lt;cmd&gt;</indexterm>
+            </indexterm>
+            <indexterm>DITA<indexterm>&lt;info&gt;</indexterm>
+            </indexterm>
+            <indexterm>DITA<indexterm>&lt;stepresult&gt;</indexterm>
+            </indexterm>
+            <indexterm>DITA<indexterm>&lt;choices&gt;</indexterm>
+            </indexterm>
+            <indexterm>DITA<indexterm>&lt;choicetable&gt;</indexterm>
+            </indexterm>
+            <indexterm>DITA<indexterm>&lt;choption&gt;</indexterm>
+            </indexterm>
+            <indexterm>DITA<indexterm>&lt;chdesc&gt;</indexterm>
+            </indexterm>
+            <indexterm>DITA<indexterm>&lt;result&gt;</indexterm>
+            </indexterm>
+            <indexterm>DITA<indexterm>&lt;postreq&gt;</indexterm>
+            </indexterm>
+         </p>
+         <dl>
+            <dlhead>
+               <dthd>Buchwelt</dthd>
+               <ddhd>DITA</ddhd>
+            </dlhead>
+            <dlentry>
+               <dt>Einleitung</dt>
+               <dd>
+                  <p>Das <codeph>&lt;abstract&gt;</codeph> Element kann weitere Blockelemente beinhalten und dient zur initialen Beschreibung der Handlungsanweisung, Prozesses oder der Prozedur (Ich hoffe, dass ich alle in diesem Kontext relevanten Synonyme aufgezählt habe)</p>
+               </dd>
+            </dlentry>
+            <dlentry>
+               <dt>Vorbedingung</dt>
+               <dd>
+                  <p>Im Rumpf der Task <codeph>taskbody</codeph> können Vorbedingungen angegeben werden, die erfüllt sein müssen bevor die Handlungsanweisung ausgeführt werden kann. In diesem <codeph>prereq</codeph> Element sind wieder weitere Blockelemente, wie Listen und Tabellen erlaubt. Natürlich sollte in der Ausgabe dieser Abschnitt irgendwie gekennzeichnet sein - so wie auch alle anderen Elemente - um diesen vom Fließtext zu unterscheiden.</p>
+               </dd>
+            </dlentry>
+            <dlentry>
+               <dt>Kontext</dt>
+               <dd>
+                  <p>Im <codeph>&lt;context&gt;</codeph> Element wird beschrieben in welchem Kontext (Umgebung, Zweck und Nutzen) die Handlungsprozedur ausgeführt werden soll. Hier sind auch wieder viele Blockelemente erlaubt.</p>
+               </dd>
+            </dlentry>
+            <dlentry>
+               <dt>Inhalt der Arbeitsschritte</dt>
+               <dd>
+                  <p>Schlussendlich hat man auch noch im <codeph>&lt;steps&gt;</codeph> Element die Möglichkeit weiteren Kapitelinhalt einzugeben - über das <codeph>&lt;stepsection&gt;</codeph> Element. </p>
+               </dd>
+            </dlentry>
+            <dlentry>
+               <dt>Arbeitsschritt</dt>
+               <dd>
+                  <p>Das <codeph>&lt;step&gt;</codeph> Element selbst hat im einfachsten Fall ein <codeph>&lt;substeps&gt;</codeph> Element, so dass eine einfache verschachtelte nummerierte Liste abgebildet werden kann.</p>
+                  <pre xml:space="preserve">&lt;step&gt;
+    &lt;cmd&gt;Cmd-Element in Step&lt;/cmd&gt;
+    &lt;substeps&gt;
+        &lt;substep&gt;
+            &lt;cmd&gt;Substep-Element in Step&lt;/cmd&gt;
+            &lt;info&gt;
+                &lt;p&gt;Info-Element in Substep&lt;/p&gt;
+            &lt;/info&gt;
+            &lt;stepresult&gt;
+                &lt;p&gt;Stepresult-Element in Substep&lt;/p&gt;
+            &lt;/stepresult&gt;
+        &lt;/substep&gt;
+    &lt;/substeps&gt;
+    [...]</pre>
+                  <p>Im <codeph>&lt;cmd&gt;</codeph> Element steht dabei die auszuführende Aktion, während andere Elemente die Aktion weiter präzisieren. Besonders interessant ist dabei, dass z.B. Warnhinweise (<codeph>&lt;hazardstatement&gt;</codeph>) immer vor dem <codeph>&lt;cmd&gt;</codeph> Element bedatet werden müssen. Im <codeph>&lt;info&gt;</codeph> Element können zusätzliche Informationen stehen. Der <codeph>&lt;stepresult&gt;</codeph> dokumentiert schließlich das Ergebnis des Arbeitsschritts.</p>
+               </dd>
+            </dlentry>
+            <dlentry>
+               <dt>Auswahl der Aktionen</dt>
+               <dd>
+                  <p>Hat der Ausführende des Handlungsschritts mehrere Optionen für die Aktion, dann kann das mittels des Elements <codeph>&lt;choices&gt;</codeph> modelliert werden. Statt einer Liste steht auch eine tabellarische Darstellung (<codeph>&lt;choicetable&gt;</codeph>) zur Verfügung, die neben der Aktion (<codeph>&lt;choption&gt;</codeph>) auch noch eine Beschreibung (<codeph>&lt;chdesc&gt;</codeph>) derselben erlaubt.</p>
+                  <pre xml:space="preserve">&lt;choices&gt;
+   &lt;choice&gt;
+      &lt;p&gt;Choice-Element in Step&lt;/p&gt;
+   &lt;/choice&gt;
+   &lt;choice&gt;
+      &lt;p&gt;Zweites Choice-Element in Step&lt;/p&gt;
+   &lt;/choice&gt;
+&lt;/choices&gt;
+&lt;choicetable&gt;
+   &lt;chhead&gt;
+      &lt;choptionhd&gt;
+         &lt;p&gt;Choicetable mit leeren Zellen in Step&lt;/p&gt;
+      &lt;/choptionhd&gt;
+      &lt;chdeschd/&gt;
+   &lt;/chhead&gt;
+   &lt;chrow&gt;
+      &lt;choption/&gt;
+      &lt;chdesc/&gt;
+   &lt;/chrow&gt;
+&lt;/choicetable&gt;</pre>
+               </dd>
+            </dlentry>
+            <dlentry>
+               <dt>Ergebnis der Handlungsanweisung</dt>
+               <dd>
+                  <p>Werden alle Arbeitsschritte ausgeführt, dann sollte ein Ergebnis (<codeph>&lt;result&gt;</codeph>) dokumentiert werden. Diese Ergebnis-Elemente stehen auch im <codeph>&lt;step&gt;</codeph> und <codeph>&lt;substep&gt;</codeph> Element als <codeph>&lt;stepresult&gt;</codeph> Element zur Verfügung.</p>
+               </dd>
+            </dlentry>
+            <dlentry>
+               <dt>Nachbedingung</dt>
+               <dd>
+                  <p>Analog zur Vorbedingung der Task kann auch eine Nachbedingung über das Element <codeph>&lt;postreq&gt;</codeph> dokumentiert werden.</p>
+               </dd>
+            </dlentry>
+         </dl>
+      </section>
+   </body>
+</topic>

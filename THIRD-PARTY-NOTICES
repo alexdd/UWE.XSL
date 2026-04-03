@@ -1,0 +1,129 @@
+Third-Party Software Notices and Licenses
+==========================================
+
+UWE.XSL incorporates or depends on the following third-party software.
+Each component is subject to its own license terms as described below.
+
+
+1. lunr.js  (v2.3.9)
+---------------------
+Location:   src/html/res/lib/lunr (downloaded by scripts/install.sh; only lunr.js is deployed)
+Repository: https://github.com/olivernn/lunr.js
+License:    MIT
+
+Copyright (C) 2013 by Oliver Nightingale
+
+Permission is hereby granted, free of charge, to any person obtaining a copy
+of this software and associated documentation files (the "Software"), to deal
+in the Software without restriction, including without limitation the rights
+to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+copies of the Software, and to permit persons to whom the Software is
+furnished to do so, subject to the following conditions:
+
+The above copyright notice and this permission notice shall be included in
+all copies or substantial portions of the Software.
+
+THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
+THE SOFTWARE.
+
+
+2. lunr-languages  (v1.14.0)
+-----------------------------
+Location:   src/html/res/lib/lunr-languages (downloaded by scripts/install.sh; only stemmer support and active language deployed)
+Repository: https://github.com/MihaiValentin/lunr-languages
+License:    MPL 1.1 (Mozilla Public License Version 1.1)
+
+The full text of the MPL 1.1 license is included in the submodule at
+src/html/res/lib/lunr-languages/LICENSE.
+
+
+3. mark.js  (v8.11.1)
+----------------------
+Location:   src/html/res/lib/markjs (downloaded by scripts/install.sh; only mark.min.js is deployed)
+Repository: https://github.com/julkue/mark.js
+License:    MIT
+
+Copyright (c) 2014-2018 Julian Kuehnel
+
+Permission is hereby granted, free of charge, to any person obtaining a copy
+of this software and associated documentation files (the "Software"), to deal
+in the Software without restriction, including without limitation the rights
+to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+copies of the Software, and to permit persons to whom the Software is
+furnished to do so, subject to the following conditions:
+
+The above copyright notice and this permission notice shall be included in all
+copies or substantial portions of the Software.
+
+THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
+SOFTWARE.
+
+
+4. OASIS DITA 1.3 DTDs
+-----------------------
+Location:   src/dtd (git submodule)
+Repository: https://github.com/dita-community/org.oasis-open.dita.dita13.doctypes
+License:    Apache License 2.0
+
+The full text of the Apache 2.0 license is included in the submodule at
+src/dtd/LICENSE.
+
+
+5. XML Calabash  (v1.5.7-120)
+------------------------------
+Location:   lib/calabash-dist (downloaded by scripts/install.sh)
+Repository: https://github.com/ndw/xmlcalabash1
+License:    GPL v2 (with Classpath Exception)
+
+Copyright (C) 2007-2015 Norman Walsh.
+Portions Copyright (C) 2008, 2009 MarkLogic Corporation.
+See lib/calabash-dist/docs/notices/ for full license texts.
+
+
+6. Apache FOP  (v2.11)
+-----------------------
+Location:   lib/fop (downloaded by scripts/install.sh)
+Repository: https://xmlgraphics.apache.org/fop/
+License:    Apache License 2.0
+
+Copyright The Apache Software Foundation.
+See https://www.apache.org/licenses/LICENSE-2.0
+
+
+7. SchXSLT  (v1.10)
+--------------------
+Location:   lib/schxslt (downloaded by scripts/install.sh)
+Repository: https://codeberg.org/schxslt/schxslt
+License:    MIT
+
+Copyright David Maus.
+See https://codeberg.org/schxslt/schxslt/src/branch/main/LICENSE
+
+
+8. Saxon-HE  (v12.3, bundled with XML Calabash)
+-------------------------------------------------
+Location:   lib/calabash-dist/lib/Saxon-HE-12.3.jar
+Repository: https://github.com/Saxonica/Saxon-HE
+License:    MPL 2.0 (Mozilla Public License Version 2.0)
+
+Copyright Saxonica Limited.
+See https://www.mozilla.org/en-US/MPL/2.0/
+
+
+9. Unicode CLDR Data
+----------------------
+Used for Chinese group label letter generation in PDF output.
+License:    Unicode License Agreement - Data Files and Software
+
+Copyright (c) 1991-2009 Unicode, Inc. All rights reserved.
+See license.txt for the full Unicode license text.

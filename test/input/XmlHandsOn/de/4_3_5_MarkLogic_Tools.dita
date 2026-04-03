@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!DOCTYPE topic
+  PUBLIC "-//OASIS//DTD DITA Topic//EN" "topic.dtd">
+<topic id="idaaf86c32-9113-4007-a352-4f0fde370520">
+   <title>MarkLogic Tools </title>
+   <body>
+      <p>MarkLogic bringt out-of-the-box schon eine Vielzahl an Ansichten und Tools mit. </p>
+      <p>Ein produktiver Applicatione Server sollte keine  Entwicklerwerkzeuge bereitstellen, bzw. es sollte verhindert werden, dass irgendwelche halbfertigen Sachen produktiv laufen.</p>
+      <p>Deshalb ist es nicht verwunderlich, dass Ansichten in MarkLagic fehlen, wie z.B. ein Datenbrowser <indexterm>Tools für MarkLogic<indexterm>Datenbrowser</indexterm>
+         </indexterm> mit Syntaxhighlighting.</p>
+      <p>
+         <indexterm>Tools für MarkLogic<indexterm>Datenbrowser</indexterm>
+         </indexterm>
+      </p>
+      <p>Hier springen fleissige Entwickler in die Bresche und stellen Werkzeuge zur Verfügung.</p>
+      <p/>
+   </body>
+</topic>

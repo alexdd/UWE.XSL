@@ -1,0 +1,140 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!DOCTYPE topic
+  PUBLIC "-//OASIS//DTD DITA Topic//EN" "topic.dtd">
+<topic id="id2d757944-287a-4a26-8c90-b5614cc5d056">
+   <title>DITA</title>
+   <body>
+      <p>DITA <xref format="html" scope="external" href="https://de.wikipedia.org/wiki/Darwin_Information_Typing_Architecture">Wikipedia Seite zum DITA Standard</xref>
+         <indexterm>DITA</indexterm>  ist so ein Standard für die Technische Dokumentation. Allgemeine Teile können von allen DITA Systemen verarbeitet
+ werden -  also alle Teile der Information, die für die Aussenwelt verfügbar gemacht werden
+ sollen, das ist  z.B. eine Zulieferdokumentation für bestimmte Maschinenbauteile.<fn callout="K"><p>UWE-Testfußnote (11/40, Callout K): DITA-fn wird in UWE zu footnote/key/desc.</p></fn></p>
+      <p>Spezifische Information, wie z.B. Referenzen in eine interne Datenbank, würde dagegen ein externer
+DITA Prozessor entweder verschlucken oder anderweitig kennzeichnen - je nachdem wie
+die Abarbeitung von unbekannten Elementen im externen System realisiert ist.</p>
+      <section>
+         <title>DITA vs Docbook</title>
+         <p>Grob betrachtet ähnelt die DITA Struktur derer von Docbook <xref format="html" scope="external" href="https://de.wikipedia.org/wiki/DocBook">Wikipedia Seite zum Docbook Standard</xref>. 
+Sie hat die typische Kapitelverschachtelung.</p>
+         <p>Zum Vergleich ist im
+folgenden ein Docbook Grundgerüst und ein DITA Grundgerüst (Wikipedia) abgebildet.</p>
+         <p>
+            <b>Docbook Grundgerüst</b>
+         </p>
+         <pre xml:space="preserve">&lt;book id="einfaches_buch"
+    &lt;title&gt;Ein sehr einfaches Buch&lt;/title&gt;
+    &lt;chapter id="einfaches_kapitel"&gt;
+        &lt;title&gt;Kapitel&lt;/title&gt;
+        &lt;para&gt;Hallo Welt!&lt;/para&gt;
+    &lt;/chapter&gt;
+&lt;/book&gt;</pre>
+         <p>
+            <b>DITA Grundgerüst</b>
+         </p>
+         <pre xml:space="preserve">&lt;topic id="maintaining" xml:lang="en-us"&gt;
+   &lt;title&gt;Maintaining&lt;/title&gt;
+   &lt;shortdesc&gt;
+      You maintain your solution to ensure that all components 
+      are operating at maximum efficiency.
+   &lt;/shortdesc&gt;
+   &lt;body&gt;
+      &lt;p&gt;
+         Maintenance is a task that you perform along 
+	 with configuration to get the most from your solution.
+      &lt;/p&gt;
+   &lt;/body&gt;
+&lt;/topic&gt;</pre>
+         <p>Während beim Docbook Standard noch ein Element <codeph>&lt;book&gt;</codeph> die einzelnen Kapitel klammert,
+ist die Vorgehensweise beim DITA Standard topic-basiert - Stichwort: Topic Based Authoring<indexterm>Buzzwords<indexterm>Topic Based Authoring</indexterm>
+            </indexterm>.</p>
+         <p>Hier konzentriert sich der Redakteur nicht mehr so sehr auf das Buch als Ganzes, sondern mehr auf die 
+Abgeschlossenheit und Referenzierbarkeit der einzelnen Topics (= Informationseinheiten), um
+diese in einer anderen Publikation ggf. in einem anderen Format (Online, Print, Smartphone) leicht
+wiederverwenden zu können.</p>
+         <p>Im obigen XML Schnippsel vermutet man z.B., dass das Element <codeph>&lt;shortdesc&gt;</codeph> in einer elektronischen
+Publikation auf einer Übersichtsseite angezeigt werden könnte ( - um die Referenz zum eigentlichen Topic
+zu charakterisieren), während in einer Print-Publikation diese Information als einleitender Kurztext gedruckt
+werden könnte.</p>
+         <p>Was ist aber nun der Clou beim DITA Standard? Dokumenttyp Definitionen (DTDs), die einige Elemente umbenennen und
+ein paar semantische Besonderheiten bereitstellen, gibt es viele.</p>
+      </section>
+      <section>
+         <title>Der Clou bei DITA</title>
+         <p>Ich denke, das Besondere bei DITA sind ein paar technische Kniffe, die eine gewisse Generizität des Ansatzes 
+realisieren. Wenn wir im obigen XML Schnippsel noch <b>die DTD mit angeben</b>:</p>
+         <pre xml:space="preserve">&lt;?xml version="1.0" ?&gt;
+&lt;!DOCTYPE topic
+  SYSTEM 'ditadtd/topic.dtd'&gt;
+&lt;topic id="maintaining" xml:lang="en-us"&gt;
+   [...]
+&lt;/topic&gt;</pre>
+         <p>und eine Identity-Transformation ausführen, so sind magischerweise weitere Attribute hinzugekommen, vgl.</p>
+         <pre xml:space="preserve">&lt;?xml version="1.0" encoding="UTF-8"?&gt;
+&lt;topic xmlns:ditaarch="http://dita.oasis-open.org/architecture/2005/" 
+       id="maintaining" xml:lang="en-us" 
+       ditaarch:DITAArchVersion="1.3" 
+       domains="(topic ui-d) (topic hi-d) (topic pr-d) (topic sw-d) 
+               (topic ut-d) (topic indexing-d)" 
+       class="- topic/topic "&gt;
+    &lt;title class="<b>- topic/title </b>"&gt;Maintaining&lt;/title&gt;
+    &lt;shortdesc class="<b>- topic/shortdesc </b>"&gt;
+        You maintain your solution to ensure that all components 
+        are operating at maximum efficiency.
+    &lt;/shortdesc&gt;
+    &lt;body class="<b>- topic/body </b>"&gt;
+        &lt;p class="<b>- topic/p </b>"&gt;
+            Maintenance is a task that you perform along 
+            with configuration to get the most from your solution.
+        &lt;/p&gt;
+    &lt;/body&gt;
+&lt;/topic&gt;</pre>
+         <p>Besonders interessant ist hier das <codeph>@class</codeph> Attribut. Wie ist das nun passiert?</p>
+         <note>
+            <p>DITA definiert eine Reihe von <codeph>#FIXED</codeph> Attributen <xref format="html" scope="external" href="https://wiki.selfhtml.org/wiki/XML/DTD/Attribute_und_Wertzuweisungen">Erläuterungen zu Attributen und Wertzuweisungen auf selfhtml.org</xref> mit einem festen Wert, die der Parser beim Validieren automatisch an die Elemente hängen muss. Ungeparst sieht ein Topic recht einfach aus. Geparst kann das DITA XML dagegen recht aufgebläht wirken.  </p>
+         </note>
+         <p>XSLT Regeln in einem DITA Prozessor matchen nun nicht auf die Elementnamen, sondern auf die <codeph>@class</codeph> Attribute, z.B. so:</p>
+         <pre xml:space="preserve">&lt;xsl:template match="<b>*[contains(@class,' topic/topic ')]</b>/
+                     *[contains(@class,' topic/title ')]"&gt;
+[...]</pre>
+         <p>Hier soll der Titel des Topics formatiert werden. In einer Spezialisierung <xref format="html" scope="external" href="https://www.ibm.com/developerworks/library/x-dita2/index.html">Artikel (eng.) zum Thema DITA Spezialisierung auf einer IBM Website</xref> des Topics - das wäre z.B. ein Concept: </p>
+         <pre xml:space="preserve">&lt;?xml version="1.0" ?&gt;
+&lt;!DOCTYPE concept
+  PUBLIC '-//OASIS//DTD DITA Concept//EN'
+  'concept.dtd'&gt;
+&lt;concept id="concept_kl3_knd_f3b"&gt;
+   &lt;title&gt;My concept&lt;/title&gt;
+   &lt;shortdesc&gt;Just a concept to illustrate specialization&lt;/shortdesc&gt;
+   &lt;conbody&gt;
+      &lt;p&gt;Yeah, we need some content here, too!&lt;/p&gt;
+   &lt;/conbody&gt;
+&lt;/concept&gt;</pre>
+         <p>werden nun die <codeph>#FIXED</codeph> Attribute folgendermassen gesetzt:</p>
+         <pre xml:space="preserve">&lt;?xml version="1.0" encoding="UTF-8"?&gt;
+&lt;concept xmlns:ditaarch="http://dita.oasis-open.org/architecture/2005/" 
+         id="concept_kl3_knd_f3b" 
+         ditaarch:DITAArchVersion="1.3" 
+         class="<b>- topic/topic concept/concept</b> "&gt;
+    &lt;title class="<b>- topic/title </b>"&gt;My concept&lt;/title&gt;
+    &lt;shortdesc class="<b>- topic/shortdesc </b>"&gt;Just a concept to 
+        illustrate specialization&lt;/shortdesc&gt;
+    &lt;conbody class="<b>- topic/body  concept/conbody </b>"&gt;
+        &lt;p class="<b>- topic/p </b>"&gt;Yeah, we need some content here, too!&lt;/p&gt;
+    &lt;/conbody&gt;
+&lt;/concept&gt;</pre>
+         <p>Unsere Regel von oben mit </p>
+         <pre xml:space="preserve">&lt;xsl:template match="*[contains(@class,' topic/topic ')]/
+                     *[contains(@class,' topic/title ')]"&gt;
+[...]</pre>
+         <p>die einen Titel formatiert, würde also sowohl für Topic-Elemente, als auch für Concept-Elemente gelten. Will man eine Spezialformatierung für Concept-Elemente, so müsste man die folgende Regel noch zur Regelbasis mithinzunehmen: </p>
+         <pre xml:space="preserve">&lt;xsl:template match="*[contains(@class,' concept/concept ')]/
+                     *[contains(@class,' topic/title ')]"&gt;
+[...]</pre>
+         <p>Warum ist das Ganze nun so clever? Wenn bspw. Firma XYZ noch keine Concept-Definitionen erstellt hat, kann sie trotzdem Concept-Elemente der Firma ABC verarbeiten, weil die Match-Regeln nicht auf Elementnamen operieren, sondern auf dynamisch durch die DTD hinzugefügte Klassenattribute - die neben der Bezeichner der Spezialisierung auch die Bezeichner der Generalisierung enthalten. Diese kennt jeder DITA Prozessor und kann zumindest einen Default bereitstellen.</p>
+         <p>Für obiges Beispiel - bzgl. des Titels - würde das bedeuten, dass der Concept-Titel in Firma XYZ nicht so schön  (oder an einer bestimmten Stelle) dargestellt wird, wie er in Firma ABC angedacht war. Der wichtige Content wird aber trotzdem dargestellt.</p>
+         <note>
+            <p>Die Referenzimplementierung für DITA ist übrigens das DITA Open Toolkit <xref format="html" scope="external" href="https://github.com/dita-ot/dita-ot">GitHub Seite zum DITA Open Toolkit</xref>
+            </p>
+         </note>
+         <p>Das Erstellen einer redundanzarmen DITA DTD ist allerdings eine Wissenschaft für sich. Schliesslich will man ja auch für eigene Spezialisierungen den generischen Ansatz beibehalten. Der DITA Redakteur oder besser der Dokumentationsbeauftragte muss sich deshalb einer ziemlich komplizierten Namens- und Strukturkonvention unterziehen.</p>
+      </section>
+   </body>
+</topic>

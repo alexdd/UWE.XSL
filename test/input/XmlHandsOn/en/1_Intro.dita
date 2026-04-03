@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!DOCTYPE topic
+  PUBLIC "-//OASIS//DTD DITA Topic//EN" "topic.dtd">
+<topic id="id8ae493b1-a854-4349-8aff-3bc901e07199">
+   <title>Intro </title>
+   <body>
+      <fig expanse="spread" frame="all" scale="50" status="changed">
+         <image href="../images/dita-logo2_2.jpg"/>
+      </fig>
+      <p>This publication was authored with Tektur CCMS. Tektur is an easy-to-use collaborative editor for creating, publishing as PDF, and maintaining DITA <xref format="html" scope="external" href="https://de.wikipedia.org/wiki/Darwin_Information_Typing_Architecture">DITA</xref> content. Input is via WYSIWYG <xref format="html" scope="external" href="https://de.wikipedia.org/wiki/WYSIWYG">WYSIWYG</xref> with guided user interaction. The content is managed as individual topics that can be referenced in various maps; keyword: Topic Based Authoring <xref format="html" scope="external" href="https://en.wikipedia.org/wiki/Topic-based_authoring">Topic Based Authoring</xref>. <fn callout="A"><p>UWE test footnote: DITA fn becomes the PDF footnote body.</p><p outputclass="fn-add">UWE test footnote: DITA fn becomes the PDF footnote body. (supplement)</p></fn></p>
+      <p>Other features: rights and role management, version control, configurable workflow with review &amp; approval functions. On the developer blog <xref format="html" scope="external" href="http://www.tekturcms.de">developer blog</xref> you can stay informed about progress.</p>
+      <note>
+         <p>This book primarily serves as a test for Tektur CCMS. The content was created quite quickly, so the finishing touches may be missing in some places... Nevertheless, it might be quite interesting for one or another XML developer. </p>
+         <p>The source code is kept in German in some places for "didactic" reasons, which of course would not make much sense for a real program.</p>
+         <p>The line drawings of exotic birds are from Openclipart <xref format="html" scope="external" href="https://openclipart.org/">Openclipart</xref>. My favorite graphic designer Caro contributed the beautiful garlands and the title graphic. Many thanks for that :-)</p>
+      </note>
+   </body>
+</topic>

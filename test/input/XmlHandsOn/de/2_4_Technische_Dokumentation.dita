@@ -1,0 +1,115 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!DOCTYPE topic
+  PUBLIC "-//OASIS//DTD DITA Topic//EN" "topic.dtd">
+<topic id="ide6f0d83b-432a-41aa-9dfa-35cff640926f">
+   <title>Technische Dokumentation</title>
+   <body>
+      <p>95% aller technischen Dokumente werden vermtl. mit Micro$oft Word produziert. 
+Es gibt jedoch einige Use Cases in denen ein Standard Word Prozessor nicht mehr ausreicht.<fn callout="E"><p>UWE-Testfußnote (5/40, Callout E): DITA-fn wird in UWE zu footnote/key/desc.</p></fn></p>
+      <section>
+         <title>Use Cases</title>
+         <p>
+            <b>Maschinenbauer</b> 
+         </p>
+         <fig expanse="spread" frame="all" scale="50" status="changed">
+            <image href="../images/Grossbeak-_8.svg"/>
+         </fig>
+         <p>Ein Maschinenbauhersteller<indexterm>Use Cases<indexterm>Maschinenbauer</indexterm>
+            </indexterm> verwendet bestimmte Bauteile in mehreren Maschinen. Die Dokumentation dieser Parts soll mit wenig Aufwand in verschiedenen Büchern wiederverwendet werden. Copy 'n Paste kommt nicht in Frage, da sich wegen des schnellen technischen Fortschritts, die Dokumentation häufig ändert. Zudem läuft auf etwas älteren Maschinenmodellen noch eine alte Version von Micro$oft Windows, so dass ein Service-Techniker an der Maschine auf eine Dokumentation im veralteten Windows Hildeformat CHM angewiesen ist.</p>
+         <p>
+            <b>KFZ Hersteller</b>
+         </p>
+         <p>Ein KFZ Hersteller<indexterm>Use Cases<indexterm>KFZ Hersteller</indexterm>
+            </indexterm>  hat verschiedene Automodelle im Angebot. Da sich die Fahrzeuge in über 
+hundert Ländern verkaufen lassen, sind Handbücher in vielen Sprachen verfügbar. Es
+enstehen enorme Übersetzungskosten, selbst für Teile, die in allen Büchern denselben
+Inhalt tragen, wie bspw. bestimmte Warnhinweise.</p>
+         <p>
+            <b>Kommunikationstechnik</b> 
+         </p>
+         <p>Ein Hersteller in der Kommunikations- und Signalerfassungstechnik<indexterm>Use Cases<indexterm>Kommunikations- und Signalerfassung</indexterm>
+            </indexterm>  will die Erstellung von 
+Datenblättern automatisieren, indem direkt Messergebnisse aus einer Datenbank in die 
+Dokumentation wandern. Dadurch werden die Kosten bzgl. einer manuellen Bedatung minimiert.
+Gesucht ist ein automatisierter Prozess, der die bereitgestellten Daten zur Dokumentation
+hinzufügt.</p>
+         <p>
+            <b>Fluggesellschaft</b> 
+         </p>
+         <p>Eine Fluggesellschaft<indexterm>Use Cases<indexterm>Fluggesellschaft</indexterm>
+            </indexterm>  stellt für ihre Piloten eine eigene Dokumentation zu ihren Flugzeugtypen 
+bereit. Da die Piloten bei der Erstellung der Doku als sogenannte "Subject Matter Experts"<indexterm>Subject Matter Experts</indexterm>  mitwirken, genügt es nicht nur ein Handbuch in Papierform zu produzieren, sondern auch ein interaktives
+Portal ist notwendig, mit dem die Piloten die Dokumentation Korrekturlesen und Freigeben können.
+Schliesslich brauchen sie auch noch eine Version der Doku auf dem Tablet, um bspw. Checklisten vor
+dem Start interaktiv abhaken zu können - diese Funktionalität rangiert gewöhnlich unter der Bezeichnung 
+"Electronic Flightbag - EFB"<indexterm>Electronic Flightbag</indexterm> .</p>
+      </section>
+      <section>
+         <title>Konzepte</title>
+         <p>Um die zuvor genannten Use Cases realisieren zu können, wurden im Bereich Technische Dokumentation 
+Konzepte entwickelt, die sich stets - unter Einbezug der aktuellen technischen Möglichkeiten - weiterentwickeln.
+Einige dieser Konzepte sind im Kapitel <xref format="dita" scope="local" type="concept" href="2_Anwendungsgebiete.dita">Anwendungsgebiete</xref> schon kurz genannt. Im Bezug auf die Use Cases oben sind die folgenden
+interessant:</p>
+         <p>
+            <b>Modularisierung und Wiederverwendung</b> 
+         </p>
+         <p>Durch eine feingranulare Modularisierung<indexterm>Konzepte<indexterm>Wiederverwendung</indexterm>
+            </indexterm>  des Content existiert jede Informationseinheit im System nur einmal, 
+und kann in verschiedenen Publikationen referenziert werden. Die Auflösung dieser Referenzen geschieht 
+zum Zeitpunkt der Auslieferung des Ausgabeformats, d.h. bei der Bestückung des Webservers mit einer 
+Online-Dokumentation oder beim Erzeugen von XSL-FO als Vorformat für eine Print-Publikation mittels PDF.</p>
+         <p>
+            <b>Single Sourcing</b>
+         </p>
+         <p>Aus einer Quelle werden mehrere Ausgabeformate erzeugt<indexterm>Konzepte<indexterm>Single Source Publishing</indexterm>
+            </indexterm>. Dadurch wird Redundanz vermieden und alle Publikationen
+können so stets aktuell gehalten werden. Wenn sich die Quelle ändert, wird automatisch auch das Ziel aktualisiert.
+Gängige Ausgabeformate sind PDF, Online-Hilfe, Online-Portale, eBook Formate, usw.
+Auch veraltete Legacy Formate, wie Windows Hilfe CHM, können bei Bedarf über eine neu hinzugefügte Ausgabestrecke 
+realisiert werden ohne den Kern des Systems zu belasten.</p>
+         <p>
+            <b>Variantensteuerung</b>
+         </p>
+         <p>Über konditionale Bedingungen <i>"Gültigkeiten"</i> auf Kapitel- und Elementebene kann die Ausgabe für verschiedene Produktvarianten feingranular gesteuert werden. Dabei werden z.B. die Varianten in einer (Entscheidungs-) baumstruktur unabhängig von der Publikation verwaltet. Erst beim Publizieren wird entschieden, welche Grafiken und Satzbausteine herangezogen werden.</p>
+         <p>
+            <b>Übersetzungsmanagement</b> 
+         </p>
+         <p>Die Übersetzung<indexterm>Übersetzungsmanagement</indexterm>  einer Quellsprache in eine Zielsprache wird gemeinsam mit der Quellinformationseinheit verwaltet. So kann 
+auch auf Seiten der Redakteure eine Versionshistorie bzgl. der Übersetzungen gepflegt werden. Die Abhängigkeit
+zum Übersetzungsdienstleister wird dadurch minimiert. Einmal getätigte Übersetzungen können wiederverwendet 
+werden und belasten das Budget nicht.</p>
+         <p>
+            <b>Automatischer Satz mit XML Technologie</b> 
+         </p>
+         <p>XML ist gängiges Datenformat in der Industrie. XML Daten gelangen aus unterschiedlichen Quellen und über verschiedene Wege, 
+wie Datenbanken, Webservices, mittels BPM Prozesse, Ablageverzeichnisse, manueller Bedatung, usw. in eine
+Publikationsinstanz.<indexterm>Automatischer Satz</indexterm> 
+         </p>
+         <p>Diese wird als Single Source Quelle in die Ausgabeformate transformiert. Natürlich verlangen
+diese automatischen Eingabeprozesse auch eine automatische Ausgabe. Für Online-Formate ist das weniger tragisch,
+aber für Print-Formate zählt ein guter Umbruch auf Paragraph-, Spalten-, Tabellenzeilen- und Seitenebene. Auch 
+Grafiken und Tabellen müssen gut umbrechen, bspw. soll der Untertitel immer an der Grafik gehalten werden und 
+Tabellenzeilen sollten, auch wie Paragraphen, keine Hurenkinder und Schusterjungen <xref format="html" scope="external" href="https://de.wikipedia.org/wiki/Hurenkind_und_Schusterjunge">Wikipedia-Seite zum Thema Hurenkinder und Schusterjungen</xref> erzeugen.<indexterm>Schusterjungen und Hurenkinder</indexterm> 
+         </p>
+         <p>
+            <b>Moderne End-User Applikationen</b> 
+         </p>
+         <p>Schlussendlich liefert Word keine Datenbasis für moderne Applikationen, wie interaktive Portale oder Smartphone-
+bzw. Tabletapplikationen. Gegenstand aktueller Forschung sind VR und AR, bspw. sollte es genügen eine bestimmte
+Maschine im Fokus seines Smartphones zu halten, um relevante Technische Dokumentation zu übertragen. Auch werden 
+neue Metadatenkonzepte erforscht, wie die Modellierung der Beziehungen zwischen einzelnen Informationseinheiten
+über RDF Tripel.</p>
+         <pre xml:space="preserve">Bsp.: Bauteil A hat Funktion X  in Maschine Q aber Bauteil A hat Funktion Y  in Maschine W. 
+Zeige mir alle Funktionen von Bauteil A.</pre>
+         <p>Spezielle Content Delivery Portale<indexterm>Content Delivery Portal</indexterm>  spannen dazu einen Beziehungsgraphen auf und ermöglichen das schnelle Bereitstellen
+der gesuchten Information. Federführend ist hier der iiRDS Standard <xref format="html" scope="external" href="https://iirds.org/">Webseite zum iiRDS Standard</xref>.</p>
+      </section>
+      <section>
+         <title>Werkzeuge</title>
+         <p>Um die genannten Use Cases umfassend zu erschlagen sind spezielle Content Management Systeme erforderlich, 
+sogenannte Component Content Management Systeme <xref format="html" scope="external" href="https://en.wikipedia.org/wiki/Component_content_management_system">Wikipedia Seite zum Thema Component Content Management</xref>.<indexterm>Component Management System</indexterm>  Diese Systeme existieren größenteils seit den 90er Jahren, laufen auf dem Desktop und erfordern enorme Betriebs- und Einführungskosten,
+die sich nur größere Konzerne und Unternehmungen leisten. Tektur CCMS <xref format="html" scope="external" href="http://www.tekturcms.de">Homepage von Tektur CCMS</xref> versucht hier mit einer
+modernen, webbasierten und kostengünstigen Lösung in die Bresche zu springen.</p>
+      </section>
+   </body>
+</topic>

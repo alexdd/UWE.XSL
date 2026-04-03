@@ -1,0 +1,83 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!DOCTYPE topic
+  PUBLIC "-//OASIS//DTD DITA Topic//EN" "topic.dtd">
+<topic id="idd9eb7249-f8f7-4dbb-bf77-fe1f1833b66b">
+   <title>XPath-Achsenbereich selektieren </title>
+   <body>
+      <p>Mit den folgenden Ausdrücken selektiert man ausgehend vom aktuellen Kontextknoten alle Knoten, die auf den betreffenden XPath Achsen liegen:<fn callout="B"><p>UWE-Testfußnote (28/40, Callout B): DITA-fn wird in UWE zu footnote/key/desc.</p><p outputclass="fn-add">UWE Zusatz (fn-add) für den Fußnotenindex.</p></fn></p>
+      <ul>
+         <li>
+            <p>
+               <codeph>preceding-sibling::*</codeph>
+            </p>
+         </li>
+         <li>
+            <p>
+               <codeph>following-sibling::*</codeph>
+            </p>
+         </li>
+         <li>
+            <p>
+               <codeph>ancestor::*</codeph>
+            </p>
+         </li>
+         <li>
+            <p>
+               <codeph>descendant::*</codeph>
+            </p>
+         </li>
+         <li>
+            <p>
+               <codeph>ancestor-or-self::*</codeph>
+            </p>
+         </li>
+         <li>
+            <p>
+               <codeph>descendant-or-self::*</codeph>
+            </p>
+         </li>
+      </ul>
+      <p>Schwieriger wird es, wenn man nur einen bestimmten Bereich auswählen will und nicht alle Knoten bis zum Anfang bzw. Ende der Achse.</p>
+      <p>Die Selektion eines Bereichs kann man z.B. beim Strukturieren einer Sequenz aus Überschriften und Paras gebrauchen:</p>
+      <pre xml:space="preserve">&lt;body&gt;
+   &lt;h1&gt;Überschrift 1&lt;/h1&gt;
+   &lt;p&gt;Para 1.1&lt;/p&gt;
+   &lt;p&gt;Para 1.2&lt;/p&gt;
+   &lt;h1&gt;Überschrift 2&lt;/h1&gt;
+   &lt;p&gt;Para 2.1&lt;/p&gt;
+   &lt;p&gt;Para 2.2&lt;/p&gt;
+   &lt;h1&gt;Überschrift 3&lt;/h1&gt;
+   &lt;p&gt;Para 3.1&lt;/p&gt;
+   &lt;p&gt;Para 3.2&lt;/p&gt;
+&lt;/body&gt;</pre>
+      <p>Die Aufgabe besteht nun darin, jeweils einen <codeph>section</codeph>-Abschnitt einzuführen, so:</p>
+      <pre xml:space="preserve">&lt;section&gt;
+   &lt;h1&gt;Überschrift 1&lt;/h1&gt;
+   &lt;p&gt;Para 1.1&lt;/p&gt;
+   &lt;p&gt;Para 1.2&lt;/p&gt;
+&lt;/section&gt;
+&lt;section&gt;
+   &lt;h1&gt;Überschrift 2&lt;/h1&gt;
+   &lt;p&gt;Para 2.1&lt;/p&gt;
+   &lt;p&gt;Para 2.2&lt;/p&gt;
+&lt;/section&gt;
+&lt;section&gt;
+   &lt;h1&gt;Überschrift 3&lt;/h1&gt;
+   &lt;p&gt;Para 3.1&lt;/p&gt;
+   &lt;p&gt;Para 3.2&lt;/p&gt;
+&lt;/section&gt;</pre>
+      <p>Ein XSLT Template das dieses Unterfangen bewerkstelligen könnte, sieht bspw. so aus:</p>
+      <pre xml:space="preserve">&lt;xsl:template match="body"&gt; 
+  &lt;xsl:copy&gt;
+    &lt;xsl:for-each select="h1"&gt;
+      &lt;section&gt;
+        &lt;xsl:copy/&gt;
+        &lt;xsl:apply-templates select="following-sibling::*[not(self::h1)]
+                                    [preceding-sibling::h1[1] is current()]"/&gt;                
+      &lt;/section&gt;
+    &lt;/xsl:for-each&gt;
+  &lt;/xsl:copy&gt;
+&lt;/xsl:template&gt;</pre>
+      <p>Hier werden im <codeph>apply-templates</codeph> Call alle Nachfolger-Knoten ausgehend vom aktuellen Kontextknoten selektiert, die keine Überschriften sind, und die als erste Vorgängerüberschrift den aktuellen Kontextknoten haben. Das ist genau der Bereich bis zur nächsten Überschrift. </p>
+   </body>
+</topic>

@@ -1,0 +1,143 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!DOCTYPE topic
+  PUBLIC "-//OASIS//DTD DITA Topic//EN" "topic.dtd">
+<topic id="id7a4ded7e-6893-4283-8507-22575cb7e4bb">
+   <title>Hilfreiche XQuery Schippsel</title>
+   <body>
+      <p>Unsortierte Schnippsel für die MarkLogic Konsole, die an mancher Stelle hilfreich sein könnten:<fn callout="K"><p>UWE-Testfußnote (37/40, Callout K): DITA-fn wird in UWE zu footnote/key/desc.</p></fn></p>
+      <dl>
+         <dlhead>
+            <dthd>Beschreibung</dthd>
+            <ddhd>Beispiel Code Schnippsel</ddhd>
+         </dlhead>
+         <dlentry>
+            <dt>Datenbank löschen</dt>
+            <dd>
+               <pre xml:space="preserve">xdmp:forest-clear(
+
+xdmp:database-forests(
+
+xdmp:database("xml-scrapper-content")))</pre>
+            </dd>
+         </dlentry>
+         <dlentry>
+            <dt>Über Collection iterieren</dt>
+            <dd>
+               <pre xml:space="preserve">for $x in collection("/topics")
+return
+ (&lt;fname&gt;{ fn:document-uri($x) }&lt;/fname&gt;,
+ $x)</pre>
+            </dd>
+         </dlentry>
+         <dlentry>
+            <dt>Attribut / Knoten ersetzen</dt>
+            <dd>
+               <pre xml:space="preserve">for $ref in collection("/topics")//topicref
+    let $topic := collection("/topics")
+               [contains(fn:document-uri(.),$ref/@href)],
+        $new := attribute href { $topic/topic/@id }
+return 
+  xdmp:node-replace($ref/@href,  $new)</pre>
+            </dd>
+         </dlentry>
+         <dlentry>
+            <dt>Dokument "umbenennen" <xref format="html" scope="external" href="https://developer.marklogic.com/recipe/move-a-document/">Rezept, wie man ein Dokument in MarkLogic "umbenennt"</xref>
+            </dt>
+            <dd>
+               <pre xml:space="preserve">xdmp:document-insert(
+  $new-uri,
+  fn:doc($old-uri),
+  xdmp:document-get-permissions($old-uri),
+  xdmp:document-get-collections($old-uri)
+ ),
+ xdmp:document-delete($old-uri),
+ xdmp:document-set-properties($new-uri, $properties</pre>
+            </dd>
+         </dlentry>
+         <dlentry>
+            <dt>Über verschiedene Collections bestimmte Elemente suchen</dt>
+            <dd>
+               <pre xml:space="preserve">for $element in cts:search(/descendant::*[self::b or 
+                                         self::i or self::u], 
+                cts:collection-query(("/topics", 
+                                      "/tasks", "/maps")))
+return $element/text()</pre>
+            </dd>
+         </dlentry>
+         <dlentry>
+            <dt>Ein Element aus einem "Stack" holen und das Element vom Stack nehmen ("Pop")</dt>
+            <dd>
+               <pre xml:space="preserve">let $result := ( 
+  for $stack in collection("/stack-pushed")
+  order by $stack/some-element/some-criterion descending
+  return
+    $stack)[1] 
+return (
+  local:render-response($result),
+  xdmp:document-set-collections(fn:document-uri($result), 
+                               ("/stack-popped")</pre>
+            </dd>
+         </dlentry>
+         <dlentry>
+            <dt>Konvertierung nach JSON</dt>
+            <dd>
+               <pre xml:space="preserve">let $xml:=
+&lt;tektur-dita&gt;
+{
+for $x in collection("/topics")
+return
+ $x
+}
+&lt;/tektur-dita&gt;,
+    $config := json:config("full") =&gt; 
+               map:with("whitespace", "preserve")
+    return json:transform-to-json( $xml , $config )</pre>
+            </dd>
+         </dlentry>
+         <dlentry>
+            <dt>Gib mir alle Dokumente, die nach dem 23.05.2019 zur (temporalen) Collection "/topics" hinzugefügt wurden</dt>
+            <dd>
+               <pre xml:space="preserve">let $period := cts:period(
+  xs:dateTime('0001-01-01T00:00:00'),
+  xs:dateTime('2019-05-23T00:00:00')
+)
+return cts:search(
+  collection("/topics"),
+  cts:period-range-query('system-axis', 
+                         'ISO_SUCCEEDS', 
+                         $period)
+)</pre>
+            </dd>
+         </dlentry>
+         <dlentry>
+            <dt>cURL Parameter um eine DB zu leeren (als Array Einträge im Python Code)</dt>
+            <dd>
+               <pre xml:space="preserve">args = [
+  'curl',
+  '-X',
+  'POST',
+  '--anyauth',
+  '-u',
+  'admin:admin',
+  '--header',
+  'Content-Type:application/json',
+  '-d',
+  '{\"operation\":\"clear-database\"}',
+  'http://localhost:8002/manage/
+          v2/databases/mydb']</pre>
+            </dd>
+         </dlentry>
+         <dlentry>
+            <dt>Elementare Permissions an Dokumenten setzen; <b>xdmp:document-update-permissions</b> zum Aktualisieren</dt>
+            <dd>
+               <pre xml:space="preserve">for $x  in collection("/my-collection")
+return
+ xdmp:document-set-permissions(
+   fn:document-uri($x),
+   ( xdmp:permission("my-role", "update"),
+     xdmp:permission("my-role", "read" )))</pre>
+            </dd>
+         </dlentry>
+      </dl>
+   </body>
+</topic>

@@ -1,0 +1,52 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!DOCTYPE topic
+  PUBLIC "-//OASIS//DTD DITA Topic//EN" "topic.dtd">
+<topic id="id4f168aa8-64ed-487d-924c-92e68871b212">
+   <title>Connector to MarkLogic in Oxygen </title>
+   <body>
+      <p>MarkLogic<indexterm>Software<indexterm>Marklogic</indexterm>
+         </indexterm> does provide a Query Console in the browser by default on port 8000, where you can try out certain things. However, working with an <ph outputclass="nb">Oxygen Connector</ph>
+         <indexterm>Tools<indexterm>oXygen-Connector</indexterm>
+         </indexterm> is more comfortable. Here you open the <i>Data Source Explorer</i> and configure a new data source:<fn callout="M"><p>UWE test footnote (39/40, callout M): DITA fn maps to UWE footnote/key/desc.</p></fn></p>
+      <fig>
+         <desc>Open the oXygen Data Source Explorer view</desc>
+         <image href="../images/ox-data-exp_52.png"/>
+      </fig>
+      <p>To do this, you need to install the MarkLogic driver <xref format="html" scope="external" href="https://www.oxygenxml.com/doc/versions/20.1/ug-editor/topics/configure-marklogic-datasource.html">MarkLogic in oXygen</xref> and make it available in the following screen.</p>
+      <fig>
+         <desc>Configure a new data source in oXygen</desc>
+         <image href="../images/confi-dsource_53.png"/>
+      </fig>
+      <hazardstatement type="notice" status="changed">
+         <messagepanel>
+            <typeofhazard>The JAR should be stored at a stable location, since only a reference to this location is set here.</typeofhazard>
+            <howtoavoid/>
+         </messagepanel>
+      </hazardstatement>
+      <fig>
+         <desc>Select a new oXygen driver file</desc>
+         <image href="../images/ml_treib_54.png"/>
+      </fig>
+      <p>Of course, a configuration is also required on the server side. As an admin, you navigate to the <b>App Servers</b> section and add a new <b>WebDAV Server</b>
+         <indexterm>Tools for MarkLogic<indexterm>WebDAV Server</indexterm>
+         </indexterm>. You may need to switch the database to "automatic directory creation" when selecting it.</p>
+      <fig>
+         <desc>Navigate to the MarkLogic App Server administration</desc>
+         <image href="../images/appserver-ver_55.png"/>
+      </fig>
+      <fig>
+         <desc>Configure WebDAV in MarkLogic</desc>
+         <image href="../images/marklogic-create-webdav-1_56.png"/>
+      </fig>
+      <p>Once you have created the WebDAV Server and assigned an existing or newly created database to it, you can select this DB in the configuration dialog of the new WebDAV connection.</p>
+      <p>Finally, you have the new connection available in the Data Source Explorer in oXygen and can work with the files on the server as if you were in a local file system.</p>
+      <fig>
+         <desc>Configure the WebDAV connection settings in oXygen</desc>
+         <image href="../images/cnfigure-database-connection-1_57.png"/>
+      </fig>
+      <fig>
+         <desc>oXygen Data Source Explorer shows the WebDAV directories on the MarkLogic server</desc>
+         <image href="../images/Data-Source_explorer-1_58.png"/>
+      </fig>
+   </body>
+</topic>

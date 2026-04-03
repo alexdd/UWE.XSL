@@ -1,0 +1,15 @@
+# Keep image context small; lib/ is installed in Dockerfile via install.sh
+lib/
+.git/
+**/.git
+
+test/tmp/
+test/output/
+test/logs/
+test/validate-output/
+
+# Editor / OS noise
+.idea/
+.vscode/
+*.swp
+Thumbs.db

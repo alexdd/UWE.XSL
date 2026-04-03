@@ -1,0 +1,131 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!DOCTYPE topic
+  PUBLIC "-//OASIS//DTD DITA Topic//EN" "topic.dtd">
+<topic id="idc1678e74-d15c-42a1-9fd0-912fced210ef">
+   <title> </title>
+   <body>
+      <dl status="changed">
+         <dlhead>
+            <dthd>Begriff</dthd>
+            <ddhd>Beschreibung</ddhd>
+         </dlhead>
+         <dlentry>
+            <dt>Core-Stylesheet</dt>
+            <dd>
+               <p>In einem Stylesheet-Projekt bezeichnet das Core-Stylesheet eine bereits ausgiebig getestete Variante, die mittels Sub-Stylesheet unter Ausnutzung der XSLT Import Präzedenz überschrieben wird.</p>
+            </dd>
+         </dlentry>
+         <dlentry>
+            <dt>Sub-Stylesheet</dt>
+            <dd>
+               <p>Ein Sub-Stylesheet spezialisiert das Core-Stylesheet, damit Redundanz vermieden wird und somit die Wartbarkeit gewährleistet werden kann.</p>
+            </dd>
+         </dlentry>
+         <dlentry>
+            <dt>Parameterisierung</dt>
+            <dd>
+               <p>Bei der Parameterisierung wird ein bestehendes Stylesheet mit Parametern versehen, um für möglichst viele Produktvarianten und Ausgabeformate die gleiche Codebasis wiederverwenden zu können. Dadurch soll Redundanz eingespart werden und der Aufruf vereinfacht werden.</p>
+            </dd>
+         </dlentry>
+         <dlentry>
+            <dt>Topic Based Authoring</dt>
+            <dd>
+               <p>Beim Topic Based Authoring steht nicht das gesamte Buch im Vordergrund, sondern der Inhalt wird in wiederverwendbare Topics aufgeteilt, die dann in verschiedenen Publikationen referenziert werden können. </p>
+            </dd>
+         </dlentry>
+         <dlentry>
+            <dt>DITA</dt>
+            <dd>
+               <p>DITA ist ein Informationsmodell für die Technische Dokumentation - es unterstützt <i>Topic Based Authoring</i>.</p>
+            </dd>
+         </dlentry>
+         <dlentry>
+            <dt>SGML</dt>
+            <dd>
+               <p>SGML ist der Vorläufer von XML.</p>
+            </dd>
+         </dlentry>
+         <dlentry>
+            <dt>TIOBE Index</dt>
+            <dd>
+               <p>Im TIOBE Index wird jährlich die Beliebtheit von Programmiersprachen erfasst.</p>
+            </dd>
+         </dlentry>
+         <dlentry>
+            <dt>Single Source Publishing</dt>
+            <dd>
+               <p>Beim Single Source Publishing wird aus einer XML Quelle eine Vielzahl von Ausgabeformaten erzeugt</p>
+            </dd>
+         </dlentry>
+         <dlentry>
+            <dt>Structured Content Authoring</dt>
+            <dd>
+               <p>Der Content wird beim <i>Structured Content Authoring</i> semantisch mittels XML Tags ausgezeichnet. Bei einem WYSIWYG Ansatz sind die meisten Tags nur optional sichtbar.</p>
+            </dd>
+         </dlentry>
+         <dlentry>
+            <dt>XML Datenbanken</dt>
+            <dd>
+               <p>XML Datenbanken sind NoSQL Datenbanken, d.h. "Not only SQL" oder auch tatsächlich "No SQL" wird unterstützt. Die Spezialisierung erfolgt auf XML Daten.</p>
+            </dd>
+         </dlentry>
+         <dlentry>
+            <dt>Gültigkeiten</dt>
+            <dd>
+               <p>In einer technischen Publikation werden Satzbausteine und Grafiken mit Gültigkeiten versehen, um bspw. länderspezifische Produktvarianten zu kennzeichnen.</p>
+            </dd>
+         </dlentry>
+         <dlentry>
+            <dt>Übersetzungsmanagement</dt>
+            <dd>
+               <p>Damit ist die Verwaltung der Übersetzungen einer tech. Publikation gemeint. Da eine größere Publikation ständig aktualisiert wird, die Übersetzungen aber von externen Übersetzungsbüros einige Zeit in Anspruch nehmen, ist eine gewisse Abstimmungslogik erforderlich.</p>
+            </dd>
+         </dlentry>
+         <dlentry>
+            <dt>Content Delivery Portal</dt>
+            <dd>
+               <p>Die beim Single Source Publishing erzeugten Ausgabeformate werden über Webportale zielgerecht verteilt. Aktuell experimentiert man mit QR Codes an Maschinen, die über das Smartphone gescannt werden können und daraufhin die Doku zur Maschine herunterladen.</p>
+            </dd>
+         </dlentry>
+         <dlentry>
+            <dt>Automatischer Satz</dt>
+            <dd>
+               <p>Bei einer Printpublikation kommt es auf gute Wort-, Zeilen-, Spalten und Seitenumbrüche an. Der mittels XML ausgezeichnete Content wird von einem Formatierprozess diesbzgl. automatisch an die richtige Stelle <i>"gesetzt"</i>.</p>
+            </dd>
+         </dlentry>
+         <dlentry>
+            <dt>CCMS</dt>
+            <dd>
+               <p>
+                  <i>Component Content Management System</i> - Um Konzepte wie <i>Topic Based Authoring</i> realisieren zu können, sind spezielle Content Management Systeme erforderlich, die nicht <i>"Kapitelbasiert"</i> verwalten, sondern feingranular Topics und die Beziehungen zwischen diesen.</p>
+            </dd>
+         </dlentry>
+         <dlentry>
+            <dt>Diffing</dt>
+            <dd>
+               <p>Beim <i>Diffing</i> werden zwei XML Instanzen miteinander verglichen. Ein Diffing Prozessor markiert hingefügte, gelöschte und veränderte XML Elemente in einer <i>Diffing-Instanz</i>.</p>
+            </dd>
+         </dlentry>
+         <dlentry>
+            <dt>Intelligente Querverweise</dt>
+            <dd>
+               <p>Links zwischen Textstellen in verschiedenen Topics und Publikationen bleiben versionstreu, d.h. in einer früheren Version der Publikation werden diejenigen Kapitel und Texte referenziert, die zum Zeitpunkt der Publikation aktuell waren.</p>
+            </dd>
+         </dlentry>
+         <dlentry>
+            <dt>Push- vs. Pull</dt>
+            <dd>
+               <p>Push und Pull sind zwei Konzepte, wie man Transformationen mit XSLT gestalten kann. Die einen "ziehen" Informationen aus der Eingabe und setzen sie an die richtige Stelle in der Ausgabe. Die anderen transformieren die Eingabe schrittweise in die Ausgabe, vgl. Kapitel <xref format="dita" scope="local" type="concept"
+                        href="3_1_Push_vs._Pull_Stylesheets.dita">Push vs. Pull Stylesheets</xref>. Mischformen sind die Regel.</p>
+            </dd>
+         </dlentry>
+         <dlentry>
+            <dt>Vortransformation</dt>
+            <dd>
+               <p>Ein Schritt in der Prozesskette einer XSLT Transformation, der die Daten für den nächsten Schritt vorbereitet, vgl. Kapitel <xref format="dita" scope="local" type="concept"
+                        href="4_1_1_Vortransformationen.dita">Vortransformationen</xref>.</p>
+            </dd>
+         </dlentry>
+      </dl>
+   </body>
+</topic>

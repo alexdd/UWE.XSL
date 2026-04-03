@@ -1,0 +1,46 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!DOCTYPE topic
+  PUBLIC "-//OASIS//DTD DITA Topic//EN" "topic.dtd">
+<topic id="id1baa0c4a-6cde-4033-9e48-ee47dc16c287">
+   <title>Regular Expressions</title>
+   <body>
+      <p>Sometimes XPath is no longer sufficient for searching the XML tree, and you want to apply regular expressions to text nodes. I know of three XPath functions in which regular expressions can be specified:<fn callout="Y"><p>UWE test footnote (25/40, callout Y): DITA fn maps to UWE footnote/key/desc.</p></fn></p>
+      <ul>
+         <li>
+            <p>
+               <codeph>fn:matches(subject, pattern, flags)</codeph>
+            </p>
+         </li>
+         <li>
+            <p>
+               <codeph>fn:replace(subject, pattern, replacement, flags)</codeph>
+            </p>
+         </li>
+         <li>
+            <p>
+               <codeph>fn:tokenize(subject, pattern, flags)</codeph>
+            </p>
+         </li>
+      </ul>
+      <p>When entering the regular expression, you naturally have to escape characters such as <codeph>&gt;,&lt;,&amp;</codeph>, which makes the expression even a bit more complicated compared to conventional non-XML programming.</p>
+      <p>The expression that matches all XML tags, for example, is the following: <codeph>&amp;lt;[&amp;gt;!]&amp;gt;</codeph> Here, the characters reserved for XML are already escaped.</p>
+      <section>
+         <title>XSLT Analyze String</title>
+         <p>But there is also a dedicated XSLT construct, independent of XPath, for applying regular expressions. The source code for it looks like this:</p>
+         <pre xml:space="preserve">&lt;xsl:template match="text()[parent::xml-code]"&gt;
+  &lt;xsl:analyze-string select="." regex="&amp;lt;[^&amp;gt;^!]+&amp;gt;"&gt;
+    &lt;xsl:matching-substring&gt;
+      &lt;b&gt;&lt;xsl:value-of select="."/&gt;&lt;/b&gt;     
+    &lt;/xsl:matching-substring&gt;
+    &lt;xsl:non-matching-substring&gt;
+      &lt;xsl:value-of select="."/&gt;
+    &lt;/xsl:non-matching-substring&gt;
+&lt;/xsl:template&gt;</pre>
+         <p>Here, every text node of an element is examined, and if it contains an XML tag, it is wrapped in a <codeph>&lt;b&gt;</codeph> tag via the <codeph>xsl:matching-substring</codeph> instruction. In the next transformation step, this is then rendered in bold.</p>
+         <p>This is a simple syntax highlighter for XML source code. The syntax highlighter for this PDF is implemented in this way.</p>
+         <note>
+            <p>You can also nest <codeph>xsl:analyze-string</codeph> elements within <codeph>xsl:matching-substring</codeph> and <codeph>xsl:non-matching-substring</codeph> elements, which naturally allows for much more complex problem solving.</p>
+         </note>
+      </section>
+   </body>
+</topic>

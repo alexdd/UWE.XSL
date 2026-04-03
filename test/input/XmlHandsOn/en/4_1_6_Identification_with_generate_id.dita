@@ -1,0 +1,215 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!DOCTYPE topic
+  PUBLIC "-//OASIS//DTD DITA Topic//EN" "topic.dtd">
+<topic id="id79f1f2e3-3456-4d89-aa21-ad40597ab9bf">
+   <title>Identification with <codeph>generate-id()</codeph>
+   </title>
+   <body>
+      <p>The <codeph>generate-id()</codeph> function has been available since XSLT 1.0. It can generate a checksum for a node in the tree.<fn callout="C"><p>UWE test footnote (29/40, callout C): DITA fn maps to UWE footnote/key/desc.</p></fn></p>
+      <p>This of course only works if you do not change the context when evaluating this value. I.e., for example, a node in a tree
+stored in a variable gets a different checksum than the same node in the context tree.</p>
+      <section>
+         <title>Example: Parts List</title>
+         <p>A use case scenario would be, for example, the generation of a target ID for a component in a parts list. The component is recorded only once in the 
+system, so it has a unique ID, but it should be generated at multiple locations in the output (a documentation for a machine).</p>
+         <p>The ID on an element <codeph>&lt;part id="1234"&gt;</codeph> would thus appear multiple times in the XML input for an XSL-FO processor and has become 
+unusable for references. Therefore, it is advisable to assign a new ID when rendering the components, which can be done, for example, 
+with the following (simplified) templates:</p>
+         <pre xml:space="preserve">&lt;xsl:key name="parts" match="part" use="@id"/&gt;
+  
+&lt;xsl:template match="part" mode="content"&gt;
+  &lt;!-- Ausgabe des Bauteils im Content Bereich --&gt;
+  &lt;fo:block id="{generate-id()}"&gt;
+    &lt;fo:external-graphic xsl:use-attribute-sets="part.img"/&gt;  
+  &lt;/fo:block&gt;
+&lt;/xsl:template&gt;
+    
+&lt;xsl:template match="part" mode="part-list"&gt;
+  &lt;!-- Ausgabe einer Liste mit allen Verweisen an unterschiedicher Stelle --&gt;
+  &lt;fo:block&gt;
+    &lt;xsl:for-each select="key('parts',@id)"&gt;
+      &lt;fo:page-number-citation ref-id="{generate-id()}"/&gt;
+    &lt;/xsl:for-each&gt;
+  &lt;/fo:block&gt;
+&lt;/xsl:template&gt;</pre>
+      </section>
+      <section>
+         <title>Example: Envelope Document</title>
+         <p>In the EDI data exchange domain, large XML files are sent that you want to 
+split into individual transmissions in order to store them in an <xref format="dita" scope="local" type="concept" href="4_3_XML_Databases.dita">XML database</xref>. The structure of a data transmission
+could look as follows:</p>
+         <pre xml:space="preserve">WRAPPER1
+  SEQUENZ1
+  SEQUENZ2
+  SEQUENZ3
+  WRAPPER2
+    SEQUENZ1
+    SEQUENZ2
+    SEQUENZ3
+    SEQUENZ4
+    WRAPPER3
+      SEQUENZ1
+      SEQUENZ2
+      CONTENT
+        DATA1
+        DATA2
+        DATA3
+        DATA4
+        DATA5
+      CONTENT
+        DATA1
+        DATA2
+        DATA3
+        DATA4
+        DATA5
+      WRAPPER4
+        SEQUENZ1
+      CONTENT
+        DATA1
+        DATA2
+        DATA3
+        DATA4
+        DATA5
+      [...]</pre>
+         <p>Each individual <codeph>CONTENT</codeph> element should now receive an envelope and be stored separately in a file.
+The "envelope" should contain all elements of the transmission frame. That is everything on the
+descendant axis up to the <codeph>WRAPPER3</codeph> element, plus the elements <codeph>SEQUENZ1</codeph> and <codeph>SEQUENZ2</codeph>,
+as well as the element <codeph>WRAPPER4</codeph> with child <codeph>SEQUENZ1</codeph>. Without worrying much about performance, this could be implemented quite simply like this:</p>
+         <pre xml:space="preserve">&lt;xsl:stylesheet xmlns:xsl="http://www.w3.org/1999/XSL/Transform" version="2.0"&gt;
+    
+  &lt;xsl:output method="xml" indent="yes"/&gt;
+  &lt;xsl:strip-space elements="*"/&gt;
+  
+  &lt;xsl:template match="/"&gt;
+    &lt;xsl:apply-templates select="/WRAPPER1/WRAPPER2/WRAPPER3/CONTENT" mode="umschlag"/&gt;
+  &lt;/xsl:template&gt;
+    
+  &lt;xsl:template match="CONTENT" mode="umschlag"&gt;
+    &lt;xsl:result-document href="{concat(@id,'.xml')}"&gt;
+      &lt;umschlag&gt;
+        &lt;metadaten&gt;&lt;!-- einige Metadaten --&gt;&lt;/env:metadata&gt;
+        &lt;nutzdaten&gt;
+            &lt;xsl:apply-templates select="ancestor::WRAPPER1"&gt;
+              &lt;xsl:with-param name="this-id" select="generate-id()" tunnel="yes"/&gt;
+            &lt;/xsl:apply-templates&gt;
+        &lt;/nutzdaten&gt;
+      &lt;/umschlag&gt;
+    &lt;/xsl:result-document&gt;
+  &lt;/xsl:template&gt;
+
+  &lt;xsl:template match="node()|@*"&gt;
+    &lt;xsl:copy&gt;
+      &lt;xsl:apply-templates select="node()|@*"/&gt;
+    &lt;/xsl:copy&gt;
+  &lt;/xsl:template&gt;
+    
+  &lt;xsl:template match="CONTENT"&gt;
+    &lt;xsl:param name="this-element" tunnel="yes"/&gt;
+    &lt;xsl:if test="$this-id = generate-id()"&gt;
+      &lt;xsl:copy&gt;
+        &lt;xsl:apply-templates select="node()|@*"/&gt;
+      &lt;/xsl:copy&gt;
+    &lt;/xsl:if&gt;
+  &lt;/xsl:template&gt;
+    
+&lt;/xsl:stylesheet&gt;</pre>
+         <p>During the recursive descent, in the "envelope" mode, each <codeph>CONTENT</codeph> element is selected and
+packaged in an envelope. The actual content of the envelope is generated
+by copying the entire XML tree via the standard copy rule<indexterm>XSLT Constructs<indexterm>Default Copy Rule</indexterm>
+            </indexterm> into the <codeph>&lt;nutzdaten&gt;</codeph> element. However, only that <codeph>CONTENT</codeph> section is evaluated whose generated ID matches the one passed as a parameter.</p>
+      </section>
+      <section>
+         <title>Linking to the Nearest Reference Target</title>
+         <p>
+            <b>Publishing example</b>: In a publication, there are graphics that should be linked to. This sounds simple, but there are also cases where such a reference target appears multiple times in the book. </p>
+         <p>You should then, for example, not link to the same graphic in chapter 1, but rather to the graphic that is nearest. This can be in the page-forward direction, but also against the page-forward direction.</p>
+         <p>Apart from the fact that it makes more sense to link to the predecessor graphic, since the reader has already seen it while browsing and only needs to go back (rather than quickly flipping forward and skipping content), this problem is not entirely trivial:</p>
+         <fig expanse="spread" frame="all" scale="50" status="changed">
+            <image href="../images/Duck-1-_28.svg"/>
+         </fig>
+         <ol>
+            <li>
+               <p>The nearest reference target can be found via the <codeph>preceding</codeph> and <codeph>following</codeph> XPath axes:</p>
+               <pre xml:space="preserve">&lt;xsl:variable name="nearest-preceding" 
+              select="preceding::*[@id = current()][1]"/&gt;
+&lt;xsl:variable name="nearest-following" 
+              select="following::*[@id = current()][1]"/&gt;</pre>
+            </li>
+            <li>
+               <p>But which reference target is closer? To answer this question, you would need some way to measure the distance between nodes.</p>
+            </li>
+            <li>
+               <p>If you work frequently with the <codeph>preceding</codeph> and <codeph>following</codeph> axes, you quickly notice that frequent selection on these two axes impacts performance. How can performance be optimized here?</p>
+            </li>
+         </ol>
+         <p>In addition to the <codeph>generate-id()</codeph> function, two more - very clever - XSLT constructs are used to answer these questions:</p>
+         <ul>
+            <li>
+               <p>
+                  <codeph>xsl:key</codeph> to index the sought elements for fast lookup.<indexterm>XSLT Constructs<indexterm>xsl:key Element</indexterm>
+                  </indexterm>
+               </p>
+            </li>
+            <li>
+               <p>The relatively new <codeph>&lt;&lt;</codeph> operator, to determine the position of the current element in the DOM tree.<indexterm>XSLT Constructs<indexterm>XPath &lt;&lt; Operator</indexterm>
+                  </indexterm>
+               </p>
+            </li>
+         </ul>
+         <p>With these two constructs, you can, for example, calculate the number of all paragraphs up to a certain position in the DOM. This works as follows:</p>
+         <pre xml:space="preserve">
+&lt;xsl:key name="paras" match="p" use="true()"/&gt;
+[...]
+&lt;xsl:variable name="current-para-count" 
+              select="count(key('paras',true())[. &amp;lt;&amp;lt; current()])"/&gt;</pre>
+         <p>By subtracting the paragraph count of the first <b>predecessor reference target</b> from this, you have determined a distance value. </p>
+         <p>Now you can do the same for the first <b>successor reference target</b> and compare. </p>
+         <p>With this approach, point 2.) from the above list can already be answered, because the nearest reference target, whether in the page-forward direction or against it, can be determined.</p>
+         <p>Putting these findings into an XSLT stylesheet, it looks roughly like this:</p>
+         <pre xml:space="preserve">&lt;xsl:stylesheet xmlns:xsl="http://www.w3.org/1999/XSL/Transform"
+    xmlns:xs="http://www.w3.org/2001/XMLSchema"
+    exclude-result-prefixes="xs"
+    version="2.0"&gt;
+    
+    &lt;xsl:key name="ids" match="@id" use="."/&gt;
+    &lt;xsl:key name="paras" match="para" use="true()"/&gt;
+
+   &lt;!-- Vergabe einer neuen, eindeutigen ID an den Verweiszielen, so dass auf das --&gt;
+   &lt;!-- nächstgelegene Verweisziel verwiesen werden kann. --&gt;
+        
+   &lt;xsl:template match="@id[count(key('ids',.)) gt 1]"&gt;
+        &lt;xsl:attribute name="id" select="concat(.,'_',generate-id(parent::*))"/&gt;
+    &lt;/xsl:template&gt;
+    
+    &lt;!-- Vergabe einer neuen Ziel-ID an den Links --&gt;
+    
+    &lt;xsl:template match="@target-id[count(key('ids',.)) gt 1]"&gt;
+        &lt;xsl:variable name="nearest-preceding" select="preceding::*[@y.id = current()]"/&gt;
+        &lt;xsl:variable name="nearest-following" select="following::*[@y.id = current()]"/&gt;
+        &lt;xsl:choose&gt;
+            &lt;xsl:when test="$nearest-preceding and $nearest-following"&gt;
+              &lt;xsl:variable name="current-para-count" 
+                            select="count(key('paras',true())[. &amp;lt;&amp;lt; current()])"/&gt;
+              &lt;xsl:variable name="nearest-preceding-para-count" 
+                            select="count(key('paras',true())
+            	                    [. &amp;lt;&amp;lt; $nearest-preceding])"/&gt;
+              &lt;xsl:variable name="nearest-following-para-count" 
+                            select="count(key('paras',true())
+            	                    [. &amp;lt;&amp;lt; $nearest-following])"/&gt;
+              &lt;xsl:variable name="distance-to-preceding" 
+                            select="$current-para-count - $nearest-preceding-para-count"/&gt;
+              &lt;xsl:variable name="distance-to-following" 
+                            select="$nearest-following-para-count - $current-para-count"/&gt;	
+              &lt;xsl:attribute name="target-id" 
+                            select="if ($distance-to-preceding le $distance-to-following) 
+                                    then concat($nearest-preceding/@y.id,
+                                                '_',generate-id($nearest-preceding)) 
+                                    else concat($nearest-following/@y.id,
+                		                '_',generate-id($nearest-following))"/&gt;
+            &lt;/xsl:when&gt;
+            [...]
+        &lt;/xsl:choose&gt;
+    &lt;/xsl:template&gt;</pre>
+      </section>
+   </body>
+</topic>

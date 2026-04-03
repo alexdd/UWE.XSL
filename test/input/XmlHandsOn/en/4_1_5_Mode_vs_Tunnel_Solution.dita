@@ -1,0 +1,117 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!DOCTYPE topic
+  PUBLIC "-//OASIS//DTD DITA Topic//EN" "topic.dtd">
+<topic id="id13e1939c-f812-4fde-b881-1a7c4dc1ad61">
+   <title>Mode vs. Tunnel Solution </title>
+   <body>
+      <p>As a developer, you are often faced with the situation that there are several
+possible solutions to a particular problem, and you have to choose one of them.<fn callout="Z"><p>UWE test footnote (26/40, callout Z): DITA fn maps to UWE footnote/key/desc.</p></fn></p>
+      <p>Here it is about finding a trade-off<indexterm>Trade-Off</indexterm> between often competing goals, as the following example shows. Consider an account:</p>
+      <pre xml:space="preserve">&lt;konto nr="123"&gt;
+   &lt;inhaber&gt;alex&lt;/inhaber&gt;
+   &lt;vorgang&gt;456&lt;/vorgang&gt;
+   &lt;eintrag art="soll" datum="2019-05-06"&gt;20.56&lt;/eintrag&gt;
+   &lt;eintrag art="soll" datum="2019-02-21"&gt;4.73&lt;/eintrag&gt;
+   &lt;eintrag art="haben" datum="2019-01-14"&gt;1.68&lt;/eintrag&gt;
+   &lt;eintrag art="soll" datum="2019-09-17"&gt;6.45&lt;/eintrag&gt;
+   &lt;eintrag art="haben" datum="2019-01-03"&gt;12.38&lt;/eintrag&gt;
+    [...]
+&lt;/konto&gt;</pre>
+      <p>There are now several ways to split the balance into two files <codeph>soll.xml</codeph> and <codeph>haben.xml</codeph>.</p>
+      <section>
+         <title>Loop</title>
+         <pre xml:space="preserve">&lt;xsl:template match="/"&gt;
+    &lt;xsl:result-document href="soll.xml"&gt;
+        &lt;konto nr="{@nr}"&gt;
+            &lt;inhaber&gt;&lt;xsl:value-of select="inhaber"/&gt;&lt;/inhaber&gt;
+            &lt;vorgang&gt;&lt;xsl:value-of select="vorgang"/&gt;&lt;/vorgang&gt;
+            &lt;xsl:for-each select="konto/eintrag"&gt;
+                &lt;xsl:if test="@art='soll'"&gt;
+                    &lt;xsl:copy-of select="."/&gt;
+                &lt;/xsl:if&gt;
+            &lt;/xsl:for-each&gt;
+        &lt;/konto&gt;
+    &lt;/xsl:result-document&gt;
+    &lt;xsl:result-document href="haben.xml"&gt;
+        [...]
+&lt;/xsl:template&gt;</pre>
+         <p>Here, the common fields for the account <codeph>&lt;inhaber&gt;</codeph> and <codeph>&lt;vorgang&gt;</codeph> are hard-coded,
+which would be fine in this simple example. But we actually want to avoid pull stylesheets<indexterm>Concepts<indexterm>Push vs. Pull</indexterm>
+            </indexterm>, cf. 
+<xref format="dita" scope="local" type="concept" href="3_1_Push_vs_Pull_Stylesheets.dita">Push vs. Pull Stylesheets</xref>.</p>
+      </section>
+      <section>
+         <title>Tunnel Parameter</title>
+         <pre xml:space="preserve">&lt;xsl:template match="/"&gt;
+    &lt;xsl:result-document href="soll.xml"&gt;
+        &lt;xsl:apply-templates&gt;
+            &lt;xsl:with-param name="is-soll" select="true()" tunnel="yes"/&gt;
+        &lt;/xsl:apply-templates&gt;
+    &lt;/xsl:result-document&gt;
+    &lt;xsl:result-document href="haben.xml"&gt;
+        &lt;xsl:apply-templates&gt;
+            &lt;xsl:with-param name="is-soll" select="false()" tunnel="yes"/&gt;
+        &lt;/xsl:apply-templates&gt;
+    &lt;/xsl:result-document&gt;
+&lt;/xsl:template&gt;
+    
+&lt;xsl:template match="node()|@*"&gt;
+    &lt;xsl:copy&gt;
+        &lt;xsl:apply-templates select="node()|@*"/&gt;
+    &lt;/xsl:copy&gt;
+&lt;/xsl:template&gt;
+    
+&lt;xsl:template match="eintrag"&gt;
+    &lt;xsl:param name="is-soll" tunnel="yes"/&gt;
+    &lt;xsl:choose&gt;
+        &lt;xsl:when test="$is-soll and @art='soll'"&gt;
+            &lt;xsl:copy-of select="."/&gt;
+        &lt;/xsl:when&gt;
+        &lt;xsl:when test="not($is-soll) and @art='haben'"&gt;
+            &lt;xsl:copy-of select="."/&gt;
+        &lt;/xsl:when&gt;
+        &lt;xsl:otherwise/&gt;
+    &lt;/xsl:choose&gt;
+&lt;/xsl:template&gt;</pre>
+         <p>Here, all nodes of the XML skeleton are copied via a default copy rule, i.e. the skeleton can
+be arbitrarily large, and we do not need to worry about it. In this respect, this solution is
+a step more generic than the one shown previously.<indexterm>XSLT Constructs<indexterm>Tunnel Parameter</indexterm>
+            </indexterm>
+         </p>
+         <p>We are even very flexible with regard to changes, since additional logic 
+can easily be implemented in the entry template that spans all branches of the conditional statement, e.g. via
+a local variable that contains a calculation expression.</p>
+      </section>
+      <section>
+         <title>Mode Attribute</title>
+         <p>(Even) shorter is the approach using the <codeph>mode</codeph> attribute:<indexterm>XSLT Constructs<indexterm>Mode Attribute</indexterm>
+            </indexterm>
+         </p>
+         <pre xml:space="preserve">&lt;xsl:template match="/"&gt;
+    &lt;xsl:result-document href="soll.xml"&gt;
+        &lt;xsl:apply-templates mode="soll"/&gt;
+    &lt;/xsl:result-document&gt;
+    &lt;xsl:result-document href="haben.xml"&gt;
+        &lt;xsl:apply-templates mode="haben"/&gt;
+    &lt;/xsl:result-document&gt;
+&lt;/xsl:template&gt;
+    
+&lt;xsl:template match="node()|@*" mode="#all"&gt;
+    &lt;xsl:copy&gt;
+        &lt;xsl:apply-templates select="node()|@*" mode="#current"/&gt;
+    &lt;/xsl:copy&gt;
+&lt;/xsl:template&gt;
+    
+&lt;xsl:template match="eintrag[@art='soll']" mode="haben"/&gt;
+&lt;xsl:template match="eintrag[@art='haben']" mode="soll"/&gt;</pre>
+         <p>The trick here is that in the respective other mode, precisely the 
+selected nodes are not copied, which ultimately correctly splits
+the input into debit and credit. If we want to add further logic,
+we would have to restructure the templates a bit, which should not be
+a major issue.</p>
+         <p>The trade-off<indexterm>Trade-Off</indexterm> thus consists of the usually competing goals of reducing redundancy, 
+i.e. keeping the source code as short and concise as possible, and 
+easy extensibility in the future.</p>
+      </section>
+   </body>
+</topic>

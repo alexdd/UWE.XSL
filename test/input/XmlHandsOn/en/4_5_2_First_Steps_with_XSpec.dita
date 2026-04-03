@@ -1,0 +1,71 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!DOCTYPE topic
+  PUBLIC "-//OASIS//DTD DITA Topic//EN" "topic.dtd">
+<topic id="id821f8271-e9a1-43e8-ba9a-b1e8aa0ce4f4">
+   <title>First Steps with XSpec </title>
+   <body>
+      <p>XSpec<indexterm>Tools<indexterm>XSpec</indexterm>
+         </indexterm> is a test framework <xref format="html" scope="external" href="https://github.com/xspec">XSpec on GitHub</xref>
+         <indexterm>Test Framework</indexterm> for XSLT, XQuery, and Schematron. 
+To test complex Schematron rules, for example, you define expected values for positive and negative test cases in the form of XML snippets in a <b>test scenario</b>.</p>
+      <pre xml:space="preserve">&lt;test-szenario&gt;
+   &lt;testfall&gt;
+      &lt;personen&gt;
+         &lt;person&gt;
+            &lt;vorname&gt;Horst&lt;/vorname&gt;
+            &lt;nachname&gt;Schlämmer&lt;/nachname&gt;
+            &lt;gewicht&gt;100&lt;/gewicht&gt;
+         &lt;/person&gt;
+         &lt;person&gt;
+            &lt;vorname&gt;Gundula&lt;/vorname&gt;
+            &lt;nachname/&gt;
+            &lt;gewicht&gt;60&lt;/gewicht&gt;
+         &lt;/person&gt;
+      &lt;/personen&gt;
+   &lt;/testfall&gt;
+&lt;/test-szenario&gt;</pre>
+      <p>In an XSpec file <codeph>*.xspec</codeph>, <b>assert and not-assert methods</b>
+         <indexterm>Assert and Not-Assert</indexterm> are declared:</p>
+      <pre xml:space="preserve">&lt;x:description xmlns:x="http://www.jenitennison.com/xslt/xspec" xslt-version="2.0" schematron="test.sch"&gt;
+   &lt;x:scenario label="ALL"&gt;
+      &lt;x:context href="test.xml"/&gt;
+      &lt;x:expect-not-assert id="person-nachname-rule" location="//person[1]/nachname"/&gt;
+      &lt;x:expect-assert id="person-nachname-rule" location="//person[2]/nachname"/&gt;
+   &lt;/x:scenario&gt;
+&lt;/x:description&gt;</pre>
+      <p>In general, an assert means that the mapping between the actual value and the expected value of the
+test case<indexterm>Test Case</indexterm> is positively fulfilled. With a not-assert, the opposite is the case. In the above example,
+two rules are sufficient to fully cover the test case.</p>
+      <p>When you want to test Schematron<indexterm>Tools<indexterm>Schematron</indexterm>
+         </indexterm> rules using XSpec, you need to think around 
+the corner a bit. Because these rules are also modeled using assert and not-assert.</p>
+      <pre xml:space="preserve">&lt;sch:schema xmlns:sch="http://purl.oclc.org/dsdl/schematron" xmlns:xsl="http://www.w3.org/1999/XSL/Transform" queryBinding="xslt2"&gt;
+   &lt;sch:pattern id="main"&gt;
+      &lt;sch:rule context="nachname"&gt;
+         &lt;sch:assert id="person-nachname-rule" role="error" test="normalize-space(.)"&gt;
+        Der Nachname der Person mit ID: 
+            &lt;sch:value-of select="@id"/&gt;
+             fehlt! 
+         &lt;/sch:assert&gt;
+      &lt;/sch:rule&gt;
+   &lt;/sch:pattern&gt;
+&lt;/sch:schema&gt;</pre>
+      <p>In the Schematron rule, it is asserted that every person has a last name.</p>
+      <p>If a person has no last name, then the error report is written to the Schematron result file.
+This file is then evaluated by XSpec.</p>
+      <note>
+         <p>When an error occurs (= the <b>nachname</b> field is empty), the assert rule fires in XSpec! This is the inverse logic compared to the Schematron rules.</p>
+      </note>
+      <p>As a mnemonic, you can
+equate an assert in the XSpec file with <b>Appear</b> and a not-assert with
+<b>Not-Appear</b>. <indexterm>Tips and Tricks<indexterm>Appear and Not-Appear</indexterm>
+         </indexterm>
+      </p>
+      <p>An assert thus ensures that an error report for the
+test case exists in the Schematron result file. A not-assert ensures that
+no error report exists. </p>
+      <p> As you can easily imagine, assert rules in this case are easy to find -
+you just have to let the Schematron test rules point to nothing. Everything is green
+and everything is fine - or so it appears.</p>
+   </body>
+</topic>

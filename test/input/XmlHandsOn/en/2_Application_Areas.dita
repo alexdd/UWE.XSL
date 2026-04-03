@@ -1,0 +1,41 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!DOCTYPE topic
+  PUBLIC "-//OASIS//DTD DITA Topic//EN" "topic.dtd">
+<topic id="id70e9195f-8072-415d-986a-6550ed24a577">
+   <title>Application Areas </title>
+   <body>
+      <p>
+         <b>XML,</b>
+         <b>XSLT</b>, <b>XPATH</b>, <b>XSL-FO</b> and <b>XQuery</b> are technologies for converting tree-structured data - as opposed to relational data - from various sources into one another, storing, transmitting, displaying and evaluating them.<fn callout="F"><p>UWE test footnote (6/40, callout F): DITA fn maps to UWE footnote/key/desc.</p></fn></p>
+      <fig expanse="spread" frame="all" scale="50" status="changed">
+         <image href="../images/Killdeer_4.svg"/>
+      </fig>
+      <p>In terms of appearance, XML data are essentially text data. They can be created very easily with a text editor. Unlike multimedia data, no complex tools such as a graphics editor are required. Relational data can also be exported from a system in the form of tables, as an Excel spreadsheet, or as a comma-separated text file, for example, and then further processed. However, XML allows data to be semantically marked up. This is done by enclosing semantically related elements using bracket tags and categorizing these information units using additional properties (attributes) on these tags. By nesting these bracketed components, a tree is created that reflects the hierarchical ordering of the data. These tree structures are machine-readable and the data can be validated by an automated process before being sent from a sender to a receiver. Both the content and the syntax can be precisely checked against defined rules (schemas).</p>
+      <p>The XML standard is now 20 years old. Previously there was SGML, which for example also allowed unclosed tags. SGML is the conceptual basis of HTML.</p>
+      <p>The transition from SGML to XML brought a long-overdue conceptual simplification. JSON as the de facto standard for web applications simplifies the use of tree-structured data even further. However, JSON is not as machine-readable, and many tools are still missing, such as more sophisticated code editors or validation tools.</p>
+      <p>Following is a brief explanation of the keywords mentioned at the beginning:</p>
+      <ul>
+         <li>
+            <p>
+               <b>XML</b> is the data format. The other technologies work on XML. XML is always input for these tools.</p>
+         </li>
+         <li>
+            <p>
+               <b>XSLT</b> is a programming language. With XSLT you can transform XML data into another format, i.e. adapt content and structure.</p>
+         </li>
+         <li>
+            <p>
+               <b>XPATH</b> allows you to select specific nodes in an XML document using conditional path expressions and then modify them using XSLT.</p>
+         </li>
+         <li>
+            <p>
+               <b>XSL-FO</b> is another XML-based markup language that an XSL-FO processor can read to generate, for example, a PDF.</p>
+         </li>
+         <li>
+            <p>
+               <b>XQuery</b> is a query language similar to SQL, but it queries tree-structured data rather than relational data.</p>
+         </li>
+      </ul>
+      <p/>
+   </body>
+</topic>

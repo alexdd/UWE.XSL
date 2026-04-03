@@ -1,0 +1,71 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!DOCTYPE topic
+  PUBLIC "-//OASIS//DTD DITA Topic//EN" "topic.dtd">
+<topic id="id1009e2f7-5cf1-4946-ac43-c97d057c2ab3">
+   <title>A Brief History of Version Control </title>
+   <body>
+      <p>I suspect that the problem of version management for source code files has existed since the very beginning of programming. It is therefore not surprising that the solutions for this have been continuously refined. In each era, however, there is only one dominant player that is equally sacred to all developers.</p>
+      <section>
+         <title>RCS</title>
+         <p>Until the 1990s, RCS <xref format="html" scope="external"
+                  href="https://de.wikipedia.org/wiki/Revision_Control_System">RCS</xref>, integrated into Unix systems, was popular. Every Linux distribution still ships this solution, and the operation is relatively simple.<indexterm>Version Control<indexterm>RCS</indexterm>
+            </indexterm>
+         </p>
+         <p>With RCS, changes to individual files are managed in the respectively assigned archive file. You can then check in the current version to the archive and annotate it with a log message.</p>
+         <p>A checked-out file is locked for other users. A check-in session looks like this, for example:</p>
+         <pre xml:space="preserve">$ ls -l
+-rw-r--r--    1 Alex users          19 10. Oct 16:30 test.txt
+$ cat test.txt
+Hallo Welt!
+$ ci -l test.txt
+test.txt,v  &lt;--  test.txt
+enter description, terminated with single '.' or end of file:
+NOTE: This is NOT the log message!
+&gt;&gt; test check-in
+&gt;&gt; .
+initial revision: 1.1
+done
+$ ls -l
+-rw-r--r--    1 alex users          19 10. Jan 14:25 test.txt
+-r--r--r--    1 Alex users         218 10. Jan 14:25 test.txt,v
+$ echo „bla bla blubb" &gt;&gt; test.txt
+$ ci -l test.txt
+test.txt,v  &lt;--  test.txt
+new revision: 1.2; previous revision: 1.1
+enter log message, terminated with single '.' or end of file:</pre>
+         <p>There is also the option to create branches (by adding an additional digit to the version number).</p>
+         <p>Different copies can also be merged using a merge operation. Multi-user operation is thus already partially realized.</p>
+         <p>Practically, RCS is still useful to me when I want to track a single file, such as my resume in ASCII text format. Using keywords like <codeph>$Author$</codeph>, <codeph>$Date$</codeph>, and <codeph>$Log$</codeph>, version metadata can be automatically incorporated into the working file.</p>
+         <p>RCS, which only allows multi-user operation through agreements regarding the locking mechanism, was replaced by CVS in the 1990s.</p>
+      </section>
+      <section>
+         <title>CVS</title>
+         <p>As the name suggests (Concurrent Versions System), CVS <xref format="html" scope="external"
+                  href="https://de.wikipedia.org/wiki/Concurrent_Versions_System">CVS</xref> enables smooth multi-user operation.<indexterm>Version Control<indexterm>CVS</indexterm>
+            </indexterm>
+         </p>
+         <p>In contrast to RCS, archive files are not stored at potentially various freely defined locations, but centrally in a <b>repository</b>.</p>
+         <p>Using graphical clients and integration into all common IDEs (Integrated Development Environment), CVS allows, for example, comfortable graphical diffing, which greatly facilitates the review and adoption of changes from another programmer.</p>
+      </section>
+      <section>
+         <title>Subversion</title>
+         <p>CVS had some shortcomings regarding the handling of binary data and directories, as well as some security vulnerabilities <xref format="html" scope="external"
+                  href="https://www.cvedetails.com/vulnerability-list/vendor_id-442/CVS.html">Entry for CVS in the "Common Vulnerabilities and Exposure" database</xref>
+         </p>
+         <p>The successor to CVS is Subversion <xref format="html" scope="external"
+                  href="https://de.wikipedia.org/wiki/Apache_Subversion">Wikipedia entry on Subversion</xref>.<indexterm>Version Control<indexterm>Subversion</indexterm>
+            </indexterm>
+         </p>
+         <p>In terms of feature scope, Subversion should actually suffice for most use cases in software development, were it not for the open source movement, which works on thousands of projects worldwide.</p>
+         <p>Thus, the central repository, which was actually the killer feature of CVS compared to RCS, was more or less thrown overboard after the turn of the millennium.</p>
+         <p>Linus Torvalds, the creator of Linux, introduced GIT <xref format="html" scope="external" href="https://de.wikipedia.org/wiki/Git">GIT</xref>.</p>
+      </section>
+      <section>
+         <title>GIT</title>
+         <p>GIT <xref format="html" scope="external" href="https://de.wikipedia.org/wiki/Git">GIT</xref> relaxes the concept of the central repository. While there is usually a repository that is centrally accessible over the network, each developer additionally works on a local copy, which they regularly synchronize with the main repository.<indexterm>Version Control<indexterm>GIT</indexterm>
+            </indexterm>
+         </p>
+         <p>Furthermore, any repository can also be "forked", meaning it is copied by another developer (group), with the goal of creating a new variant of the software or even an entirely different product, which is of course perfectly legitimate under the open source philosophy.</p>
+      </section>
+   </body>
+</topic>

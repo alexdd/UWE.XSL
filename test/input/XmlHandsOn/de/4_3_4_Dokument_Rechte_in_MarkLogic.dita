@@ -1,0 +1,45 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!DOCTYPE topic
+  PUBLIC "-//OASIS//DTD DITA Topic//EN" "topic.dtd">
+<topic id="id0cbf3589-fc55-423c-93f1-80bea9b197bd">
+   <title>Dokument-Rechte in MarkLogic </title>
+   <body>
+      <p>MarkLogic bietet ein sehr ausgefeiltes Rechte-und Rollensystem.<indexterm>Konzepte<indexterm>Dokument-Rechte</indexterm>
+         </indexterm> Da wir MarkLogic aber vornehmlich als Datenbank einsetzen und nicht als Content Management System, reicht es aus, die grundlegende Funktionalität zu kennen.</p>
+      <note>
+         <p>Ohne weitere Massnahmen werden Dokumente mit den Rechten des Erzeugers versehen.</p>
+      </note>
+      <p>Lädt man z.B. Dokumente über die MarkLogic Content Pump in die Datenbank, wie mit diesem Befehl:</p>
+      <pre xml:space="preserve">mlcp_opts="-database alex-test -host localhost -username admin -password admin"
+
+mlcp import $mlcp_opts \
+     -<b>output_permissions xml-scrapper,read,xml-scrapper,update</b>
+     -input_file_path input-files \
+     -input_file_type aggregates \
+     -aggregate_record_element chapter \
+     -output_collections /chapter \
+     -output_uri_prefix /chapter/ \
+     -output_uri_suffix .xml</pre>
+      <p>So ist es besonders wichtig, die Einstellung:</p>
+      <pre xml:space="preserve">-output_permissions role1,read,role2,update</pre>
+      <p>zu setzen, wenn man z.B. für eine Webapp nur einen User mit einer bestimmten Rolle vorsieht. </p>
+      <hazardstatement type="warning" status="changed">
+         <messagepanel>
+            <typeofhazard>Vergisst man die Option [[code:-output_permissions]], so kann man u.U. die Dokumente von einer Webapp aus nicht zur Anzeige bringen.</typeofhazard>
+            <howtoavoid>In diesem Fall sind keine Rechte an den hochgeladenen Dokumenten vorhanden. Man kann diese dann in einer Webapp nur herunterladen, wenn man in der Admin-Rolle eingeloggt ist.</howtoavoid>
+         </messagepanel>
+      </hazardstatement>
+      <p>Es gibt einen einfachen Weg, die Rechte an einem Dokument zu überprüfen. Dazu führt man in der Konsole die "Browse"-Aktion auf einer Datenbank aus und wechselt in den Dateireiter Permissions:</p>
+      <fig>
+         <title>Anzeige der Dokument-Rechte in der MarkLogic Datenbank</title>
+         <desc>Der "Browse"-Button in der MarkLogic Konsole wird oft übersehen, bietet aber viele nützliche Funktionen, wie z.b. die Anzeige der gesetzten Dokumentrechte.</desc>
+         <image href="../images/rights_73.png"/>
+      </fig>
+      <hazardstatement type="notice" status="changed">
+         <messagepanel>
+            <typeofhazard>Ein XQuery-Skript, das eine Webapp betreibt, kann nicht nur im Browser aufgerufen werden, sondern auch von einem externen Programm bedient werden. Damit dies möglich ist, müssen die Rechte der WebApp wie in Kapitel <i>Wikipedia Scrapper Applikation</i> gesetzt werden.</typeofhazard>
+            <howtoavoid>Idealerweise sollte man dann aber auch dem User [[nb:xml-scrapper]] eine Rolle [[nb:xml-scrapper]] zuweisen, die nur Dokumente mit den Permissions [[nb:-output_permissions xml-scrapper,read,xml-scrapper,update]], vgl. oben, lesen und modifizieren kann - und nicht die Admin-Rolle.</howtoavoid>
+         </messagepanel>
+      </hazardstatement>
+   </body>
+</topic>

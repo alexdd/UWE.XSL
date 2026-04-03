@@ -1,0 +1,80 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!DOCTYPE topic
+  PUBLIC "-//OASIS//DTD DITA Topic//EN" "topic.dtd">
+<topic id="id36c3f63e-dd10-4093-a16c-cbee33673613">
+   <title>Deployment Tools</title>
+   <body>
+      <p>If you want to maintain a larger MarkLogic application, you will not be able to avoid a
+build / deployment manager<indexterm>Deployment-Manager</indexterm>. Typically, it is necessary to maintain a
+development server, a test server, and a production server.<indexterm>Tools for MarkLogic<indexterm>mlproj</indexterm>
+         </indexterm>
+      </p>
+      <p>ml-gradle <xref format="html" scope="external"
+               href="https://github.com/marklogic-community/ml-gradle">Project page on GitHub for ml-gradle</xref> and 
+ml-proj <xref format="html" scope="external" href="http://mlproj.org/">Website of the mlproj project</xref> 
+are such tools. One is based on the popular Java build chain
+gradle <xref format="html" scope="external" href="https://gradle.org/">Gradle</xref>, 
+the other is a NodeJS application by the same maintainer as the 
+previously described <xref format="dita" scope="local" type="concept"
+               href="4_3_5_1_EXPath_Console.dita">EXPath Console</xref>.</p>
+      <p>As I was able to find out during a larger evaluation task, both tools
+are better suited for projects that are started from scratch, because they rely on
+naming conventions in the file structure.</p>
+      <p>Both claim (almost) full configurability of the project structure, 
+however, this comes with several pitfalls, so that I unfortunately cannot
+recommend migrating an existing project.</p>
+      <section>
+         <title>ml-gradle</title>
+         <p>
+            <b>ml-gradle</b> is based on the popular Java build tool 
+ml-gradle <xref format="html" scope="external"
+                  href="https://github.com/marklogic-community/ml-gradle">Project page on GitHub for ml-gradle</xref>
+            <indexterm>Tools for MarkLogic<indexterm>ml-gradle</indexterm>
+            </indexterm>.
+Using predefined or custom tasks, JSON files are automatically created that serve as payload for REST calls to MarkLogic. The MarkLogic REST API <xref format="html" scope="external" href="https://docs.marklogic.com/guide/rest-dev">MarkLogic REST API</xref> is used for this purpose. 
+During the deployment action itself, the payload is then collected and submitted.</p>
+         <p>In principle, this idea is not bad, but there are now several places where the configuration can be modified -
+which could of course have a negative effect if the developers lack discipline:</p>
+         <ul>
+            <li>
+               <p>Setting predefined properties <xref format="html" scope="external"
+                        href="https://github.com/marklogic-community/ml-gradle/wiki/Property-reference">Properties for the MarkLogic deployment tool ml-gradle</xref> in the file <codeph>gradle.properties</codeph>
+               </p>
+            </li>
+            <li>
+               <p>Using predefined create tasks <xref format="html" scope="external"
+                        href="https://github.com/marklogic-community/ml-gradle/wiki/Generating-new-resources">Documentation page for ml-gradle regarding tasks for creating new resources</xref>, e.g. <codeph>gradle mlNewDatabase</codeph>
+               </p>
+               <p> skeleton files are generated, which are then manually completed with missing configuration information.</p>
+            </li>
+            <li>
+               <p>There is a token-based mechanism <xref format="html" scope="external"
+                        href="https://github.com/marklogic-community/ml-gradle/wiki/Configuring-resources">ml-gradle config</xref>, with which predefined placeholders in configuration files (payload files) are dynamically replaced.</p>
+            </li>
+            <li>
+               <p>Custom Groovy tasks can be implemented. These are integrated, for example, in the file <codeph>build.gradle</codeph>. Example of a simple Groovy task <xref format="html" scope="external"
+                        href="https://github.com/marklogic-community/ml-gradle/wiki/Debugging-module-loading">Example of a simple Groovy task on the ml-gradle documentation page</xref>
+               </p>
+            </li>
+         </ul>
+      </section>
+      <section>
+         <title>mlproj</title>
+         <p>
+            <b>mlproj</b> is a NodeJS application by Florent Georges <xref format="html" scope="external" href="http://fgeorges.org/">Florent Georges</xref>. As with ml-gradle, I would not recommend migrating an existing project structure
+to mlproj, but rather starting a project from scratch with it.</p>
+         <p>While ml-gradle is about keeping track of multiple, partially automatically generated configuration files and options, the configuration in mlproj takes place in just one file <codeph>prod.json</codeph> or <codeph>dev.json</codeph>, which inherits or overrides the settings of a base configuration <codeph>base.json</codeph>.</p>
+         <p>Of course, the extension mechanism is not quite as powerful as with ml-gradle - after all, it lacks a full-fledged build chain as a foundation. However, a NodeJS developer will work well with it. The source code appears tidy and the project is well documented.</p>
+         <p>Both tools have a "watch" mode, in which the developer's file structure is monitored. As soon as a file changes, it is uploaded to MarkLogic. As an example of the extensive configuration options, the docstring of the "watch" mode in mlproj is shown below:</p>
+         <pre xml:space="preserve">mlproj watch [-a srv|-b db] [-s src|-/ dir|-1 file] [what]
+
+-a, --as, --server &lt;srv&gt; server, get its modules database
+-b, --db, --database &lt;db&gt; target database
+-B, --sys, --system-database &lt;db&gt; the name of the target system db
+-s, --src, --source-set &lt;dir&gt; source set to watch
+-/, --dir, --directory &lt;dir&gt; directory to watch
+-1, --doc, --document &lt;file&gt; file to watch
+&lt;what&gt; source set or directory to watch</pre>
+      </section>
+   </body>
+</topic>
