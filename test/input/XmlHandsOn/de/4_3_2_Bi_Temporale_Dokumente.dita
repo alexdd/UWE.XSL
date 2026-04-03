@@ -1,0 +1,199 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!DOCTYPE topic
+  PUBLIC "-//OASIS//DTD DITA Topic//EN" "topic.dtd">
+<topic id="id7ca48bd5-7f2e-44cd-aacd-c15f7618b43e">
+   <title>Bi-Temporale Dokumente</title>
+   <body>
+      <p>Wenn wir zwischen der Zeit in der das Dokument, bspw. ein Vetrag 
+in der DB angelegt wird, und der Zeit in der ein Vetrag zwischen zwei 
+Vetragspartnern abgeschlossen wird unterscheiden, dann betrachten
+wir zwei Zeitachsen.<indexterm>Konzepte<indexterm>Bi-Temporale Dokumente</indexterm>
+         </indexterm>
+      </p>
+      <ul>
+         <li>
+            <p>die gültige Zeit (Valid Time)</p>
+         </li>
+         <li>
+            <p>die Systemzeit (System Time)</p>
+         </li>
+      </ul>
+      <p>Für die Vetragspartner ist nur die gültige Zeit relevant. Das Zeitfenster
+zwischen gültiger Zeit und Systemzeit ist jedoch in manchen Fällen
+ausschlaggebend.</p>
+      <p>
+         <i>Bsp: Kürzlich wurde
+meine Geldbörse mit meinem Perso geklaut. Beim Austellen eines vorläufigen
+Ausweises wurde ich schriftlich darauf hingewiesen, dass nun mein Perso
+bei Interpol zur Fahndung ausgeschrieben ist.</i>
+      </p>
+      <p>
+         <i>Kurze Zeit später fand ein netter Herr die Geldbörse (ohne Geld aber 
+mit allen Papieren) in seinem Garten. Bei einer anschliessenden Busfahrt mit einem
+Fernbus, wurde ich bei einer Zollkontrolle festgehalten, da das System der Polizei noch nicht aktualisiert war.</i>
+      </p>
+      <p>Ich nehme an, dass nach meiner Unschuldsbekundung der Vorgang auch
+auf Seiten des Polizeicomputers aktualisiert wurde. Nun könnte man zwei Fragen
+stellen:</p>
+      <ol>
+         <li>
+            <p>Ist das Festhalten seitens der Zollbeamten rechtens?</p>
+         </li>
+         <li>
+            <p>Habe ich mich durch ein verspätetes Anzeigen des Funds schuldig gemacht?</p>
+         </li>
+      </ol>
+      <note>
+         <p>Beachte, dass man diese Fragen auch noch nach 10 Jahren stellen
+könnte und das - bei meinem Pech in diesen Angelegenheiten - so ein Vorfall auch noch öfters passieren könnte...</p>
+      </note>
+      <p>Um diese Fragen zu beantworten, müsste unsere Datenbank in der Lage sein,
+eine bitemporale Query <xref format="html" scope="external"
+               href="https://en.wikipedia.org/wiki/Temporal_database">Temporale Datenbanken</xref> auszuführen. Zunächst registerieren wir den Vorgang
+des Persoverlustes in unserer Marklogic Datenbank:</p>
+      <note>
+         <p>Da wir hier auf einer XML Datenbank arbeiten, sprechen wir von einem Dokument,
+wenn wir einen Datensatz meinen. </p>
+         <p>Der Datensatz bzw. das Dokument wird nicht aktualisiert, sondern stattdessen das Dokument mit den aktualisierten Daten in einer neuen Version angelegt. </p>
+         <p>Auf diese Weise bleibt die Änderungshistorie erhalten.</p>
+      </note>
+      <pre xml:space="preserve">xquery version "1.0-ml";
+import module namespace temporal = 
+       "http://marklogic.com/xdmp/temporal" at "/MarkLogic/temporal.xqy";   
+let $root :=    
+  &lt;vorgang&gt;     
+    &lt;perso-id&gt;XYZ&lt;/perso-id&gt;    
+    &lt;name&gt;Alex Düsel&lt;/name&gt;   
+    &lt;status&gt;gestohlen&lt;/status&gt;
+  &lt;/vorgang&gt;
+let $options :=   
+  &lt;options xmlns="xdmp:document-insert"&gt;     
+    &lt;metadata&gt;        
+      &lt;map:map xmlns:map="http://marklogic.com/xdmp/map"&gt;          
+        &lt;map:entry key="validStart"&gt;            
+	  &lt;map:value&gt;2019-02-01T08:23:11&lt;/map:value&gt;          
+	&lt;/map:entry&gt;          
+	&lt;map:entry key="validEnd"&gt;            
+	  &lt;map:value&gt;9999-12-31T11:59:59Z&lt;/map:value&gt;          
+	&lt;/map:entry&gt;         
+      &lt;/map:map&gt;    
+    &lt;/metadata&gt;  
+
+return  temporal:document-insert("/perso-verluste", 
+                                 "duesel_alex_270774.xml", 
+                                 $root, $options)</pre>
+      <p>Unser Enddatum liegt in ferner Zukunft sicherzustellen, dass der Vorgang auf unbestimmte Zeit
+im System bleibt.</p>
+      <p>Drei Tage später hatte ich meinen Ausweis wieder und der Vorgang wurde vier Tage später,
+mit dem Status "gefunden" im Polizeicomputer aktualisiert:</p>
+      <pre xml:space="preserve">xquery version "1.0-ml";
+import module namespace temporal = 
+       "http://marklogic.com/xdmp/temporal" at "/MarkLogic/temporal.xqy";   
+let $root :=    
+  &lt;vorgang&gt;     
+    &lt;perso-id&gt;XYZ&lt;/perso-id&gt;    
+    &lt;name&gt;Alex Düsel&lt;/name&gt;   
+    &lt;status&gt;<b>gefunden</b>&lt;/status&gt;
+  &lt;/vorgang&gt;
+let $options :=   
+  &lt;options xmlns="xdmp:document-insert"&gt;     
+    &lt;metadata&gt;        
+      &lt;map:map xmlns:map="http://marklogic.com/xdmp/map"&gt;          
+        &lt;map:entry key="validStart"&gt;            
+	  &lt;map:value&gt;2019-02-06T08:00:00&lt;map:value&gt;          
+	&lt;/map:entry&gt;          
+	&lt;map:entry key="validEnd"&gt;            
+	  &lt;map:value&gt;9999-12-31T11:59:59Z&lt;/map:value&gt;          
+	&lt;/map:entry&gt;         
+      &lt;/map:map&gt;    
+    &lt;/metadata&gt;  
+
+return  temporal:document-insert("/perso-verluste", 
+                                 "duesel_alex_270774.xml", 
+                                 $root, $options)</pre>
+      <p>Nach der Aktualisierung enthält unsere Datenbank logisch gesehen drei Dokumente zu diesem Vorgang, 
+die über eine Query gesucht werden können:</p>
+      <ol>
+         <li>
+            <p>Das Originaldokument, es ist vom 1.2.2019 bis zum 5.2.2019 im System aktiv</p>
+         </li>
+         <li>
+            <p>Die Aktualisierung, sie ist ab dem 6.2.2019 aktiv</p>
+         </li>
+         <li>
+            <p>Ein "Split"-Dokument<indexterm>Split-Dokument</indexterm>, das aus der verspäteten Aktualisierung resultiert. Es ist ab dem 6.2.2019 im System aktiv, 
+und zeigt den Zeitraum über einen Tag, vom 4.2.2019 bis 5.2.2019 - in dem ich ohne Perso registriert war, ihn aber tatsächlich
+schon wieder hatte.</p>
+         </li>
+      </ol>
+      <p>Im Gegensatz zu einer herkömmlichen Datenhaltung, bei der ein Datensatz aktualisiert wird - ggf. noch eine neue
+Version angelegt wird - wird beim Dokument-basierten Ansatz mit bi-temporaler Datenhaltung jede Transaktion separat
+abgespeichert. </p>
+      <p>Das ist vergleichbar mit einer Simulation des tatsächlichen Papierverkehrs bei buchhalterischen Tätigkeiten.</p>
+      <p>Die Abfrage so einer Datenbank ist dadurch nicht einfacher. Drei Queries, die jeweils eines dieser drei
+Dokumente zurückgeben, könnten bspw. so aussehen:</p>
+      <p>
+         <b>Rückgabe des Originals</b>
+      </p>
+      <pre xml:space="preserve">xquery version "1.0-ml";
+cts:search(fn:doc(), cts:period-range-query(
+  "system",     
+  "ISO_CONTAINS",     
+  cts:period(xs:dateTime("2019-02-02T00:00:00"),                
+             xs:dateTime("2019-02-03T23:59:59")) )</pre>
+      <p>Hier wird geprüft, ob ein Dokument im System aktiv war, dass den Zeitraum vom 2.3. bis zum 3.3. umfasste (<codeph>ISO_CONTAINS</codeph>). Diese Query ist erfolgreich und gibt das Original-Dokument des Vorgangs zurück: In diesem Zeitraum war ich also mit gestohlenem Perso registriert.</p>
+      <p>
+         <b>Rückgabe des Split-Dokuments</b>
+      </p>
+      <pre xml:space="preserve">xquery version "1.0-ml";
+cts:search(fn:doc(), cts:period-range-query(
+   "valid",
+   "ALN_FINISHES",
+   cts:period(xs:dateTime("2019-02-06T08:00:00"),
+              xs:dateTime("2019-02-06T08:00:00")) ))</pre>
+      <p>Bei dieser Query wird geprüft, ob es ein Dokument gibt, dass zu einem bestimmten Datum auf inaktiv gesetzt wurde (<codeph>ALN_FINISHES</codeph>) - Das Split-Dokument wird automatisch auf inaktiv gesetzt, wenn die neue Version angelegt wird. Unser Suchdatum wäre also folgendes <codeph>2019-02-06T08:00:00</codeph>.</p>
+      <p>
+         <b>Rückgabe von Split und neuer Version</b>
+      </p>
+      <pre xml:space="preserve">xquery version "1.0-ml";
+cts:search(fn:doc(), cts:period-range-query(
+   "system",
+   "ALN_AFTER",
+   cts:period(xs:dateTime("2019-02-05T11:00:00"),
+              xs:dateTime("2019-02-05T11:20:00")) ))</pre>
+      <p>Hier wird geprüft ob es Dokumente gibt, die nach einer bestimmten Zeitspanne im System aktiv waren. Man beachte hier, dass eine Periode angegeben ist, obwohl nur ein Datum notwendig wäre. Der Vergleichsoperator hierzu heisst <codeph>ALN_AFTER</codeph>.</p>
+      <p>
+         <b>Rückgabe von aktueller Version</b>
+      </p>
+      <pre xml:space="preserve">xquery version "1.0-ml";
+cts:search(fn:doc(), cts:period-compare-query(
+   "system",
+   "ISO_CONTAINS",
+   "valid" ))</pre>
+      <p>Die aktuelle Version kann in Erfahrung gebracht werden, indem geprüft wird, welche gültigen Dokumente innerhalb der Systemzeitspanne liegen. Das kann nur die aktuelle Version sein. Frühere gültige Versionen und Split-Dokumente wären vor der Systemzeit-Spanne.</p>
+      <p>Die letzte Version eines Dokuments kann aber auch einfach über ein <codeph>latest</codeph> flag in Erfahrung gebracht werden:</p>
+      <pre xml:space="preserve">xquery version "1.0-ml";
+cts:search(fn:doc(), cts:and-query((
+    cts:collection-query(("koolorder.xml")),
+    cts:collection-query(("latest")))))</pre>
+      <p>
+         <b>Weiterführende Links</b>
+      </p>
+      <ul>
+         <li>
+            <p>Temporal Developer's Guide auf den MarkLogic Doku-Seiten <xref format="html" scope="external" href="https://docs.marklogic.com/guide/temporal">Temporal Developer's Guide</xref>
+            </p>
+         </li>
+         <li>
+            <p>A Deep Dive into Bitemporal <xref format="html" scope="external"
+                     href="https://www.marklogic.com/blog/bitemporal/">Weiterführender Link zum Thema Bitemporale Dokumente in MarkLogic</xref>
+            </p>
+         </li>
+         <li>
+            <p>Temporale Datenhaltung in der Praxis mit Java <xref format="html" scope="external"
+                     href="https://www.heise.de/developer/artikel/Temporale-Datenhaltung-in-der-Praxis-mit-Java-2100268.html?seite=all">Temporale Datenhaltung in der Praxis mit Java</xref>
+            </p>
+         </li>
+      </ul>
+   </body>
+</topic>

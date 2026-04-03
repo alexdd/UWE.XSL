@@ -1,0 +1,114 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!DOCTYPE topic
+  PUBLIC "-//OASIS//DTD DITA Topic//EN" "topic.dtd">
+<topic id="id9d32e957-a332-40f5-bcbd-52fd6ed7f7da">
+   <title>Validierung mit Schematron </title>
+   <body>
+      <p>Um die Korrektheit einer XML Instanz zu prüfen, gib es verschiedene Schemata, wie <b>XSD</b>, <b>RNG</b> oder <b>DTD</b>
+         <indexterm>Schemata</indexterm>, welche der Parser beim Aufbau des DOM Baums heranzieht, vgl. Kapitel <xref format="dita" scope="local" type="concept" href="3_4_Schemata.dita">Schemata</xref>. Eine Validierung<indexterm>Verarbeitungsmethoden<indexterm>Validierung</indexterm>
+         </indexterm> mit Apache Xerces könnte beispielsweise als Java Code<indexterm>Programmiersprachen<indexterm>Java</indexterm>
+         </indexterm> folgendermaßen angestossen werden:</p>
+      <pre xml:space="preserve">URL schemaFile = new URL("http://host:port/filename.xsd");
+Source xmlFile = new StreamSource(new File("web.xml"));
+SchemaFactory schemaFactory = SchemaFactory
+    .newInstance(XMLConstants.W3C_XML_SCHEMA_NS_URI);
+try {
+  Schema schema = schemaFactory.newSchema(schemaFile);
+  Validator validator = schema.newValidator();
+  validator.validate(xmlFile);
+  System.out.println(xmlFile.getSystemId() + " is valid");
+} catch (SAXException e) {
+  System.out.println(xmlFile.getSystemId() + " is NOT valid reason:" + e);
+} catch (IOException e) {</pre>
+      <p>Schema Dateien können aber auch in XML Editoren eingebunden werden, um schon während der Eingabe der XML Instanz die Korrektheit zu überprüfen. </p>
+      <p>Das geht einerseits <xref format="html" scope="external" href="http://www.heise.de">kurze beschreibung</xref> über die Angabe des Doctypes<indexterm>XML Konstrukte<indexterm>Doctype</indexterm>
+         </indexterm> in der XML Instanz, anderseits bieten auch alle Editoren die Möglichkeit ein bestimmtes Schema explizit auszuwählen, um gegen dieses auf Anforderung zu validieren.</p>
+      <p>Gilt es komplexere Businessregeln zu überprüfen, die über Syntax-, Konsistenz- und einfache Korrektheitschecks hinausgehen, empfiehlt sich eine Validierung mit Schematron Regeln.</p>
+      <section>
+         <title>Schematron ist XSLT</title>
+         <p>Bei einer Schematron Validierung wird eine XML Instanz mit Hilfe eines automatisch generierten XSLT Stylesheets überprüft. Dieses kontextabhängige Stylesheet wird aus einer in der Schematron Syntax vom Autor verfassten Regelbasis, die wiederum in XML vorliegt, über ein zweites XSLT Stylesheet generiert - Dieses zweite XSLT Stylesheet ist sozusagen das eigentliche Schematron Programm. </p>
+         <p>Das folgende Diagramm veranschaulicht die Vorgehensweise anhand eines Filter-Szenarios<indexterm>Verarbeitungsmethoden<indexterm>Filter-Szenario</indexterm>
+            </indexterm>, bei dem ein XML Dokument mit einigen ungültigen Passagen in eine gefilterte Darstellung überführt wird.</p>
+         <fig>
+            <title>Schematron Validierung mit Filter</title>
+            <desc>Einfacher Batch-Prozess zur Validierung mit Schematron und anschliessendem Filtern der Ergebnisse</desc>
+            <image href="../images/schematron-1_81.svg"/>
+         </fig> |   |                                                    Rejected by , .       <p>Zu finden ist das Schematron Repo auf Github <xref format="html" scope="external" href="https://github.com/Schematron/schematron">Schematron auf GitHub</xref>. Dieses Repo ist etwas unübersichtlich. Der relevante Teil des Sourcecodes befindet sich unter: <codeph>schematron/code</codeph>
+         </p>
+      </section>
+      <section>
+         <title>CLI Verwendung</title>
+         <p>Um die Schematron XSLT Skripte in eine eigene XSLT Anwendung per Kommandozeile einzubinden, könnte man folgendermassen vorgehen: </p>
+         <ul>
+            <li>
+               <p>Im eigenen GIT Projekt das Schematron Projekt als Submodule referenzieren.</p>
+            </li>
+            <li>
+               <p>Eine Regelbasis anlegen, beispielsweise <codeph>$project_name.sch</codeph>.</p>
+            </li>
+            <li>
+               <p>Zwei Batch-Skripte anlegen, beispielsweise <codeph>generate_schema.sh</codeph> und <codeph>validate.sh</codeph>.</p>
+            </li>
+         </ul>
+         <p>Mittels des Skripts <codeph>generate_schema.sh</codeph> wird aus der Schematron Regelbasis das Schematron XSLT Stylesheet generiert. Der Inhalt dieser Batchdatei könnte zum Beispiel so aussehen:</p> |   |                                                    Rejected by , .           |   |                                                    Rejected by , .           |   |                                                    Rejected by , .           |   |                                                    Rejected by , .       <pre xml:space="preserve">saxon $script_dir/$project_name_validation.sch $script_dir/schematron/iso_dsdl_include.xsl
+ | \ saxon -s:- $script_dir/schematron/iso_abstract_expand.xsl | \
+saxon -s:- $script_dir/schematron/iso_svrl_for_xslt2.xsl \
+  <b>generate-fired-rule</b>=false &gt; $script_dir/$project_name_validation.xsl</pre>
+         <p>Der Prozess zum Erzeugen des projektspezifischen Validerungs-XSLT-Skripts ist dreistufig und wird über die folgenden XSLT Schritte abgearbeitet.</p>
+         <ul>
+            <li>
+               <p>
+                  <codeph>iso_dsdl_include.xsl</codeph>
+               </p>
+            </li>
+            <li>
+               <p>
+                  <codeph>iso_abstract_expand.xsl</codeph>
+               </p>
+            </li>
+            <li>
+               <p>
+                  <codeph>iso_svrl_for_xslt2.xsl</codeph>
+               </p>
+            </li>
+         </ul>
+         <p>Herauszufinden, was in diesen Skripten passiert, sei dem geneigten Leser selbst überlassen. Uns interessiert an dieser Stelle nur das Resultat, nämlich das XSLT Stylesheet <codeph>$project_name_validation.xsl</codeph>.</p>
+         <p>Dieses Skript wird in der Batchdatei <codeph>validate.sh</codeph> aufgerufen:</p>
+         <pre xml:space="preserve">saxon $xml_instance_to_check.xml $script_dir/$project_name_validation.xsl \
+  &gt; $validation-result.xml</pre>
+         <p>Die Ausgabe dieses Prüfprozesses ist eine XML Datei mit den Fehlern in der Eingabe-XML-Instanz, die weiterverarbeitet werden kann, beispielsweise als Filterkriterium für einen nachfolgenden Prozessschritt. Ihr Inhalt dieser Datei sieht z.B. wie folgt aus:</p> |   |                                                    Rejected by , .           |   |                                                    Rejected by , .           |   |                                                    Rejected by , .           |   |                                                    Rejected by , .       <pre xml:space="preserve">&lt;svrl:schematron-output xmlns:svrl="http://purl.oclc.org/dsdl/svrl" [...]
+  &lt;svrl:active-pattern document="file:/Users/alex/xml_instance_to_check.xml" 
+   id="default" name="default"/&gt;
+  &lt;svrl:failed-assert test="count(key('unique-ids', current()))=1"&gt;
+    &lt;svrl:text&gt;ID is not unique!&lt;/svrl:text&gt;
+    &lt;svrl:diagnostic-reference diagnostic="default"&gt;
+      &lt;bk:id xmlns:bk="http://tekturcms/namespaces/book"&gt;1234-5678-9&lt;/my:id&gt;
+    &lt;/svrl:diagnostic-reference&gt;
+  &lt;/svrl:failed-assert&gt;
+  [...]</pre>
+         <p>Neben den <codeph>svrl:failed-assert</codeph> Elementen, die angeben, was bei der überprüften XML-Instanz fehlgeschlagen ist, gibt es auch die Möglichkeit sich positive Ergebnisse anzeigen zu lassen - über das Element <codeph>svrl:successful-report</codeph>.</p>
+         <p>Konkret sagt uns das obige XML Schnipsel, dass unsere <codeph>id</codeph> mit dem Wert <codeph>1234-5688-9</codeph> im geprüften XML Dokument nicht eindeutig ist. Die Schematron Regelbasis, die wir zur Überprüfung angegebenen haben, sieht so aus:</p>
+         <pre xml:space="preserve">&lt;schema xmlns:sch="http://purl.oclc.org/dsdl/schematron" [...]
+  &lt;xsl:key name="unique-ids" match="bk:id" use="."/&gt;
+  &lt;sch:let name="date-regex" value="'^((19|2[0-9])[0-9]{2})-(0[1-9]|1[012])
+                                     -(0[1-9]|[12][0-9]|3[01])$'"/&gt;
+  &lt;sch:pattern id="default"&gt;
+    &lt;sch:rule context="book"&gt;
+      &lt;sch:assert id="check-book-id" role="error" test="count(key('unique-ids', bk:id))=1" 
+                  diagnostics="default"&gt;ID is not unique!&lt;/sch:assert&gt;
+      &lt;sch:assert id="check-book-published" role="error" 
+                  test="matches(bk:published,$date-regex)
+    &lt;/sch:rule&gt;
+    [...]
+  &lt;/sch:pattern&gt;
+  &lt;sch:diagnostics&gt;
+    &lt;sch:diagnostic id="default"&gt;
+      &lt;xsl:element name="bk:id"&gt;
+        &lt;xsl:value-of select="bk:id"/&gt;
+      &lt;/xsl:element&gt;
+    &lt;/sch:diagnostic&gt;
+  &lt;/sch:diagnostics&gt;</pre>
+         <p>Neben der "successful" und "failed" Regeln ist auch die Deklaration von Funktionen und Variablen im Body der Regelbasis erlaubt. Dies ermöglicht komplexe Bedingungen, bespw. durch das Nachschlagen in einer Lookup-Tabelle abzuprüfen. </p>
+      </section>
+   </body>
+</topic>

@@ -1,0 +1,76 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!DOCTYPE topic
+  PUBLIC "-//OASIS//DTD DITA Topic//EN" "topic.dtd">
+<topic id="id7f03cc5e-675a-4371-b3e9-5d79b981ff95">
+   <title>Webservice Calls with <codeph>doc()</codeph> and <codeph>unparsed-text()</codeph>
+   </title>
+   <body>
+      <p>A common practice is to use the function <codeph>document()</codeph> or short <codeph>doc()</codeph> 
+to include remote resources in the transformation. 
+In a Schematron validation, for example, a rule like:<fn callout="D"><p>UWE test footnote (30/40, callout D): DITA fn maps to UWE footnote/key/desc.</p></fn></p>
+      <pre xml:space="preserve">&lt;sch:not-assert id="personal-check"
+    role="error"
+    test="doc(concat('https://tekturcms.de/personal.xqy?personal-id=',personal-id))/kuendigung"&gt;
+        Angestellter mit ID "&lt;sch:value-of select="personal-id"/&gt;" hat gekündigt!
+&lt;/sch:not-assert&gt;</pre>
+      <p>would call a remote web service and check whether a termination has been filed for the employee with <codeph>personal-id</codeph>.
+If this is the case, the negative assertion <codeph>not-assert</codeph> is not
+fulfilled, and the Schematron rule fires - which in the simplest case should probably 
+result in a log file entry.</p>
+      <p>What presumably many do not yet know - I am simply assuming here that my 
+current state of knowledge corresponds to that of the majority of XML developers - is the fact
+that the function <codeph>unparsed-text()</codeph> also takes a URL as a parameter:</p>
+      <pre xml:space="preserve">&lt;xsl:template match="angestellter"
+    &lt;xsl:copy&gt;
+        &lt;xsl:apply-templates select="node()|@*"/&gt;
+        &lt;hat-gekuendigt&gt;
+            &lt;xsl:sequence select="json-to-xml(
+                                  unparsed-text(
+                                  concat('https://tekturcms.de/personal.xqy?personal-id=',
+                                  personal-id))))/descendant::*[@key='gekuendigt']/text()"/&gt;
+        &lt;/hat-gekuendigt&gt;
+    &lt;/xsl:copy&gt;
+&lt;/xsl:template&gt;</pre>
+      <p>While with <codeph>doc()</codeph> or <codeph>document()</codeph> a returned XML fragment 
+is processed, <codeph>unparsed-text()</codeph> expects, for example, a <b>JSON string</b>, which can then be
+converted to XML using the <codeph>json-to-xml()</codeph> function.</p>
+      <p>For example, the counterpart to the <codeph>angestellter</codeph> template could be implemented in XQuery
+as follows:</p>
+      <pre xml:space="preserve">xquery version "1.0-ml";
+
+declare variable $personal-id := xdmp:get-request-field('personal-id');
+
+let $gekuendigt := if (collection('/personal')/*[personal-id = $personal-id and 
+                                                 fn:exists(kuendingung)] then 
+                                                 'ja' else 'nein'
+return 
+    common:render-response(concat('{"gekuendigt":"',$gekuendigt,'",
+                                    "personal-id":"',$personal-id,'"}'))</pre>
+      <p>(<xref format="dita" scope="local" type="concept" href="4_2_1_XQuery_as_Programming_Language.dita">More on XQuery and the constructs used here</xref>, such as <codeph>render-response()</codeph>)</p>
+      <p>The returned JSON document then looks like this:</p>
+      <pre xml:space="preserve">{"gekuendig":"ja","personal-id":"q5687500"}</pre>
+      <p>Converted to XML, you get a map structure:</p>
+      <pre xml:space="preserve">&lt;map xmlns="http://www.w3.org/2005/xpath-functions"&gt;
+   &lt;string key="gekuedigt"&gt;ja&lt;/string&gt;
+   &lt;string key="personal-id"&gt;q5687500&lt;/string&gt;
+&lt;/map&gt;</pre>
+      <p>which explains the selector expression in the above XPath:</p>
+      <pre xml:space="preserve">json-to-xml(
+unparsed-text(
+concat('https://tekturcms.de/personal.xqy?personal-id=',
+personal-id))))/descendant::*[@key='gekuendigt']/text()</pre>
+      <p>The result of the conversion would be - as expected - an <codeph>&lt;angestellter&gt;</codeph>
+element extended with the <codeph>gekuendigt</codeph> flag:</p>
+      <pre xml:space="preserve">&lt;angestellter&gt;
+   &lt;perosnal-id&gt;q5687500&lt;/perosnal-id&gt;
+   &lt;name&gt;Alex&lt;/name&gt;
+    [...]
+   &lt;gekuendigt&gt;nein&lt;/gekuendigt&gt;
+&lt;/angestellter&gt;</pre>
+      <p>Certainly, the XML developer will prefer an <xref format="dita" scope="local" type="concept" href="4_3_XML_Databases.dita">XML database</xref> like MarkLogic
+and have XML fragments delivered directly. <ph outputclass="nb">Tektur</ph>, however, is for example implemented with
+MongoDB <xref format="html" scope="external" href="https://www.mongodb.com/">MongoDB</xref>,
+which works with JSON... Not least for this reason, I find JSON processing
+with XSLT quite exciting.</p>
+   </body>
+</topic>

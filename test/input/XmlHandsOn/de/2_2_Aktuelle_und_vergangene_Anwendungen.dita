@@ -1,0 +1,263 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!DOCTYPE topic
+  PUBLIC "-//OASIS//DTD DITA Topic//EN" "topic.dtd">
+<topic id="ide3e3be23-3387-4f2d-bc88-628272b743f3">
+   <title>Aktuelle und vergangene Anwendungen</title>
+   <body>
+      <p>Wie auch bei anderen Programmiersprachen, hat es einige Zeit gedauert bis sich für XSLT der optimale Anwendungsbereich herauskristallisiert hat. Auch bei XSLT war ursprünglich das Internet und insbesondere Webseitenprogrammierung die treibende Kraft, da mittels XSLT besonders gut Inhalt und Semantik getrennt werden konnte. <fn callout="C"><p>UWE-Testfußnote (3/40, Callout C): DITA-fn wird in UWE zu footnote/key/desc.</p></fn></p>
+      <p>Relativ schnell hat sich aber <b>CSS</b> in Verbindung mit <b>JavaScript</b> als Standardlösung für diesen Zeck bewährt. <b>XSLT</b> ist inzwischen Platzhirsch im Bereich <b>Technische Dokumentation,</b> und hier auch wohl unschlagbar.</p>
+      <section>
+         <title>XML Webseiten</title>
+         <p>Einen XSLT Prozessor hat jeder Browser eingebaut. Es war mal sehr populär, Webseiten als XML auszuliefern<indexterm>Anwendungsgebiete<indexterm>XML Webseiten</indexterm>
+            </indexterm> und mittels XSLT zu layouten. U.a. wegen des exzessiven Einsatzes von JavaScript (auch inline), hat sich diese Idee nie vollständig durchgesetzt. Schliesslich wurde <b>XHTML</b> spezifiziert und jetzt gibt es <b>HTML5</b>.</p> |  |                                                    Rejected by , .           |   |                                                    Rejected by , .           |   |                                                    Rejected by , .       <p>Betrachten wir das folgende XML Beispiel:</p>
+         <pre xml:space="preserve">&lt;?xml version="1.0" ?&gt;
+&lt;document&gt;
+   &lt;title&gt;Das ultimative Zwei-Kapitel Dokument&lt;/title&gt;
+   &lt;chapter&gt;
+      &lt;title&gt;Kapitel 1&lt;/title&gt;
+      &lt;intro&gt;In Kapitel 1 wird kurz gesagt was Sache ist.&lt;/intro&gt;
+      &lt;content&gt;Um es kurz zu machen, wie der Hase läuft steht in Kapitel 2.&lt;/content&gt;
+   &lt;/chapter&gt;
+   &lt;chapter&gt;
+      &lt;title&gt;Kapitel 2&lt;/title&gt;
+      &lt;intro&gt;Hier wird erklärt, wie der Hase läuft.&lt;/intro&gt;
+      &lt;content&gt;Im Prinzip ist es ganz einfach.&lt;/content&gt;
+   &lt;/chapter&gt;
+&lt;/document&gt;</pre>
+         <p>Ohne XSLT Stylesheet Zuweisung wird der Browser eine Datei mit diesem Inhalt als eingerücktes XML anzeigen - oder die Tags einfach ignorieren und den Textinhalt in einer Zeile darstellen. Fügt man eine Processing Instruction <xref format="html" scope="external" href="https://de.wikipedia.org/wiki/Verarbeitungsanweisung">Die Processing Instruction wertet der Parser als Kommando aus und nicht als Teil des XML Contents</xref>
+            <indexterm>XML Konstrukte<indexterm>Processing Instruction</indexterm>
+            </indexterm> am Anfang ein, wird ein XSLT Stylesheet vom Browser herangezogen, und vor der Darstellung im Browser wird die so deklarierte XML Transformation ausgeführt:</p>
+         <pre xml:space="preserve">&lt;?xml version="1.0" encoding="UTF-8"?&gt;
+&lt;?xml-stylesheet type="text/xsl" href="formatiermich.xsl" ?&gt;
+&lt;document&gt;
+  &lt;title&gt;Das ultimative Zwei-Kapitel Dokument&lt;/title&gt;
+  &lt;chapter&gt;
+[...]</pre>
+         <p>Das XML kann nun im Browser geöffnet werden. Alles wird schön formatiert angezeigt...</p> |  |                                                    Rejected by , .           |   |                                                    Rejected by , .           |   |                                                    Rejected by , .       <pre xml:space="preserve">&lt;?xml version="1.0" ?&gt;
+&lt;xsl:stylesheet xmlns:xsl="http://www.w3.org/1999/XSL/Transform" version="1.0"&gt;
+   &lt;xsl:template match="/"&gt;
+      &lt;html&gt;
+         &lt;xsl:apply-templates/&gt;
+      &lt;/html&gt;
+   &lt;/xsl:template&gt;
+   &lt;xsl:template match="document"&gt;
+      &lt;body&gt;
+         &lt;xsl:apply-templates/&gt;
+      &lt;/body&gt;
+   &lt;/xsl:template&gt;
+   &lt;xsl:template match="document/title"&gt;
+      &lt;h1&gt;
+         &lt;xsl:apply-templates/&gt;
+      &lt;/h1&gt;
+   &lt;/xsl:template&gt;
+   &lt;xsl:template match="chapter"&gt;
+      &lt;div class="chapter"&gt;
+         &lt;xsl:apply-templates/&gt;
+      &lt;/div&gt;
+   &lt;/xsl:template&gt;
+   &lt;xsl:template match="chapter/title"&gt;
+      &lt;h2&gt;
+         &lt;xsl:apply-templates/&gt;
+      &lt;/h2&gt;
+   &lt;/xsl:template&gt;
+   &lt;xsl:template match="chapter/intro"&gt;
+      &lt;div class="intro"&gt;
+         &lt;i&gt;
+            &lt;xsl:apply-templates/&gt;
+         &lt;/i&gt;
+      &lt;/div&gt;
+   &lt;/xsl:template&gt;
+   &lt;xsl:template match="chapter/content"&gt;
+      &lt;p&gt;
+         &lt;xsl:apply-templates/&gt;
+      &lt;/p&gt;
+   &lt;/xsl:template&gt;
+&lt;/xsl:stylesheet&gt;</pre>
+         <p>Die <b>Processing Instruction</b> hat keinen Einfluss auf den XML Inhalt und wird in einer anderen Eingabeverarbeitung nicht herangezogen.</p>
+      </section>
+      <section>
+         <title>Serverseitige Konvertierung</title>
+         <p>Auch eine serverseitige Konvertierung<indexterm>Anwendungsgebiete<indexterm>Serverseitige Konvertierung</indexterm>
+            </indexterm> ist gebräuchlich. Ein Beispiel aus vergangenen Tagen - WAP-Seiten <xref format="html" scope="external" href="https://de.wikipedia.org/wiki/Wireless_Application_Protocol">Mittels dieser Technologie wurden Webinhalte auf Handys gespielt. Das war vor den Smartphones</xref> für unterschiedliche Handy-Modelle.</p>
+         <p>Früher hatten die Handys sehr unterschiedliche Displaygrößen. Handybrowser konnten nicht ausreichend JavaScript und die Skalierung der WAP-Seite für das jeweilige Handy passierte nicht im Handy, sondern vor der Auslieferung auf der Serverseite. Dazu wurde eine XML Quelle mittels verschiedener XSLT Stylesheets in unterschiedliche WML WAP Repräsentationen transformiert.</p>
+         <p>So würde das Zwei-Kapitel Beispiel von oben im WML Format aussehen (recht einfach gehalten):</p>
+         <pre xml:space="preserve">&lt;?xml version="1.0" ?&gt;
+&lt;!DOCTYPE wml
+  PUBLIC '-//WAPFORUM//DTD WML 1.1//EN'
+  'http://www.wap.org/DTD/wml_1.1.xml'&gt;
+&lt;wml&gt;
+   &lt;head&gt;
+      &lt;meta name="title" content="Das ultimative Zwei-Kapitel Dokument"/&gt;
+   &lt;/head&gt;
+   &lt;card id="chapter1" title="Kapitel 1"&gt;
+      &lt;p&gt;
+         &lt;i&gt;In Kapitel 1 wird kurz gesagt was Sache ist.&lt;/i&gt;
+      &lt;/p&gt;
+      &lt;p&gt;Um es kurz zu machen, wie der Hase läuft steht in Kapitel 2.&lt;/p&gt;
+   &lt;/card&gt;
+   &lt;card id="chapter2" title="Kapitel 2"&gt;
+      &lt;p&gt;
+         &lt;i&gt;Hier wird erklärt, wie der Hase läuft.&lt;/i&gt;
+      &lt;/p&gt;
+      &lt;p&gt;Im Prinzip ist es ganz einfach.&lt;/p&gt;
+   &lt;/card&gt;
+&lt;/wml&gt;</pre>
+         <p>Eine XSLT Transformation, die die XML Daten von oben in diese <b>WML</b> Darstellung überführt, könnte z.B. so implementiert werden:</p> |  |                                                    Rejected by , .           |   |                                                    Rejected by , .           |   |                                                    Rejected by , .       <pre xml:space="preserve">&lt;?xml version="1.0" ?&gt;
+&lt;xsl:stylesheet xmlns:xsl="http://www.w3.org/1999/XSL/Transform" version="1.0"&gt;
+   &lt;xsl:output doctype-public="-//WAPFORUM//DTD WML 1.2//EN" doctype-system="http://www.wapforum.org/DTD/wml12.dtd" indent="yes"/&gt;
+   &lt;xsl:template match="document"&gt;
+      &lt;wml&gt;
+         &lt;xsl:apply-templates/&gt;
+      &lt;/wml&gt;
+   &lt;/xsl:template&gt;
+   &lt;xsl:template match="document/title"&gt;
+      &lt;head&gt;
+         &lt;meta name="title"&gt;
+            &lt;xsl:attribute name="content"&gt;
+               &lt;xsl:value-of select="."/&gt;
+            &lt;/xsl:attribute&gt;
+         &lt;/meta&gt;
+      &lt;/head&gt;
+   &lt;/xsl:template&gt;
+   &lt;xsl:template match="chapter"&gt;
+      &lt;card id="{concat('chapter',count(preceding-sibling::chapter)+1)}"&gt;
+         &lt;xsl:attribute name="title"&gt;
+            &lt;xsl:value-of select="title"/&gt;
+         &lt;/xsl:attribute&gt;
+         &lt;xsl:apply-templates select="*[not(self::title)]"/&gt;
+      &lt;/card&gt;
+   &lt;/xsl:template&gt;
+   &lt;xsl:template match="node()|@*"&gt;
+      &lt;xsl:copy&gt;
+         &lt;xsl:apply-templates select="node()|@*"/&gt;
+      &lt;/xsl:copy&gt;
+   &lt;/xsl:template&gt;
+   &lt;xsl:template match="processing-instruction()"/&gt;
+   &lt;xsl:template match="intro"&gt;
+      &lt;p&gt;
+         &lt;i&gt;
+            &lt;xsl:apply-templates/&gt;
+         &lt;/i&gt;
+      &lt;/p&gt;
+   &lt;/xsl:template&gt;
+   &lt;xsl:template match="content"&gt;
+      &lt;p&gt;
+         &lt;xsl:apply-templates/&gt;
+      &lt;/p&gt;
+   &lt;/xsl:template&gt;
+&lt;/xsl:stylesheet&gt;</pre>
+      </section>
+      <section>
+         <title>Multiple Ausgabeformate</title> |  |                                                    Rejected by , .           |   |                                                    Rejected by , .           |   |                                                    Rejected by , .       <p>Aus einer XML Quelle können auch leicht weitere Format erzeugt werden, bspw. EPUB <xref format="html" scope="external" href="https://de.wikipedia.org/wiki/EPUB">EPUB</xref>. Das ist das Standardformat für eBooks. Neben Tags zur Formatierung für den Content, gibt es bspw. auch Anweisungen zum Erzeugen des Inhaltsverzeichnisses oder anderer Navigationsstrukturen.</p>
+         <p>Weitere gängige Formate sind neben dem oben veralteten WML Format, elektronische Ausgabe-Formate wie: CHM <xref format="html" scope="external" href="https://de.wikipedia.org/wiki/CHM_(Dateiformat)">Windows-Hilfe</xref>, EclipseHelp <xref format="html" scope="external" href="https://www.ibm.com/developerworks/library/os-echelp/index.html">Eclipse Help</xref>, JavaHelp <xref format="html" scope="external" href="https://en.wikipedia.org/wiki/JavaHelp">JavaHelp</xref>, ..., Print-Ausgabe wie PDF oder Adobe Framemaker <xref format="html" scope="external" href="https://de.wikipedia.org/wiki/FrameMaker">Framemaker</xref>, oder XML-Standard-Austauschformate wie <b>DITA</b>, <b>S1000D</b>, PI-MOD <xref format="html" scope="external" href="https://www.i4icm.de/forschungstransfer/pi-mod/">PI-MOD</xref>, JATS <xref format="html" scope="external" href="https://de.wikipedia.org/wiki/Journal_Article_Tag_Suite">JATS</xref>
+            <indexterm>Standards<indexterm>JATS</indexterm>
+            </indexterm> oder TEI <xref format="html" scope="external" href="https://de.wikipedia.org/wiki/Text_Encoding_Initiative">TEI</xref>
+            <indexterm>Standards<indexterm>TEI</indexterm>
+            </indexterm>.</p>
+      </section>
+      <section>
+         <title>Menschenlesbare Ausgabe</title>
+         <p>Kryptische XML Log-, Daten- oder Konfigurationsfiles<indexterm>Anwendungsgebiete<indexterm>Log- und Konfigurationsdaten</indexterm>
+            </indexterm> können leicht mit XSLT "menschenlesbar" formatiert werden. Ein Arbeitskollege im neuen Job kam kürzlich auf mich zu, ob ich um eine Möglichkeit wüsste, wie man sein kryptisches Datenfile für einen Übersetzungsdienst formatieren könnte:</p>
+         <pre xml:space="preserve">&lt;?xml version="1.0" encoding="UTF-8"?&gt;?&lt;?xml-stylesheet type="text/xsl" href="de.xsl"?&gt;
+&lt;jcr:root xmlns:sling="http://sling.apache.org/jcr/sling/1.0"
+  xmlns:jcr="http://www.jcp.org/jcr/1.0" 
+  xmlns:mix="http://www.jcp.org/jcr/mix/1.0"
+  xmlns:nt="http://www.jcp.org/jcr/nt/1.0"
+  jcr:language="de"
+  jcr:mixinTypes="[mix:language]"
+  jcr:primaryType="sling:Folder"&gt;
+&lt;b_manual 
+  jcr:primaryType="sling:MessageEntry"
+  sling:message="Bedienungsanleitung"/&gt;
+  &lt;b_warning
+    jcr:primaryType="sling:MessageEntry"
+    sling:message="Warnung"/&gt;
+  &lt;b_danger
+    jcr:primaryType="sling:MessageEntry"
+    sling:message="Vorsicht"/&gt;
+  &lt;b_note
+    jcr:primaryType="sling:MessageEntry"
+    sling:message="Notiz"/&gt;
+  &lt;b_notice
+    jcr:primaryType="sling:MessageEntry"
+    sling:message="Hinweis"/&gt;
+  [...]</pre>
+         <p>Mit einem eingehängten XSLT Stylesheet<codeph>de.xsl</codeph> wird so ein Datenfile als Tabelle formatiert:</p>
+         <pre xml:space="preserve">&lt;?xml version="1.0" ?&gt;
+&lt;xsl:stylesheet xmlns:xsl="http://www.w3.org/1999/XSL/Transform" xmlns:jcr="http://www.jcp.org/jcr/1.0" xmlns:sling="http://sling.apache.org/jcr/sling/1.0" version="1.0"&gt;
+   &lt;xsl:template match="jcr:root"&gt;
+      &lt;html&gt;
+         &lt;table border="1" cellpadding="5" cellspacing="5"&gt;
+            &lt;xsl:apply-templates/&gt;
+         &lt;/table&gt;
+      &lt;/html&gt;
+   &lt;/xsl:template&gt;
+   &lt;xsl:template match="*"&gt;
+      &lt;tr&gt;
+         &lt;td&gt;
+            &lt;xsl:value-of select="concat(count(preceding::*[@sling:message]) + 1,'.')"/&gt;
+         &lt;/td&gt;
+         &lt;td&gt;
+            &lt;xsl:value-of select="name()"/&gt;
+         &lt;/td&gt;
+         &lt;td contenteditable="true"&gt;
+            &lt;xsl:value-of select="@sling:message"/&gt;
+         &lt;/td&gt;
+      &lt;/tr&gt;
+   &lt;/xsl:template&gt;
+&lt;/xsl:stylesheet&gt;</pre>
+         <p>Hängt man an dieses Beispiel noch ein bisschen JavaScript Logik und macht die Felder für die Übersetzungen mittels des <b>HTML5 </b>
+            <codeph>contenteditable</codeph> Attributs<indexterm>Attribute<indexterm>contenteditable</indexterm>
+            </indexterm> editierbar, dann bräuchte man nur noch eine Rücktransformation HTML nach XML und hätte schon einen kleinen XML Editor gebaut. So funktioniert auch der Editor in <ph outputclass="nb">Tektur</ph>.</p>
+      </section>
+      <section>
+         <title>Diagramme darstellen</title>
+         <p>Nachdem eine <b>SVG</b>
+            <indexterm>Standards<indexterm>SVG</indexterm>
+            </indexterm> Grafik<indexterm>Anwendungsgebiete<indexterm>Visualisierung</indexterm>
+            </indexterm> im <b>XML</b> Format vorliegt, kann diese auch direkt mittels XSLT erzeugt werden. Über das HTML5<codeph>&lt;svg&gt;</codeph> Element kann so eine Grafik inline in das - ebenfalls durch das XSLT - generierte HTML Dokument eingebunden werden.</p> |  |                                                    Rejected by , .           |   |                                                    Rejected by , .           |   |                                                    Rejected by , .       <p>Betrachten wir unser Beispiel von oben, erweitert um drei neue <codeph>&lt;block&gt;</codeph> Elemente:</p>
+         <pre xml:space="preserve">&lt;?xml version="1.0" ?&gt;
+&lt;?xml-stylesheet type="text/xsl" href="chart.xsl" ?&gt;
+&lt;document&gt;
+   &lt;title&gt;Das ultimative Zwei-Kapitel Dokument&lt;/title&gt;
+   &lt;chapter&gt;
+      &lt;title&gt;Kapitel 1&lt;/title&gt;
+      &lt;intro&gt;In Kapitel 1 wird kurz gesagt was Sache ist.&lt;/intro&gt;
+      &lt;content&gt;Um es kurz zu machen, wie der Hase läuft steht in Kapitel 2.&lt;/content&gt;
+   &lt;/chapter&gt;
+   &lt;chapter&gt;
+      &lt;title&gt;Kapitel 2&lt;/title&gt;
+      &lt;intro&gt;Hier wird erklärt, wie der Hase läuft.&lt;/intro&gt;
+      &lt;content&gt;Im Prinzip ist es ganz einfach. Betrachten wir doch drei gelbe Blöcke:
+    &lt;/content&gt;
+      &lt;block/&gt;
+      &lt;block/&gt;
+      &lt;block/&gt;
+   &lt;/chapter&gt;
+&lt;/document&gt;</pre>
+         <p>Wenn wir das XSLT Stylesheet noch um eine Regel für das neue <codeph>&lt;block&gt;</codeph> Element ergänzen, so wie hier:</p>
+         <pre xml:space="preserve">&lt;xsl:template match="block"&gt;
+   &lt;svg style="background-color:yellow" width="30" height="30" 
+     xmlns:xlink="http://www.w3.org/1999/xlink" 
+     xmlns="http://www.w3.org/2000/svg"/&gt;
+  &lt;br/&gt;
+  &lt;br/&gt;
+&lt;/xsl:template&gt;</pre>
+         <p>Dann erhalten wir drei schön formatierte gelbe SVG Blöcke ...</p>
+         <p>
+            <b>Weiterführende Links:</b>
+         </p>
+         <ul>
+            <li>
+               <p>Client-side image generation with SVG and XSLT <xref format="html" scope="external" href="http://surguy.net/articles/client-side-svg.xml">Automatische Image Erzeugung mit XSLT und SVG</xref>
+               </p>
+            </li>
+            <li>
+               <p>Knotentyp Visualisierung im Apache Jack Rabbit Projekt <xref format="html" scope="external" href="http://jackrabbit.apache.org/jcr/node-type-visualization.html">Visualisierung von Knoten im Apache Jack Rabbit Projekt</xref>
+               </p>
+            </li>
+         </ul>
+      </section>
+   </body>
+</topic>

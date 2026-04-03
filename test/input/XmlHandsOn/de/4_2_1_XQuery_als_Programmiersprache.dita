@@ -1,0 +1,72 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!DOCTYPE topic
+  PUBLIC "-//OASIS//DTD DITA Topic//EN" "topic.dtd">
+<topic id="id06abe1b7-21be-4794-bec6-c28732cf6cbf">
+   <title>XQuery als Programmiersprache </title>
+   <body>
+      <p>Erste Schritte in XQuery gehen sehr schön  
+mit der Query Konsole auf dem Marklogic Server (Port 8000).
+Hat man parallel auch noch oXygen Editor offen, kann man die Testergebnisse aus der Konsole direkt in ein XQuery Server Skript packen.<fn callout="J"><p>UWE-Testfußnote (36/40, Callout J): DITA-fn wird in UWE zu footnote/key/desc.</p><p outputclass="fn-add">UWE Zusatz (fn-add) für den Fußnotenindex.</p></fn></p>
+      <section>
+         <title>Schleifen</title>
+         <p>Die ersten 10 Dokumente auf dem Server bekommt man z.B. mit:<indexterm>Programmierkonstrukte<indexterm>Schleifen - for</indexterm>
+            </indexterm>
+         </p>
+         <pre xml:space="preserve">(doc())[position() lt 11]</pre>
+         <p>Die Zahlen von 1 bis 100 mit:</p>
+         <pre xml:space="preserve">(for $i in (1 to 100) return $i)</pre>
+         <p>Wenn man diese beide Anweisungen untereinander in die Konsole
+schreibt bekommt man einen Fehler. Trennt man sie mit einem 
+Komma - ein Tupel wird erzeugt - dann klappt es.</p> |   |                                                    Rejected by , .           |   |                                                    Rejected by , .       </section>
+      <section>
+         <title>Dokumente in der DB anlegen</title>
+         <p>Der Befehl zum Anlegen eines Dokuments in der Marklogic DB sieht
+folgendermassen aus (Doku) <xref format="html" scope="external" href="https://docs.marklogic.com/xdmp:document-insert">xdmp:document-insert</xref>:<indexterm>Programmierkonstrukte<indexterm>DB insert</indexterm>
+            </indexterm>
+         </p>
+         <pre xml:space="preserve">xdmp:document-insert(
+  "/alex-test/example-alex.xml",
+  &lt;root&gt;Hier steht der Content&lt;/root&gt;, 
+  &lt;options xmlns="xdmp:document-insert"&gt;  
+    &lt;metadata&gt;{
+      map:map() =&gt; map:with("valid-start", "2014-06-03T14:13:05.472585-07:00")
+      =&gt; map:with("valid-end", "9999-12-31T11:59:59Z")
+      }&lt;/metadata&gt;
+  &lt;/options&gt;)</pre>
+         <p>Packt man diese Instruktion in die for-Schleife oben, dann sieht das Konstrukt so aus:</p>
+         <pre xml:space="preserve">(for $i in (1 to 10) return 
+  xdmp:document-insert(
+  concat("/alex-test/example-alex-",$i,".xml"),
+  &lt;root&gt;Hier steht der Content {$i}&lt;/root&gt;, 
+  &lt;options xmlns="xdmp:document-insert"&gt;  
+    &lt;metadata&gt;{
+      map:map() =&gt; map:with("valid-start", "2014-06-03T14:13:05.472585-07:00")
+      =&gt; map:with("valid-end", "9999-12-31T11:59:59Z")
+      }&lt;/metadata&gt;
+  &lt;/options&gt;)
+)</pre>
+         <p>Dokumente kann man einer Collection<indexterm>Programmierkonstrukte<indexterm>DB Collection</indexterm>
+            </indexterm> zuweisen, um sie leichter finden und auswerten
+zu können. Das geht mit dem folgenden Befehl (Doku) <xref format="html" scope="external" href="https://docs.marklogic.com/xdmp:document-add-collections">xdmp:document-add-collections</xref> und diesem Schnippsel:</p>
+         <pre xml:space="preserve">let $root :=
+&lt;mein-test&gt;
+   &lt;id&gt;{$id}&lt;/id&gt;
+   &lt;content&gt;Hallo Welt!&lt;/content&gt;
+&lt;/mein-test&gt;,
+$options :=
+&lt;options xmlns="xdmp:document-insert"&gt;  
+  &lt;permissions&gt;{xdmp:default-permissions()}&lt;/permissions&gt;
+  &lt;collections&gt;
+    &lt;collection&gt;/alex-test&lt;/collection&gt;
+  &lt;/collections&gt;
+&lt;/options&gt;,
+$fname := concat('/',$id,'_','.xml'),
+$td := xdmp:document-insert($fname,$root,$options)
+return 
+  [...]</pre>
+         <p>Die Dokumente, die mit der Collection <codeph>alex-test</codeph> getaggt wurden, kann man sich mit der folgenden Schleife ausgeben lassen:</p> |   |                                                    Rejected by , .           |   |                                                    Rejected by , .       <pre xml:space="preserve">for $x in collection("/alex-test")
+  return
+    fn:document-uri($x)</pre>
+      </section>
+   </body>
+</topic>

@@ -1,0 +1,34 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!DOCTYPE topic
+  PUBLIC "-//OASIS//DTD DITA Topic//EN" "topic.dtd">
+<topic id="id6606c71d-ad08-4ebb-a0f0-2945a8be9dc8">
+   <title>Spass mit dem Sequenzvergleich</title>
+   <body>
+      <p>
+         <indexterm>Programmierkonstrukte<indexterm>Sequenzvergleich</indexterm>
+         </indexterm>Weil man immer wieder mal mit <b>XPath</b> oder <b>XQuery</b> beim Sequenzvergleich auf die Nase fliegt, hier die wichtigsten Kniffe in Form einer XQuery Sitzung (gilt auch für XPath):<fn callout="O"><p>UWE-Testfußnote (15/40, Callout O): DITA-fn wird in UWE zu footnote/key/desc.</p></fn></p>
+      <pre xml:space="preserve">xquery version "3.1";
+
+(: Prüfen, ob ein Element in einer Sequenz vorkommt :)
+('a','b') = 'a',          (: =&gt; true()  :)
+
+(: Beachte, aber auch... :)
+('a','a') = 'a',          (: =&gt; true()  :)
+not(('a','b') != 'a'),    (: =&gt; false() :)
+
+(: Prüfen, ob ein Element mit jedem Element einer Sequenz matcht :)
+not(('a','a') != 'a'),     (: =&gt; true()  :)
+
+(: Prüfen, ob Elemente einer Sequenz in einer anderen enthalten sind :)
+('a','b','c') = ('a','b','d','e','f'),  (: =&gt; true() :)
+
+(: Prüfen, ob zwei Sequenzen gleich sind :)
+deep-equal(('a','b','c'), ('a','b','c')),  (: =&gt; true()  :)
+
+(: Prüfen, ob zwei Sequenzen die gleichen Elemente enthalten :)
+('a','b','c') = ('a','b','c') and 
+count(distinct-values(('a','b','c'))) = 
+count(distinct-values(('a','b','c')))      (: =&gt; true() :)</pre>
+      <p>Sollte man nicht nur atomare Werte vergleichen wollen, so ist man sicherlich auch mit der FunctX <xref format="html" scope="external" href="http://www.xsltfunctions.com/xsl/c0015.html#c0052">FunctX Bibliothek von Priscilla Wamsley - Hier die Sektion zum Thema Comparing</xref> Bibliothek gut bedient.</p>
+   </body>
+</topic>

@@ -1,0 +1,66 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!DOCTYPE topic
+  PUBLIC "-//OASIS//DTD DITA Topic//EN" "topic.dtd">
+<topic id="id7f9615d0-3d92-4ec1-813b-db4b788b6efd">
+   <title>
+      <codeph>if..then..else</codeph> Ausdrücke </title>
+   <body>
+      <p>In nicht-funktionalen Programmiersprachen sind die Schlüsselwörter <codeph>if</codeph> und <codeph>then</codeph>
+         <indexterm>Programmierkonstrukte<indexterm>Bedingte Anweisung - if..then..else</indexterm>
+         </indexterm> dazu da, um dem Compiler oder Interpreter mitzuteilen, dass eine bedingte Anweisung ausgewertet werden soll.<fn callout="I"><p>UWE-Testfußnote (35/40, Callout I): DITA-fn wird in UWE zu footnote/key/desc.</p></fn></p>
+      <p>Was für den Nicht-funktionalen Programmierer etwas befremdlich erscheint, ist der Umstand, dass in XQuery <codeph>if..then</codeph> als Ausdrücke ausgewertet werden.</p>
+      <p>Das ist einerseits sehr praktisch, weil es richtig angewandt den Code verkürzt und damit das Wesentliche herausstellt, kann aber auch weiter zur allg. Verwirrung bzgl. des kryptischen XQuery Codes beitragen.</p>
+      <section>
+         <title>Beispiel: Konditionale Server App</title>
+         <p>Betrachten wir ein einfaches Beispiel: Wir generieren auf einer Marklogic-Webapp eine JSON Response. Da wir diesen Mechanismus an mehreren Stellen im Code einsetzen, empfiehlt es sich das Rendern des Headers in eine Funktion auszulagern.</p>
+         <pre xml:space="preserve">declare function common:wrap-response($json)
+{
+  xdmp:add-response-header("Pragma", "no-cache"),
+  xdmp:add-response-header("Cache-Control", "no-cache"),
+  xdmp:add-response-header("Expires", "0"),
+  xdmp:set-response-content-type('text/json; charset=utf-8'),
+  $json
+};</pre>
+         <p>In unserem Request-Handler wird je nach Auswertung einer Variablen eine 
+bedingte Anweisung ausgeführt, diese sieht bspw. so aus:</p>
+         <pre xml:space="preserve">let $name := xdmp:get-request-field('name'),
+    $is-afternoon := xs:time(current-dateTime()) gt xs:time('12:00:00')
+return 
+  if ($is-afternoon) then 
+   common:wrap-response(xdmp:unquote(concat('{"greeting":"Good Afternoon! ',$name,'!"}')))
+  else
+   common:wrap-response(xdmp:unquote(concat('{"greeting":"Good Morning! ',$name,'!"}')))</pre>
+         <p>Als prozeduraler Programmierer wäre ich mit diesem Switch voll und ganz zufrieden, 
+der funktionale Programmierer erkennt aber sofort einen Optimierungsbedarf.</p>
+         <p>Da es sich bei der bedingten Anweisung auch um einen Ausdruck handelt, der <codeph>true</codeph> oder <codeph>false</codeph> zurückgibt, können wir die gleichen Funktionsaufrufe herausziehen:</p>
+         <pre xml:space="preserve">ommon:wrap-response(xdmp:unquote(
+    let $is-afternoon := xs:time(current-dateTime()) gt xs:time('12:00:00')
+        return 
+            if ($is-afternoon) then concat('{"greeting":"Good Afternoon! ',$name,'!"}') 
+            else concat('{"greeting":"Good Morning! ',$name,'!"}')
+)</pre>
+         <p>Hier wird der abstrakt denkende Programmierer aber einwenden, dass eine abstrakte
+Logik nicht in eine Low-Level Funktion, wie <codeph>xdmp:unquote</codeph> gewrapped werden sollte.</p>
+         <p>Das stimmt - und mehr noch, die Maskierung mit <codeph>xdmp:unquote</codeph> sollte auch noch in unsere 
+Funktion gepackt werden. So dass der Code schliesslich so aussehen würde:</p>
+         <pre xml:space="preserve">declare function common:render-response($json)
+{
+  xdmp:add-response-header("Pragma", "no-cache"),
+  xdmp:add-response-header("Cache-Control", "no-cache"),
+  xdmp:add-response-header("Expires", "0"),
+  xdmp:set-response-content-type('text/json; charset=utf-8'),
+  xdmp:unquote($json)
+};
+
+common:render-response(
+    let $is-afternoon := xs:time(current-dateTime()) gt xs:time('12:00:00')
+        return 
+            if ($is-afternoon) then concat('{"greeting":"Good Afternoon! ',$name,'!"}') 
+            else concat('{"greeting":"Good Morning! ',$name,'!"}')
+)</pre>
+         <p>Sicherlich lässt sich darüber streiten, ob nun der funktionale Ansatz besser lesbar ist, oder der prozedurale von oben.</p>
+         <p>Ich denke jeder Programmierer hat hier seinen eigenen, individuellen
+und bewährten Programmierstil entwickelt, den er auch beibehalten sollte.</p>
+      </section>
+   </body>
+</topic>

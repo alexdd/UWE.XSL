@@ -1,0 +1,45 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!DOCTYPE topic
+  PUBLIC "-//OASIS//DTD DITA Topic//EN" "topic.dtd">
+<topic id="idd3d7b9b9-8712-4844-bf96-9444ac5bb171">
+   <title>Tektur CCMS </title>
+   <body>
+      <p>Tektur CCMS<indexterm>Tektur CCMS</indexterm> is a web-based Component Content Management System and is still under development.</p>
+      <p>Here are some random features:</p>
+      <ul>
+         <li>
+            <p>Content is entered according to the DITA content model. Output is produced via an automatic typesetting system.</p>
+         </li>
+         <li>
+            <p>Graphics can be placed page-wide, column-wide, and in the margin for PDF output.</p>
+         </li>
+         <li>
+            <p>The width of the margin is continuously adjustable; the PDF output is largely configurable in terms of formatting.</p>
+         </li>
+         <li>
+            <p>Layout options regarding paper format, dimensions, and font sizes can be configured via a simple dialog.</p>
+         </li>
+         <li>
+            <p>TOC and multi-level indexes are automatically generated in the PDF output.</p>
+         </li>
+         <li>
+            <p>The cell width of CALS tables can be adjusted with the mouse; functions on cells are largely implemented.</p>
+         </li>
+         <li>
+            <p>Paragraphs, list items, and sections can be moved up and down using the arrow buttons in the toolbar.</p>
+         </li>
+         <li>
+            <p>Linking to other topics works via references, and link text is automatically updated when the topic title changes.</p>
+         </li>
+         <li>
+            <p>The DITA map can be edited via drag 'n drop, among other methods; in the topic editor, there is a dynamic context menu at every position for additional options.</p>
+         </li>
+         <li>
+            <p>Valid DITA structures can be exported and imported.</p>
+         </li>
+         <li>
+            <p>Topics, tasks, and maps can be forwarded by the author to reviewers and approvers for a commenting and approval process.</p>
+         </li>
+      </ul>
+   </body>
+</topic>

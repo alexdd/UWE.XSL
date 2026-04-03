@@ -1,0 +1,84 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!DOCTYPE topic
+  PUBLIC "-//OASIS//DTD DITA Topic//EN" "topic.dtd">
+<topic id="id24e125c5-f411-4698-9e68-19ab7ba0f302">
+   <title>XML Editoren </title>
+   <body>
+      <p>Der XSLT Styesheet-Entwickler wird sich  gewöhnlich mit Eingabedaten beschäftigen, die entweder automatisch mittels irgendeines Prozesses erzeugt wurden, oder die durch einen menschlichen Autor mit einem XML Editor<indexterm>Tools<indexterm>XML Editor</indexterm>
+         </indexterm> eingegeben wurden.</p>
+      <p>Aus diesem Grund ist es ganz nützlich, die wichtigsten Editoren zu kennen. </p>
+      <p>Wir unterscheiden zwischen Desktopapplikationen und Webanwendungen. Ausserdem unterscheiden wir noch, ob der Editor WYSIWIG (<b>W</b>hat <b>Y</b>ou <b>S</b>ee <b>I</b>s <b>W</b>hat <b>Y</b>ou <b>G</b>et) oder WYSIWYM (<b>W</b>hat <b>Y</b>ou <b>S</b>ee <b>I</b>s <b>W</b>hat <b>Y</b>ou <b>M</b>ean) <indexterm>WYSIWYG und WYSIWYM</indexterm> unterstützt, oder ob er eine Mischung aus beidem darstellt. Das Buzzword hierzu heisst auch "Structured Content Authoring"<indexterm>Buzzwords<indexterm>Structured Content Authoring</indexterm>
+         </indexterm>
+      </p>
+      <section>
+         <title>WYSIWYM Desktop</title>
+         <dl>
+            <dlhead>
+               <dthd>Editor</dthd>
+               <ddhd>Beschreibung</ddhd>
+            </dlhead>
+            <dlentry>
+               <dt>XMetal <xref format="html" scope="external" href="https://xmetal.com/">Homepage des Desktop XML Editors XMetal</xref>
+               </dt>
+               <dd>
+                  <p>XMetal ist wahrscheinlich der am weitesten verbreitete reine WYSIWYM Editor. Er hat Schnittstellen zu COM und Java und kann daher in eigene CMS integriert werden.</p>
+               </dd>
+            </dlentry>
+            <dlentry>
+               <dt>Arbortext XML Editor <xref format="html" scope="external"
+                        href="https://www.ptc.com/en/products/service-lifecycle-management/arbortext/editor">Website zum Arbortext XML Editor</xref>
+               </dt>
+               <dd>
+                  <p>Arbortext XML Editor, früher bekannt als EPIC ist sehr betagt. Bekanntermassen ist sein Tabelleneditor etwas buggy.</p>
+               </dd>
+            </dlentry>
+         </dl>
+      </section>
+      <section>
+         <title>WYSIWYG Desktop</title>
+         <p>XMetal kann so konfiguriert werden, dass bei einer einfachen DTD der Content Bereich wie Word aussieht. Auch Code Editoren, wie OxygenXML<indexterm>Tools<indexterm>oXygen XML Editor</indexterm>
+            </indexterm> bieten diese Möglichkeit. Das Key-Handling bei dieser Variante zeigt aber schnell, dass die UX noch weit von herkömmlichen Textverarbeitungssystem, wie Word oder OpenOffice entfernt ist.  </p>
+      </section>
+      <section>
+         <title>WYSIWYM Online</title>
+         <dl>
+            <dlhead>
+               <dthd>Editor</dthd>
+               <ddhd>Beschreibung</ddhd>
+            </dlhead>
+            <dlentry>
+               <dt>Oxygen XML WebAuthor <xref format="html" scope="external"
+                        href="https://www.oxygenxml.com/oxygen-xml-web-author/app/oxygen.html">Der oXygen XML Web Editor im Web</xref>
+               </dt>
+               <dd>
+                  <p>Dieser Online-Editor verwendet auf der Serverseite dieselbe Logik, wie das Desktop Programm des Herstellers. Das führt dazu, dass bei jedem Tastendruck eine Verbindung zum Server aufgebaut wird, und die Verarbeitung langsam werden kann. Zum Betrieb und bzgl. Customizing ist einschlägiges Java-Know-How erforderlich.</p>
+               </dd>
+            </dlentry>
+            <dlentry>
+               <dt>FontoXML <xref format="html" scope="external" href="https://www.fontoxml.com/">FontoXML Webeditor</xref>
+               </dt>
+               <dd>
+                  <p>FontoXML sieht schon fast aus wie Word. Neben der WYSWYG/M Darstellung, kann auch die XML Struktur in einem Seitenpanel angezeigt werden.</p>
+               </dd>
+            </dlentry>
+            <dlentry>
+               <dt>XEditor <xref format="html" scope="external" href="http://www.xeditor.com/portal">Homepage des webbasierten XEditors</xref>
+               </dt>
+               <dd>
+                  <p>Xeditor benutzt XSLT Transformationen, um aus der Eingabe die Editoransicht zu generieren. Beim Abspeichern wird der umgekehrte Weg bestritten. Das mag zwar auf den ersten Blick etwas holprig erscheinen, wie aber auch Tektur beweist, funktioniert das ganze recht gut und schnell.</p>
+               </dd>
+            </dlentry>
+            <dlentry>
+               <dt>Xopus <xref format="html" scope="external" href="http://xopusfiddle.net/VT7T/3/">Homepage des veralteten Xopus XML Editors</xref>
+               </dt>
+               <dd>
+                  <p>Xopus ist wohl der älteste web-basierte XML Editor. Ich hatte damit schon 2008 zu tun, als er für ein Redaktionssystem evaluiert wurde. Wir haben uns dann für eine eigene nicht-generische Lösung basierend auf dem Webeditor CKEditor entschieden.</p>
+               </dd>
+            </dlentry>
+         </dl>
+         <p>Das Customizing dieser Editoren erfordert einen sehr hohen Aufwand. Es müssen diverse Ressourcen angepasst werden, wie XSLT Skripte, XSD Schemas, CSS und Javascript. Das Schema wird meist über Kommandozeilentools in eine JS Repräsentation überführt. </p>
+         <p>Aus diesem Grund bieten einige Hersteller spezielle Schulungen an, wo man die Bedienung erlernen kann. Aus meiner Sicht ist das Problem "Webbasierter XML Editor" weltweit noch nicht ausreichend gelöst.</p>
+         <p>Die Kosten für den Betrieb rangieren um die 1000 EUR monatl. für ein 20 Benutzer-Setup.</p>
+      </section>
+   </body>
+</topic>

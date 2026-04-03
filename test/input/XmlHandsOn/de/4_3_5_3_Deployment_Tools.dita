@@ -1,0 +1,81 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!DOCTYPE topic
+  PUBLIC "-//OASIS//DTD DITA Topic//EN" "topic.dtd">
+<topic id="id36c3f63e-dd10-4093-a16c-cbee33673613">
+   <title>Deployment-Tools</title>
+   <body>
+      <p>Will man eine größere MarkLogic Applikation maintainen, dann wird man um einen
+Build- / Deployment-Manager<indexterm>Deployment-Manager</indexterm> nicht herumkommen. Denn gewöhnlich gilt es einen
+Entwicklungsserver, einen Testserver und einen Prod-Server zu pflegen.<indexterm>Tools für MarkLogic<indexterm>mlproj</indexterm>
+         </indexterm>
+      </p>
+      <p>ml-gradle <xref format="html" scope="external"
+               href="https://github.com/marklogic-community/ml-gradle">Projektseite auf GitHub zu ml-gradle</xref> und 
+ml-proj <xref format="html" scope="external" href="http://mlproj.org/">Website des mlproj Projekts</xref> 
+sind solche Tools. Das eine basiert auf der populären Java-Buildchain
+gradle <xref format="html" scope="external" href="https://gradle.org/">Website des Build-Tools gradle</xref>, 
+das andere ist eine NodeJS Applikation vom gleichen Maintainer, wie die 
+zuvor beschriebene <xref format="dita" scope="local" type="concept"
+               href="4_3_5_1_EXPath_Konsole.dita">EXPath Konsole</xref>.</p>
+      <p>Wie ich bei einer größeren Evaluierungssaufgabe aber herausfinden konnte, eignen sich beide Tools
+eher für Projekte, die von der grünen Wiese aus gestartet werden, weil sie auf
+Namenskonventionen in der Dateistruktur setzen.</p>
+      <p>Beide beanspruchen zwar für sich eine (fast) vollständige Konfigurierbarkeit der Projektstruktur, 
+jedoch ist diese mit einigen Fallstricken behaftet, so dass ich eine Migration eines Bestandsprojekts
+leider nicht empfehlen kann.</p>
+      <section>
+         <title>ml-gradle</title>
+         <p>
+            <b>ml-gradle</b> basiert auf dem populären Java Build-Tool 
+ml-gradle <xref format="html" scope="external"
+                  href="https://github.com/marklogic-community/ml-gradle">Projektseite auf GitHub zu ml-gradle</xref>
+            <indexterm>Tools für MarkLogic<indexterm>ml-gradle</indexterm>
+            </indexterm>.
+Mittels vordefinierter oder eigener Tasks werden JSON Dateien automatisiert erstellt, die als Payload für REST Calls auf MarkLogic
+fungieren. Dabei wird die MarkLogic REST API <xref format="html" scope="external" href="https://docs.marklogic.com/guide/rest-dev">Dokuseite zur MarkLogic REST API</xref> bedient. 
+Bei der Deployment-Aktion selbst wird schliesslich das Payload eingesammelt und abgesetzt.</p>
+         <p>Grds. ist diese Idee nicht verkehrt, es gibt aber nun mehrere Stellen, an denen die Konfiguration modifiziert werden kann -
+was sich bei fehlender Disziplin der Entwickler natürlich eher nachteilig auswirken könnte:</p>
+         <ul>
+            <li>
+               <p>Setzen vordefinierter Properties <xref format="html" scope="external"
+                        href="https://github.com/marklogic-community/ml-gradle/wiki/Property-reference">Properties für das MarkLogic Deployment-Tool ml-gradle</xref> in der Datei <codeph>gradle.properties</codeph>
+               </p>
+            </li>
+            <li>
+               <p>Mittels vordefinierter Create-Tasks <xref format="html" scope="external"
+                        href="https://github.com/marklogic-community/ml-gradle/wiki/Generating-new-resources">Dokuseite zu ml-gradle bzgl. der Tasks zum Erzeugen neuer Ressourcen</xref>, z.B. <codeph>gradle mlNewDatabase</codeph>
+               </p>
+               <p> werden Skelett-Dateien erzeugt, die man manuell bzgl. fehlender Konfigurationsinformationen vervollständigt.</p>
+            </li>
+            <li>
+               <p>Es gibt einen Token-basierten Mechanismus <xref format="html" scope="external"
+                        href="https://github.com/marklogic-community/ml-gradle/wiki/Configuring-resources">Dokuseite zu ml-gradle bzgl. Konfiguration von "Payload-Files"</xref>, mit dem vordefinierte Platzhalter in Konfigurationsdateien (Payload-Files) dynamisch ersetzt werden.</p>
+            </li>
+            <li>
+               <p>Eigene Groovy-Tasks können implementiert werden. Diese werden z.B. in der Datei <codeph>build.gradle</codeph> eingebunden. Beispiel für einen einfachen Groovy-Task <xref format="html" scope="external"
+                        href="https://github.com/marklogic-community/ml-gradle/wiki/Debugging-module-loading">Beispiel für einen einfachen Groovy-Task auf der Dokuseite zu ml-gradle</xref>
+               </p>
+            </li>
+         </ul>
+      </section>
+      <section>
+         <title>mlproj</title>
+         <p>
+            <b>mlproj</b> ist eine NodeJS Applikation von Florent Georges <xref format="html" scope="external" href="http://fgeorges.org/">Homepage von Florent Georges</xref>. Wie auch bei ml-gradle würde ich den Umzug einer bestehenden Projektstruktur
+auf mlproj aber nicht empfehlen, sondern damit ein Projekt von der grünen Wiese aus starten.</p>
+         <p>Während es bei ml-gradle darum geht, den Überblick über mehrere, teilweise automatisch generierte, Konfigurationsdateien und -optionen zu behalten, geschieht die Konfiguration bei mlproj in nur einer Datei <codeph>prod.json</codeph> bzw. <codeph>dev.json</codeph>, welche die Einstellungen einer Basiskonfiguration <codeph>base.json</codeph> übernimmt bzw. überschreibt.</p>
+         <p>Natürlich ist der Erweiterungsmechanismus nicht ganz so mächtig, wie bei ml-gradle - schliesslich fehlt eine ausgewachsene Build-Chain als Unterbau. Ein NodeJS Programmierer wird damit aber gut zurechtkommen. Der Quellcode wirkt aufgeräumt und das Projekt ist gut dokumentiert.</p>
+         <p>Beide Tools haben einen "Watch"-Modus, bei dem die Dateistruktur des Entwicklers überwacht wird. Sobald sich eine Datei ändert, wird diese nach MarkLogic hochgeladen. Als Beispiel für die umfangreichen Konfigurationsmöglichkeiten ist folgend der Docstring des "Watch"-Modus in mlproj wiedergegeben:</p>
+         <pre xml:space="preserve">mlproj watch [-a srv|-b db] [-s src|-/ dir|-1 file] [what]
+
+-a, --as, --server &lt;srv&gt; server, get its modules database
+-b, --db, --database &lt;db&gt; target database
+-B, --sys, --system-database &lt;db&gt; the name of the target system db
+-s, --src, --source-set &lt;dir&gt; source set to watch
+-/, --dir, --directory &lt;dir&gt; directory to watch
+-1, --doc, --document &lt;file&gt; file to watch
+&lt;what&gt; source set or directory to watch</pre>
+      </section>
+   </body>
+</topic>

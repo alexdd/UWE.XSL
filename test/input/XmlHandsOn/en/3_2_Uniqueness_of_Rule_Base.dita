@@ -1,0 +1,193 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!DOCTYPE topic
+  PUBLIC "-//OASIS//DTD DITA Topic//EN" "topic.dtd">
+<topic id="ida418237e-b29f-4ec8-960f-1707108b9f59">
+   <title>Uniqueness of the Rule Base </title>
+   <body>
+      <p>The rule base<indexterm>Concepts<indexterm>Rule Base</indexterm>
+         </indexterm> of XSLT can probably accommodate an infinite number of rules, if we disregard our hardware limitations. However, the programmer is responsible for the completeness, uniqueness and consistency of the rule base.<fn callout="H"><p>UWE test footnote (8/40, callout H): DITA fn maps to UWE footnote/key/desc.</p><p outputclass="fn-add">UWE supplement (fn-add) for the footnote index.</p></fn></p>
+      <p>To ensure the uniqueness of rules, there are various mechanisms.</p>
+      <section>
+         <title>Order of Match Rules</title>
+         <p>Normally, exactly one rule should match a specific node in a specific scenario. If there is a conflict, at least with <b>Saxon</b>, the rule that was declared last in the stylesheet is used.</p>
+         <p>Knowing this circumstance is important precisely when you have to take over existing stylesheet code. Following the motto "Never change a running system", you should clean things up very carefully in this regard.</p>
+      </section>
+      <section>
+         <title>Evaluation Precedence</title>
+         <p>Match rules<indexterm>Concepts<indexterm>Match Rules</indexterm>
+            </indexterm> are sorted according to their specificity, and the one that best applies to a node in a given scenario is used for evaluation. Generally, the rules are sorted according to the following criteria:<indexterm>Concepts<indexterm>Priority</indexterm>
+            </indexterm>
+         </p>
+         <ol>
+            <li>
+               <p>Imported template rules always have a lower priority than the rules of the importing stylesheet.</p>
+            </li>
+            <li>
+               <p>Templates with a higher priority attribute take precedence.</p>
+            </li>
+            <li>
+               <p>Templates without a priority are automatically assigned a default priority. The highest default priority is <codeph>0.5</codeph>.</p>
+            </li>
+            <li>
+               <p>This default priority is calculated based on the conditions or wildcards attached to a match rule: </p>
+               <ul>
+                  <li>
+                     <p>If multiple templates match, the most specific one is used for evaluation.</p>
+                  </li>
+                  <li>
+                     <p>The most specific template is determined based on the priorities.</p>
+                  </li>
+                  <li>
+                     <p>Simple element names (e.g. "para") have priority <codeph>0</codeph>.</p>
+                  </li>
+                  <li>
+                     <p>Wildcards (e.g. <codeph>*, @*</codeph>) have priority <codeph>-0.25</codeph>
+                     </p>
+                  </li>
+                  <li>
+                     <p>Node tests for other nodes (e.g. <codeph>comment(), node()</codeph>, etc.) have priority <codeph>-0.5</codeph>
+                     </p>
+                  </li>
+                  <li>
+                     <p>In all other cases the priority is <codeph>0.5</codeph>.</p>
+                  </li>
+               </ul>
+               <p>Examples:</p>
+               <ul>
+                  <li>
+                     <p>
+                        <codeph>para -&gt; 0</codeph>
+                     </p>
+                  </li>
+                  <li>
+                     <p>
+                        <codeph>h:* -&gt; -0.25</codeph>
+                     </p>
+                  </li>
+                  <li>
+                     <p>
+                        <codeph>* -&gt; -0.25</codeph>
+                     </p>
+                  </li>
+                  <li>
+                     <p>
+                        <codeph>node() -&gt; -0.25</codeph>
+                     </p>
+                  </li>
+                  <li>
+                     <p>
+                        <codeph>contents/para -&gt; 0.5</codeph>
+                     </p>
+                  </li>
+                  <li>
+                     <p>
+                        <codeph>contents/* -&gt; 0.5</codeph>
+                     </p>
+                  </li>
+               </ul>
+            </li>
+            <li>
+               <p>With a command line option in <b>Saxon</b>, you can specify that the transformation aborts as soon as there is a conflict in rule evaluation<indexterm>Concepts<indexterm>Rule Evaluation</indexterm>
+                  </indexterm>.</p>
+            </li>
+         </ol>
+      </section>
+      <section>
+         <title>Import and Default Rule</title>
+         <p>As stated in point 1 of the section above, all<indexterm>Concepts<indexterm>Import Precedence</indexterm>
+            </indexterm> rules in an imported stylesheet have a lower priority than those in the importing stylesheet. This circumstance can be exploited to include a default rule<indexterm>Concepts<indexterm>Default Rule</indexterm>
+            </indexterm>, for example:</p>
+         <pre xml:space="preserve">&lt;xsl:template match="*" mode="#all"/&gt;</pre>
+         <p>Since this rule is in an imported stylesheet, it has lower priority than all other rules and only applies when no other match rules are defined for a traversed node.</p>
+         <p>This is practical, for example, to identify unhandled elements - for this purpose, the above rule would not be empty but would, for instance, write a yellow-highlighted warning text directly into the output format.</p> |  |                                                    Rejected by , .           |  |                                                    Rejected by , .           |  |                                                    Rejected by , .           |  |                                                    Rejected by , .           |   |                                                    Rejected by , .           |   |                                                    Rejected by , .           |   |                                                    Rejected by , .           |   |                                                    Rejected by , .           |   |                                                    Rejected by , .       <p>An empty default rule, on the other hand, is useful when, for example, nodes in the XML tree should be automatically trimmed in an <b>XML-to-XML migration</b>...</p>
+      </section>
+      <section>
+         <title>Priorities</title>
+         <p>All<indexterm>Concepts<indexterm>Priority</indexterm></indexterm> match rules are assigned a priority. The stylesheet developer has the option to override this priority. The attribute [[code:@priority]] on the match rule is used for this purpose. A use case for priorities would be, for example, the following filter scenario</p>
+         <p>
+            <b>Example: Seminar Management</b>
+         </p>
+         <ul>
+            <li>
+               <p>The input instance should be filtered in a preprocessing step.</p>
+            </li>
+            <li>
+               <p>Seminar elements that do not meet special conditions should be marked:</p>
+               <ul>
+                  <li>
+                     <p>The seminar element has an "end date" field that has expired.</p>
+                  </li>
+                  <li>
+                     <p>Multiple instructors are assigned to the seminar element, even though the seminar element is of type "Single".</p>
+                  </li>
+                  <li>
+                     <p>No instructor is assigned to the seminar element.</p>
+                  </li>
+               </ul>
+            </li>
+            <li>
+               <p>There may certainly be seminar elements that meet all three conditions. However, to avoid overfilling the error log, the filters should be executed according to their priorities.</p>
+            </li>
+         </ul>
+         <p>Translated into XSLT templates, this requirement could be implemented as follows:</p>
+         <pre xml:space="preserve">&lt;xsl:template match="Seminar[Ende-Datum/xs:date(.) le current-date()]" 
+              priority="30" mode="filter-seminare"&gt; 
+  &lt;xsl:element name="Filtered-Seminar" namespace="{namespace-uri()}"&gt; 
+    &lt;xsl:attribute name="reason"&gt;termed-seminar&lt;/xsl:attribute&gt; 
+    &lt;xsl:apply-templates select="node()|@*" mode="filter-seminare"/&gt; 
+  &lt;/xsl:element&gt; 
+&lt;/xsl:template&gt; 
+
+&lt;xsl:template match="Seminar[Type eq 'SINGLE' and count(dozenten/dozent) gt 1]"
+              priority="20" mode="filter-seminare"&gt; 
+  &lt;xsl:element name="filtered-Seminar" namespace="{namespace-uri()}"&gt; 
+    &lt;xsl:attribute name="reason"&gt;dozenten-count&lt;/xsl:attribute&gt; 
+    &lt;xsl:apply-templates select="node()|@*" mode="filter-seminare"/&gt; 
+  &lt;/xsl:element&gt; 
+&lt;/xsl:template&gt; 
+
+&lt;xsl:template match="Seminar[not(dozenten/dozent)]" mode="filter-seminare"&gt; 
+  &lt;xsl:element name="filtered-Seminar" namespace="{namespace-uri()}"&gt; 
+    &lt;xsl:attribute name="reason"&gt;dozenten-missing&lt;/xsl:attribute&gt; 
+    &lt;xsl:apply-templates select="node()|@*" mode="filter-seminare"/&gt; 
+  &lt;/xsl:element&gt; 
+&lt;/xsl:template&gt;</pre>
+         <p>In addition to the use of the <codeph>@priority</codeph> attribute<indexterm>XSLT Constructs<indexterm>Priority Attribute</indexterm>
+            </indexterm>
+            <indexterm>Attributes<indexterm>priority</indexterm>
+            </indexterm> and the <codeph>@mode</codeph> attribute described below, it is also interesting to note that the filtered seminar elements here are not deleted but renamed. This way, they can be further processed in a subsequent transformation step (keyword: <xref format="dita" scope="local" type="concept" href="4_1_1_Pre_Transformations.dita">Pre-Transformations </xref>) without interfering with the regular processing.</p>
+      </section>
+      <section>
+         <title>Mode Attributes</title>
+         <p>On all templates<indexterm>
+               <indexterm/>
+            </indexterm> you have the option to specify a self-declared mode. When the XSLT processor is then pushed in a certain direction, cf. <xref format="dita" scope="local" type="concept" href="3_1_Push_vs_Pull_Stylesheets.dita">Push vs. Pull Stylesheets</xref>, only those rules are used for evaluation that are in the same mode as the <codeph>apply-templates</codeph> call itself.</p>
+         <p>For example, you might want to treat titles in chapters differently than titles in the table of contents, because in the TOC, for instance, no footnote markers should be displayed. </p>
+         <p>Expressed in templates, such an instruction would look like this:</p>
+         <pre xml:space="preserve">&lt;xsl:template match="title" mode="toc"&gt;
+  &lt;div class="toc-entry"&gt;
+    &lt;xsl:apply-templates select="node()[not(self::footnote)]"/&gt;
+  &lt;/div&gt;
+&lt;/xsl:template&gt;
+
+&lt;xsl:template match="title"&gt;
+  &lt;h1&gt;
+    &lt;xsl:apply-templates/&gt;
+  &lt;/h1&gt;
+&lt;/xsl:template&gt;</pre>
+         <p>The TOC generation could then proceed as follows:</p> |  |                                                    Rejected by , .           |  |                                                    Rejected by , .           |  |                                                    Rejected by , .           |   |                                                    Rejected by , .           |   |                                                    Rejected by , .           |   |                                                    Rejected by , .           |   |                                                    Rejected by , .           |   |                                                    Rejected by , .       <pre xml:space="preserve">&lt;xsl:for-each select="chapter"&gt;
+  &lt;xsl:apply-templates select="title" mode="toc"&gt;
+&lt;/xsl:for-each&gt;</pre>
+         <p>Regarding the uniqueness of the rule base, you can thus form execution groups using the mode attribute<indexterm>XSLT Constructs<indexterm>Mode Attribute</indexterm>
+            </indexterm>
+            <indexterm>Attributes<indexterm>mode</indexterm>
+            </indexterm>. </p>
+         <hazardstatement type="warning">
+            <messagepanel>
+               <typeofhazard>As with specifying priorities, in this way you can set rules that are never executed because they were perhaps disconnected during a refactoring measure and then forgotten.</typeofhazard>
+               <howtoavoid>The [[code:mode]] attribute should therefore also be used with caution and sparingly.</howtoavoid>
+            </messagepanel>
+         </hazardstatement>
+      </section>
+   </body>
+</topic>

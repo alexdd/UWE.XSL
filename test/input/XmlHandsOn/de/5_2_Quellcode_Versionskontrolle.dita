@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!DOCTYPE topic
+  PUBLIC "-//OASIS//DTD DITA Topic//EN" "topic.dtd">
+<topic id="id40a639ea-9dea-4971-815a-ad610eee748d">
+   <title>Quellcode-Versionskontrolle</title>
+   <body>
+      <p>Um Zurückverfolgen zu können, was man an den Kunden ausgeliefert hat, welche Meilensteine auf dem Weg zum fertigen
+Produkt zurücklegt wurden - und ganz allgemein, um den Überblick über Quellcodeänderungen zu behalten, empfiehlt sich der Einsatz eines Versionskontrollsystems.</p>
+      <p>Mittlerweile ist <b>GIT</b> vom Linux Erfinder Linus Toralds das Mass aller Dinge. Je nach Anwendungsfall gibt es aber auch (historische) Alternativen.</p>
+   </body>
+</topic>

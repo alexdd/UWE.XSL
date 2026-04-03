@@ -1,0 +1,275 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!DOCTYPE topic
+  PUBLIC "-//OASIS//DTD DITA Topic//EN" "topic.dtd">
+<topic id="id151ff813-79c6-45da-8a7c-b4270a0db0de">
+   <title>Web Apps with MarkLogic</title>
+   <body>
+      <p>
+         <indexterm>Tools for MarkLogic<indexterm>Configuration via cURL</indexterm>
+         </indexterm> 
+      </p>
+      <section>
+         <title>Configuration with cURL</title>
+         <p>cURL <xref format="html" scope="external" href="https://de.wikipedia.org/wiki/CURL">cURL</xref> is a common 
+command-line tool<indexterm>Tools<indexterm>cURL</indexterm>
+            </indexterm> for sending web requests to a server.</p>
+         <note>
+            <p>The example queries on these pages were mostly taken from the MarkLogic documentation pages, but have been
+adapted for Windows machines. Instead of shell scripts with various peculiarities, you can also put the code snippets
+into batch files and execute them.</p>
+         </note>
+         <p>MarkLogic listens on port <codeph>8002</codeph> with its Configuration Manager application. cURL requests
+for remote configuration can also be sent via this port.</p>
+         <p>To create a database, you issue the following cURL command:</p>
+         <pre xml:space="preserve">curl -X POST  --anyauth -u admin:admin --header "Content-Type:application/json" 
+              -d '{\"database-name\":\"xml-scrapper-content\"}' 
+              http://localhost:8002/manage/v2/databases</pre>
+         <hazardstatement type="caution" status="changed">
+            <messagepanel>
+               <typeofhazard>On my Windows machine, I could not execute the command as described in the MarkLogic docs[[fn:https://docs.marklogic.com/REST/POST/manage/v2/databases*Doku-Seite zum Anlegen einer MarkLogic Datenbank mit cURL]] 
+because the JSON first had to be escaped with backslashes. Furthermore, in PowerShell the [[code:curl]] command is aliased
+to a Windows program[[fn:https://daniel.haxx.se/blog/2016/08/19/removing-the-powershell-curl-alias/*Anleitung zur Entfernung des curl Alias auf Windows]]</typeofhazard>
+               <howtoavoid>
+                  <b>Remedy:</b> Escape the JSON string and remove the cURL alias on Windows.</howtoavoid>
+            </messagepanel>
+         </hazardstatement>
+         <p>Analogously, you create a "forest" that the database defined above requires:</p>
+         <pre xml:space="preserve">curl --anyauth --user alex:anoma66 -X POST -d '{\"forest-name\": \"xml-scrapper-forrest\", 
+                                                \"database\": \"xml-scrapper-content\"}' 
+               -i -H "Content-type: application/json" http://localhost:8002/manage/v2/forests</pre>
+         <p>The console acknowledges the successful event with these messages:</p>
+         <pre xml:space="preserve">HTTP/1.1 201 Created
+Location: /manage/v2/forests/12099403305847426321
+Content-type: application/xml; charset=UTF-8
+Cache-Control: no-cache
+Expires: -1
+Server: MarkLogic
+Content-Length: 0
+Connection: Keep-Alive
+Keep-Alive: timeout=5</pre>
+         <p>The success message can also be easily verified in the Configuration Manager overview on port 8003. 
+Now we can populate the new database with the <b>MarkLogic Content Pump</b> 
+            <indexterm>Tools for MarkLogic<indexterm>Content Pump</indexterm>
+            </indexterm>.</p>
+         <p>To do this, we load the following example XML, located in a folder <codeph>input-files</codeph>, into the database:</p>
+         <pre xml:space="preserve">&lt;test&gt;
+   &lt;title&gt;Test Datei&lt;/title&gt;
+   &lt;chapter&gt;
+      &lt;title&gt;Test Kapitel 1&lt;/title&gt;
+      &lt;content&gt;Kapitel Inhalt 1&lt;/content&gt;
+   &lt;/chapter&gt;
+   &lt;chapter&gt;
+      &lt;title&gt;Test Kapitel 2&lt;/title&gt;
+      &lt;content&gt;Kapitel Inhalt 2&lt;/content&gt;
+   &lt;/chapter&gt;
+   &lt;chapter&gt;
+      &lt;title&gt;Test Kapitel 2&lt;/title&gt;
+      &lt;content&gt;Kapitel Inhalt 2&lt;/content&gt;
+   &lt;/chapter&gt;
+&lt;/test&gt;</pre>
+         <note>
+            <p>We will correct the typo in the above XML in the following chapter.</p>
+         </note>
+         <p>This is done with the command:</p>
+         <pre xml:space="preserve">mlcp import -database xml-scrapper -host localhost -username admin -password admin 
+            -input_file_path input-files -input_file_type aggregates 
+            -aggregate_record_element chapter 
+            -output_collections /chapter 
+            -output_uri_prefix /chapter/ 
+            -output_uri_suffix .xml</pre>
+         <p>Now we still need to create an application server in MarkLogic to be able to run our own XQuery scripts.
+In a file <codeph>server-setup.json</codeph> we define our server settings:</p>
+         <pre xml:space="preserve">{ "server-name":"xml-scrapper",
+  "root":"c:\\xquery",
+  "port":"8088",
+  "content-database":"xml-scrapper-content",
+  "server-type":"http",
+  "group-name":"Default"
+}</pre>
+         <p>We send this to the server with the following cURL command:</p>
+         <pre xml:space="preserve">curl -X POST --digest -u alex:anoma66 -H "Content-type: application/json" 
+     -d @server-setup.json http://localhost:8002/manage/v2/servers</pre>
+         <p>In the web interface, we can verify that everything worked:</p>
+         <fig>
+            <title>Configuring an App Server on MarkLogic</title>
+            <desc>In the [[code:Configure]] tab we can configure the App Server on MarkLogic.</desc>
+            <image href="../images/create-app-server-1_67.png"/>
+         </fig>
+         <p>The configuration can of course also be done via the web interface on port 8001, or via
+XQuery scripts through the console on port 8000. Some scripts for this purpose can be found on the 
+MarkLogic Developer pages <xref format="html" scope="external"
+                  href="https://docs.marklogic.com/guide/admin-api/configure">MarkLogic Admin API</xref>
+         </p>
+         <p>After these preparations, we can now equip our app server with scripts, as
+described in the following section. We place the scripts in the root directory <codeph>c:\xquery</codeph>,
+which we defined above, and can call them via a web request, e.g. like this:</p>
+         <pre xml:space="preserve">http://localhost:8088/test.xqy</pre>
+      </section>
+      <section>
+         <title>Implementation as XQuery Script</title>
+         <p>In this section, we will generate an HTML page with a table of contents from the previously loaded data.</p>
+         <p>Let's start with a script <codeph>book.xqy</codeph> in the directory <codeph>C:\xml-scrapper</codeph>
+         </p>
+         <pre xml:space="preserve">xquery version "1.0-ml";
+
+xdmp:set-response-content-type("text/html"),
+let $pages :=
+&lt;html&gt;
+    &lt;body&gt;
+        {
+            for $chapter in collection("/chapter")/descendant::chapter
+                return (
+                    &lt;h3&gt;{ $chapter/title/text() }&lt;/h3&gt;,
+                    &lt;p&gt;{ $chapter/content/text() }&lt;/p&gt; 
+                )
+        }
+    &lt;/body&gt;
+&lt;/html&gt;
+return $pages</pre>
+         <fig expanse="column" frame="all" scale="50" status="changed">
+            <title>First output of our small XQuery script for a website</title>
+            <desc>
+               <b>Result:</b> The chapters of the web page are written out one after another. This is of course not yet optimal</desc>
+            <image href="../images/book_68.png"/>
+         </fig>
+         <hazardstatement type="caution" status="changed">
+            <messagepanel>
+               <typeofhazard>Here we notice that we included Chapter 2 twice. This is a typo.</typeofhazard>
+               <howtoavoid>We will take care of this error later.</howtoavoid>
+            </messagepanel>
+         </hazardstatement>
+         <p>Now we want to split the individual pages across different web pages and display a table of contents on a cover page.</p>
+         <pre xml:space="preserve">xquery version "1.0-ml";
+
+declare variable $page:= xdmp:get-request-field('page');
+
+xdmp:set-response-content-type("text/html"),
+let $page-id := if ($page) then $page else ('cover'),
+$pages :=
+&lt;html&gt;
+    &lt;body&gt;
+        {
+            &lt;h3&gt;Welcome to The Book&lt;/h3&gt;,
+            for $chapter at $position in collection("/chapter")/descendant::chapter
+                return (
+                    if ($page-id = 'cover') then (
+                        &lt;p&gt;&lt;a href="?page={$position}"&gt;{ $chapter/title/text() }&lt;/a&gt;&lt;/p&gt;
+                    ) else (
+                        (: TODO :)
+                    )
+                )
+        }
+    &lt;/body&gt;
+&lt;/html&gt;
+return $pages</pre>
+         <p>Compared to an XSLT solution, you will notice that trying to use the XPath function
+<codeph>fn:position()</codeph> is futile. Instead, you use the <codeph>at</codeph> keyword in the <codeph>for</codeph> loop.</p>
+         <p>On the initial cover page, a linked table of contents is now displayed:</p>
+         <fig expanse="column" frame="all" scale="50" status="changed">
+            <title>Second output of our small XQuery script for a website</title>
+            <desc>The second step of our web application is a table of contents with linked chapters</desc>
+            <image href="../images/toc_69.png"/>
+         </fig>
+         <p>The request parameter <codeph>$page</codeph> declared in the script is now evaluated to generate the chapter pages.</p>
+         <pre xml:space="preserve">xquery version "1.0-ml";
+
+declare variable $page:= xdmp:get-request-field('page');
+
+xdmp:set-response-content-type("text/html"),
+let $page-id := xs:decimal(if ($page) then $page else '0'),
+$pages := collection("/chapter"),
+$website :=
+&lt;html&gt;
+    &lt;body&gt;
+        {
+            &lt;h3&gt;Welcome to The Book&lt;/h3&gt;,
+            for $chapter at $position in $pages/descendant::chapter
+                return (
+                    if ($page-id lt 1 or  $page-id gt count($pages)) then (
+                        &lt;p&gt;&lt;a href="?page={$position}"&gt;{ $chapter/title/text() }&lt;/a&gt;&lt;/p&gt;
+                    ) else  if ($page-id = $position) then (
+                        &lt;h2&gt;{ $chapter/title/text() }&lt;/h2&gt;,
+                        &lt;p&gt;{ $chapter/content/text() }&lt;/p&gt;,
+                        &lt;p&gt;&lt;a href="{ xdmp:get-request-path() }"&gt;Back To Cover&lt;/a&gt;&lt;/p&gt;
+                    ) else ()
+                )
+         }
+    &lt;/body&gt;
+&lt;/html&gt;
+return $website</pre>
+         <p>Here the <codeph>at</codeph> keyword is interesting, as it allows you to capture the position in the loop.
+<codeph>fn:position()</codeph>, as commonly used in XSLT, would not work here. That we can evaluate conditional
+statements in functional languages as expressions, we have already learned here,
+cf. the <codeph>sx:decimal</codeph> cast instruction for type conversion.</p>
+         <p>Our website would actually be perfect if it weren't for the faulty data import, having imported Chapter 2 twice. To clean up the data, a data migration is necessary.</p>
+      </section>
+      <section>
+         <title>Web Apps with Multiple Databases</title>
+         <p>In MarkLogic, each app server is assigned to exactly one content database.
+All data that the web application accesses should be present in it.</p>
+         <p>However, it is possible via a small "hack" to query other databases within the same
+MarkLogic web app. For this, you use the <codeph>xdmp:eval-in</codeph> function.</p>
+         <p>As the name suggests, an expression is <i>evaluated</i> <i>in</i> another database.</p>
+         <p>The example on the MarkLogic documentation page <xref format="html" scope="external" href="https://docs.marklogic.com/xdmp:eval-in">xdmp:eval-in</xref>
+looks as follows:</p>
+         <pre xml:space="preserve">xquery version "0.9-ml"
+declare namespace my='http://mycompany.com/test'
+
+let $s :=
+      "xquery version '0.9-ml'
+       declare namespace my='http://mycompany.com/test'
+       define variable $my:x as xs:string external
+       concat('hello ', $my:x)"
+return
+    (: evaluate the query string $s using the variables
+       supplied as the second parameter to xdmp:eval :)
+    xdmp:eval-in($s,
+                 xdmp:database("Documents"),
+		 (xs:QName("my:x"),
+		 "world"))
+
+=&gt; hello world</pre>
+         <p>A practical example from the real world would look like this:</p>
+         <pre xml:space="preserve">declare function local:remove-sql-view($sql-view-name) {
+  let $url := concat('/sql-views/', $sql-view-name)
+  return xdmp:eval-in('xquery version "1.0-ml";
+               declare variable $url as xs:string external;
+               xdmp:document-delete($url),
+               xdmp:schema-database(),
+               (xs:QName('url'),$url)
+  )
+};</pre>
+         <p>Here a previously set SQL View, cf. chapter <xref format="dita" scope="local" type="concept"
+                  href="4_2_1_1_1_SQL_Views_in_MarkLogic.dita">SQL Views in MarkLogic</xref>, which by default
+resides in the schema database, is deleted from the system.</p>
+      </section>
+      <section>
+         <title>Data Correction with the Console</title>
+         <p>To correct the faulty data from the previous chapter, we open a console session on port <codeph>8000</codeph>:</p>
+         <note>
+            <p>We notice in the following figure that the <codeph>mlcp</codeph> command has prefixed the <codeph>document-name</codeph> with the absolute path of the file in 
+the file system of the importing machine.</p>
+         </note>
+         <fig>
+            <title>MarkLogic Console Session with a Collection Iteration</title>
+            <desc>In the console, we can list the documents stored in the collection.</desc>
+            <image href="../images/console_70.png"/>
+         </fig>
+         <p>We see that we created Chapter 2 twice in the collection. So we need to correct the 3rd element in the 
+collection:</p>
+         <pre xml:space="preserve">xdmp:node-replace(doc("/chapter//C:/input-files/data.xml-0-3.xml")/chapter/title, 
+    &lt;title&gt;Test Kapitel 3&lt;/title&gt;);
+xdmp:node-replace(doc("/chapter//C:/input-files/data.xml-0-3.xml")/chapter/content, 
+
+    &lt;title&gt;Kapitel Inhalt 3&lt;/title&gt;);</pre>
+         <hazardstatement type="caution" status="changed">
+            <messagepanel>
+               <typeofhazard>The semicolon at the end of the statement is a MarkLogic-specific feature and indicates that
+this statement should be executed within a transaction.</typeofhazard>
+               <howtoavoid>In other XQuery implementations, this feature may not be available.</howtoavoid>
+            </messagepanel>
+         </hazardstatement>
+         <p>After this correction, the data should be correct again and our web app is finished...</p>
+      </section>
+   </body>
+</topic>

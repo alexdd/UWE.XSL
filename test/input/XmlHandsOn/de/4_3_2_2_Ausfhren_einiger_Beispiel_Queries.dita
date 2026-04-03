@@ -1,0 +1,126 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!DOCTYPE topic
+  PUBLIC "-//OASIS//DTD DITA Topic//EN" "topic.dtd">
+<topic id="idc25b36c1-64f0-4fff-8445-8dc096e98096">
+   <title>Ausführen einiger Beispiel-Queries </title>
+   <body>
+      <p>Wie im vorherigen Kapitel beschrieben, muss in der Konsolensitzung zwischen Anlegen der Originalversion und der Aktualisierung eine Verzögerung eingebaut werden, um irgendwie das "Zeitloch" zu simulieren, in dem - wenn wir bei dem vorherigen Beispiel bleiben -  der Personalausweis als Verlust gemeldet war, aber tatsächlich schon wieder in meinem Besitz war.</p>
+      <p>Ohne jetzt groß <codeph>validStart</codeph> und <codeph>validEnd</codeph> anzupassen, habe ich das Beispiel mit einer Verzögerung von 50 Sekunden lassen:</p>
+      <pre xml:space="preserve">( xdmp:invoke-function(local:create-temporal-fields#0),
+  xdmp:invoke-function(local:create-range-index-fields#0),
+  xdmp:invoke-function(local:create-axes#0),
+  xdmp:invoke-function(local:create-temporal-collection#0),
+  xdmp:invoke-function(local:insert-original#0),
+  <b>xdmp:sleep(50000),</b>
+  xdmp:invoke-function(local:insert-update#0))</pre>
+      <p>Und bekomme folgendes Ergebnis:</p>
+      <table pgwide="1" frame="all" scale="50" status="changed">
+         <desc>Diese Daten wurde aus der Exploreransicht der Konsolensitzung entnommen. </desc>
+         <tgroup cols="5">
+            <colspec colwidth="*" colname="col0"/>
+            <colspec colwidth="*" colname="col1"/>
+            <colspec colwidth="*" colname="col2"/>
+            <colspec colwidth="*" colname="col3"/>
+            <colspec colwidth="*" colname="col4"/>
+            <thead>
+               <row>
+                  <entry colname="col0">
+                     <p>Document</p>
+                  </entry>
+                  <entry colname="col1">
+                     <p>validStart</p>
+                  </entry>
+                  <entry colname="col2">
+                     <p>validEnd</p>
+                  </entry>
+                  <entry colname="col3">
+                     <p>systemStart</p>
+                  </entry>
+                  <entry colname="col4">
+                     <p>systemEnd</p>
+                  </entry>
+               </row>
+            </thead>
+            <tbody>
+               <row>
+                  <entry colname="col0">
+                     <p>duesel_alex_270774.2462380991258156208.xml</p>
+                  </entry>
+                  <entry colname="col1">
+                     <p>2019-03-19T14:17:00</p>
+                  </entry>
+                  <entry colname="col2">
+                     <p>
+                        <b>unendlich</b>
+                     </p>
+                  </entry>
+                  <entry colname="col3">
+                     <p>2019-03-19T13:18:28</p>
+                  </entry>
+                  <entry colname="col4">
+                     <p>2019-03-19T13:19:18</p>
+                  </entry>
+               </row>
+               <row>
+                  <entry colname="col0">
+                     <p>duesel_alex_270774.819911042637597172.xml</p>
+                  </entry>
+                  <entry colname="col1">
+                     <p>2019-03-19T14:17:00</p>
+                  </entry>
+                  <entry colname="col2">
+                     <p>2019-03-19T14:18:00</p>
+                  </entry>
+                  <entry colname="col3">
+                     <p>2019-03-19T13:19:18</p>
+                  </entry>
+                  <entry colname="col4">
+                     <p>
+                        <b>unendlich</b>
+                     </p>
+                  </entry>
+               </row>
+               <row>
+                  <entry colname="col0">
+                     <p>duesel_alex_270774.xml</p>
+                  </entry>
+                  <entry colname="col1">
+                     <p>2019-03-19T14:18:00</p>
+                  </entry>
+                  <entry colname="col2">
+                     <p>
+                        <b>unendlich</b>
+                     </p>
+                  </entry>
+                  <entry colname="col3">
+                     <p>2019-03-19T13:19:18</p>
+                  </entry>
+                  <entry colname="col4">
+                     <p>
+                        <b>unendlich</b>
+                     </p>
+                  </entry>
+               </row>
+            </tbody>
+         </tgroup>
+      </table>
+      <p>Wie man sieht, müsste sich jetzt das Zeitloch von 50 Sekunden der Systemzeiten innerhalb der gültigen Zeiten befinden, um das Beispiel mit dem verlorenen Ausweis zumindest für die Zeitspanne von 50 Sekunden simulieren zu können. </p>
+      <p>Das korrekte Setup bleibt an dieser Stelle dem geneigten Leser selbst überlassen.</p>
+      <p>Zwei Queries, die die Werte in der Tabelle illustrieren, sind bspw. folgende:</p>
+      <fig>
+         <desc>Bei dieser Query werden alle Dokumente gesucht, deren gültiger Zeitraum, den Zeitraum zwischen 14:17 Uhr und 14:18 Uhr umfasst. Das sind das Split-Dokument und das Original-Dokument. Beide haben den Status "gestolen", da erst um 14:18 Uhr der Fund bekannt gegeben wurde.</desc>
+         <image href="../images/result1-x_64.png"/>
+      </fig>
+      <fig>
+         <desc>Verändert man den Zeitraum nach 18:00 Uhr, so wird das Original - wie erwartet - durch das Update verdrängt.</desc>
+         <image href="../images/result2-x_65.png"/>
+      </fig>
+      <fig>
+         <desc>Die aktuelle Version des temporal verwalteten Dokuments ist in der Collection "latest" gespeichert.</desc>
+         <image href="../images/result_3-x_66.png"/>
+      </fig>
+      <p>Wie man sieht, kann man - ausreichend Lösungsphantasie vorausgesetzt - einiges mit diesen Queries anstellen. Hilfreich ist sicherlich auch die umfangreiche Liste der Vergleichsoperatoren, die MarkLogic zum Vergleichen von Zeiträumen bereitstellt: ISO Operators <xref format="html" scope="external"
+               href="https://docs.marklogic.com/guide/temporal/searching#id_92200">ISO normierte Operatoren in MarkLogic zum Vergleichen von Zeiträumen</xref> und ALLEN Operators <xref format="html" scope="external"
+               href="https://docs.marklogic.com/guide/temporal/searching#id_98704">Allen (ALN) Vergleichsoperatoren für Zeiträume</xref>.</p>
+   </body>
+</topic>

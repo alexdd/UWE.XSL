@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!DOCTYPE topic
+  PUBLIC "-//OASIS//DTD DITA Topic//EN" "topic.dtd">
+<topic id="id393fb2a6-4167-4c6d-b725-54cbdb77bbb6">
+   <title>Standards</title>
+   <body>
+      <p>
+         <xref format="dita" scope="local" type="concept" href="3_4_Schemas.dita">Schemas</xref> without standards would only be a means to check the syntactic and 
+structural correctness of XML data
+ - in a company-wide context.<fn callout="M"><p>UWE test footnote (13/40, callout M): DITA fn maps to UWE footnote/key/desc.</p></fn></p>
+      <p>If, however, the data is to be
+ communicated across company boundaries, it is advisable
+ to align the information architecture or schemas with a standard that
+ is also readily accessible to others.</p>
+      <p>As practice shows, however, there are always some application-specific
+ exceptions that cannot be covered by a standard.</p>
+      <p>Therefore, it is important to ensure that the standard can be extended
+ for application-specific needs without falsifying the standardized information.</p>
+   </body>
+</topic>

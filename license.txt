@@ -1,6 +1,21 @@
-UWE XSL stylesheets (uwe.xsl, uwe_pretransformation.xsl, uwe_localize.xml)
-=========================================================
-		
+UWE.XSL ï¿½ DITA publishing toolchain
+====================================
+
+Copyright (C) 2012-2026 Alex Duesel <tekturcms@gmail.com>
+
+SPDX-License-Identifier: LGPL-3.0-only
+
+Unless a file states otherwise, the materials in this repositoryï¿½including
+XSLT and XProc sources under src/, pipeline and helper scripts under scripts/,
+XML catalogs and configuration under conf/ (e.g. conf/params/, conf/fop/), and related assetsï¿½are
+licensed under the GNU Lesser General Public License v3.0 only, reproduced in
+full below.
+
+Sample DITA content under test/input/ is for demonstration only; third-party
+libraries and fonts fetched by scripts/install.sh or shipped in lib/ are listed
+in THIRD-PARTY-NOTICES (see also lib/ï¿½ license files where present).
+
+
 	GNU LESSER GENERAL PUBLIC LICENSE
                        Version 3, 29 June 2007
 
@@ -182,7 +197,7 @@ Chinese group label letters were created using file Unihan_Readings.txt (http://
             
             COPYRIGHT AND PERMISSION NOTICE
             
-            Copyright © 1991-2009 Unicode, Inc. All rights reserved. Distributed under the Terms of Use in http://www.unicode.org/copyright.html.
+            Copyright ï¿½ 1991-2009 Unicode, Inc. All rights reserved. Distributed under the Terms of Use in http://www.unicode.org/copyright.html.
             
             Permission is hereby granted, free of charge, to any person obtaining a copy of the Unicode data files and any associated documentation (the "Data Files") or Unicode software and any associated documentation (the "Software") to deal in the Data Files or Software without restriction, including without limitation the rights to use, copy, modify, merge, publish, distribute, and/or sell copies of the Data Files or Software, and to permit persons to whom the Data Files or Software are furnished to do so, provided that (a) the above copyright notice(s) and this permission notice appear with all copies of the Data Files or Software, (b) both the above copyright notice(s) and this permission notice appear in associated documentation, and (c) there is clear notice in each modified Data File or in the Software as well as in the documentation associated with the Data File(s) or Software that the data or software has been modified.
             

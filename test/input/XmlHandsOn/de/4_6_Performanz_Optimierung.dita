@@ -1,0 +1,87 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!DOCTYPE topic
+  PUBLIC "-//OASIS//DTD DITA Topic//EN" "topic.dtd">
+<topic id="id12e4c2b3-d41d-40ca-978d-37a86f74c206">
+   <title>Performanz-Optimierung </title>
+   <body>
+      <p>
+         <indexterm>Performanzsteigerung</indexterm>Bei der Verarbeitung größerer Datenmengen, gibt es mehrere Optionen. Entweder
+man verlässt sich auf die Performanzoptimierung, die im XSLT-  / XQuery-
+Prozessor implementiert ist, bzw. benutzt Methoden, wie <xref format="dita" scope="local" type="concept"
+               href="4_1_3_XSLT_Streaming.dita">XSLT Streaming</xref> -
+oder man setzt eine Ebene darunter an und schaut zu, was Java so treibt.</p>
+      <p>Es ist natürlich auch möglich seine Algorithmen umzustricken, den Code zu
+optimieren und das ganze (noch) kryptischer zu machen. Aber ganz nach dem
+Motto <i>"Never Change a running system"</i> wird vielerorts zunächst einmal an
+der Basis gefeilt.</p>
+      <section>
+         <title>Heap Memory und Garbage Collector</title>
+         <p>
+            <indexterm>Performanzsteigerung<indexterm>Heap Memory und Garbage Collector</indexterm>
+            </indexterm>Wenn ich mich recht an mein Informatikstudium erinnere, dann sammelt ein
+Garbage Collector automatisch Speicherblöcke ein, die das Java Programm (Saxon) nicht
+mehr braucht und übergibt diese an die Heap Memory Verwaltung. Ein Heap
+ist meistens ein automatisch balanzierender Baum, der die freigewordenen 
+Speicherblöcke  der Größe nach sortiert verwaltet.</p>
+         <p>Da auch der Garbage Collector zur selben Zeit läuft, wie unser Java Programm,
+können sich die beiden ins Gehege kommen. Hat man für das Java Programm
+zuviel Heap-Space reserviert, dann lagert der Garbage Collector seine 
+temporären Erzeugnisse auf einen langsamen Swap-Bereich aus. Hat man 
+dagegen zuwenig reserviert, dann ist nicht genügend Platz für das Hauptprogramm vorhanden.</p>
+         <p>Gebräuchliche Fehlermeldungen sind z.B.:</p>
+         <ul>
+            <li>
+               <p>
+                  <codeph>java.lang.OutOfMemoryError: Java heap space</codeph>
+               </p>
+            </li>
+            <li>
+               <p>
+                  <codeph>java.lang.OutOfMemoryError: GC Overhead limit exceeded</codeph>
+               </p>
+            </li>
+         </ul>
+         <p>Mehr dazu steht auf der Oracle Webseite zum Thema <xref format="html" scope="external"
+                  href="https://docs.oracle.com/javase/8/docs/technotes/guides/troubleshoot/memleaks002.html">Doku-Seite auf Oracle zum Thema Memory Fehlermeldungen</xref>
+         </p>
+         <p>Diese viel diskutierten Heap Einstellungen der Java Virtual Machine (JVM), wirken sich 
+besonders bei Applikationen aus, bei denen der Speicherverbrauch zu einer bestimmten
+Zeit nicht vorhersehbar ist, z.b. bei einem Java-Game mit Action- und auch mal Rollenspielelementen.</p>
+         <p>Hier wäre ein Tuning bzgl. der JVM Heap Optionen angebracht, zumal man das Spiel auch für
+Spieler optimieren will, die nicht auf die leistungsfähigste Hardware zugreifen können.</p>
+         <p>Gängige Optionen, die man beim Java-Aufruf mitgibt, sind bspw.</p>
+         <ul>
+            <li>
+               <p>
+                  <codeph>Xms&lt;size&gt; set initial Java heap size</codeph>
+               </p>
+            </li>
+            <li>
+               <p>
+                  <codeph>Xmx&lt;size&gt; set maximum Java heap size</codeph>
+               </p>
+            </li>
+            <li>
+               <p>
+                  <codeph>Xss&lt;size&gt; set java thread stack size</codeph>
+               </p>
+            </li>
+         </ul>
+         <p>Mehr dazu steht auf der Oracle Webseite zum Thema <xref format="html" scope="external"
+                  href="https://www.oracle.com/technetwork/java/gc-tuning-5-138395.html">Doku-Seite auf Oracle zum Thema Heap-Memory Einstellungen und Garbage Collector</xref>
+         </p>
+         <p>Für die batch-orientierten Prozesse bei der XML Verarbeitung sind diese Optionen meist nicht ausschlaggebend, 
+da der Heap bei der Transformation eines grösseren Dokuments linear belastet wird. Hier ist es sogar so, dass man
+das obere Limit für den Heap-Speicher mit der unteren Schranke gleichsetzen sollte, um der JVM die Auswahl des geeigneten Speicherbereichs
+zur Laufzeit zu ersparen.</p>
+         <p>Ich benutze für meine performanzlastigen Transformationen eine 10 GB Heap Schranke:</p>
+         <p>
+            <codeph>-Xms10g -Xmx10g</codeph>
+         </p>
+         <p>Damit lassen sich auch sehr große XML Dateien mit einer Pipeline, wie MorganaXProc <xref format="html" scope="external" href="https://www.xml-project.com/morganaxproc/">Homepage zum MorganaXProc Projekt</xref>
+            <indexterm>Tools<indexterm>MorganaXProc</indexterm>
+            </indexterm>,
+die die Ergebnisdokumente der einzelnen Transformationsschritte im Speicher behalten, effizient verarbeiten.</p>
+      </section>
+   </body>
+</topic>

@@ -1,0 +1,44 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!DOCTYPE topic
+  PUBLIC "-//OASIS//DTD DITA Topic//EN" "topic.dtd">
+<topic id="id8cdcf3f1-7456-4043-bfec-894e823a9a06">
+   <title>XSLT - die Programmiersprache im XML Bereich </title>
+   <body>
+      <p>XSLT ist im Bereich XML ganz gross. Ausserhalb kennt man sie allerdings kaum. Im TIOBE Index <xref format="html" scope="external" href="https://de.wikipedia.org/wiki/TIOBE-Index">Jährlicher Inder der beliebtesten Programmiersprachen</xref> von 2003 rangierte XSLT einmal auf Platz 60 an letzter Stelle der Liste <xref format="html" scope="external" href="https://bit.ly/2ARgKCJ">Beleg, dass XSLT einmal im TIOBE Index erschienen ist</xref>.<fn callout="B"><p>UWE-Testfußnote (2/40, Callout B): DITA-fn wird in UWE zu footnote/key/desc.</p></fn></p>
+      <p>Im Bereich XML wäre aber ohne XSLT nicht viel möglich. Es gibt einige exotische Anwendungsgebiete in denen XML effizient 
+mit LISP Dialekten verarbeitet wird, bspw. die Verarbeitung von - nach XML konvertierten - EDI X12 <xref format="html" scope="external" href="https://en.wikipedia.org/wiki/ASC_X12">ASC X12</xref> Nachrichten.</p>
+      <p>SGML, der Vorreiter von XML, hat sich als S1000D Standard <xref format="html" scope="external" href="https://en.wikipedia.org/wiki/S1000D">Wikipediaseite zum S1000D Standard</xref> im Bereich Luftfahrt wacker gehalten. Hier wird teilweise noch mit proprietären Programmiersprachen, wie <b>Metamorphosis</b>, gearbeitet.</p>
+      <p>Alternativen zu XSLT finden sich im entsprechendem Wikipedia-Artikel <xref format="html" scope="external" href="https://de.wikipedia.org/wiki/XSL_Transformation">Wikipedia Seite zur Programmiersprache XSLT</xref>.</p>
+      <p>Wir konzentrieren uns im Rahmen dieser Lektüre auf XSLT und XSL Stylesheets - damit wird i.A. die Verbindung von XSLT, XSL-FO und XPath gemeint, um damit XML Daten in andere Formate zu überführen, bspw. PDF.</p>
+      <p>Beispielsweise werden die Autohandbücher führender Hersteller mittels XSL gesetzt, deren Eingabedaten aufbereitet und zur Weiterverarbeitung transformiert. </p>
+      <p>Ein paar interessante Stichpunkte:</p>
+      <fig expanse="spread" frame="all" scale="50" status="changed">
+         <image href="../images/Sandpiper_5.svg"/>
+      </fig>
+      <ul>
+         <li>
+            <p>XSLT hat gerade noch den Status "Programmiersprache", weil man damit eine Turing Maschine <xref format="html" scope="external" href="http://www.unidex.com/turing/utm.htm">Turing Maschine in XSLT programmiert</xref> programmieren kann.</p>
+         </li>
+         <li>
+            <p>Mit HTML oder einer Templater Sprache (z.B. JSP) würde das nicht funktionieren.</p>
+         </li>
+         <li>
+            <p>XSLT ist keine imperative Sprache, d.h es werden keine Anweisungen der Reihe nach abgearbeitet, sondern eine deklarative Sprache, d.h für jedes Ereignis - besser gesagt - für jeden durchlaufenen DOM Knoten wird eine gefundene und vom Programmierer deklarierte Regel angewendet.</p>
+         </li>
+         <li>
+            <p>Ausserdem gibt es funktionale Anteile, um bspw. die deklarierten Regeln rekursiv anwenden zu können. So können auch größere Programme sinnvoll strukturiert werden.</p>
+         </li>
+         <li>
+            <p>XSLT wird oft mit XSL gleichgesetzt. Aber XSL <xref format="html" scope="external" href="https://de.wikipedia.org/wiki/XSL_Transformation">W3C Seiten zu The Extensible Stylesheet Language Family (XSL)</xref> ist mehr:</p>
+            <ul>
+               <li>
+                  <p>Zum einen kommt noch XPath hinzu: XPath erlaubt komplizierte Berechnungen und Selektionen auf den DOM <xref format="html" scope="external" href="https://de.wikipedia.org/wiki/Document_Object_Model">Wikipedia Seite zum Document Object Model</xref> Knoten eines XML Dokuments.</p>
+               </li>
+               <li>
+                  <p>Zum anderen ist auch XSL-FO Bestandteil der XSL Spezifikation <xref format="html" scope="external" href="https://www.w3.org/TR/xsl/">XSL-FO-Spezifikation</xref>. XSL-FO Tags sind Anweisungen für einen XSL-FO Prozessor, der aus einem XSL-FO Dokument ein PDF Dokument generiert. Es sind auch andere Ausgabe-Formate, wie bspw. RTF möglich.</p>
+               </li>
+            </ul>
+         </li>
+      </ul>
+   </body>
+</topic>

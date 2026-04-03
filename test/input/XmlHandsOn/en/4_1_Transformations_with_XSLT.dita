@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!DOCTYPE topic
+  PUBLIC "-//OASIS//DTD DITA Topic//EN" "topic.dtd">
+<topic id="id64e2c429-6836-44f8-9b53-af2692ba49f0">
+   <title>Transformations with XSLT </title>
+   <body>
+      <p>XSLT is the standard solution for XML transformations. There are, however, some exotic alternatives, such as:<fn callout="G"><p>UWE test footnote (33/40, callout G): DITA fn maps to UWE footnote/key/desc.</p></fn></p>
+      <ul>
+         <li>
+            <p>[[link]]Metamorphosis[[fn:https://de.wikipedia.org/wiki/XSL_Transformation#MetaMorphosis*Wikipedia entry on the XML processor Metamorphosis]] is a proprietary language by the company Ovidius GmbH in Berlin. It is mainly used in the area of publishing in the aerospace / defense sector.</p>
+         </li>
+         <li>
+            <p>There are also novelties, such as a recreation of the XSLT syntax in Erlang: xmerl_xs  <xref format="html" scope="external" href="http://erlang.org/doc/man/xmerl_xs.html">xmerl_xs</xref>
+            </p>
+         </li>
+      </ul>
+      <p>In this chapter, some selected topics on XML processing with XSLT are presented. The goal is neither completeness nor the best/most elegant solution, but rather the presentation of a use case scenario with a potential approach - the way I would tackle it ...</p>
+   </body>
+</topic>

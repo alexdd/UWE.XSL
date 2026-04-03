@@ -1,0 +1,137 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!DOCTYPE topic
+  PUBLIC "-//OASIS//DTD DITA Topic//EN" "topic.dtd">
+<topic id="id309017d9-9fd7-4a34-b13a-4bf8ecea4556">
+   <title>Namespaces</title>
+   <body>
+      <p>When you want to process XML instances from different sources with XSLT, you will
+inevitably have to deal with the topic of namespaces<indexterm>XML Constructs<indexterm>Namespaces</indexterm>
+         </indexterm> to avoid conflicts in 
+the element selectors.<fn callout="I"><p>UWE test footnote (9/40, callout I): DITA fn maps to UWE footnote/key/desc.</p></fn></p>
+      <p>Especially with chained transformations, it can also happen 
+that a namespace is unexpectedly generated in the output
+that the following processing step does not understand because it was not declared there.</p>
+      <p>There are several ways to declare a namespace in the stylesheet. Assuming
+that exactly one source and at most one configuration file is processed 
+in a transformation step, the stylesheet element could look like this:</p>
+      <pre xml:space="preserve">&lt;xsl:stylesheet version="2.0" 
+  xmlns:xsl="http://www.w3.org/1999/XSL/Transform"
+  xmlns:xs="http://www.w3.org/2001/XMLSchema" 
+  xmlns:tektur="https://namespace-eigener-xslt-funktionen"
+  xmlns="http://namespace-in-der-xml-eingabe.com/"
+  xpath-default-namespace="https://namespace-der-konfigdatei.com/"
+  exclude-result-prefixes="#all"&gt;</pre>
+      <ul>
+         <li>
+            <p>The <codeph>xsl</codeph>namespace is of course the namespace for the XSLT instructions and must be declared.</p>
+         </li>
+         <li>
+            <p>The <codeph>xs</codeph>namespace is necessary if you want to work with typed values. It allows the inclusion of data types
+according to the XML Schema specification <xref format="html" scope="external" href="https://de.wikipedia.org/wiki/XML_Schema">XML Schema</xref> and thus 
+better validation of the stylesheet at compile time.</p>
+         </li>
+         <li>
+            <p>The declaration of a custom prefixed namespace allows the inclusion of custom XSLT functions, 
+such as the inclusion of the FunctX library <xref format="html" scope="external" href="http://www.xsltfunctions.com/">FunctX</xref>
+            </p>
+         </li>
+         <li>
+            <p>The unprefixed namespace is the <b>default namespace</b> and can handle a namespace from the input</p>
+         </li>
+         <li>
+            <p>The <b>xpath-default-namespace</b> attribute specifies another namespace that can be used in XPath functions.
+In this field I would specify the namespace of a configuration or separate data file.</p>
+         </li>
+      </ul>
+      <p>In my view, more than one namespace in the input should be avoided in XML processing with XSLT - if possible.
+If necessary, it is advisable to normalize the input before processing and rename elements if needed. Otherwise, you can also declare custom namespace prefixes, such as:</p>
+      <pre xml:space="preserve">xmlns:ext="https://www.tekturcms.de/external-tools"</pre>
+      <p>and use them in XPath selections and match rules.</p>
+      <hazardstatement type="warning" status="changed">
+         <messagepanel>
+            <typeofhazard>If the input data contains namespaces that are not handled in the XSLT stylesheets - the namespace may only be attached
+to one very specific element - it can lead to unexpected results during the transformation - without an error message.</typeofhazard>
+            <howtoavoid>Therefore, the data should be analyzed very carefully regarding namespaces beforehand.</howtoavoid>
+         </messagepanel>
+      </hazardstatement>
+      <p>Namespaces in the input are therefore usually handled via the header declaration in the stylesheet file. Which namespace
+is ultimately written to the output depends on the currently processed context node:</p>
+      <ul>
+         <li>
+            <p>Elements that you create automatically receive the default namespace (unless you explicitly specify a namespace).</p>
+         </li>
+         <li>
+            <p>Elements that you copy carry the namespace they had in the input (unless you explicitly prevent this).</p>
+         </li>
+      </ul>
+      <p>There are several ways to control (or override) these two default behaviors:</p>
+      <pre xml:space="preserve">&lt;xsl:element name="{local-name()}" namespace="{namespace-uri()}"&gt;</pre>
+      <p>Here, an element is declared with the unprefixed namespace of the context node.
+If the context node does not have a different namespace, this ensures
+that the default namespace actually appears in the output.</p>
+      <pre xml:space="preserve">&lt;xsl:element name="meinelement" namespace="mein-namespace"&gt;</pre>
+      <p>Here, an element with a custom namespace specification is written to the output. More simply written:</p>
+      <pre xml:space="preserve">&lt;mein-element xmlns="mein-namespace"&gt;</pre>
+      <p>There is also an attribute on the <codeph>xsl:copy</codeph> element
+that can control the namespace copying process:</p>
+      <pre xml:space="preserve">&lt;xsl:template match="p"&gt;
+  &lt;xsl:copy copy-namespaces="no"&gt;
+     &lt;xsl:apply-templates/&gt;
+   &lt;/xsl:copy&gt;
+&lt;/xsl:template&gt;</pre>
+      <p>Here, the namespace on the <codeph>p</codeph> element is not written to the output.</p>
+      <p>Likewise, a default copy rule can be used that prohibits inheriting a namespace:</p>
+      <pre xml:space="preserve">&lt;xsl:template match="@* | node()"&gt;
+   &lt;xsl:copy inherit-namespaces="no"&gt;
+     &lt;xsl:apply-templates select="@* | node()"/&gt;
+   &lt;/xsl:copy&gt;
+&lt;/xsl:template&gt;</pre>
+      <section>
+         <title>In the Wild</title>
+         <p>In the wild, I recently stumbled upon the following problem:</p>
+         <pre xml:space="preserve">&lt;?xml version="1.0" encoding="UTF-8"?&gt;
+&lt;xsl:stylesheet xmlns:xsl="http://www.w3.org/1999/XSL/Transform"
+                xpath-default-namespace="https://tekturcms.de/schema/x12-xml/1.0"
+                exclude-result-prefixes="#all"
+                version="3.0"&gt;
+
+  &lt;xsl:template match="my-element"&gt;
+    &lt;neuer-name&gt;
+      &lt;xsl:apply-templates&gt;
+    &lt;/neuer-name&gt;
+  &lt;/xsl:template&gt;
+
+  [...]</pre>
+         <hazardstatement type="notice" status="changed">
+            <messagepanel>
+               <typeofhazard>Declared this way, the new element [[code:my-element]] would be placed in the output with an empty namespace, like [[code:&lt;neuer-name xmlns=""/&gt;]]. A subsequent transformation step cannot read this.</typeofhazard>
+               <howtoavoid>For this reason, I always place new elements in the output using the element constructor.</howtoavoid>
+            </messagepanel>
+         </hazardstatement>
+         <p>Example:</p>
+         <pre xml:space="preserve">&lt;xsl:template match="my-element"&gt;
+    &lt;xsl:element name="neuer-name" namespace="{namespace-uri()}"&gt;
+      &lt;xsl:apply-templates&gt;
+    &lt;/xsl:element&gt;
+  &lt;/xsl:template&gt;</pre>
+      </section>
+      <section>
+         <title>Namespaces in XQuery</title>
+         <p>While XSLT should serve to transform XML data into other (XML) formats, XQuery 
+serves, for example, to select data from different sources on a <b>NoSQL</b> database,
+harmonize them, and pass them on to processing workflows.</p> |  |                                                    Rejected by , .           |  |                                                    Rejected by , .           |  |                                                    Rejected by , .           |   |                                                    Rejected by , .           |   |                                                    Rejected by , .           |   |                                                    Rejected by , .       <p>That is why it is not so surprising to me that the namespace concept in XQuery somehow works
+better.</p>
+         <p>In order to be able to select data from an XML document with namespaces at all,
+all namespaces must be specified at the beginning of the XQuery expression. This looks like this:</p> |  |                                                    Rejected by , .           |  |                                                    Rejected by , .           |  |                                                    Rejected by , .           |   |                                                    Rejected by , .           |   |                                                    Rejected by , .           |   |                                                    Rejected by , .       <pre xml:space="preserve">xquery version "1.0-ml";
+
+import module namespace tektur = "http://www.teturcms.de/xquery/common" 
+                                  at "common.xqy";
+import module namespace mem = "http://xqdev.com/in-mem-update" 
+                                  at '/MarkLogic/appservices/utils/in-mem-update.xqy';
+declare namespace local = "https://tekturcms.de/code/alex-sandbox/1.0";
+declare namespace weiredns = "https://weired-ns-in-input-data.com/weired/ns";
+declare namespace xs = "http://www.w3.org/2001/XMLSchema"; </pre>
+         <p>Here, functions from other modules are first included. Those in a separate file <codeph>common.xqy</codeph>, as well as from the <codeph>mem</codeph> library in the<b> MarkLogic</b>
+environment. Then a namespace <codeph>local</codeph> is declared for custom functions within the source file, as well as the namespace <codeph>weiredns</codeph>, which is present in the input data. The namespace<codeph>xs</codeph> is set analogously to the XSLT example.</p> |  |                                                    Rejected by , .           |  |                                                    Rejected by , .           |  |                                                    Rejected by , .           |   |                                                    Rejected by , .           |   |                                                    Rejected by , .           |   |                                                    Rejected by , .       </section>
+   </body>
+</topic>

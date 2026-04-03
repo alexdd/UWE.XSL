@@ -1,0 +1,144 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!DOCTYPE topic
+  PUBLIC "-//OASIS//DTD DITA Topic//EN" "topic.dtd">
+<topic id="idb1719307-52da-4e1d-9aee-a3a6bb139d92">
+   <title>GIT Kommandos</title>
+   <body>
+      <p>Die wichtigsten GIT Befehle - Rubrik "Note-to-self":</p>
+      <dl>
+         <dlhead>
+            <dthd>Beschreibung</dthd>
+            <ddhd>Kommando / Beispiel</ddhd>
+         </dlhead>
+         <dlentry>
+            <dt>Bestehendes GIT Repository clonen</dt>
+            <dd>
+               <pre xml:space="preserve">git clone https://git.tekturcms.de/tekturcms/tektur.git</pre>
+               <note>
+                  <p>Wenn man sich auf der Kommandozeile bewegt, dann kann es sein, dass man keinen Zugriff auf den HTTP Endpoint von GutHub hat, auf der GitHub Website kann man sich auch die URL für die SSH Verbindung geben lassen.</p>
+                  <fig>
+                     <image href="../images/clone_82.png"/>
+                  </fig>
+               </note>
+            </dd>
+         </dlentry>
+         <dlentry>
+            <dt>GIT Repository clonen und alle GIT Submodule gleichzeitig clonen</dt>
+            <dd>
+               <pre xml:space="preserve">git clone --recurse-submodules git://github.com/foo/bar.git</pre>
+            </dd>
+         </dlentry>
+         <dlentry>
+            <dt>Veränderung einer Datei zum GIT Tracking hinzufügen, damit diese beim nächsten Commit erfasst wird</dt>
+            <dd>
+               <pre xml:space="preserve">git add pfad/im/git/projekt/zur/datei.txt</pre>
+               <p>Wildcards funktionieren auch</p>
+               <pre xml:space="preserve">git add *</pre>
+            </dd>
+         </dlentry>
+         <dlentry>
+            <dt>Alle Veränderungen in das lokale, geklonte Repository einchecken</dt>
+            <dd>
+               <pre xml:space="preserve">git commit -m "Form validation added”</pre>
+               <p>ohne die Dateien vorher explizit per [[code:add] zu registrieren</p>
+               <pre xml:space="preserve">git commit -a -m "Form Validation added"</pre>
+            </dd>
+         </dlentry>
+         <dlentry>
+            <dt>Alle vorhandenen Branches im Remote Repository holen</dt>
+            <dd>
+               <pre xml:space="preserve">git fetch</pre>
+            </dd>
+         </dlentry>
+         <dlentry>
+            <dt>Einen bestimmten Branch auschecken</dt>
+            <dd>
+               <pre xml:space="preserve">git checkout "TEKTUR-experimental-branch"</pre>
+            </dd>
+         </dlentry>
+         <dlentry>
+            <dt>Einen Branch anlegen</dt>
+            <dd>
+               <pre xml:space="preserve">git branch "TEKTUR-experimental-branch"</pre>
+            </dd>
+         </dlentry>
+         <dlentry>
+            <dt>Alle vorhanden Branches auflisten</dt>
+            <dd>
+               <pre xml:space="preserve">git branch</pre>
+            </dd>
+         </dlentry>
+         <dlentry>
+            <dt>Lokale Änderungen auf den Remote Branch pushen</dt>
+            <dd>
+               <pre xml:space="preserve">git push origin "TEKTUR-experimental-branch"</pre>
+            </dd>
+         </dlentry>
+         <dlentry>
+            <dt>Pull Request auf GitHub anlegen</dt>
+            <dd>
+               <fig>
+                  <image href="../images/pr_83.png"/>
+               </fig>
+            </dd>
+         </dlentry>
+         <dlentry>
+            <dt>Den Pull Request auf einen bestimmten Base-Branch beziehen</dt>
+            <dd>
+               <fig>
+                  <image href="../images/compare_84.png"/>
+               </fig>
+            </dd>
+         </dlentry>
+         <dlentry>
+            <dt>Zum Vorgänger eines beliebigen Commits wechseln</dt>
+            <dd>
+               <pre xml:space="preserve">git checkout '67b7474a773c4d6f76dc0915b290400b313c0bf5^'</pre>
+               <p>Hier ist das Dach-Zeichen wichtig, das angibt, dass der vorherige Commit ausgecheckt werden soll</p>
+            </dd>
+         </dlentry>
+         <dlentry>
+            <dt>Einen Commit rückgängig machen</dt>
+            <dd>
+               <pre xml:space="preserve">git revert '67b74'</pre>
+               <p>
+                  <codeph>git revert</codeph> erzeugt einen neuen Commit, der den angegeben Commit rückgängig macht </p>
+            </dd>
+         </dlentry>
+         <dlentry>
+            <dt>Ausgecheckten Branch mit einem anderen Branch mergen</dt>
+            <dd>
+               <pre xml:space="preserve">git merge experimental</pre>
+            </dd>
+         </dlentry>
+         <dlentry>
+            <dt>Grafisches Tool starten</dt>
+            <dd>
+               <pre xml:space="preserve">gitk</pre>
+            </dd>
+         </dlentry>
+         <dlentry>
+            <dt>Lokale Änderungen rückgängig machen</dt>
+            <dd>
+               <pre xml:space="preserve">git stash</pre>
+            </dd>
+         </dlentry>
+         <dlentry>
+            <dt>Auf Version des Git Repos auf dem Server zurücksetzen</dt>
+            <dd>
+               <pre xml:space="preserve">git reset --hard origin/master</pre>
+            </dd>
+         </dlentry>
+         <dlentry>
+            <dt>Branch mit master aktualisieren</dt>
+            <dd>
+               <p>Im Branch:So wird ein neuer Commit erzeugt...</p>
+               <pre xml:space="preserve">git merge origin/master</pre>
+               <p>So erscheint kein neuer Commit...</p>
+               <pre xml:space="preserve">git fetch
+git rebase origin/master</pre>
+            </dd>
+         </dlentry>
+      </dl>
+   </body>
+</topic>

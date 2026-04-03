@@ -1,0 +1,85 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!DOCTYPE topic
+  PUBLIC "-//OASIS//DTD DITA Topic//EN" "topic.dtd">
+<topic id="id86c96e00-9a1f-4187-beba-e5d9bd3a938b">
+   <title>Vererbung</title>
+   <body>
+      <p>Mit XSLT<indexterm>Konzepte<indexterm>Vererbung</indexterm>
+         </indexterm> kann man Konstrukte aus anderen Programmierparadigmen nachbilden, bspw. Vererbung. Dabei wird in einer Spezialisierung eine schon bereits getätigte Implementierung übernommen und erweitert oder eingeschränkt.<fn callout="T"><p>UWE-Testfußnote (20/40, Callout T): DITA-fn wird in UWE zu footnote/key/desc.</p><p outputclass="fn-add">UWE Zusatz (fn-add) für den Fußnotenindex.</p></fn></p>
+      <p>Der Vorteil dabei ist, dass man nicht alles nochmal neu schreiben muss. Das verkleinert die Redundanz, führt zu einer besseren Wartbarkeit und einer geringeren Fehleranfälligkeit.</p>
+      <section>
+         <title>Beispiel: Parameterisierung</title>
+         <p>Gewöhnlich implementiert man ein Stylesheet für ein bestimmtes Ausgabeformat und eine Produktvariante. Schrittweise werden dann weitere Varianten und Formate hinzugefügt.</p>
+         <p>Am komfortabelsten hat man es natürlich, wenn zu Beginn der Implementierung eine vollständige Spezifikation vorliegt... Das ist aber natürlich eher selten der Fall.</p>
+         <p>Aus diesem Grund ist es wichtig, sich eine gute Strategie zu überlegen, damit die Architektur nicht in Spaghetthi-Code ausartet.</p>
+         <p>Eine gute Option wäre, die XSLT Import Präzedenz auszunutzen, vgl. Kapitel <xref format="dita" scope="local" type="concept" href="3_2_Eindeutigkeit_der_Regelbasis.dita">Eindeutigkeit der Regelbasis</xref>.</p>
+         <p>Will man zu einem späteren Zeitpunkt weitere Parameter einzuführen, dann müsste ein Switch, wie der folgende, an mehreren Stellen im Code aktualisiert werden.</p>
+         <pre xml:space="preserve">&lt;xsl:choose&gt;
+    &lt;xsl:when test="$myParameter='this_option'"&gt;
+        &lt;!-- do this --&gt;
+    &lt;/xsl:when&gt;
+    &lt;xsl:when test="$myParameter='that_option'"&gt;
+        &lt;!-- do that --&gt;
+    &lt;/xsl:when&gt;
+        [...]
+&lt;/xsl:choose&gt;</pre>
+         <p>Besser ist es, wenn man ein Core-Stylesheet<indexterm>Parameterisierung<indexterm>Core-Stylesheet</indexterm>
+            </indexterm> pflegt, das für ein Format und eine Produktvariante<indexterm>Format- und Produktvarianten</indexterm> gut ausgetestet ist. Dieses Core-Stylesheet wird dann einfach für eine neue Variante importiert und relevante Teile werden für die neue "Spezialisierung"<indexterm>Konzepte<indexterm>Generalisierung und Spezialisierung</indexterm>
+            </indexterm> überschrieben. Beispielsweise könnte eine Regel zum Setzen des Headers auf jeder Seite so implementiert sein:</p>
+         <pre xml:space="preserve">&lt;xsl:template name="render-header"&gt;
+    &lt;!-- print logo on the left side spanning two rows--&gt;
+    &lt;!-- print some metadata right side first row --&gt;
+    &lt;!-- print a running header right side second row --&gt;
+&lt;/xsl:template&gt;</pre>
+         <p>Wird in einem neuen Format, bspw. A5, diese Logik ausgetauscht und nur eine Zeile gedruckt, z.B. weil man nicht so viel Platz hat, so würde in einem "abgeleiteten" Stylesheet einfach die Regel noch einmal implementiert.<indexterm>Parameterisierung<indexterm>Sub-Stylesheet</indexterm>
+            </indexterm>
+         </p>
+         <pre xml:space="preserve">&lt;xsl:choose&gt;
+&lt;xsl:template name="render-header"&gt;
+    &lt;!-- print a running header on left side --&gt;
+    &lt;!-- print logo on right side --&gt;
+&lt;/xsl:template&gt;</pre>
+         <p>Dieses Template hat nun Vorrang und wird zur Auswertung herangezogen, mit der Konsequenz, dass der Header nur einzeilig gedruckt wird. Das schöne an diesen "Named-Templates"<indexterm>Konzepte<indexterm>Named Template</indexterm>
+            </indexterm> ist auch, dass man sie innerhalb von Variablen verwenden kann:</p>
+         <pre xml:space="preserve">&lt;xsl:variable name="margin-width"&gt;
+    &lt;xsl:call-template name="get-margin-width"/&gt;
+&lt;/xsl:variable&gt;</pre>
+         <p>Das Template <codeph>get-margin-width</codeph> kann in einem "Sub"-Stylesheet überschrieben werden, ohne dass die Variablen-Zugriffe im Core-Stylesheet angepasst werden müssen. Eine Zuweisung, wie:</p>
+         <pre xml:space="preserve">width="{$margin-width}"</pre>
+         <p>müsste nirgendwo im Code nochmal angefasst werden, was natürlich sehr komfortabel ist.</p>
+      </section>
+      <section>
+         <title>Beispiel: Spezialisierte Fallunterscheidung</title>
+         <p>
+            <indexterm>Konzepte<indexterm>Spezialisierte Fallunterscheidung</indexterm>
+            </indexterm>Kommt ein Ausgabeformat zu einem späteren Zeitpunkt hinzu, so kann man die Vererbung nutzen um clever zwischen den Ausgabeformaten zu unterscheiden. Ein bestehendes Template <codeph>"cover"</codeph>:</p>
+         <pre xml:space="preserve">&lt;xsl:template match="cover"&gt;
+  &lt;fo:page-sequence master-reference="coverFront" force-page-count="auto"&gt;
+    &lt;fo:flow flow-name="xsl-region-body"&gt;
+    [...]
+  &lt;fo:page-sequence master-reference="coverBack" force-page-count="auto"&gt;
+    &lt;fo:flow flow-name="xsl-region-body"&gt;
+    [...]</pre>
+         <p>kann aufgesplittet werden in ein Template für eine Vor- und Rückseite:</p>
+         <pre xml:space="preserve">
+&lt;xsl:template match="cover"&gt;
+  &lt;fo:page-sequence master-reference="coverFront" force-page-count="auto"&gt;
+    &lt;fo:flow flow-name="xsl-region-body"&gt;
+      [...]
+&lt;/xsl:template&gt;
+    
+&lt;xsl:template name="cover-back-switch"&gt;
+  &lt;xsl:call-template name="cover-back"/&gt;
+&lt;/xsl:template&gt;
+    
+&lt;xsl:template name="cover-back"&gt;
+  &lt;fo:page-sequence master-reference="coverBack" force-page-count="auto"&gt;
+    &lt;fo:flow flow-name="xsl-region-body"&gt;
+      [...]</pre>
+         <p>Das Template <codeph>"cover-back-switch"</codeph> kann dann in einem Ausgabeformat überschrieben werden, um bspw. die Cover-Rückseite abhängig von einer Bedingung zu schalten. </p>
+         <p>
+            <indexterm>Design Pattern</indexterm>Einen Algorithmus in einer Superklasse grob zu strukturieren und Details in Unterklassen zu verfeinern, ist ein gängiges Design Pattern in der Objektorientierten Programmierung. Diese Methodik kann auch sehr schön mittels Named-Templates in XSLT realisiert werden. Nicht umsonst heisst das OO Pattern dazu Template Method <xref format="html" scope="external" href="https://en.wikipedia.org/wiki/Template_method_pattern">Wikipediaseite zum Template Method Pattern</xref>
+         </p>
+      </section>
+   </body>
+</topic>

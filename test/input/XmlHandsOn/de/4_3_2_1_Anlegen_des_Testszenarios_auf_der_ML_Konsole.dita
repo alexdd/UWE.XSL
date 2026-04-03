@@ -1,0 +1,184 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!DOCTYPE topic
+  PUBLIC "-//OASIS//DTD DITA Topic//EN" "topic.dtd">
+<topic id="id61bcaead-35e5-4f94-b719-e7708391915f">
+   <title>Anlegen des Testszenarios auf der ML Konsole</title>
+   <body>
+      <p>Die Codefragmente aus dem vorherigen Kapitel sind folgend für eine ML Konsolensitzung aufbereitet:<fn callout="N"><p>UWE-Testfußnote (40/40, Callout N): DITA-fn wird in UWE zu footnote/key/desc.</p><p outputclass="fn-add">UWE Zusatz (fn-add) für den Fußnotenindex.</p></fn></p>
+      <ul>
+         <li>
+            <p>Anlegen der temporalen Properties: <codeph>validStart</codeph>, <codeph>validEnd</codeph>, <codeph>systemStart</codeph>, <codeph>systemEnd</codeph>
+            </p>
+         </li>
+         <li>
+            <p>Anlegen der Indizes zum Suchen über Zeitbereiche: <codeph>database-range-field-index("dateTime", "systemStart",...</codeph>
+            </p>
+         </li>
+         <li>
+            <p>Anlegen der zwei Zeitachsen <codeph>system</codeph> und <codeph>valid</codeph>
+               <indexterm>Temporale Zeitachsen</indexterm>
+            </p>
+         </li>
+         <li>
+            <p>Anlegen der temporalen Collection <codeph>/perso-verluste</codeph>
+            </p>
+         </li>
+         <li>
+            <p>Anlegen des Originals am 1.2.2019</p>
+         </li>
+         <li>
+            <p>Aktualisierung am 6.2.2019</p>
+         </li>
+      </ul>
+      <pre xml:space="preserve">xquery version "1.0-ml";
+
+import module namespace admin = 
+  "http://marklogic.com/xdmp/admin" at "/MarkLogic/admin.xqy";
+import module namespace temporal = 
+  "http://marklogic.com/xdmp/temporal" at "/MarkLogic/temporal.xqy";
+
+declare namespace local = 'local:';
+declare variable $db := "alex-test";
+
+declare function local:create-temporal-fields()
+{
+  let $config := admin:get-configuration(),
+      $dbid := xdmp:database($db)
+  return 
+    try {
+      admin:save-configuration(
+        admin:database-add-field($config, $dbid, 
+        admin:database-metadata-field("validStart"))),
+      admin:save-configuration(
+        admin:database-add-field($config, $dbid, 
+        admin:database-metadata-field("validEnd"))),
+      admin:save-configuration(
+        admin:database-add-field($config, $dbid, 
+        admin:database-metadata-field("systemStart"))),
+      admin:save-configuration(
+        admin:database-add-field($config, $dbid, 
+        admin:database-metadata-field("systemEnd")))
+    } catch ($err) {}
+};
+
+declare function local:create-range-index-fields() 
+{
+  let $config := admin:get-configuration(),
+      $dbid := xdmp:database($db)
+  return
+    try {
+      admin:save-configuration(
+        admin:database-add-range-field-index($config, $dbid, 
+        admin:database-range-field-index("dateTime", "validStart", "", fn:true()))),
+      admin:save-configuration(
+        admin:database-add-range-field-index($config, $dbid, 
+        admin:database-range-field-index("dateTime", "validEnd", "", fn:true()))),
+      admin:save-configuration(
+        admin:database-add-range-field-index($config, $dbid, 
+        admin:database-range-field-index("dateTime", "systemStart", "", fn:true()))),
+      admin:save-configuration(
+        admin:database-add-range-field-index($config, $dbid, 
+        admin:database-range-field-index("dateTime", "systemEnd", "", fn:true())))
+    } catch ($err) {}  
+};
+
+declare function local:create-axes()
+{
+  try {
+    let $t1 := temporal:axis-create(
+          "valid",
+          cts:field-reference("validStart", "type=dateTime"),
+          cts:field-reference("validEnd", "type=dateTime")),
+        $t2 := temporal:axis-create(
+          "system",
+          cts:field-reference("systemStart", "type=dateTime"),
+          cts:field-reference("systemEnd", "type=dateTime"))
+     return ()
+   } catch ($err) {}
+};
+
+declare function local:create-temporal-collection() 
+{
+  try {
+    let $t:= temporal:collection-create("/perso-verluste", "system", "valid")
+    return ()
+  } catch ($err) {}
+};
+
+declare function local:insert-original()
+{
+  let $root := 
+    &lt;vorgang&gt;     
+      &lt;perso-id&gt;XYZ&lt;/perso-id&gt;    
+      &lt;name&gt;Alex Düsel&lt;/name&gt;   
+      &lt;status&gt;gestohlen&lt;/status&gt;
+    &lt;/vorgang&gt;,
+     $options :=   
+    &lt;options xmlns="xdmp:document-insert"&gt;     
+      &lt;metadata&gt;        
+        &lt;map:map xmlns:map="http://marklogic.com/xdmp/map"&gt;          
+          &lt;map:entry key="validStart"&gt;            
+	          &lt;map:value&gt;2019-02-01T08:23:11&lt;/map:value&gt;          
+	        &lt;/map:entry&gt;          
+	        &lt;map:entry key="validEnd"&gt;            
+	          &lt;map:value&gt;9999-12-31T11:59:59Z&lt;/map:value&gt;          
+	        &lt;/map:entry&gt;         
+         &lt;/map:map&gt;    
+      &lt;/metadata&gt;  
+    &lt;/options&gt;
+  return  temporal:document-insert("/perso-verluste", 
+                                   "duesel_alex_270774.xml", 
+                                   $root, $options)
+};
+
+declare function local:insert-update()
+{
+  let $root :=    
+    &lt;vorgang&gt;     
+      &lt;perso-id&gt;XYZ&lt;/perso-id&gt;    
+      &lt;name&gt;Alex Düsel&lt;/name&gt;   
+      &lt;status&gt;gefunden&lt;/status&gt;
+    &lt;/vorgang&gt;,
+    $options :=   
+    &lt;options xmlns="xdmp:document-insert"&gt;     
+      &lt;metadata&gt;        
+        &lt;map:map xmlns:map="http://marklogic.com/xdmp/map"&gt;          
+          &lt;map:entry key="validStart"&gt;            
+	          &lt;map:value&gt;2019-02-06T08:00:00&lt;/map:value&gt;          
+	        &lt;/map:entry&gt;          
+	        &lt;map:entry key="validEnd"&gt;            
+	          &lt;map:value&gt;9999-12-31T11:59:59Z&lt;/map:value&gt;          
+	        &lt;/map:entry&gt;         
+         &lt;/map:map&gt;    
+      &lt;/metadata&gt;  
+    &lt;/options&gt;
+  return  temporal:document-insert("/perso-verluste", 
+                                   "duesel_alex_270774.xml", 
+                                   $root, $options)
+};
+
+( xdmp:invoke-function(local:create-temporal-fields#0),
+  xdmp:invoke-function(local:create-range-index-fields#0),
+  xdmp:invoke-function(local:create-axes#0),
+  xdmp:invoke-function(local:create-temporal-collection#0),
+  xdmp:invoke-function(local:insert-original#0),
+<b>xdmp:sleep(50000),</b>
+  xdmp:invoke-function(local:insert-update#0))</pre>
+      <note>
+         <p>Beachtenswert ist hier,</p>
+         <ol>
+            <li>
+               <p>dass die einzelnen Schritte als Funktion über <codeph>xdmp:invoke-function</codeph> aufgerufen werden. Dieses Konstrukt wird normalerweise benutzt um eine Funktion anonym <xref format="html" scope="external" href="https://de.wikipedia.org/wiki/Anonyme_Funktion">Wikipedia Artikel zum Begriff Anonyme Funktion</xref> zu deklarieren und als Transaktion<indexterm>Transaktionen</indexterm> aufzurufen. Marklogic bietet weitere Möglichkeiten <xref format="html" scope="external" href="https://docs.marklogic.com/guide/app-dev/transactions">Arbeiten mit Transaktionen in MarkLogic Server</xref> transaktional zu arbeiten.</p>
+            </li>
+            <li>
+               <p>Um die 5 Tage zwischen Verlustmeldung und Wiederauffinden zu simulieren, wurde zwischem dem Anlegen der Dokumente ein <codeph>xdmp:sleep</codeph> Statement eingefügt.</p>
+            </li>
+         </ol>
+      </note>
+      <p>Lassen wir diese Query auf einer frischen Datenbank laufen, so erhalten wir die folgendes Ergebnis:</p>
+      <fig>
+         <desc>Nach der Ausführung obiger Query gibt es in der DB drei Dokumente, das Orginal, das Split-Dokument und die Aktualisierung. Das Split-Dokuments und das Original sind als Vorgänger mit Suffix gekennzeichnet.</desc>
+         <image href="../images/temporal-documents-1_60.png"/>
+      </fig>
+   </body>
+</topic>

@@ -1,0 +1,42 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!DOCTYPE topic
+  PUBLIC "-//OASIS//DTD DITA Topic//EN" "topic.dtd">
+<topic id="iddbe0e394-aeee-4b28-ace0-72dcd590c0f2">
+   <title>XSLT Streaming</title>
+   <body>
+      <p>Bei grossen, flach strukturierten Datenmengen gibt es zwei Möglichkeiten:<fn callout="X"><p>UWE-Testfußnote (24/40, Callout X): DITA-fn wird in UWE zu footnote/key/desc.</p><p outputclass="fn-add">UWE Zusatz (fn-add) für den Fußnotenindex.</p></fn></p>
+      <ol>
+         <li>
+            <p>Für einfache Sammel- und Auswertungsaufgaben schreibt man sich am besten einen kleinen Parser, z.B. mit der Python<indexterm>Programmiersprachen<indexterm>Python</indexterm>
+               </indexterm>sgmllib <xref format="html" scope="external" href="https://docs.python.org/2/library/sgmllib.html">Einfacher SGML Parser der Python Standard Bibliothek</xref>.</p>
+         </li>
+         <li>
+            <p>Für komplexere Aufgaben, in denen man nicht an jeder Stelle über den ganzen XML Baum navigiert und sich die Werte zusammensuchen suchen muss, kann man die Streaming Funktion des Saxon XSLT Prozessors verwenden.</p>
+         </li>
+      </ol>
+      <p>XSLT Streaming<indexterm>Verarbeitungsmethoden<indexterm>XSLT Streaming</indexterm>
+         </indexterm> ist in der XSLT Version 3.0 <xref format="html" scope="external" href="https://www.saxonica.com/html/documentation/sourcedocs/streaming/xslt-streaming.html">XSLT3.0 Streaming API</xref> neu hinzugekommen und in der
+kommerziellen Saxon-EE Lösung von Michael Kay
+         <indexterm>XML Gurus<indexterm>Michael Kay</indexterm>
+         </indexterm> implementiert. Bei dieser Methode wird kein Eingabebaum im Speicher aufgebaut, was zu einer drastischen Performanzsteigerung<indexterm>Performanzsteigerung</indexterm> führt.</p>
+      <p>Es gibt ein paar Regeln, die man bei der Verarbeitung großer Datenmengen über die Streaming Funktionen beachten sollte:</p>
+      <fig expanse="spread" frame="all" scale="50" status="changed">
+         <image href="../images/Coot-_27.svg"/>
+      </fig>
+      <ul>
+         <li>
+            <p>Bei einer XPATH Auswertung sollte nur ein einfacher Ausdruck mit höchstens einer konsumierenden Selektion gegeben sein. Konsumieren heißt, dass vom Kontextknoten aus eine Knotenmenge abwärts selektiert wird. Dagegen bleibt die Information bzgl. der Ancestor-Achse erhalten.</p>
+         </li>
+         <li>
+            <p>Bei einer Selektion sollte man aber darauf achten nur atomare Werte auszuwählen.</p>
+         </li>
+         <li>
+            <p>Knotenmengen, die über die Streaming Option eingelesen wurden, können nicht einer Funktion übergeben werden. Sie sind auch nicht einer Variablen zuweisbar.</p>
+         </li>
+         <li>
+            <p>"Crawler”-Ausdrücke, wie <codeph>//section</codeph> sind nicht nicht zu verwenden, ebenso ein rekursiver Abstieg mit Selektion, wie bspw. mit einem <codeph>apply-templates</codeph> Call.</p>
+         </li>
+      </ul>
+      <p>Zu Beginn der Streaming-Aktion kann man sich auf konventionelle Art und Weise Teilbäume, die nicht so performanzlastig aufgebaut werden, in einer Variablen abspeichern und im Verlauf der Streaming-Verarbeitung z.B. für einen Vergleich auswerten.</p>
+   </body>
+</topic>

@@ -1,0 +1,44 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!DOCTYPE topic
+  PUBLIC "-//OASIS//DTD DITA Topic//EN" "topic.dtd">
+<topic id="idec84a734-21a0-44a3-bc8c-5ceadf36d3f0">
+   <title>Replacing Characters with <codeph>translate</codeph></title>
+   <body>
+      <p>The <codeph>fn:translate()</codeph> XPath function has been available since XSLT1.0. With more modern variants, such as <codeph>fn:replace()</codeph> which also understand <xref format="dita" scope="local" type="concept" href="4_1_4_Regular_Expressions.dita">regular expressions</xref>, there are more powerful alternatives for most use cases. <fn callout="P"><p>UWE test footnote (16/40, callout P): DITA fn maps to UWE footnote/key/desc.</p><p outputclass="fn-add">UWE supplement (fn-add) for the footnote index.</p></fn></p>
+      <p>However, with <codeph>translate</codeph> you can replace multiple characters at once. With <codeph>replace</codeph>, you would have to nest the functions, as in this example:</p>
+      <pre xml:space="preserve">&lt;xsl:function name="dy:make-url"&gt;
+        &lt;xsl:param name="root"/&gt;
+        &lt;xsl:value-of select="replace(replace(replace(replace($url-pattern,
+                                '%id%', $root/@id),
+                                '%version%',$root/@version),
+                                '%language%',$root/@language),
+                                '%variant%',$root/@variant)"/&gt;
+    &lt;/xsl:function&gt;</pre>
+      <p>Priscilla Walmsley<indexterm>XML Gurus<indexterm>Priscilla Walmsley</indexterm>
+         </indexterm> also offers a function that can perform multiple replacements <xref format="html" scope="external" href="http://www.xsltfunctions.com/xsl/functx_replace-multi.html">functx replace-multi</xref>.</p>
+      <p>Replacing individual characters is best done with <codeph>fn:translate()</codeph>. </p>
+      <p>In the index sorting of the book index, the group titles of the index sections were normalized using this function in XSLT1.0 stylesheets. To map, for example, the characters <codeph>AÄÅaäå</codeph> (note the Swedish ring-A <xref format="html" scope="external" href="https://de.wikipedia.org/wiki/%C3%85">ring-A</xref>) to the group title <codeph>A</codeph>, the following <codeph>translate</codeph> call would suffice:</p>
+      <pre xml:space="preserve">&lt;xsl:value-of select="translate(.,'AÄÅaäå','A')/&gt;</pre>
+      <p>The capital <codeph>A</codeph> would now be the group title for our characters. Of course, you do not want to map each character individually, but rather specify a global rule for the entire alphabet. For the French lowercase letters, this could look like this, for example:</p>
+      <pre xml:space="preserve">&lt;xsl:variable name="kleinbuchstaben" 
+              select="'abcdefghijklmnopqrstuvwxyzÀàÆæÇçÉéÈèÊêËëÎîÏïÖöÔôŒœÙùÜüÛûŸÿ'/&gt;
+&lt;xsl:variable name="gruppentitel" 
+              select="'ABCDEFGHIJKLMNOPQRSTUVWXYZAAAACCEEEEEEEEIIIIOOOOOOUUUUUUYY'/&gt;
+&lt;xsl:value-of select="translate(.,$kleinbuchstaben,$gruppentitel)"/&gt;</pre>
+      <hazardstatement type="warning" status="changed">
+         <messagepanel>
+            <typeofhazard>Here, the order of the character strings matters. Furthermore, the strings must be of equal length.</typeofhazard>
+            <howtoavoid>Such character strings are best written into a language-dependent separate XML file that could also be maintained outside of the source code.</howtoavoid>
+         </messagepanel>
+      </hazardstatement>
+      <p>Also, checking whether a word is separated by whitespace within a sentence can be realized with <codeph>fn:translate</codeph>. A check will certainly also be needed to verify whether a character string already starts with a whitespace (excluding punctuation marks): </p>
+      <pre xml:space="preserve">test="not(starts-with(replace(
+                      replace(.,$common-punctuation-marks,''),$whitespaces,' '),' '))"</pre>
+      <p>with this variable assignment:</p>
+      <pre xml:space="preserve">&lt;sch:let name="common-punctuation-marks" 
+         value="'.,!?()[]{}&amp;#xFF02;&amp;#x60;&amp;#x22;:;⟨⟩©–—-+…=«»¿&amp;lt;&amp;gt;&amp;quot;%‰®™|/'"/&gt;
+&lt;sch:let name="whitespaces" 
+         value="'&amp;#32;&amp;#160;&amp;#8192;&amp;#8193;&amp;#8194;&amp;#8195;&amp;#8201;&amp;#8196;&amp;#8197;&amp;#8198;'"/&gt;</pre>
+      <p>With enough creative imagination, there are no limits to the applications of <codeph>fn:translate()</codeph>.</p>
+   </body>
+</topic>

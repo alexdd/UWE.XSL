@@ -1,0 +1,132 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!DOCTYPE topic
+  PUBLIC "-//OASIS//DTD DITA Topic//EN" "topic.dtd">
+<topic id="id394917b5-34bd-41e4-adc5-ae765ca76977">
+   <title>JSON with XSLT 1.0 and Python <codeph>lxml</codeph> 
+   </title>
+   <body>
+      <p>When programming with <b>Python</b>, you unfortunately do not have <b>Saxon</b> as an XSLT processor available, but have to make do with the XSLT processor of the lxml <xref format="html" scope="external" href="https://lxml.de/">lxml</xref> library. This is based on the C library libxslt <xref format="html" scope="external" href="https://gitlab.gnome.org/GNOME/libxslt">libxslt</xref>
+      <fn callout="R"><p>UWE test footnote (18/40, callout R): DITA fn maps to UWE footnote/key/desc.</p></fn></p>
+      <p>Only <b>XSLT 1.0 </b>is available, along with the EXSLT <xref format="html" scope="external" href="https://exslt.github.io/">EXSLT</xref> extensions.</p>
+      <p>Under these conditions, it was not straightforward to create a transformation that takes XML as input and produces clean JSON as output. A multi-step process is certainly required. </p>
+      <p>To be precise, you need at least a pre-transformation that generates the JSON elements as XML, and a post-processing step that generically maps angle brackets to curly braces and discards some element names.</p>
+      <p>The following JSON structures can be easily identified:</p>
+      <ol>
+         <li>
+            <p>
+               <b>Properties</b>
+            </p>
+            <pre xml:space="preserve">"propertyName" : propertyValue</pre>
+            <p>Here the <i>propertyValue</i> can be of type <i>String</i>, <i>Number</i>, or <i>Boolean</i>.</p>
+         </li>
+         <li>
+            <p>
+               <b>Named Objects</b>
+            </p>
+            <pre xml:space="preserve">"objektName" : { ... }</pre>
+         </li>
+         <li>
+            <p>
+               <b>Named Lists</b>
+            </p>
+            <pre xml:space="preserve">"listenName" : [ { ... }, { ... }]</pre>
+         </li>
+         <li>
+            <p>
+               <b>Anonymous Objects</b>
+            </p>
+            <pre xml:space="preserve">{ }</pre>
+         </li>
+      </ol>
+      <p>Objects can contain properties, named objects, or named lists. Named lists can only contain anonymous objects. This distinction was sufficient for my use case.</p>
+      <p>Translated into XSLT rules, you arrive at four rules that match based on an attribute value for <codeph>@json</codeph>:</p>
+      <pre xml:space="preserve">&lt;xsl:template match="*[<b>@json='anonymous-object'</b>]" mode="<b>post</b>"&gt;
+  &lt;xsl:text&gt;{&lt;/xsl:text&gt;
+  &lt;xsl:apply-templates select="node()|@*" mode="post"/&gt;
+  &lt;xsl:text&gt;}&lt;/xsl:text&gt;
+  &lt;xsl:if test="following-sibling::*"&gt;,&lt;/xsl:if&gt;
+&lt;/xsl:template&gt;
+
+&lt;xsl:template match="*[<b>@json='named-list'</b>]" mode="<b>post</b>"&gt;
+  &lt;xsl:text&gt;"&lt;/xsl:text&gt;
+  &lt;xsl:value-of select="name()"/&gt;
+  &lt;xsl:text&gt;"&lt;/xsl:text&gt;
+  &lt;xsl:text&gt;:[&lt;/xsl:text&gt;
+  &lt;xsl:apply-templates select="node()|@*" mode="post"/&gt;
+  &lt;xsl:text&gt;]&lt;/xsl:text&gt;
+  &lt;xsl:if test="following-sibling::*"&gt;,&lt;/xsl:if&gt;
+&lt;/xsl:template&gt;
+
+&lt;xsl:template match="*[<b>@json='named-object'</b>]" mode="<b>post</b>"&gt;
+  &lt;xsl:text&gt;"&lt;/xsl:text&gt;
+  &lt;xsl:value-of select="name()"/&gt;
+  &lt;xsl:text&gt;"&lt;/xsl:text&gt;
+  &lt;xsl:text&gt;:{&lt;/xsl:text&gt;
+  &lt;xsl:apply-templates select="node()|@*" mode="post"/&gt;
+  &lt;xsl:text&gt;}&lt;/xsl:text&gt;
+  &lt;xsl:if test="following-sibling::*"&gt;,&lt;/xsl:if&gt;
+&lt;/xsl:template&gt;
+
+&lt;xsl:template match="*[<b>@json='property'</b>]" mode="<b>post</b>"&gt;
+  &lt;xsl:text&gt;"&lt;/xsl:text&gt;
+  &lt;xsl:value-of select="name()"/&gt;
+  &lt;xsl:choose&gt;
+    &lt;xsl:when test="@type='boolean' or @type='integer'"&gt;
+      &lt;xsl:text&gt;":&lt;/xsl:text&gt;
+      &lt;xsl:value-of select="."/&gt;
+    &lt;/xsl:when&gt;
+    &lt;xsl:otherwise&gt;
+      &lt;xsl:text&gt;":"&lt;/xsl:text&gt;
+      &lt;xsl:value-of select="."/&gt;
+      &lt;xsl:text&gt;"&lt;/xsl:text&gt;
+    &lt;/xsl:otherwise&gt;
+  &lt;/xsl:choose&gt;
+  &lt;xsl:if test="following-sibling::*"&gt;,&lt;/xsl:if&gt;
+&lt;/xsl:template&gt;
+</pre>
+      <p>In a <xref format="dita" scope="local" type="concept" href="4_1_1_Pre_Transformations.dita">pre-transformation</xref> into a variable <codeph>pre</codeph>, the JSON structures are first built as XML and then mapped to curly braces in a post-processing step <codeph>post</codeph>:</p>
+      <pre xml:space="preserve">&lt;xsl:template match="/"&gt;
+  &lt;root&gt;
+    &lt;!-- first processing step --&gt;
+    &lt;xsl:variable name="<b>pre</b>"&gt;
+      &lt;xsl:copy&gt;
+        &lt;xsl:apply-templates/&gt;
+      &lt;/xsl:copy&gt;
+    &lt;/xsl:variable&gt;
+    &lt;!-- second processing step --&gt;
+    &lt;xsl:apply-templates select="<b>exsl:node-set($pre)</b>" mode="<b>post</b>"/&gt;
+  &lt;/root&gt;
+&lt;/xsl:template&gt;</pre>
+      <p>Building the XML-like JSON structure with the annotated @json attributes could look like this, for example:</p>
+      <pre xml:space="preserve">&lt;xsl:template match="testsuite"&gt;
+  &lt;sarif-report json="<b>anonymous-object</b>"&gt;
+    &lt;runs json="<b>named-list</b>"&gt;
+      &lt;run json="<b>anonymous-object</b>"&gt;
+        [...]
+      &lt;/run&gt;
+    &lt;/runs&gt;
+    &lt;version json="<b>property</b>"&gt;2.1.0&lt;/version&gt;
+  &lt;/sarif-report&gt;
+&lt;/xsl:template&gt;</pre>
+      <p>With the following final output:</p>
+      <pre xml:space="preserve">{ "runs" : [{ ... }],
+  "version": "2.1.0"
+}</pre>
+      <p>Since Python <b>lxml</b> or <b>libxslt</b> apparently does not support <codeph>xsl:output method="text"</codeph>, the text node of a root element must be read in the Python code. If you read this as JSON into a Python dictionary and then write it back as JSON with indentation, you also get nice pretty-printing of the JSON structures. The relevant Python code looks like this: </p>
+      <pre xml:space="preserve">with fileobj:
+  # We register namespace functions that can be called inside the XSLT transformation
+  register_stylesheet_functions()
+  # Read the XSLT stylesheet
+  xsl = etree.XML(open(SARIF_TRANSFORMATION_FILE, "r", encoding="utf-8").read())
+  # Transform the XML to Sarif JSON and put it into the root text node
+  transform = etree.XSLT(xsl)
+  result = transform(tree)
+  if INDENT:
+    # Load into python dict and pretty print when writing back to JSON
+    jsn = json.loads(result.getroot().text)
+    fileobj.write(json.dumps(jsn, indent=2))
+    else:
+      fileobj.write(result.getroot().text)</pre>
+      <p>The complete example can be found in my Github repo <xref format="html" scope="external" href="https://github.com/alexdd/bandit-sarif/blob/feature-sarif-formatter-with-cwe-extension/bandit/formatters/sarif/sarif.xsl">bandit-sarif</xref>.</p>
+   </body>
+</topic>

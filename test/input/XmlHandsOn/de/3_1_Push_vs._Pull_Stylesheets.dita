@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!DOCTYPE topic
+  PUBLIC "-//OASIS//DTD DITA Topic//EN" "topic.dtd">
+<topic id="id17f5bbad-c12b-4da2-a847-29aba6fa0b48">
+   <title>Push vs. Pull Stylesheets</title>
+   <body>
+      <p>XSLT ist eine ereignisgesteuerte,<indexterm>Konzepte<indexterm>Push vs. Pull</indexterm>
+         </indexterm> regelbasierte Umgebung zur Konvertierung von XML Daten. Gerade der Vorteil des regelbasierten Ansatzes ist vielen Entwicklern nicht bewusst, und es entsteht Quellcode der aussieht, wie mit XPath angereicherter <b>PHP</b> Code. <fn callout="G"><p>Apache FOP rendert XSL-FO in zwei Durchgängen zu PDF.</p></fn></p>
+      <p>Wieso nimmt man dann überhaupt XSLT, wenn man keine Template-Match Regeln verwendet, oder nur spärlich verwendet?</p>
+      <p>Um diesen Umstand aufzuklären ist ein bisschen Theorie notwendig:</p>
+      <fig>
+         <title>Pull Stylesheet</title>
+         <desc>Beim "Pull" werden Elemente in der Quellinstanz selektiert und an einer passenden Stelle in der Zielinstanz eingefügt. Diese Vorgehensweise ist vergleichbar mit derer von Template-Engines, wie <b>JSP</b> oder <b>ASP</b>. Das kann in mehreren Stufen erfolgen, bis schrittweise die Quellinstanz in die finale Zielinstanz überführt wurde.</desc>
+         <image href="../images/pull_9.svg"/>
+      </fig>
+      <fig>
+         <title>Push Stylesheet</title>
+         <desc>Beim "Push" werden die Quelldaten schrittweise in die Zieldaten konvertiert. Diese Vorgehensweise kann explorativ erfolgen und beim Transformieren in einen Zwischenschritt entstehen Erkenntnisse, die bei der Weiterverarbeitung nützlich sind. Merke:XSLT steht für eXtensible Stylesheet Transformation.</desc>
+         <image href="../images/pusch-x_14.svg"/>
+      </fig>
+      <p>Das bisher Gesagte verdeutlicht zwar den "Pull" Ansatz, was genau aber ge"pusht" wird, ist vermutlich noch unklar. Betrachten wir XML in der Baumdarstellung.</p>
+      <fig>
+         <title>Transformation des Quellbaus in den Zielbaum</title>
+         <desc>Der XSLT Prozessor unternimmt einen Tiefensuchlauf und überprüft bei jedem Knoten den er betritt, ob in seiner Regelbasis eine Regel existiert, die auf diesen Knoten "matched". Dabei gibt es drei grundsätzliche Möglichkeiten, wie die Knoten des Quellbaums in den Zielbaum kopiert - oder eben nicht kopiert - werden können.</desc>
+         <image href="../images/pushi-x_15.svg"/>
+      </fig>
+      <p><indexterm>Tiefensuchlauf</indexterm>Pull-Stylesheets werden gewöhlich mit <codeph>xsl:for-each</codeph> Loops programmiert. Dieser Ansatz ist meiner Ansicht nach gebräuchlich, wenn keine großen <b>DTD</b> Änderungen zu erwarten sind, der XML Baum flach strukturiert ist und die Anforderungen an die  Konvertierung relativ einfach sind, bspw. beim Auswerten / Konvertieren von Konfigurationsdateien. In allen anderen Fällen sind Push-Stylesheets vorzuziehen, d.h. möglichst wenig <codeph>xsl:for-each</codeph> loops und möglichst viele Template-Match Regeln.</p>
+   </body>
+</topic>

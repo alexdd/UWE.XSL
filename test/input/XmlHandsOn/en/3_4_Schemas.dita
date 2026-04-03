@@ -1,0 +1,293 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!DOCTYPE topic
+  PUBLIC "-//OASIS//DTD DITA Topic//EN" "topic.dtd">
+<topic id="iddecb0547-7110-4d26-a8c7-724913382c6e">
+   <title>Schemas</title>
+   <body>
+      <p>XML data can become very complex. Since their input is often not restricted by any user interface measures
+or other regulations, they can in principle be modified with any text editor
+and are usually sent/processed through many stages, 
+it is advisable to check their formal and content correctness.<fn callout="J"><p>UWE test footnote (10/40, callout J): DITA fn maps to UWE footnote/key/desc.</p></fn></p>
+      <p>For this purpose, the good machine readability of XML data is exploited by validation engines. There are many different schema types that can be validated against. The so-called <i>schema</i> is then a set of rules that is compared during the tree traversal.</p>
+      <p>It all probably started with the Document Type Definition (DTD <xref format="html" scope="external" href="https://de.wikipedia.org/wiki/Dokumenttypdefinition">Wikipedia page on the topic of DTD</xref>)<indexterm>Schemas<indexterm>DTD</indexterm>
+         </indexterm> which can be applied to both XML data and the predecessor SGML.</p>
+      <p>The lack of ability to check semantic relationships using DTD 
+probably led to XML Schema <xref format="html" scope="external" href="https://de.wikipedia.org/wiki/XML_Schema">XML Schema</xref>.</p>
+      <p>XML Schema<indexterm>Schemas<indexterm>XML Schema</indexterm>
+         </indexterm> is consistently modeled using XML and has the same good property regarding machine readability 
+as XML itself. Thus, during a tree traversal, even complex rules can be machine-checked when comparing 
+data structure and validation rule.</p>
+      <p>Perhaps, however, this very advantage, 
+namely machine readability, has crystallized as a disadvantage over time. Although there are some 
+very good visual modeling tools that allow the rules to be graphically modeled as a tree,
+as soon as more complex relationships need to be modeled, you are somewhat trapped with these tools
+and you wish again for the flexibility of a text editor.</p>
+      <p>Graphical tools include, for example:</p>
+      <fig expanse="spread" frame="all" scale="50" status="changed">
+         <image href="../images/oksmith-emu_19.svg"/>
+      </fig>
+      <ul>
+         <li>
+            <p>A tool that looks like it is from another century: The Near &amp; Far Designer <xref format="html" scope="external" href="http://www.perfectxml.com/SoftDetails.asp?id=216">Last resource on the web for the Near &amp; Far Designer DTD modelling tool</xref>
+            </p>
+         </li>
+         <li>
+            <p>TreeVision <xref format="html" scope="external" href="https://www.gds.eu/de/redaktionssysteme/weitere-loesungen">Website of the TreeVision tool by Ovidius GmbH</xref> by Ovidius GmbH in Berlin.<indexterm>Tools<indexterm>TreeVision</indexterm>
+               </indexterm>
+            </p>
+         </li>
+         <li>
+            <p>Visual Schema Editor <xref format="html" scope="external" href="https://www.oxygenxml.com/xml_editor/rng_visual_schema_editor.html">Graphical component of the oXygen XML Editor for schemas</xref> as part of the oXygen XML Editor.<indexterm>Tools<indexterm>Visual Schema Editor</indexterm>
+               </indexterm>
+            </p>
+         </li>
+      </ul>
+      <fig>
+         <title>Display of a DTD structure in the Near&amp;Far Designer</title>
+         <desc>A DTD is displayed in the Near&amp;Far Designer as an expandable tree structure. This way, even very complex DTDs with 1000 elements can be efficiently examined. Attributes can be added or changed via an input dialog. Creating new branches (= adding elements) can also be done graphically. However, it is advisable to sketch at least the basic framework of the DTD with a text editor.</desc>
+         <image href="../images/near-und-far_16.png"/>
+      </fig>
+      <p>Similar to programming environments, what ultimately matters is how quickly you can find and
+adapt/extend something in extensive source code. Here, plain text remains unbeatable.</p>
+      <p>Therefore, it is not surprising that lightweight validation formats are (re-)establishing themselves that can be nicely edited with a text editor, such as RelaxNG<indexterm>Schemas<indexterm>RelaxNG</indexterm>
+         </indexterm>. RelaxNG has existed since 2002 but has been enjoying increasing popularity recently.</p>
+      <p>The compact form of RelaxNG rules looks a bit like JSON - which might be interesting
+for web developers. Additionally, the underlying logic of the Backus-Naur Form <xref format="html" scope="external" href="https://de.wikipedia.org/wiki/Backus-Naur-Form">Wikipedia page on the Backus-Naur Form</xref>
+is presented relatively clearly, which facilitates rule definition.</p>
+      <p>To get a first impression of the syntax, I took the first example from the
+RelaxNG Tutorial <xref format="html" scope="external" href="https://relaxng.org/tutorial-20011203.html#IDAHDYR">RelaxNG Tutorial</xref>:</p>
+      <p>Consider a simple XML representation of an email address book:</p>
+      <pre xml:space="preserve">&lt;addressBook&gt;
+   &lt;card&gt;
+      &lt;name&gt;John Smith&lt;/name&gt;
+      &lt;email&gt;js@example.com&lt;/email&gt;
+   &lt;/card&gt;
+   &lt;card&gt;
+      &lt;name&gt;Fred Bloggs&lt;/name&gt;
+      &lt;email&gt;fb@example.net&lt;/email&gt;
+   &lt;/card&gt;
+&lt;/addressBook&gt;</pre>
+      <p>The DTD would be as follows:</p>
+      <pre xml:space="preserve">&lt;!DOCTYPE addressBook [
+&lt;!ELEMENT addressBook (card*)&gt;
+&lt;!ELEMENT card (name, email)&gt;
+&lt;!ELEMENT name (#PCDATA)&gt;
+&lt;!ELEMENT email (#PCDATA)&gt;
+]&gt;</pre>
+      <p>A RELAX NG pattern for this could be written as follows:</p>
+      <pre xml:space="preserve">&lt;element xmlns="http://relaxng.org/ns/structure/1.0" name="addressBook"&gt;
+   &lt;zeroOrMore&gt;
+      &lt;element name="card"&gt;
+         &lt;element name="name"&gt;
+            &lt;text/&gt;
+         &lt;/element&gt;
+         &lt;element name="email"&gt;
+            &lt;text/&gt;
+         &lt;/element&gt;
+      &lt;/element&gt;
+   &lt;/zeroOrMore&gt;
+&lt;/element&gt;</pre>
+      <p>In compact form, this example would look like this:</p>
+      <pre xml:space="preserve">element addressBook {
+    element card {
+        element name { text },
+        element email { text }
+    }*
+}</pre>
+      <p>There is also a tutorial for the compact form <xref format="html" scope="external" href="https://relaxng.org/compact-tutorial-20030326.html">Tutorial for the RelaxNG compact form</xref>.</p>
+      <note>
+         <p>Schema files written in compact form typically have the file extension <codeph>.rnc</codeph>. Files in the long form have the extension <codeph>.rng</codeph>.</p>
+      </note>
+      <p>With RelaxNG you can model schema grammars almost as elegantly as with the Backus-Naur Normal Form - BNF <xref format="html" scope="external" href="https://de.wikipedia.org/wiki/Backus-Naur-Form">Wikipedia page on BNF</xref> - as you learned in computer science class.</p>
+      <section>
+         <title>Exclusion with RNC</title>
+         <p>The beauty of RelaxNG is the fact that you can do things with it that are
+not easily done with other schema languages. For example, you can create an incomplete
+schema that only checks very specific parts of the XML instance.</p>
+         <p>Let us consider the following example:<indexterm>Concepts<indexterm>Exclusion with RelaxNG</indexterm>
+            </indexterm>
+         </p>
+         <pre xml:space="preserve">unbehandeltesElement =
+    element * - (aussteller | 
+                 empfaenger |
+                 datum) {
+        (attribute * { text } | 
+         text | 
+         unbehandelteElemente)*
+    }
+
+start =
+    element abrechung {
+        element id { xsd:NMTOKEN },
+        element datum  { xsd:date },
+        [...]
+        element zahlungen {
+            element zahlung {
+                element id { xsd:NMTOKEN },
+                element datum  { xsd:date },
+                element plan { xsd:NMTOKEN },
+                [...]
+            },
+            element beleg-daten {
+                element beleg {
+                    attribute nummer { xsd:integer }?,
+                    element datum  { xsd:date },
+                    unbehandeltesElement+,
+                    element aussteller { text },
+                    unbehandeltesElement+,
+                    element empfaenger { text },
+                    unbehandeltesElement+
+                }
+            }
+        }+
+    }
+}</pre>
+         <p>We know how the elements <codeph>abrechnung</codeph> and <codeph>zahlung</codeph> are structured and can model them completely. The unknown
+quantity, however, is the <codeph>beleg</codeph> element. This comes from an external
+source, and we only know that the fields <codeph>datum</codeph>, <codeph>empfaenger</codeph> and <codeph>aussteller</codeph> must be present within it.</p>
+         <p>Between these elements there is at least one, but possibly more, unknown
+elements. So that we can validate XML instances structured according to this schema,
+an element <codeph>unbehandeltesElement</codeph> is modeled,
+which effectively represents a placeholder. This explicitly excludes the 
+mandatory fields <codeph>datum</codeph>, <codeph>empfaenger</codeph> and <codeph>aussteller</codeph>
+so as not to falsify their validation by the schema.</p>
+      </section>
+      <section>
+         <title>Relaxtron</title>
+         <p>Particularly promising is the ability to embed additional Schematron rules<indexterm>Schematron</indexterm> in a RelaxNG schema - Relaxtron <xref format="html" scope="external" href="https://www.xml.com/pub/a/2004/02/11/relaxtron.html">Relaxtron (xml.com)</xref>. This allows you to ensure, for example, that certain constraints regarding the element structure are maintained. This would not be possible with a schema language alone. Let us consider the following piece of RelaxNG in compact form:</p>
+         <pre xml:space="preserve">namespace sch = "http://purl.oclc.org/dsdl/schematron"
+
+start = ul 
+ul =
+  [ 
+    sch:pattern [
+      sch:rule [
+      context = "list"
+        sch:assert [
+          test = "not(ancestor::ul and ancestor::procedure)"
+                 'Eine ul darf in der Procedure nicht verschachtelt werden!'
+          ]
+        ]
+      ]
+    ]
+  element ul {
+    any_attribute*, 
+    listitem+
+  }
+  
+listitem =
+  element listitem {
+    any_attribute*, 
+    ( para | ul )+
+  }
+
+para =
+  element para {
+    any_attribute*, 
+    text*
+  }
+any_attribute = attribute * { text }</pre>
+         <p>Here it is ensured that an unordered list <codeph>list</codeph> is not nested deeper - but only within a <codeph>procedure</codeph>.</p>
+         <p>The oXygen Editor can convert the RelaxNG compact form into the XML form and visualize it nicely. This then looks like this:</p>
+         <fig>
+            <title>Display of a RelaxNG schema in the oXygen Editor</title>
+            <desc>In the oXygen Editor there is a full model view and a logical model view for RelaxNG schemas that also display embedded Schematron nodes. By clicking on a symbol, you navigate to the corresponding source code section.</desc>
+            <image href="../images/oxygen-rng-display_20.png"/>
+         </fig>
+      </section>
+      <section>
+         <title>Specifying the Schema in the XML Instance</title>
+         <p>As already described in the chapter <xref format="dita" scope="local" type="concept" href="2_Application_Areas.dita">Application Areas</xref>, all additional instructions important for the XML processor 
+that are not part of the data are embedded in the XML via a <i>Processing Instruction</i>
+            <indexterm>XML Constructs<indexterm>Processing Instruction</indexterm>
+            </indexterm>.</p>
+         <p>Multiple schemas can also be embedded via a Processing Instruction, so that validation across multiple engines is possible. 
+</p>
+         <p>If you take over a legacy data set for which only a DTD is available, an
+XML Schema can also be added after the fact to check more complex semantic relationships.</p>
+         <p>For further validation, Schematron is available, cf. chapter <xref format="dita" scope="local" type="concept" href="4_5_1_Validation_with_Schematron.dita">Validation with Schematron </xref>. An example of how to specify multiple schemas can be found on the W3 Consortium page on the topic <xref format="html" scope="external" href="https://www.w3.org/TR/xml-model/">xml-model</xref>
+         </p>
+         <pre xml:space="preserve">&lt;?xml version="1.0" ?&gt;
+&lt;?xml-model href="http://www.docbook.org/xml/5.0/rng/docbook.rng"?&gt;
+&lt;?xml-model href="http://www.docbook.org/xml/5.0/xsd/docbook.xsd"?&gt;
+&lt;book xmlns="http://docbook.org/ns/docbook"&gt;
+  [...]
+&lt;/book&gt;</pre>
+         <p>To include a RelaxNG compact form, it suffices to specify this PI (Processing Instruction<indexterm>XML Constructs<indexterm>Processing Instruction</indexterm>
+            </indexterm>):</p>
+         <pre xml:space="preserve">&lt;?xml-model href="whatever.rnc" type="application/relax-ng-compact-syntax"?&gt;</pre>
+         <p>oXygen and all other editors support specifying the schema via <i>PI</i>, so you can validate in the editor without an explicit request.</p>
+      </section>
+      <section>
+         <title>oXygen Validation</title>
+         <p>The validation tools can be found in the oXygen Editor under  <codeph>Document</codeph> &gt; <codeph>Validate</codeph> &gt; <codeph>Validate With</codeph>
+         </p>
+         <fig>
+            <title>Validation dialog in oXygen</title>
+            <desc>The validation options can be found in oXygen under the [[code:Document]] tab.</desc>
+            <image href="../images/validate-dialog_17.png"/>
+         </fig>
+         <p>Schemas can also be converted with oXygen, <codeph>Document</codeph> &gt; <codeph>Schema</codeph> &gt; <codeph>Generate/Convert Schema</codeph>
+         </p>
+         <fig>
+            <title>Schema conversion with oXygen</title>
+            <desc>Conversion tools are also located in the [[code:Document]] tab</desc>
+            <image href="../images/covert-schema_18.png"/>
+         </fig>
+      </section>
+      <section>
+         <title>Jing and Trang</title>
+         <p>For RelaxNG there is the Jing Validator <xref format="html" scope="external" href="https://relaxng.org/jclark/jing.html">Jing</xref>. Notably, this tool is developed by 
+James Clark <xref format="html" scope="external" href="http://www.jclark.com/bio.htm">James Clark</xref> (a veteran of the XML data world).</p>
+         <p>Not quite on topic, but: A tool by James Clark<indexterm>XML Gurus<indexterm>James Clark</indexterm></indexterm> that I have worked with several times is <xref format="html" scope="external" href="http://www.jclark.com/sp/">SP</xref>, an SGML system<indexterm>Tools<indexterm>SP</indexterm></indexterm>, with which you can convert SGML to XML. This functionality is otherwise rather rare to find …</p>
+         <hazardstatement type="caution" status="changed">
+            <messagepanel>
+               <typeofhazard>James Clark’s SP: SGML-to-XML conversion (tangential note on schemas).</typeofhazard>
+               <howtoavoid/>
+            </messagepanel>
+         </hazardstatement>
+         <p>To validate an XML instance with Jing, the following command line call suffices:</p>
+         <pre xml:space="preserve">jing resources/schemas/person.rng resources/examples/person.xml</pre>
+         <hazardstatement type="warning" status="changed">
+            <messagepanel>
+               <typeofhazard>Jing does not support the RelaxNG compact form!</typeofhazard>
+               <howtoavoid>The compact form must first be converted to the normal form with <xref format="html" scope="external" href="https://relaxng.org/jclark/trang.html">Trang</xref>.</howtoavoid>
+            </messagepanel>
+         </hazardstatement>
+         <p>To convert the compact form of RelaxNG to the normal form, you issue this command on the command line:</p>
+         <pre xml:space="preserve">trang -I rnc -O rng resources/schemas/person.rnc resources/schemas/person.rng</pre>
+      </section>
+      <section>
+         <title>Schema Single-Sourcing</title>
+         <p>
+            <indexterm>Single-Sourcing<indexterm>Schemas</indexterm>
+            </indexterm>
+            <indexterm>Buzzwords<indexterm>Single Source Publishing</indexterm>
+            </indexterm>The <xref format="dita" scope="local" type="concept" href="2_3_Professional_XML_Processing.dita">single-sourcing concept</xref> does not stop at schemas either. From a single source in the RelaxNG compact form, alternative views in other schema languages can be generated, such as XML Schema (XSD) <xref format="html" scope="external" href="https://de.wikipedia.org/wiki/XML_Schema">XML Schema</xref>.</p>
+         <fig>
+            <title>BPMN diagram for the single-sourcing concept with RelaxNG schemas</title>
+            <desc>A BPMN diagram can nicely illustrate the single-sourcing concept in schema generation. From a single [[code:RNC]] source, the RelaxNG XML form, the Schematron rules, the XSD, and the XSLT of the Schematron rules are generated. These artifacts are used for validation in the editor and for validation in a transformer pipe.</desc>
+            <image href="../images/create-schemas_21.svg"/>
+         </fig>
+         <p>A shell script that invokes the process could look like this, for example:</p>
+         <pre xml:space="preserve">#!/bin/sh
+
+echo "converting from RelaxNG compact form to RelaxNG XML form..."
+trang -I rnc -O rng test.rnc test.rng 
+
+echo "extracting embedded schematron rules from RelaxNG schema..." 
+saxon -s:test.rng -o:test.sch -xsl:rng2sch.xsl
+
+echo "converting RelaxNG schema to XML Schema..."
+trang -O xsd test.rng test.xsd
+
+echo "converting schematron rules to XSLT..."
+saxon test.sch validation/schematron/iso_dsdl_include.xsl | \
+saxon -s:- validation/schematron/iso_abstract_expand.xsl | \
+saxon -s:- validation/schematron/iso_svrl_for_xslt2.xsl &gt; test.xsl
+
+echo "Done!"</pre>
+         <p>An unpolished script for extracting the Schematron rules<indexterm>Schematron</indexterm> from the RNC can be found on GitHub <xref format="html" scope="external" href="https://github.com/citation-style-language/utilities/blob/master/RNG2Schtrn.xsl">Raw script for extracting Schematron rules from an RNC compact form</xref>. </p>
+      </section>
+   </body>
+</topic>

@@ -1,0 +1,126 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!DOCTYPE topic
+  PUBLIC "-//OASIS//DTD DITA Topic//EN" "topic.dtd">
+<topic id="idc25b36c1-64f0-4fff-8445-8dc096e98096">
+   <title>Executing Some Example Queries </title>
+   <body>
+      <p>As described in the previous chapter, in the console session a delay must be inserted between creating the original version and the update, to somehow simulate the "time gap" in which — if we stick with the previous example — the ID card was reported as lost but was actually already back in my possession.</p>
+      <p>Without going into great detail adjusting <codeph>validStart</codeph> and <codeph>validEnd</codeph>, I ran the example with a delay of 50 seconds:</p>
+      <pre xml:space="preserve">( xdmp:invoke-function(local:create-temporal-fields#0),
+  xdmp:invoke-function(local:create-range-index-fields#0),
+  xdmp:invoke-function(local:create-axes#0),
+  xdmp:invoke-function(local:create-temporal-collection#0),
+  xdmp:invoke-function(local:insert-original#0),
+  <b>xdmp:sleep(50000),</b>
+  xdmp:invoke-function(local:insert-update#0))</pre>
+      <p>And I get the following result:</p>
+      <table pgwide="1" frame="all" scale="50" status="changed">
+         <desc>This data was taken from the Explorer view of the console session. </desc>
+         <tgroup cols="5">
+            <colspec colwidth="*" colname="col0"/>
+            <colspec colwidth="*" colname="col1"/>
+            <colspec colwidth="*" colname="col2"/>
+            <colspec colwidth="*" colname="col3"/>
+            <colspec colwidth="*" colname="col4"/>
+            <thead>
+               <row>
+                  <entry colname="col0">
+                     <p>Document</p>
+                  </entry>
+                  <entry colname="col1">
+                     <p>validStart</p>
+                  </entry>
+                  <entry colname="col2">
+                     <p>validEnd</p>
+                  </entry>
+                  <entry colname="col3">
+                     <p>systemStart</p>
+                  </entry>
+                  <entry colname="col4">
+                     <p>systemEnd</p>
+                  </entry>
+               </row>
+            </thead>
+            <tbody>
+               <row>
+                  <entry colname="col0">
+                     <p>duesel_alex_270774.2462380991258156208.xml</p>
+                  </entry>
+                  <entry colname="col1">
+                     <p>2019-03-19T14:17:00</p>
+                  </entry>
+                  <entry colname="col2">
+                     <p>
+                        <b>infinity</b>
+                     </p>
+                  </entry>
+                  <entry colname="col3">
+                     <p>2019-03-19T13:18:28</p>
+                  </entry>
+                  <entry colname="col4">
+                     <p>2019-03-19T13:19:18</p>
+                  </entry>
+               </row>
+               <row>
+                  <entry colname="col0">
+                     <p>duesel_alex_270774.819911042637597172.xml</p>
+                  </entry>
+                  <entry colname="col1">
+                     <p>2019-03-19T14:17:00</p>
+                  </entry>
+                  <entry colname="col2">
+                     <p>2019-03-19T14:18:00</p>
+                  </entry>
+                  <entry colname="col3">
+                     <p>2019-03-19T13:19:18</p>
+                  </entry>
+                  <entry colname="col4">
+                     <p>
+                        <b>infinity</b>
+                     </p>
+                  </entry>
+               </row>
+               <row>
+                  <entry colname="col0">
+                     <p>duesel_alex_270774.xml</p>
+                  </entry>
+                  <entry colname="col1">
+                     <p>2019-03-19T14:18:00</p>
+                  </entry>
+                  <entry colname="col2">
+                     <p>
+                        <b>infinity</b>
+                     </p>
+                  </entry>
+                  <entry colname="col3">
+                     <p>2019-03-19T13:19:18</p>
+                  </entry>
+                  <entry colname="col4">
+                     <p>
+                        <b>infinity</b>
+                     </p>
+                  </entry>
+               </row>
+            </tbody>
+         </tgroup>
+      </table>
+      <p>As you can see, the 50-second time gap in the system times should now fall within the valid times, to be able to simulate the example with the lost ID — at least for the span of 50 seconds. </p>
+      <p>The correct setup is left as an exercise for the interested reader.</p>
+      <p>Two queries that illustrate the values in the table are, for example, the following:</p>
+      <fig>
+         <desc>In this query, all documents are searched whose valid time range covers the period between 14:17 and 14:18. These are the split document and the original document. Both have the status "stolen", since the discovery was not reported until 14:18.</desc>
+         <image href="../images/result1-x_64.png"/>
+      </fig>
+      <fig>
+         <desc>If you change the time range to after 18:00, the original is — as expected — superseded by the update.</desc>
+         <image href="../images/result2-x_65.png"/>
+      </fig>
+      <fig>
+         <desc>The current version of the temporally managed document is stored in the "latest" collection.</desc>
+         <image href="../images/result_3-x_66.png"/>
+      </fig>
+      <p>As you can see, with sufficient creative problem-solving, you can accomplish quite a lot with these queries. Also helpful is certainly the extensive list of comparison operators that MarkLogic provides for comparing time ranges: ISO Operators <xref format="html" scope="external"
+               href="https://docs.marklogic.com/guide/temporal/searching#id_92200">ISO normierte Operatoren in MarkLogic zum Vergleichen von Zeiträumen</xref> and ALLEN Operators <xref format="html" scope="external"
+               href="https://docs.marklogic.com/guide/temporal/searching#id_98704">Allen (ALN) Vergleichsoperatoren für Zeiträume</xref>.</p>
+   </body>
+</topic>

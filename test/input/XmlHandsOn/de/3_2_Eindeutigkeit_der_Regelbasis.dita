@@ -1,0 +1,193 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!DOCTYPE topic
+  PUBLIC "-//OASIS//DTD DITA Topic//EN" "topic.dtd">
+<topic id="ida418237e-b29f-4ec8-960f-1707108b9f59">
+   <title>Eindeutigkeit der Regelbasis </title>
+   <body>
+      <p>Die Regelbasis<indexterm>Konzepte<indexterm>Regelbasis</indexterm>
+         </indexterm> von XSLT kann wahrscheinlich unendlich viele Regeln aufnehmen, wenn man unsere Limitierung bzgl. der Hardware nicht beachtet. Für die Vollständigkeit, Eindeutigkeit und Konsistenz der Regelbasis ist der Programmierer aber selbst verantwortlich.<fn callout="H"><p>UWE-Testfußnote (8/40, Callout H): DITA-fn wird in UWE zu footnote/key/desc.</p><p outputclass="fn-add">UWE Zusatz (fn-add) für den Fußnotenindex.</p></fn></p>
+      <p>Um die Eindeutigkeit der Regeln zu gewährleisten,  gibt es verschiedene Mechanismen.</p>
+      <section>
+         <title>Reihenfolge der Match-Regeln</title>
+         <p>Im Normalfall sollte auf einen bestimmten Knoten in einem bestimmten Szenario genau eine Regel matchen. Falls es einen Konflikt gibt, wird zumindest bei <b>Saxon</b> diejenige Regel herangezogen, die im Stylesheet zuletzt deklariert wurde.</p>
+         <p>Diesen Umstand zu kennen, ist genau dann wichtig, wenn man einen bestehenden Stylesheet-Code übernehmen muss. Getreu dem Motto "Never change a running system" sollte man die Sache diesbzgl. sehr behutsam aufräumen.</p>
+      </section>
+      <section>
+         <title>Präzedenz der Auswertung</title>
+         <p>Match-Regeln<indexterm>Konzepte<indexterm>Match-Regeln</indexterm>
+            </indexterm> werden gemäß ihrer Spezifität sortiert und diejenige, die auf einem Knoten in einem bestimmten Szenario am besten zutrifft, wird zur Auswertung herangezogen. Grds. werden die Regeln anhand folgender Kriterien sortiert:<indexterm>Konzepte<indexterm>Priorität</indexterm>
+            </indexterm>
+         </p>
+         <ol>
+            <li>
+               <p>Importierte Template Regeln haben immer eine niedrigere Priorität als die Regeln des importierenden Stylesheets.</p>
+            </li>
+            <li>
+               <p>Templates mit einem höheren Priority Attribut haben Vorrang.</p>
+            </li>
+            <li>
+               <p>Templates ohne Priorität bekommen automatisch eine Default-Priorität. Die höchste Default-Priorität ist <codeph>0.5</codeph>.</p>
+            </li>
+            <li>
+               <p>Diese Default Priorität errechnet sich anhand der Bedingungen oder Wildcards, die an einen Match-Regel geknüpft sind: </p>
+               <ul>
+                  <li>
+                     <p>Wenn mehrere Templates matchen, dann wird das am meisten spezifische zur Auswertung herangezogen.</p>
+                  </li>
+                  <li>
+                     <p>Das am meisten spezifische Template wird anhand der Prioritäten berechnet.</p>
+                  </li>
+                  <li>
+                     <p>Einfache Elementnamen (z.B. "para") haben Prio <codeph>0</codeph>.</p>
+                  </li>
+                  <li>
+                     <p>Wildcards (z.B. <codeph>*, @*</codeph>) haben Priorität <codeph>-0.25</codeph>
+                     </p>
+                  </li>
+                  <li>
+                     <p>Knoten-Tests für andere Knoten (e.g. <codeph>comment(), node()</codeph>, etc. ) haben Priorität <codeph>-0.5</codeph>
+                     </p>
+                  </li>
+                  <li>
+                     <p>In allen anderen Fällen ist die Prio <codeph>0.5</codeph>.</p>
+                  </li>
+               </ul>
+               <p>Beispiele:</p>
+               <ul>
+                  <li>
+                     <p>
+                        <codeph>para -&gt; 0</codeph>
+                     </p>
+                  </li>
+                  <li>
+                     <p>
+                        <codeph>h:* -&gt; -0.25</codeph>
+                     </p>
+                  </li>
+                  <li>
+                     <p>
+                        <codeph>* -&gt; -0.25</codeph>
+                     </p>
+                  </li>
+                  <li>
+                     <p>
+                        <codeph>node() -&gt; -0.25</codeph>
+                     </p>
+                  </li>
+                  <li>
+                     <p>
+                        <codeph>contents/para -&gt; 0.5</codeph>
+                     </p>
+                  </li>
+                  <li>
+                     <p>
+                        <codeph>contents/* -&gt; 0.5</codeph>
+                     </p>
+                  </li>
+               </ul>
+            </li>
+            <li>
+               <p>Mit einer Kommandozeilen-Option kann bei <b>Saxon</b> festgelegt werden, dass die Transformation abbricht, sobald es einen Konflikt bei der Regelauswertung<indexterm>Konzepte<indexterm>Regelauswertung</indexterm>
+                  </indexterm> gibt.</p>
+            </li>
+         </ol>
+      </section>
+      <section>
+         <title>Import und Default-Regel</title>
+         <p>Wie in der obigen Sektion unter Punkt 1. angegeben, haben alle<indexterm>Konzepte<indexterm>Import Präzedenz</indexterm>
+            </indexterm> Regeln in einem importierten Stylesheet eine geringere Priorität als im importierenden Stylesheet. Diesen Umstand kann man sich zunutze machen, um eine Default-Regel<indexterm>Konzepte<indexterm>Default-Regel</indexterm>
+            </indexterm> einzubinden, bspw:</p>
+         <pre xml:space="preserve">&lt;xsl:template match="*" mode="#all"/&gt;</pre>
+         <p>Da diese Regel sich in einem importierten Stylesheet befindet, hat sie geringere Priorität als alle anderen Regeln und greift nur dann, wenn für einen betretenen Knoten keine anderen Match-Regeln definiert sind.</p>
+         <p>Das ist z.B. praktisch, um nicht "gehandelte" Element zu identifizieren - dazu wäre die obige Regel nicht leer, sondern würde bspw. einen gelb markierten Warntext direkt in das Ausgabeformat schreiben.</p> |  |                                                    Rejected by , .           |  |                                                    Rejected by , .           |  |                                                    Rejected by , .           |  |                                                    Rejected by , .           |   |                                                    Rejected by , .           |   |                                                    Rejected by , .           |   |                                                    Rejected by , .           |   |                                                    Rejected by , .           |   |                                                    Rejected by , .       <p>Eine leere Default-Regel ist dagegen gut, wenn bspw. in einer <b>XML-2-XML Migration</b> automatisch Knoten im XML Baum abgetrennt werden sollen...</p>
+      </section>
+      <section>
+         <title>Prioritäten</title>
+         <p>Alle<indexterm>Konzepte<indexterm>Priorität</indexterm></indexterm> Match-Regeln werden mit einer Priorität ausgestattet. Der Stylesheet-Entwickler hat die Möglichkeit diese Priorität zu überschreiben. Dazu wird das Attribut [[code:@priority]] an der Match-Regel verwendet. Ein Use-Case für die Prioritäten wäre bspw. folgendes Filter-Szenario</p>
+         <p>
+            <b>Beispiel Seminarverwaltung</b>
+         </p>
+         <ul>
+            <li>
+               <p>Die Eingabeinstanz soll in einer Vorprozessierung gefiltert werden.</p>
+            </li>
+            <li>
+               <p>Dabei sollen Seminar-Elemente markiert werden, die nicht besonderen Bedingungen entsprechen:</p>
+               <ul>
+                  <li>
+                     <p>Das Seminar-Element hat ein Feld "Ende-Datum" das abgelaufen ist.</p>
+                  </li>
+                  <li>
+                     <p>Am Seminar-Element sind mehrere Dozenten angestellt, obwohl das Seminar-Element vom Typ "Single" ist.</p>
+                  </li>
+                  <li>
+                     <p>Einem Seminar-Element ist kein Dozent zugeordnet.</p>
+                  </li>
+               </ul>
+            </li>
+            <li>
+               <p>Sicherlich kann es Seminar-Elemente geben, die alle drei Bedingungen erfüllen. Um das Error-Log aber nicht zu überfüllen, sollen die Filter nach ihren Prioritäten ausgeführt werden.</p>
+            </li>
+         </ul>
+         <p>In XSLT Templates überführt, könnte diese Anforderung so umgsetzt werden:</p>
+         <pre xml:space="preserve">&lt;xsl:template match="Seminar[Ende-Datum/xs:date(.) le current-date()]" 
+              priority="30" mode="filter-seminare"&gt; 
+  &lt;xsl:element name="Filtered-Seminar" namespace="{namespace-uri()}"&gt; 
+    &lt;xsl:attribute name="reason"&gt;termed-seminar&lt;/xsl:attribute&gt; 
+    &lt;xsl:apply-templates select="node()|@*" mode="filter-seminare"/&gt; 
+  &lt;/xsl:element&gt; 
+&lt;/xsl:template&gt; 
+
+&lt;xsl:template match="Seminar[Type eq 'SINGLE' and count(dozenten/dozent) gt 1]"
+              priority="20" mode="filter-seminare"&gt; 
+  &lt;xsl:element name="filtered-Seminar" namespace="{namespace-uri()}"&gt; 
+    &lt;xsl:attribute name="reason"&gt;dozenten-count&lt;/xsl:attribute&gt; 
+    &lt;xsl:apply-templates select="node()|@*" mode="filter-seminare"/&gt; 
+  &lt;/xsl:element&gt; 
+&lt;/xsl:template&gt; 
+
+&lt;xsl:template match="Seminar[not(dozenten/dozent)]" mode="filter-seminare"&gt; 
+  &lt;xsl:element name="filtered-Seminar" namespace="{namespace-uri()}"&gt; 
+    &lt;xsl:attribute name="reason"&gt;dozenten-missing&lt;/xsl:attribute&gt; 
+    &lt;xsl:apply-templates select="node()|@*" mode="filter-seminare"/&gt; 
+  &lt;/xsl:element&gt; 
+&lt;/xsl:template&gt;</pre>
+         <p>Neben des Einsatzes des <codeph>@priority</codeph> Attributs<indexterm>XSLT Konstrukte<indexterm>Priority Attribut</indexterm>
+            </indexterm>
+            <indexterm>Attribute<indexterm>priority</indexterm>
+            </indexterm> und des nachfolgend beschriebenen <codeph>@mode</codeph> Attributs ist sicherlich auch noch interessant, dass die gefilterten Seminar-Elemente hier nicht gelöscht werden, sondern umbenannt werden. Auf diese Weise können sie in einem nachfolgenden Transformationsschritt (Stichwort: <xref format="dita" scope="local" type="concept" href="4_1_1_Vortransformationen.dita">Vortransformationen </xref>) weiterbehandelt werden, stören aber in der regulären Verarbeitung nicht.</p>
+      </section>
+      <section>
+         <title>Modus Attribute</title>
+         <p>An allen Templates<indexterm>
+               <indexterm/>
+            </indexterm> hat man die Möglichkeit einen selbst deklarierten Modus anzugeben. Wenn dann der XSLT Prozessor in eine bestimmte Richtung gepusht, vgl. <xref format="dita" scope="local" type="concept" href="3_1_Push_vs._Pull_Stylesheets.dita">Push vs. Pull Stylesheets</xref> , wird, werden nur diejenigen Regeln zur Auswertung herangezogen, die im selben Modus sind, wie der <codeph>apply-templates</codeph> Call selbst.</p>
+         <p>Beispielsweise möchte man die Titel im Kapitel anders behandeln als die Kapitel im Inhaltsverzeichnis, denn im TOC sollen z.B. keine Fussnoten-Marker angezeigt werden. </p>
+         <p>In Templates formuliert würde so eine Anweisung folgendermassen aussehen:</p>
+         <pre xml:space="preserve">&lt;xsl:template match="title" mode="toc"&gt;
+  &lt;div class="toc-entry"&gt;
+    &lt;xsl:apply-templates select="node()[not(self::footnote)]"/&gt;
+  &lt;/div&gt;
+&lt;/xsl:template&gt;
+
+&lt;xsl:template match="title"&gt;
+  &lt;h1&gt;
+    &lt;xsl:apply-templates/&gt;
+  &lt;/h1&gt;
+&lt;/xsl:template&gt;</pre>
+         <p>Die Generierung des TOC könnte dann so ablaufen:</p> |  |                                                    Rejected by , .           |  |                                                    Rejected by , .           |  |                                                    Rejected by , .           |   |                                                    Rejected by , .           |   |                                                    Rejected by , .           |   |                                                    Rejected by , .           |   |                                                    Rejected by , .           |   |                                                    Rejected by , .       <pre xml:space="preserve">&lt;xsl:for-each select="chapter"&gt;
+  &lt;xsl:apply-templates select="title" mode="toc"&gt;
+&lt;/xsl:for-each&gt;</pre>
+         <p>Bzgl. der Eindeutigkeit der Regelbasis kann man so anhand des Mode-Attributes<indexterm>XSLT Konstrukte<indexterm>Mode Attribut</indexterm>
+            </indexterm>
+            <indexterm>Attribute<indexterm>mode</indexterm>
+            </indexterm> Ausführungsgruppen bilden. </p>
+         <hazardstatement type="warning">
+            <messagepanel>
+               <typeofhazard>Wie auch bei Angabe der Priorities kann man auf diese Weise Regeln setzen, die nie ausgeführt werden, weil sie vllt. im Zuge einer Refactoring-Massnahme abgeklemmt und dann vergessen werden.</typeofhazard>
+               <howtoavoid>Auch das [[code:mode]]-Attribut ist also mit Vorsicht zu geniessen und sparsam einzusetzen.</howtoavoid>
+            </messagepanel>
+         </hazardstatement>
+      </section>
+   </body>
+</topic>

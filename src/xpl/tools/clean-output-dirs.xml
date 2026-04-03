@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- UWE.XSL - DITA Publishing Stylesheets
+     Copyright (C) 2012-2026 Alex Duesel <tekturcms@gmail.com>
+     SPDX-License-Identifier: LGPL-3.0-only
+     See license.txt for the full license text.
+     List of output subdirs per language (combined with lang: lang/subdir). Extensible - add new dirs here; they are deleted and recreated on clean. -->
+<output-dirs>
+  <dir>uwe</dir>
+  <dir>pdf</dir>
+  <dir>html</dir>
+</output-dirs>

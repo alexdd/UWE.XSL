@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!DOCTYPE topic
+  PUBLIC "-//OASIS//DTD DITA Topic//EN" "topic.dtd">
+<topic id="id8ae493b1-a854-4349-8aff-3bc901e07199">
+   <title>Intro </title>
+   <body>
+      <fig expanse="spread" frame="all" scale="50" status="changed">
+         <image href="../images/dita-logo2_2.jpg"/>
+      </fig>
+      <p>Diese Publikation wurde mit Tektur CCMS verfasst. Tektur ist ein einfach zu bedienender kollaborativer Editor um DITA <xref format="html" scope="external" href="https://de.wikipedia.org/wiki/Darwin_Information_Typing_Architecture">DITA</xref> Inhalte erstellen, als PDF ausgeben und pflegen zu können. Die Eingabe erfolgt dabei per WYSIWYG <xref format="html" scope="external" href="https://de.wikipedia.org/wiki/WYSIWYG">WYSIWYG</xref> mit geführter Benutzerinteraktion. Die Inhalte werden als einzelne Topics verwaltet, die in verschiedenen Maps referenziert werden können; Stichwort: Topic Based Authoring <xref format="html" scope="external" href="https://en.wikipedia.org/wiki/Topic-based_authoring">Topic Based Authoring</xref>. <fn callout="A"><p>UWE-Testfußnote: DITA-fn wird zum PDF-Fußnotentext.</p><p outputclass="fn-add">UWE-Testfußnote: DITA-fn wird zum PDF-Fußnotentext. (supplement)</p></fn></p>
+      <p>Sonstige Features: Rechte- und Rollensystem, Versionskontrolle, konfigurerierbarer Workflow mit Review &amp; Approval Funktionen. Auf dem Entwicklerblog <xref format="html" scope="external" href="http://www.tekturcms.de">Entwicklerblog</xref> kann man sich über den Fortschritt informieren.</p>
+      <note>
+         <p>Das Buch dient in erster Linie als Test für Tektur CCMS. Der Inhalt ist recht schnell entstanden, so dass der Feinschliff an mancher Stelle vielleicht noch fehlt... Trotzdem könnte es für den einen oder anderen XML Entwickler ganz interessant sein. </p>
+         <p>Die Quelltexte sind aus "didaktischen" Gründen an mancher Stelle in deutsch gehalten, was natürlich für ein richtiges Programm nicht soviel Sinn machen würde.</p>
+         <p>Die Strichzeichnungen der exotischen Vögel sind von Openclipart <xref format="html" scope="external" href="https://openclipart.org/">Openclipart</xref>. Meine Lieblingsgrafikdesignerin Caro hat die schönen Girlanden und die Titelgrafik beigesteuert. Vielen Dank dafür :-)</p>
+      </note>
+   </body>
+</topic>

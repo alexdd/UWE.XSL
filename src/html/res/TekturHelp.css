@@ -1,0 +1,1054 @@
+/* UWE.XSL - DITA Publishing Stylesheets
+   Copyright (C) 2012-2026 Alex Duesel <tekturcms@gmail.com>
+   SPDX-License-Identifier: LGPL-3.0-only
+   See license.txt for the full license text. */
+
+/* CSS Variables for consistent theming */
+:root {
+    --tektur-primary: #2c5282;
+    --tektur-secondary: #41C0D3;
+    --tektur-accent: #4a90e2;
+    --tektur-text: #2d3748;
+    --tektur-text-light: #718096;
+    --tektur-bg-light: #f7fafc;
+    --tektur-border: #e2e8f0;
+    --tektur-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1);
+    --tektur-shadow-lg: 0 10px 15px -3px rgba(0, 0, 0, 0.1);
+    --tektur-radius: 8px;
+    --tektur-transition: all 0.3s ease;
+}
+
+/* Ensure body has bottom padding for footer */
+body {
+    padding-bottom: 80px;
+    font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
+}
+
+#TekturHelpNavigation {
+  overflow: hidden;
+  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
+  font-size: 10pt;
+  margin: 0;
+  padding: 0;
+  line-height: 140%;
+}
+
+#TekturHelpNavigation ul, #TekturHelpNavigation #topic-tree {
+  list-style-type: none;
+}
+
+#TekturHelpNavigation .toc-link.activated,
+#TekturHelpNavigation .toc-unfold.activated {
+	color: var(--tektur-primary) !important;
+	font-weight: 600;
+}
+
+#TekturHelpNavigation .toc-unfold {
+	display:inline;
+}
+
+#TekturHelpNavigation #topic-tree {
+  margin: 0;
+  padding: 0;
+  color: var(--tektur-text);
+}
+
+#TekturHelpNavigation #topic-tree li {
+  padding-top: 2px;
+  padding-bottom: 2px;
+  padding-left: 12px;
+  padding-right: 8px;
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+}
+
+/* Leaf placeholder span: same markup as chapter rows; hidden so link aligns with top-level text (Intro, Glossar, index) */
+#TekturHelpNavigation #topic-tree li > span:first-child:not(.caret) {
+  display: none;
+}
+
+/* Caret column: triangle aligned with text column; vertically centered to the link line */
+#TekturHelpNavigation #topic-tree li > span.caret {
+  flex: 0 0 0.85em;
+  width: 0.85em;
+  min-width: 0.85em;
+  padding: 0;
+  margin: 0;
+  box-sizing: content-box;
+  display: inline-flex;
+  align-items: center;
+  align-self: center;
+}
+
+#TekturHelpNavigation #topic-tree li > a.toc-link {
+  flex: 1 1 auto;
+  min-width: 0;
+}
+
+#TekturHelpNavigation #topic-tree li > ul.nested {
+  flex: 1 1 100%;
+  width: 100%;
+  margin: 0;
+  padding-left: 0.75em;
+  box-sizing: border-box;
+}
+
+#TekturHelpNavigation #topic-tree > li:first-child {
+	padding-top: 20px;
+}
+
+#TekturHelpNavigation #topic-tree a:hover,
+#TekturHelpNavigation #topic-tree span:hover {
+	color: var(--tektur-primary) !important;
+}
+
+/* Enhanced navigation symbols */
+#TekturHelpNavigation .caret {
+  cursor: pointer;
+  user-select: none;
+  transition: var(--tektur-transition);
+}
+
+#TekturHelpNavigation .caret::before {
+  content: "\25B6";
+  color: var(--tektur-secondary);
+  display: inline-block;
+  margin-right: 0.35em;
+  transition: var(--tektur-transition);
+  font-size: 10px;
+}
+
+#TekturHelpNavigation .caret-down::before {
+  transform: rotate(45deg);
+  color: var(--tektur-primary);
+}
+
+#TekturHelpNavigation .nested {
+  display: none;
+}
+
+#TekturHelpNavigation .active {
+  display: block;
+} 
+
+/* Keep original search form structure but enhance styling */
+#TekturHelpNavigation #search-form {
+	float:left;
+	padding: 0px;
+}
+
+#TekturHelpNavigation #search-form input[type=search] {
+  padding: 10px;
+  font-size: 17px;
+  float: left;
+  width: 100%;
+  background: white;
+  border-left: 1px solid var(--tektur-border);
+  border-right: 1px solid var(--tektur-border);
+  border-top: 1px solid var(--tektur-border);
+  border-bottom: none;
+  transition: var(--tektur-transition);
+}
+
+#TekturHelpNavigation #search-form input[type=search]:focus {
+  outline: none;
+  border-color: var(--tektur-primary);
+  box-shadow: 0 0 0 2px rgba(44, 82, 130, 0.1);
+}
+
+#TekturHelpNavigation #search-form button {
+  float: left;
+  width: 40px;
+  padding: 10px;
+  background: var(--tektur-primary);
+  color: white;
+  font-size: 17px;
+  border: 1px solid var(--tektur-primary);
+  border-left: none;
+  cursor: pointer;
+  height: 42px;
+  transition: var(--tektur-transition);
+}
+
+#TekturHelpNavigation #search-form button:hover {
+	background: var(--tektur-accent);
+	border-color: var(--tektur-accent);
+}
+
+#TekturHelpNavigation #search-form::after {
+  content: "";
+  clear: both;
+  display: table;
+}
+
+/* Keep original button structure but enhance styling */
+#TekturHelpNavigation #prevtopicbtn, 
+#TekturHelpNavigation #nexttopicbtn, 
+#TekturHelpNavigation #sidebarbtn,
+#TekturHelpNavigation #pdfbtn {
+  background-color: white;
+  height: 42px;
+  width: 40px;
+  text-align: center;
+  vertical-align: text-bottom;
+  cursor: pointer;
+  color: var(--tektur-primary);
+  border: 1px solid var(--tektur-border);
+  float: right;
+  transition: var(--tektur-transition);
+  border-radius: var(--tektur-radius);
+}
+
+#TekturHelpNavigation #prevtopicbtn:hover, 
+#TekturHelpNavigation #nexttopicbtn:hover,
+#TekturHelpNavigation #sidebarbtn:hover,
+#TekturHelpNavigation #pdfbtn:hover {
+	background: var(--tektur-bg-light);
+	color: var(--tektur-accent);
+	border-color: var(--tektur-primary);
+	transform: translateY(-1px);
+}
+
+#TekturHelpNavigation #prevtopicbtn, 
+#TekturHelpNavigation #nexttopicbtn {
+	padding-top: 8px;
+}
+
+#TekturHelpNavigation #sidebarbtn {
+	padding-top: 4px;
+}
+
+#TekturHelpNavigation #pdfbtn {
+	padding-top: 6px;
+	display: block;
+}
+
+#TekturHelpNavigation #iframe {
+   height: 100%;
+}
+
+#TekturHelpNavigation .sidenav {
+  height: 100%; 
+  width: 0px; 
+  position: fixed; 
+  z-index: 1; 
+  top: 42px; 
+  left: 0;
+  border-right: 1px solid var(--tektur-border);
+  background-color: white; 
+  box-shadow: var(--tektur-shadow);
+  overflow-y: auto; 
+  overflow-x: hidden; 
+  transition: 0.5s; 
+}
+
+#TekturHelpNavigation .sidenav #topic-tree span.caret {
+  font-size: 12pt;
+  color: var(--tektur-text-light);
+  transition: var(--tektur-transition);
+}
+
+#TekturHelpNavigation .sidenav #topic-tree a {
+  text-decoration: none;
+  color: var(--tektur-text-light);
+  transition: var(--tektur-transition);
+  font-size: 12pt;
+  padding: 6px 0;
+  display: inline-block;
+}
+
+#TekturHelpNavigation .sidenav a:hover {
+  color: var(--tektur-primary);
+}
+
+#TekturHelpNavigation #main {
+  transition: margin-left .5s;
+}
+
+#TekturHelpNavigation * { box-sizing: border-box; }
+
+#TekturHelpNavigation .autocomplete {
+  position: relative;
+  display: inline-block;
+  width: 200px;
+}
+
+#TekturHelpNavigation input {
+  border: 1px solid var(--tektur-border);
+  background-color: white;
+  padding: 10px;
+  font-size: 16px;
+  transition: var(--tektur-transition);
+}
+
+#TekturHelpNavigation input:focus {
+  border-color: var(--tektur-primary);
+  box-shadow: 0 0 0 2px rgba(44, 82, 130, 0.1);
+}
+
+#TekturHelpNavigation input[type=search] {
+  background-color: white;
+  width: 100%;
+}
+
+#TekturHelpNavigation input[type=submit] {
+  background-color: var(--tektur-primary);
+  color: white;
+  cursor: pointer;
+}
+
+#TekturHelpNavigation input[type=submit]:hover {
+  background-color: var(--tektur-accent);
+}
+
+#TekturHelpNavigation .autocomplete-items {
+  position: absolute;
+  border: 1px solid var(--tektur-border);
+  border-bottom: none;
+  border-top: none;
+  z-index: 99;
+  top: 100%;
+  left: 0;
+  background: white;
+  box-shadow: var(--tektur-shadow);
+}
+
+#TekturHelpNavigation .autocomplete-items div {
+  padding: 12px;
+  cursor: pointer;
+  background-color: white;
+  border-bottom: 1px solid var(--tektur-border);
+  transition: var(--tektur-transition);
+}
+
+#TekturHelpNavigation .autocomplete-items div:hover {
+  background-color: var(--tektur-bg-light);
+}
+
+#TekturHelpNavigation .autocomplete-active {
+  background-color: var(--tektur-primary) !important;
+  color: white !important;
+}
+
+#TekturHelpNavigation #bar {
+	position:fixed;
+	top:0px;
+	left:0px;
+	height:42px;
+	width: 100%;
+	background: linear-gradient(135deg, var(--tektur-primary) 0%, var(--tektur-accent) 100%);
+	border-bottom: 1px solid var(--tektur-border);
+	padding-top: 10px;
+	padding-left: 18px;
+	box-shadow: var(--tektur-shadow);
+}
+
+#TekturHelpNavigation #bar-main-title {
+	font-size: 17px;
+	color: white;
+	font-weight: 600;
+	text-shadow: 0 1px 2px rgba(0, 0, 0, 0.1);
+}
+
+#TekturHelpNavigation #search-result-container {
+ 	overflow-y: auto;
+	overflow-x: hidden;
+	padding-top: 80px;
+	display: none;
+	background: var(--tektur-bg-light);
+}
+
+#TekturHelpNavigation #search-result {
+	background-color: white;
+	padding: 16px;
+	margin: 16px;
+	font-size: 12pt;
+	box-shadow: var(--tektur-shadow);
+	border-left: 4px solid var(--tektur-secondary);
+	border-radius: var(--tektur-radius);
+}
+
+#TekturHelpNavigation #search-result a:link, 
+#TekturHelpNavigation #search-result a:visited,
+#TekturHelpNavigation #search-result a:active {
+	color: var(--tektur-secondary);
+	text-decoration: none;
+}
+
+#TekturHelpNavigation #search-result a:hover {
+	color: var(--tektur-primary);
+	text-decoration: underline;
+}
+
+#TekturHelpNavigation #search-result li {
+	background-color: var(--tektur-bg-light);
+	margin-top: 2px;
+	padding: 8px;
+	border-radius: 4px;
+}
+
+#TekturHelpNavigation #breadcrumbs {
+	position: relative;
+	left: 24px;
+	top: 52px;
+	font-size: 9pt;
+	color: var(--tektur-text-light);
+	height: 30px;
+	background: white;
+	padding: 6px 12px;
+	border-radius: var(--tektur-radius);
+	box-shadow: var(--tektur-shadow);
+	display: inline-block;
+}
+
+#TekturHelpNavigation #breadcrumbs .crumb::before {
+  content: "\25B6";
+  color: var(--tektur-text-light);
+  display: inline-block;
+}
+
+#TekturHelpNavigation #breadcrumbs a:link,
+#TekturHelpNavigation #breadcrumbs a:active,
+#TekturHelpNavigation #breadcrumbs a:visited {
+	color: var(--tektur-text-light) !important;
+}
+
+#TekturHelpNavigation #breadcrumbs a:hover {
+	background-color: var(--tektur-primary) !important;
+	color: white !important;
+}
+
+#TekturHelpNavigation #topbuttons {
+	position: fixed;
+	top: 0px;
+	right: 0px;
+}
+
+#TekturHelpMeta {
+	margin-left: 24px;
+	font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
+  	font-size: 12pt;
+	background-color: white;
+	padding: 24px;
+	margin-top: 66px;
+	border-radius: var(--tektur-radius);
+	box-shadow: var(--tektur-shadow);
+}
+
+#TekturHelpMeta h1 {
+	font-size: 20pt;
+	color: var(--tektur-primary);
+	font-weight: 600;
+	margin-bottom: 16px;
+}
+
+#TekturHelpMeta #startbtn {
+    background-color: transparent;
+    width: 60px;
+    height: 40px;
+    text-align: center;
+    vertical-align: text-bottom;
+    cursor: pointer;
+    color: white;
+    border: 1px solid var(--tektur-primary);
+    position: fixed;
+    bottom: 100px;
+    right: 100px;
+    padding-top: 14px;
+    border-radius: var(--tektur-radius);
+    box-shadow: var(--tektur-shadow);
+    transition: var(--tektur-transition);
+}
+
+#TekturHelpContent {
+	margin-left: 24px;
+	font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
+  	font-size: 10pt;
+  	line-height: 150%;
+	background: white;
+	padding: 24px;
+	margin-top: 66px;
+	border-radius: var(--tektur-radius);
+	box-shadow: var(--tektur-shadow);
+	position: relative;
+	color: var(--tektur-text);
+}
+
+/* Enhanced content styling with subtle top accent */
+#TekturHelpContent::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    height: 4px;
+    background: linear-gradient(90deg, var(--tektur-primary), var(--tektur-secondary), var(--tektur-accent));
+    border-radius: var(--tektur-radius) var(--tektur-radius) 0 0;
+}
+
+#TekturHelpContent .table table {
+	border-top: 1pt solid var(--tektur-border);
+}
+
+#TekturHelpContent .bridgehead {
+	font-size: 14pt;
+	font-weight: 600;
+	color: var(--tektur-primary);
+}
+
+#TekturHelpContent h1 {
+	font-size: 16pt;
+	color: var(--tektur-primary);
+	font-weight: 600;
+}
+
+#TekturHelpContent h2,
+#TekturHelpContent h3,
+#TekturHelpContent h4,
+#TekturHelpContent h5,
+#TekturHelpContent h6 {
+	font-size: 14pt;
+	font-weight: 600;
+	color: var(--tektur-primary);
+	border-bottom: 2px solid var(--tektur-border);
+	padding-bottom: 6px;
+	margin-top: 24px;
+	margin-bottom: 12px;
+}
+
+/* Glossary chunk: hide dlhead row (Begriff / Beschreibung); bold term column.
+   Use h2.uwe-glossary-title (always emitted for glossary) — not body class, so it works in iframe + cached builds. */
+#TekturHelpContent .content > h2.uwe-glossary-title ~ .block .table .tbody > .row:first-child {
+	display: none;
+}
+
+#TekturHelpContent .content > h2.uwe-glossary-title ~ .block .table .tbody > .row > .entry:first-child {
+	font-weight: 700;
+}
+
+/* Enhanced number styling */
+#TekturHelpContent .number {
+    background: linear-gradient(135deg, var(--tektur-primary), var(--tektur-accent));
+    color: white;
+    padding: 4px 10px;
+    font-size: 0.9em;
+    margin-right: 8px;
+    font-weight: 600;
+    display: inline-block;
+    min-width: 30px;
+    text-align: center;
+    border-radius: 4px;
+    box-shadow: var(--tektur-shadow);
+}
+
+#TekturHelpContent #scrollTopBtn {
+  display: none;
+  position: fixed;
+  bottom: 20px;
+  right: 20px;
+  z-index: 99;
+  border: none;
+  background: var(--tektur-primary);
+  color: white;
+  cursor: pointer;
+  padding: 0;
+  align-items: center;
+  justify-content: center;
+  transform: rotate(-90deg);
+  border-radius: 50%;
+  width: 50px;
+  height: 50px;
+  box-shadow: var(--tektur-shadow-lg);
+  transition: var(--tektur-transition);
+}
+
+#TekturHelpContent #scrollTopBtn img {
+  display: block;
+  width: 22px;
+  height: auto;
+  margin: 0;
+  pointer-events: none;
+}
+
+#TekturHelpContent #scrollTopBtn:hover {
+  background: var(--tektur-accent);
+  transform: translateY(-2px) rotate(-90deg);
+}
+
+#TekturHelpContent .content-buttons {
+	text-align: right;
+	float: right;
+}
+
+#TekturHelpContent .content-buttons .fa {
+	padding-right: 10px;
+	cursor: pointer;
+}
+
+#TekturHelpContent .content-buttons img {
+    cursor: pointer;
+    padding: 8px;
+    border-radius: var(--tektur-radius);
+    transition: var(--tektur-transition);
+}
+
+#TekturHelpContent .content-buttons img:hover {
+    background-color: var(--tektur-bg-light);
+}
+
+@media print {    
+    #TekturHelpContent .content-buttons {
+        display: none;
+    }
+}
+
+#TekturHelpContent mark.hidden {
+	background-color: transparent !important;
+}
+
+/* Enhanced warning/notice boxes */
+.warning, .note, .notice, .caution, .danger {
+    margin-top: 15px;
+    margin-bottom: 15px;
+    border-radius: var(--tektur-radius);
+    overflow: hidden;
+    box-shadow: var(--tektur-shadow);
+}
+
+.warning .content {
+    border-top: #FF6100 3pt solid;
+    background-color: white;
+    padding-top: 10px;
+    padding-left: 7px;
+    padding-bottom: 4px;    
+}
+
+td .warning .content {
+    border-top: #FF6100 3pt solid;
+    background-color: white;
+    padding-top: 10px;
+    padding-left: 7px;
+    padding-bottom: 4px;    
+}
+
+ .note .content,  .notice .content {
+    border-top: var(--tektur-primary) 3pt solid;
+    background-color: white;
+    padding-top: 10px;
+    padding-left: 10px;
+    padding-bottom: 4px;    
+}
+
+ td .note .content,  td .notice .content {
+    border-top: var(--tektur-primary) 3pt solid;
+    background-color: white;
+    padding-top: 10px;
+    padding-left: 10px;
+    padding-bottom: 4px;    
+}
+ 
+.caution .content {
+    border-top: #FFF021 3pt solid;
+    background-color: white;
+    padding-top: 10px;
+    padding-left: 7px;
+    padding-bottom: 4px;    
+}
+
+td .caution .content {
+    border-top: #FFF021 3pt solid;
+    background-color: white;
+    padding-top: 10px;
+    padding-left: 7px;
+    padding-bottom: 4px;    
+}
+
+.danger .content {
+    border-top: #FD0000 3pt solid;
+    background-color: white;
+    padding-top: 10px;
+    padding-left: 7px;
+    padding-bottom: 4px;    
+}
+
+td .danger .content {
+    border-top: #FD0000 3pt solid;
+    background-color: white;
+    padding-top: 10px;
+    padding-left: 7px;
+    padding-bottom: 4px;    
+}
+
+.warning .signal-word {
+    background-color: #FF6100;
+    margin-left: 55px;
+    height: 14px;
+    padding-top: 8px;
+    font-weight: bold;    
+    font-size: larger;
+    color: black;
+}
+
+ .note .signal-word, .notice .signal-word {
+    background-color: var(--tektur-primary);
+    margin-left: 0px;
+    padding-left: 10px;
+    height: 14px;
+    padding-top: 8px;
+    font-weight: bold;
+    font-style: italic;
+    color: white;
+    font-size: larger;
+}
+ 
+.caution .signal-word {
+    background-color: #FFF021;
+    margin-left: 55px;
+    height: 14px;
+    padding-top: 8px;
+    font-weight: bold;
+    font-size: larger;
+    color: black;
+}
+
+.danger .signal-word {
+    background-color: #FD0000;
+    margin-left: 55px;
+    height: 14px;
+    padding-top: 8px;
+    font-weight: bold;
+    font-size: larger;
+    color: black;
+}
+
+.warning {
+   border-bottom: #FF6100 6pt solid; 
+   border-left:  #FF6100 6pt solid;
+   border-right:  #FF6100 6pt solid;
+   background-color: #FF6100;
+   background-image: url(images/Warning.jpg);
+   background-repeat: no-repeat;
+   background-size: 20px 20px;
+   /* Icon in linker „Gosse“; Titel + Fließtext dieselbe linke Kante (kein Zusatz-Einzug) */
+   background-position: 10px 8px;
+   box-sizing: border-box;
+   padding: 6px 10px 12px 38px;
+}
+
+.warning .warning-title,
+.caution .warning-title,
+.danger .warning-title {
+   padding-left: 0;
+   min-height: 24px;
+   line-height: 24px;
+}
+
+.warning .warning-content,
+.caution .warning-content,
+.danger .warning-content {
+	padding-left: 0;
+	margin-top: 4px;
+}
+
+.note, .notice {
+   border-bottom: var(--tektur-primary) 6pt solid; 
+   border-left: var(--tektur-primary) 6pt solid;
+   border-right: var(--tektur-primary) 6pt solid;
+   background-color: var(--tektur-primary);
+}
+
+/* main.xsl emits .warning-title / .warning-content (not .signal-word / .content) */
+.note .warning-title,
+.notice .warning-title {
+	padding: 10px 12px 6px 12px;
+	font-weight: 700;
+	font-size: larger;
+	font-style: italic;
+	color: #fff;
+}
+
+.note .warning-content,
+.notice .warning-content {
+	padding: 0 12px 12px 12px;
+	color: #fff;
+	line-height: 1.5;
+}
+
+.note .warning-content p,
+.notice .warning-content p {
+	color: inherit;
+}
+
+#TekturHelpContent .note .warning-content a:link,
+#TekturHelpContent .note .warning-content a:visited,
+#TekturHelpContent .note .warning-content a:active,
+#TekturHelpContent .notice .warning-content a:link,
+#TekturHelpContent .notice .warning-content a:visited,
+#TekturHelpContent .notice .warning-content a:active {
+	color: #e6fffa;
+	text-decoration: underline;
+	text-decoration-color: rgba(255, 255, 255, 0.45);
+}
+
+#TekturHelpContent .note .warning-content a:hover,
+#TekturHelpContent .notice .warning-content a:hover {
+	color: #fff;
+	text-decoration-color: #fff;
+}
+ 
+.caution  {
+   border-left: #FFF021 6pt solid;
+   border-right:  #FFF021 6pt solid;
+   border-bottom: #FFF021 6pt solid;
+   background-color: #FFF021;
+   background-image: url(images/Caution.jpg);
+   background-repeat: no-repeat;
+   background-size: 20px 20px;
+   background-position: 10px 8px;
+   box-sizing: border-box;
+   padding: 6px 10px 12px 38px;
+}
+
+.danger  {
+   border-left: #FD0000 6pt solid;
+   border-right: #FD0000 6pt solid;
+   border-bottom: #FD0000 6pt solid;
+   background-color: #FD0000;
+   background-image: url(images/Danger.jpg);
+   background-repeat: no-repeat;
+   background-size: 20px 20px;
+   background-position: 10px 8px;
+   box-sizing: border-box;
+   padding: 6px 10px 12px 38px;
+}
+
+.cover .main-title {
+	font-size: 24pt;
+	margin-bottom: 10px;
+	color: var(--tektur-primary);
+	font-weight: 600;
+}
+
+.cover .subtitle {
+	font-size: 18pt;
+	color: var(--tektur-text);
+}
+
+#logo-image {
+	width: 100px;
+	margin-top: 20px;
+	border: 1px solid var(--tektur-border);
+	padding: 5px;
+	border-radius: var(--tektur-radius);
+}
+
+.document > h1 {
+	float: right;
+	font-size: smaller;
+	color: white !important;
+	background-color: var(--tektur-primary);
+	font-style: italic;
+	margin-right: 100px;
+	padding: 8px 16px;
+	border-radius: var(--tektur-radius);
+}
+
+.desc {
+	background-color: var(--tektur-bg-light);
+	margin-bottom: 10px;
+	padding: 16px;
+	border-left: 4px solid var(--tektur-secondary);
+	border-radius: var(--tektur-radius);
+}
+
+/* HTML footnotes: callout in text + block at end (aligned with PDF fo:footnote: gray body, label + indent). */
+#TekturHelpContent .fn-marker {
+	font-size: 0.67em;
+	font-weight: 600;
+	line-height: 0;
+	vertical-align: super;
+}
+
+#TekturHelpContent .fn-marker .fn-call {
+	color: var(--tektur-secondary);
+	text-decoration: none;
+}
+
+#TekturHelpContent .fn-marker .fn-call:hover,
+#TekturHelpContent .fn-marker .fn-call:focus {
+	color: var(--tektur-primary);
+	text-decoration: underline;
+}
+
+#TekturHelpContent .uwe-footnotes {
+	margin-top: 2.5rem;
+	padding-top: 1rem;
+	border-top: 1px solid var(--tektur-border);
+	font-size: 0.92em;
+	line-height: 1.45;
+	color: #999;
+}
+
+#TekturHelpContent .uwe-footnotes-heading {
+	font-size: 0.72rem;
+	font-weight: 600;
+	color: var(--tektur-text-light);
+	margin: 0 0 0.75rem 0;
+	text-transform: uppercase;
+	letter-spacing: 0.05em;
+}
+
+#TekturHelpContent .uwe-footnote-item {
+	display: grid;
+	grid-template-columns: minmax(2em, auto) 1fr;
+	column-gap: 0.65rem;
+	align-items: start;
+	margin-bottom: 0.6rem;
+}
+
+#TekturHelpContent .uwe-footnote-label {
+	text-align: left;
+}
+
+#TekturHelpContent .uwe-footnote-label .uwe-footnote-back {
+	color: #999;
+	text-decoration: none;
+	font-weight: 600;
+}
+
+#TekturHelpContent .uwe-footnote-label .uwe-footnote-back:hover,
+#TekturHelpContent .uwe-footnote-label .uwe-footnote-back:focus {
+	color: var(--tektur-secondary);
+	text-decoration: underline;
+}
+
+#TekturHelpContent .uwe-footnote-body {
+	min-width: 0;
+}
+
+#TekturHelpContent .uwe-footnote-body > p:first-child {
+	margin-top: 0;
+}
+
+#TekturHelpContent .uwe-footnote-body > p:last-child {
+	margin-bottom: 0;
+}
+
+#TekturHelpContent .uwe-footnote-add {
+	display: block;
+	margin-top: 0.35em;
+	font-size: 0.95em;
+	font-style: italic;
+	color: var(--tektur-text-light);
+}
+
+#TekturHelpContent .uwe-register-title {
+	font-size: 16pt;
+	color: var(--tektur-primary);
+	font-weight: 600;
+	margin-top: 0;
+	margin-bottom: 1.25rem;
+	padding-bottom: 0.5rem;
+	border-bottom: 2px solid var(--tektur-border);
+}
+
+#TekturHelpContent .uwe-keyword-index {
+	max-width: 52em;
+}
+
+#TekturHelpContent .uwe-index-entry {
+	margin-bottom: 1rem;
+	padding-bottom: 0.75rem;
+	border-bottom: 1px solid var(--tektur-border);
+}
+
+#TekturHelpContent .uwe-index-term {
+	font-weight: 600;
+	color: var(--tektur-text);
+	margin-bottom: 0.35rem;
+}
+
+#TekturHelpContent .uwe-index-links {
+	margin: 0;
+	padding-left: 1.25rem;
+	list-style-type: disc;
+	color: var(--tektur-text-light);
+	font-size: 0.95em;
+}
+
+#TekturHelpContent .uwe-index-links li {
+	margin-bottom: 0.2rem;
+}
+
+#TekturHelpMeta a:link, 
+#TekturHelpMeta a:visited, 
+#TekturHelpMeta a:active,
+#TekturHelpContent a:link, 
+#TekturHelpContent a:visited, 
+#TekturHelpContent a:active {
+	color: var(--tektur-secondary);
+	text-decoration: none;
+	transition: var(--tektur-transition);
+}
+ 
+#TekturHelpMeta a:hover,
+#TekturHelpContent a:hover {
+	color: var(--tektur-primary);
+	text-decoration: underline;
+}
+
+.chapter-subtitle {
+	font-weight: 600;
+	color: var(--tektur-primary);
+}
+
+h5.subtitle {
+	font-size: 12pt !important;
+	color: var(--tektur-accent) !important;
+}
+
+#print-icon {
+	cursor: pointer;
+}
+
+#TekturHelpMeta #appendix-container {
+	margin-bottom: 40px;
+}
+
+#TekturHelpMeta .appendix {
+	border: 1px solid var(--tektur-border);
+	padding: 16px;
+	display: block;
+	margin-top: 10px;
+	margin-bottom: 10px;
+	width: 50%;
+	border-radius: var(--tektur-radius);
+	background: white;
+	box-shadow: var(--tektur-shadow);
+	border-left: 4px solid var(--tektur-secondary);
+	transition: var(--tektur-transition);
+}
+
+#TekturHelpMeta .appendix:hover {
+	background-color: var(--tektur-bg-light);
+	transform: translateY(-2px);
+	box-shadow: var(--tektur-shadow-lg);
+}
+
+#TekturHelpMeta #appendix-label {
+	font-size: 18pt;
+	margin-top: 20px;
+	color: var(--tektur-primary);
+	font-weight: 600;
+}
+
+h1:empty {
+	background: none !important;
+	border: none !important;
+	padding: 0 !important;
+	margin: 0 !important;
+	height: 0;
+	visibility: hidden;
+}
+

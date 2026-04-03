@@ -1,0 +1,87 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!DOCTYPE topic
+  PUBLIC "-//OASIS//DTD DITA Topic//EN" "topic.dtd">
+<topic id="id12e4c2b3-d41d-40ca-978d-37a86f74c206">
+   <title>Performance Optimization </title>
+   <body>
+      <p>
+         <indexterm>Performance Optimization</indexterm>When processing larger amounts of data, there are several options. Either
+you rely on the performance optimization implemented in the XSLT / XQuery
+processor, or use methods such as <xref format="dita" scope="local" type="concept"
+               href="4_1_3_XSLT_Streaming.dita">XSLT Streaming</xref> -
+or you go one level lower and see what Java is doing.</p>
+      <p>It is of course also possible to restructure your algorithms, optimize
+the code, and make everything (even more) cryptic. But following the
+motto <i>"Never change a running system"</i>, in many places the foundation is
+fine-tuned first.</p>
+      <section>
+         <title>Heap Memory and Garbage Collector</title>
+         <p>
+            <indexterm>Performance Optimization<indexterm>Heap Memory and Garbage Collector</indexterm>
+            </indexterm>If I recall correctly from my computer science studies, a
+garbage collector automatically collects memory blocks that the Java program (Saxon) no
+longer needs and hands them over to the heap memory management. A heap
+is usually an automatically balancing tree that manages the freed 
+memory blocks sorted by size.</p>
+         <p>Since the garbage collector also runs at the same time as our Java program,
+the two can get in each other's way. If you have reserved too much
+heap space for the Java program, then the garbage collector swaps its 
+temporary products to a slow swap area. If you have 
+reserved too little, there is not enough space for the main program.</p>
+         <p>Common error messages are, for example:</p>
+         <ul>
+            <li>
+               <p>
+                  <codeph>java.lang.OutOfMemoryError: Java heap space</codeph>
+               </p>
+            </li>
+            <li>
+               <p>
+                  <codeph>java.lang.OutOfMemoryError: GC Overhead limit exceeded</codeph>
+               </p>
+            </li>
+         </ul>
+         <p>More information on this can be found on the Oracle website on the topic <xref format="html" scope="external"
+                  href="https://docs.oracle.com/javase/8/docs/technotes/guides/troubleshoot/memleaks002.html">Oracle documentation page on memory error messages</xref>
+         </p>
+         <p>These much-discussed heap settings of the Java Virtual Machine (JVM) have a particularly significant impact 
+on applications where memory consumption at a given
+time is not predictable, e.g. a Java game with action and occasionally role-playing elements.</p>
+         <p>In this case, tuning the JVM heap options would be appropriate, especially since you also want to optimize the game for
+players who do not have access to the most powerful hardware.</p>
+         <p>Common options that are passed with the Java call are, for example:</p>
+         <ul>
+            <li>
+               <p>
+                  <codeph>Xms&lt;size&gt; set initial Java heap size</codeph>
+               </p>
+            </li>
+            <li>
+               <p>
+                  <codeph>Xmx&lt;size&gt; set maximum Java heap size</codeph>
+               </p>
+            </li>
+            <li>
+               <p>
+                  <codeph>Xss&lt;size&gt; set java thread stack size</codeph>
+               </p>
+            </li>
+         </ul>
+         <p>More information on this can be found on the Oracle website on the topic <xref format="html" scope="external"
+                  href="https://www.oracle.com/technetwork/java/gc-tuning-5-138395.html">Oracle documentation page on heap memory settings and garbage collector</xref>
+         </p>
+         <p>For the batch-oriented processes in XML processing, these options are usually not decisive, 
+since the heap is loaded linearly during the transformation of a larger document. In fact, it is even recommended to
+set the upper limit for heap memory equal to the lower bound, in order to spare the JVM the selection of the appropriate memory area
+at runtime.</p>
+         <p>I use a 10 GB heap limit for my performance-intensive transformations:</p>
+         <p>
+            <codeph>-Xms10g -Xmx10g</codeph>
+         </p>
+         <p>This allows even very large XML files to be processed efficiently with a pipeline such as MorganaXProc <xref format="html" scope="external" href="https://www.xml-project.com/morganaxproc/">MorganaXProc</xref>
+            <indexterm>Tools<indexterm>MorganaXProc</indexterm>
+            </indexterm>,
+which keeps the result documents of individual transformation steps in memory.</p>
+      </section>
+   </body>
+</topic>

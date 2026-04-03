@@ -1,0 +1,59 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!DOCTYPE topic
+  PUBLIC "-//OASIS//DTD DITA Topic//EN" "topic.dtd">
+<topic id="id44b03330-885f-4eee-a90b-3235d56161e7">
+   <title>XML Databases</title>
+   <body>
+      <p>XML databases, in contrast to the widely used relational 
+databases, focus on the structure of a document, which abstractly represents a tree, and less on the relationships between objects, which tend to span a graph.</p>
+      <p>Of course, every tree is also a graph without cycles, and you can certainly store trees
+in a relational database. However, an XML database is optimized for this structure. </p>
+      <p>There are currently four pure XML databases and some extensions for conventional SQL databases:<indexterm>XML Database<indexterm>eXist</indexterm>
+         </indexterm>
+         <indexterm>XML Database<indexterm>BaseX</indexterm>
+         </indexterm>
+         <indexterm>XML Database<indexterm>MarkLogic</indexterm>
+         </indexterm>
+         <indexterm>XML Database<indexterm>Berkely XML DB</indexterm>
+         </indexterm>
+      </p>
+      <dl>
+         <dlhead>
+            <dthd>Database</dthd>
+            <ddhd>Characteristics</ddhd>
+         </dlhead>
+         <dlentry>
+            <dt>eXist DB <xref format="html" scope="external"
+                     href="http://exist-db.org/exist/apps/homepage/index.html">Homepage zur eXist XML Datenbank</xref>
+            </dt>
+            <dd>
+               <p>eXist DB is an open source project. In addition to the database, this software includes a complete development environment for web applications. A 1-click installer in the form of a Java JAR is available for this DB. eXist is very popular in the Digital Humanities field (a discipline within historical and cultural studies).</p>
+            </dd>
+         </dlentry>
+         <dlentry>
+            <dt>BaseX <xref format="html" scope="external" href="http://basex.org/">BaseX</xref>
+            </dt>
+            <dd>
+               <p>BaseX is also open source and the homepage makes a solid impression. So far I have not gotten around to evaluating BaseX. Nothing worked under my Java 10 installation — which is why the first contact failed. </p>
+            </dd>
+         </dlentry>
+         <dlentry>
+            <dt>MarkLogic <xref format="html" scope="external" href="https://www.marklogic.com/">MarkLogic</xref>
+            </dt>
+            <dd>
+               <p>MarkLogic is the market leader among commercial providers. Everything here is "Enterprise"... the functionality, the support, and also the price. Although ML offers many extensions for XQuery, the XQuery 3.0 standard has not yet been implemented.</p>
+            </dd>
+         </dlentry>
+         <dlentry>
+            <dt>Berkeley DB XML Database <xref format="html" scope="external"
+                     href="https://www.oracle.com/database/berkeley-db/xml.html">Berkeley DB XML</xref>
+            </dt>
+            <dd>
+               <p>The good old Berkeley DB was the key-value underpinning for many other databases, including MySQL. The XML variant certainly has a lot to offer as well.</p>
+            </dd>
+         </dlentry>
+      </dl>
+      <p>Since I currently work professionally with MarkLogic, I won't pass up the opportunity to describe my experiences and findings in this chapter. There is also a Developer License <xref format="html" scope="external"
+               href="https://developer.marklogic.com/free-developer">MarkLogic Developer Lizenzvereinbarung</xref> that allows you to try out the software. For all long-term XQuery experiments, eXist DB is probably the first choice, since it also implements the current XQuery standard.</p>
+   </body>
+</topic>

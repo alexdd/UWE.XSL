@@ -1,0 +1,113 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!DOCTYPE topic
+  PUBLIC "-//OASIS//DTD DITA Topic//EN" "topic.dtd">
+<topic id="id51a4584a-9a43-4f8f-ad89-d1c2d88ab6e6">
+   <title>Funktionen und Module</title>
+   <body>
+      <section>
+         <title>Funktionen</title>
+         <p>Um bestimmte Abschnitte des XQuery Programm wiederverwendbar zu machen, stehen Funktionsdeklarationen<indexterm>Programmierkonstrukte<indexterm>Funktionen</indexterm>
+            </indexterm> zur Verfügung. Eine einfache Funktion wäre z.B. diese hier:<fn callout="A"><p>UWE-Testfußnote (27/40, Callout A): DITA-fn wird in UWE zu footnote/key/desc.</p></fn></p>
+         <pre xml:space="preserve">declare function local:wrap-header($json) {
+  xdmp:add-response-header("Pragma", "no-cache"),
+  xdmp:add-response-header("Cache-Control", "no-cache"),
+  xdmp:add-response-header("Expires", "0"),
+  xdmp:set-response-content-type('text/json; charset=utf-8'),
+  $json
+};</pre>
+         <p>Sie wickelt um einen JSON String eine passende Header Information.</p>
+         <p>Damit die Funktion eingebunden werden kann, muss ein passender Namespace<indexterm>XML Konstrukte<indexterm>Namespaces</indexterm>
+            </indexterm> deklariert werden:</p>
+         <pre xml:space="preserve">declare namespace local = 'local:';</pre> |  |                                                    Rejected by , .       <p>Nicht nur bzgl. Wiederverwendbarkeit sind Funktionen praktisch, sondern auch
+um ganz elementare Konstrukte, wie <codeph>while...do</codeph>
+            <indexterm>Programmierkonstrukte<indexterm>Schleifen - while..do</indexterm>
+            </indexterm> Schleifen, zu realisieren.</p>
+         <p>Dazu nutzt man - wie in der funktionalen Programmierung üblich - die Rekursion:</p>
+         <pre xml:space="preserve">declare function local:ist-letzter-wert-in-kette($glied) {
+  let $wert := local:komplizierte-berechnung($glied),
+    $naechstes-glied := local:komplizierte-berechnung-der-position($glied),
+  return
+    if ($naechstes-glied and not($wert = 'foobar')) then
+      local:durchlaufe-kette($naechstes-glied)
+    else
+      $wert = 'foobar'
+};</pre>
+         <p>In diesem kleinen Schnippsel sind schon einige Besonderheiten von 
+XQuery zu sehen. Variablenzuweisungen geschehen mit einem Doppelpunkt,
+Vergleiche dagegen nur mit einem einfachen "=". Statements werden mit einem
+Komma getrennt.</p>
+      </section>
+      <section>
+         <title>Funktionsaufrufe im XPath</title>
+         <p>Wenn eine Funktion auf einer Kontenmenge operiert, dann kann der Funktionsaufruf auch an einen Pfadselektor gehangen werden, bspw. so:</p>
+         <pre xml:space="preserve">&lt;xsl:value-of select="sum($current/betrag[xs:decimal(.) gt 0]<b>/xs:decimal(.)</b>)"/&gt;</pre>
+         <p>Hier werden die <codeph>betrag</codeph>-Knoten eines zuvor selektierten Teilbaums, der in der Variablen <codeph>$current</codeph> abgespeichert ist, aufsummiert - aber nur wenn der Wert größer als 0 ist. </p>
+         <p>Der Funktionsaufruf ist hier ein Type-Cast auf einen Dezimalwert, um eine gewisse Rechengenauigkeit zu gewährleisten.</p>
+         <p>Die Filterung auf positive Werte ist dabei noch gewöhnlich formuliert:</p>
+         <pre xml:space="preserve">[xs:decimal(.) gt 0]</pre>
+         <p>
+            <codeph>xs:decimal</codeph> nimmt den aktuell ausgwählten Knoten und macht einen Dezimalwert daraus, um ihn mit 0 zu vergleichen. </p>
+         <p>Falls hier an den Typkonstruktor <codeph>xs:decimal</codeph> ein nicht-unterstütztes Format übergeben wird, bspw. ein String, dann wird ein <b> fatalen Fehler geworfen und das Programm bricht ab</b>.</p>
+         <p>Der Funktionsaufruf kann aber auch als Pfadselektion an einem XPath angebracht werden:</p>
+         <pre xml:space="preserve">/xs:decimal(.)</pre>
+         <p>Im Fehlerfall wird <b>der fehlerhafte Wert nicht summiert und das Programm läuft weiter</b>.</p>
+         <pre xml:space="preserve">$current/betrag[xs:decimal(.) gt 0]</pre>
+         <p>Auf herkömmlichen Weg würde man eine Schleife verwenden, die alle Werte auf deren Dezimalwert abbildet:</p>
+         <pre xml:space="preserve">sum(for $x in $current/betrag[xs:decimal(.) gt 0]
+return xs:decimal($x))</pre>
+         <p>Das ist ein bisschen komplizerter, gewährleistet aber eine bessere Robustheit der Programmierung.</p>
+         <hazardstatement type="notice" status="changed">
+            <messagepanel>
+               <typeofhazard>Funktionsaufrufe als Pfadselektoren brechen bei einem Fehler in der Funktion - ohne explizite Ausnahmebehandlung - <b>nicht</b> ab.</typeofhazard>
+               <howtoavoid>Falls mehr Robustheit gefordert ist, sollte man über Ergbnisknotenmengen iterieren und Funktionsaufrufe auf herkömmlichem Weg absetzen.</howtoavoid>
+            </messagepanel>
+         </hazardstatement>
+         <p>Betrachten wir folgendes XQuery-Schnippsel:</p>
+         <pre xml:space="preserve">collection("/abrechnung")[vorgangsnummer[.=(3, 8,9,10)]/xdmp:node-collections(.)
+                         [starts-with(., '/buchung')]/xdmp:collection-delete(.)</pre>
+         <fig expanse="spread" frame="all" scale="50" status="changed">
+            <image href="../images/oksmith-screech-owl_31.svg"/>
+         </fig>
+         <p>Hier sind alle Abrechnungen in einer Collection <codeph>/abrechnung</codeph> gespeichert. Die Abrechungen mit den Vorgangsnummern <codeph>3,8,9</codeph> und <codeph>10</codeph> sollen
+herausgefischt werden. Diese Abrechungen können auch in verschiedenen Collections verwaltet werden, bspw. mittels eines Collection-Typs
+"Buchung". Eine Buchung-Collection sammelt alle Abrechungen, die an einem bestimmten Buchungstag getätigt wurden. Wir gehen jetzt davon aus,
+dass alle Abrechungen <codeph>3,8,9,10</codeph> an einem bestimmten Buchungstag getätigt wurden - und nur diese. Aus irgendeinem Grund wollen wir diese 
+Buchung nun löschen. Das macht genau der obige Einzeiler. Der Filter:</p>
+         <pre xml:space="preserve">collection("/abrechnung")[vorgangsnummer[.=(3, 8,9,10)]</pre>
+         <p>gibt eine Knotenmenge zurück. Das gefilterte Funktionsergebnis</p>
+         <pre xml:space="preserve">xdmp:node-collections(.)[starts-with(., '/buchung')]</pre>
+         <p>ist auch eine Knotenmenge. Normalerweise bräuchten wir also Schleifen, um über diese Mengen zu iterieren. Das würde irgendwie so aussehen</p>
+         <pre xml:space="preserve">let 
+  $filtered-collection := collection("/abrechnung")[vorgangsnummer[.=(3, 8,9,10)],
+  $collections-to-be-deleted :=
+  distinct-values(
+    for $x in $collection
+       return (
+         for $y in xdmp:document-get-collections(fn:document-uri($x))
+                                                 [starts-with(., '/buchung')]
+           return 
+             $y
+       )
+    )
+return (
+      for $culprit in $collections-to-be-deleted
+        return xdmp:collection-delete($culprit)
+    )</pre>
+         <p>Der Quelltext ist zwar so wesentlich länger, aber auch weniger geübte XPath-Experten erkennen leicht, um was es geht.</p>
+      </section>
+      <section>
+         <title>Module</title>
+         <p>Um eine XQuery Anwendung zu modularisieren<indexterm>Programmierkonstrukte<indexterm>Module</indexterm>
+            </indexterm>, können einzelne Skripte in
+Module ausgelagert werden. Ein Modul, z.B. <codeph>common.xqy</codeph>, wird dabei über einen eigenen
+Namespace deklariert:</p>
+         <pre xml:space="preserve">module namespace common = "https://www.tekturcms.de/common";</pre>
+         <p>Dieses Modul kann dann in anderen Skripten eingebunden werden:</p>
+         <pre xml:space="preserve">import module namespace common = "https://www.tekturcms.de/common" at "common.xqy";</pre>
+         <p>Funktionen und Variablen werden dann mir dem Namespace<indexterm>XML Konstrukte<indexterm>Namespaces</indexterm>
+            </indexterm> geprefixt aufgerufen:</p>
+         <pre xml:space="preserve">Funktionsaufruf: common:wrap-response-header(...)
+Variablenauswertung: $common:collection-books</pre>
+      </section>
+   </body>
+</topic>

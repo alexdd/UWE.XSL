@@ -1,0 +1,204 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!DOCTYPE topic
+  PUBLIC "-//OASIS//DTD DITA Topic//EN" "topic.dtd">
+<topic id="ida204cfce-f0e0-4a46-b5ca-5d58a0700931">
+   <title>Leerzeichenbehandlung</title>
+   <body>
+      <p>
+         <indexterm>Konzepte<indexterm>Leerzeichenbehandlung</indexterm>
+         </indexterm>Die Leerzeichenbehandlung ist im Bereich Publishing ein heisses Thema. Einerseits sollte der Redakteur dafür sorgen, dass keine überflüssigen Leerzeichen in die Bedatung gelangen, andererseits werden diese aber durch Editoren und Transformationsstrecken hinzugemogelt.<fn callout="F"><p>UWE-Testfußnote (32/40, Callout F): DITA-fn wird in UWE zu footnote/key/desc.</p><p outputclass="fn-add">UWE Zusatz (fn-add) für den Fußnotenindex.</p></fn></p>
+      <p>Diese unerwünschten Leerzeichen will man bei der Publikation wieder loswerden. Hierzu stellt XSLT verschiedene Mittel bereit:</p>
+      <ol>
+         <li>
+            <p>Mit <codeph>xsl:strip-space</codeph> und <codeph>xsl:preserve-space</codeph>
+               <indexterm>XSLT Konstrukte<indexterm>xsl:strip-space und xsl:preserve-space</indexterm>
+               </indexterm> kann in der Stylesheet-Deklaration festgelegt werden, in welchen Elementen Leerzeichen-artige Zeichen, das sind z.B. Spaces und Zeilenumbrüche, ggf. auf ein Leerzeichen normalisiert werden sollen. Andersrum kann man auch angeben, wo das explizit nicht geschehen soll.</p>
+         </li>
+         <li>
+            <p>Die Funktion <codeph>fn:normalize-space</codeph> ermöglicht diese Funktionalität in XPath Abfragen und mit <codeph>fn:translate</codeph> können Leerzeichen auf andere Zeichen, wie z.B. auch auf den Leerstring, abgebildet werden.</p>
+         </li>
+         <li>
+            <p>Will man nur die Leerzeichen am Anfang oder am Ende eines PCDATA Elements loswerden, empfiehlt sich ggf. auch ein Blick in die FunctX Bibliothek von <ph outputclass="nb">Priscillia Wamsley</ph>
+               <indexterm>XML Gurus<indexterm>Priscillia Walmsley</indexterm>
+               </indexterm> zum Thema Trimming <xref format="html" scope="external" href="http://www.xsltfunctions.com/xsl/functx_trim.html">FunctX Bibliothek von Priscilla Walmsley zum Thema Trimming</xref>.</p>
+         </li>
+      </ol>
+      <section>
+         <title>Leerzeichen am Satzanfang</title>
+         <p>Schnell stellt man fest, dass diese Hausmittel nicht ausreichen, wenn man die Leerzeichen am Anfang einer verschachtelten Inline-Struktur loswerden will, wie z.B. dieser hier:</p>
+         <pre xml:space="preserve">&lt;title&gt;
+   •
+   &lt;i&gt;
+      ••
+      &lt;!-- comment --&gt;
+      &lt;cap&gt;•A&lt;/cap&gt;
+      lfons Bliemetsrieders 
+   &lt;/i&gt;
+   Tagebuch
+&lt;/title&gt;</pre>
+         <p>Die Leerzeichen, markiert als schwarze Punkte •, haben sich eingeschlichen. Man kann hier nicht obige Funktionen pauschal anwenden, denn z.B. das Leerzeichen hinter <codeph>Bliementsrieder</codeph>  ist durch ein Editierproblem entstanden. Hier wurde versehentlich das Leerzeichen kursiv mitformatiert. Würde man auf dem <codeph>&lt;i&gt;</codeph> Tag normalisieren, dann würde dieses Leerzeichen verschluckt werden.</p>
+      </section>
+      <section>
+         <title>Zweistufige Leerzeichen-Eliminierung</title>
+         <p>Mein Ehrgeiz für dieses Problem wurde durch die sehr gute Lösung meines Kollegen geweckt, der einen anderen Programmierstil pflegt. Deshalb musste ich beweisen, dass man auch "old-school" regelbasiert mit XSLT zu einer vernünftigen Lösung kommt. Glücklicherweise gibt es mittlerweile sehr ausgeklügelte XSLT Konstrukte<indexterm>XSLT Konstrukte</indexterm>. </p>
+         <p>Wenn man sich das obige Beispiel anschaut, dann lässt sich die Aufgabe in zwei Teile zerlegen:</p>
+         <ol>
+            <li>
+               <p>Entferne alle Textknoten unterhalb von <codeph>&lt;title&gt;</codeph> bis zum ersten Textknoten, der auch Buchstaben und sichtbare Zeichen enthält.</p>
+            </li>
+            <li>
+               <p>Danach kannst Du am ersten Textknoten unterhalb von <codeph>&lt;title&gt;</codeph> die führenden Leereichen abschneiden.</p>
+            </li>
+         </ol>
+         <p>Hört sich simpel an, ist es aber leider nicht. </p>
+         <p>Zunächst recherchierte ich, ob denn auch wirklich an einem PCDATA Element nur ein Textknoten dranhängt. Diese Information war nötig, weil mein erster Algorithmus noch nicht ganz so ausgefeilt war, wie in den zwei Punkten oben beschrieben.</p>
+         <p>Man kann in einer Transformation mehrere Textknoten hintereinander erzeugen, wie:</p>
+         <pre xml:space="preserve">&lt;xsl:value-of select="'erster Textknoten'"/&gt;&lt;xsl:value-of select="'zweiter Textknoten'"/&gt;</pre>
+         <p>Diese werden aber bei einem <i>"Save-Load Cycle"</i> zu einem Textknoten normalisiert. So steht das zumindest in der DOM Core Spezifikation <xref format="html" scope="external" href="https://www.w3.org/TR/DOM-Level-3-Core/core.html#Document3-normalizeDocument">Spezifikation zum DOM 3 Core auf den Seiten des W3 Konsortiums</xref>. Inwieweit das dann in den XML Prozessoren umgesetzt ist, musste noch geprüft werden. Dazu habe ich den Saxon Quellcode herangezogen:</p>
+         <fig>
+            <title>endElement() Funktion im Saxon XSLT Prozessor</title>
+            <desc>Quellcode Schnippsel aus dem Saxon XSLT Prozessor, das zeigt, dass der EndElement-Listener im Parser einen Normalisierungsschritt auf den beteiligten DOM Knoten aufruft.</desc>
+            <image href="../images/normalisiere_32.png"/>
+         </fig>
+         <p>Die Normalisierungsfunktion lässt Mike Kay<indexterm>XML Gurus<indexterm>Michael Kay</indexterm>
+            </indexterm> dann mit einem aussagekräftigen Kommentar frei...</p>
+         <fig>
+            <title>normalize() Funktion im Saxon XSLT Prozessor</title>
+            <desc>Methodenrumpf der Normalisierungsfunktion im Saxon XSLT Prozessor</desc>
+            <image href="../images/normalisiert_33.png"/>
+         </fig>
+         <p>Damit war ich zufrieden - ob das jetzt stimmt oder nicht, ist glücklicherweise für die endgültige Lösung irrelevant.</p>
+         <p>Mein erster Versuch alle Textknoten auszuschneiden, die nur Leerzeichen enthalten, sah so aus:</p>
+         <pre xml:space="preserve">
+&lt;!-- Entferne alle Leerzeichen-Only Knoten, die kein Vorgänger Inline-Element haben --&gt;
+&lt;xsl:template match="text()[ancestor::title 
+                            and not((.|..)/preceding-sibling::node()[1][self::*]) and
+                                not(translate(.,' ','')]"/&gt;</pre>
+         <ul>
+            <li>
+               <p>Die erste Bedingung prüft, ob sich der Textknoten irgendwo unterhalb von <codeph>&lt;title&gt;</codeph> befindet.</p>
+            </li>
+            <li>
+               <p>Die zweite Bedingung prüft, ob als unmittelbarer Vorgänger ein Inline-Element existiert. Gesetzt den Fall, dass aneinander angrenzende Textknoten zu einem Textknoten zusammengefasst sind - wie oben recherchiert - würde das im Negativfall bedeuten, dass wir uns am Satzanfang befinden.</p>
+            </li>
+            <li>
+               <p>Die dritte Bedingung prüft, ob es sich um einen Knoten handelt, der nur aus Leerzeichen besteht. Hier müssten streng genommen auch noch Zeilenumbrüche aufgelistet sein.</p>
+            </li>
+         </ul>
+         <p>Leider konnte dadurch der folgende - Nicht-Real-Welt - Testfall nicht gelöst werden:</p>
+         <pre xml:space="preserve">&lt;title&gt;
+   •
+   &lt;b&gt;•Fettes&lt;/b&gt;
+   &lt;b&gt;
+      &lt;i&gt;
+         &lt;b&gt;
+            &lt;i&gt; &lt;/i&gt;
+         &lt;/b&gt;
+      &lt;/i&gt;
+      Editierproblem
+   &lt;/b&gt;
+&lt;/title&gt;</pre>
+         <p>Das Leerzeichen im <codeph>&lt;i&gt;</codeph> Tag wurde verschluckt. Das kam wegen der zweiten Bedingung, die nur maximal eine Verschachtelungsebene beachtet. Man könnte zwar den Ausdruck noch aufbohren, z.B. so:</p>
+         <pre xml:space="preserve">not((.|..|../..|../../..)/preceding-sibling::node()[1][self::*])</pre>
+         <p>Das sieht aber schon wirklich sehr unschön aus.</p>
+         <p>Da ich mir aber zuvor schon den zweiten Schritt überlegt hatte, der so aussieht:</p>
+         <pre xml:space="preserve">
+&lt;!-- Entferne am ersten Textknoten unterhalb von title führende Leerzeichen --&gt;
+&lt;xsl:template match="text()[current() is ancestor::title[1]/(descendant::text())[1]]" 
+              priority="10"  mode="pass-2"&gt;
+    &lt;xsl:value-of select="replace(.,'^\s+','')"/&gt;
+&lt;/xsl:template&gt;</pre>
+         <p>...fiel mir schliesslich die Korrektur für den ersten Schritt leicht:</p>
+         <pre xml:space="preserve">&lt;xsl:template match="text()[current() &amp;lt;&amp;lt; ancestor::title[1]/
+                           (descendant::text()[normalize-space(.)])[1]]" mode="pass-1"/&gt;</pre>
+         <fig expanse="spread" frame="all" scale="50" status="changed">
+            <image href="../images/Sandpiper_35.svg"/>
+         </fig>
+         <ul>
+            <li>
+               <p>Ein Test <codeph>text()[normalize-space(.)</codeph> genügt, um festzustellen, ob der Textknoten nicht nur Leerzeichen enthält.</p>
+            </li>
+            <li>
+               <p>Andersrum prüft man mit <codeph>text()[not(translate(.,' ',''))</codeph> ob der Textknoten nur aus Leerzeichen besteht.</p>
+            </li>
+            <li>
+               <p>Das Flachklopfen einer Sequenzmenge mittels <codeph>()</codeph>, wie in <codeph>(descendant::text())</codeph> ist notwendig, damit man auch wirklich nur das erste Element des Descendant-Lookups bekommt.</p>
+            </li>
+            <li>
+               <p>Die <codeph>fn:current()</codeph> Funktion wird viel zu selten benutzt... damit erspart man sich eine Variablendeklaration im Rumpf der Regel.</p>
+            </li>
+            <li>
+               <p>Den coolen <codeph>&lt;&lt;</codeph> Operator, der prüft, ob ein Knoten vor einem anderen kommt, muss man in einem Match-Statement escapen.</p>
+            </li>
+         </ul>
+         <p>Abschliessend ist noch der ganze Quelltext der Lösung abgebildet. Dieser zeigt auch nochmal das Pattern bzgl. der <xref format="dita" scope="local" type="concept" href="4_1_1_Vortransformationen.dita">Vortransformationen</xref>:</p>
+         <pre xml:space="preserve">&lt;?xml version="1.0" ?&gt;
+&lt;xsl:stylesheet xmlns:xsl="http://www.w3.org/1999/XSL/Transform" xmlns:xs="http://www.w3.org/2001/XMLSchema" exclude-result-prefixes="xs" version="2.0"&gt;
+   &lt;xsl:template match="text()[current() &amp;lt;&amp;lt; ancestor::title[1]/                                (descendant::text()[normalize-space(.)])[1]]" mode="pass-1"/&gt;
+   &lt;xsl:template match="text()[current() is ancestor::title[1]/(descendant::text())[1]]" priority="10" mode="pass-2"&gt;
+      &lt;xsl:value-of select="replace(.,'^\s+','')"/&gt;
+   &lt;/xsl:template&gt;
+   &lt;xsl:template match="/"&gt;
+      &lt;xsl:variable name="pass-1"&gt;
+         &lt;xsl:apply-templates mode="pass-1"/&gt;
+      &lt;/xsl:variable&gt;
+      &lt;xsl:apply-templates select="$pass-1" mode="pass-2"/&gt;
+   &lt;/xsl:template&gt;
+   &lt;xsl:template match="node()|@*" mode="#all"&gt;
+      &lt;xsl:copy&gt;
+         &lt;xsl:apply-templates select="node()|@*" mode="#current"/&gt;
+      &lt;/xsl:copy&gt;
+   &lt;/xsl:template&gt;
+&lt;/xsl:stylesheet&gt;</pre>
+      </section>
+      <section>
+         <title>Exkurs: Performanz der Descendant-Achse</title>
+         <p>Aus Verlegenheit hatte ich die komplexere Match-Bedingung des ersten Schritts gegen einen einfachen Pfadselektor ausgewechselt, also das....</p>
+         <pre xml:space="preserve">match="text()[current() is ancestor::title[1]/(descendant::text())[1]]"</pre>
+         <p>... gegen das ...</p>
+         <pre xml:space="preserve">match="title/(descendant::text())[1]"</pre>
+         <p>... ersetzt. </p>
+         <hazardstatement type="warning" status="changed">
+            <messagepanel>
+               <typeofhazard>Damit lief die Transformation aber in ein exponentiellen Performanzproblem!</typeofhazard>
+               <howtoavoid>In einer Match-Bedingung sollte niemals die Descendant-Achse im Pfadselektor auftauchen!</howtoavoid>
+            </messagepanel>
+         </hazardstatement>
+         <p>Ansonsten performt die Lösung auch bei mehreren Tausend Titeln in Sekundenbruchteilen.</p>
+      </section>
+      <section>
+         <title>Leerzeichen vor einem Inline-Element</title>
+         <p>Auch die Leerzeichen vor einem Inline-Element sind prüfenswert. Insbesondere um zu sehen, ob keines vergessen wurde. Eine naive Herangehensweise wäre bspw. ausgehend vom Inline-Element zu prüfen, ob ein Vorgänger Textknoten mit einem Leerzeichen abschliesst:</p>
+         <pre xml:space="preserve">ends-with(preceding-sibling::text()[1],' ')</pre>
+         <p>Dabei werden aber nur die Text-Vorgängerknoten in der Zeile betrachtet, etwaige Inline-Elemente werden aussen vor gelassen. D.h. der folgende Para würde nach diesem XPath Ausdruck noch als gültig erkannt, da nach dem "Hallo " ein Leerzeichen steht.</p>
+         <pre xml:space="preserve">&lt;p&gt;Hallo &lt;b&gt;fetter Text&lt;/b&gt;&lt;link&gt;link text&lt;/link&gt;</pre>
+         <p>Offensichtlich fehlt aber ein Leerzeichen vor dem <codeph>&lt;link&gt;</codeph>-Element. </p>
+         <p>Um zu prüfen, ob der unmittelbare Vorgängerknoten ein Textknoten ist und ob dieser mit einem Leerzeichen abschliesst, kann man diesen XPath Ausdruck verwenden:</p>
+         <pre xml:space="preserve">ends-with(preceding-sibling::node()[1][self::text()],' ')</pre>
+         <p>Oder klarer:</p>
+         <pre xml:space="preserve">preceding-sibling::node()[1][self::text()]/ends-with(.,' ')</pre>
+         <p>Da wir aber bisher immer nur die preceding-sibling Achse betrachten, entgehen uns Leerzeichen, die in zuvor gesetzten Inline-Elementen vorkommen, bspw. hier:</p>
+         <pre xml:space="preserve">&lt;p&gt;
+   Hallo 
+   &lt;b&gt;fetter Text &lt;/b&gt;
+   &lt;link&gt;link Text&lt;/link&gt;
+&lt;/p&gt;</pre>
+         <p>Deshalb müsste man eigentlich den XPath Ausdruck noch erweitern:</p>
+         <pre xml:space="preserve">preceding-sibling::node()[1][self::* or self::text()]/ends-with(string(.),' ')</pre>
+         <p>Dabei ist zu beachten, dass der string()-Cast auch noch verschachtelte Inline Strukturen flachklopfen würde. </p>
+         <p>Jetzt könnte man sich denken, dass man ja eigentlich diesen Ausruck verkürzen könnte zu:</p>
+         <pre xml:space="preserve">preceding-sibling::node()[1]/ends-with(string(.),' ')</pre>
+         <p>Dann würde aber auch die folgende Zeile erfolgreich geprüft:</p>
+         <pre xml:space="preserve">&lt;p&gt;
+   Hallo 
+   &lt;b&gt;
+       fetter Text 
+      &lt;i&gt;Hallo&lt;/i&gt;
+   &lt;/b&gt;
+   &lt;!-- Hallo --&gt;
+   &lt;link&gt;link Text&lt;/link&gt;
+&lt;/p&gt;</pre>
+         <p>Denn der Kommentar schliesst mit einem Leerzeichen ab. Auch Kommentare und Processing Instructions sind vom Typ <codeph>node()</codeph>.</p>
+      </section>
+   </body>
+</topic>

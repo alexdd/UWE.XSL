@@ -1,0 +1,323 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!DOCTYPE topic
+  PUBLIC "-//OASIS//DTD DITA Topic//EN" "topic.dtd">
+<topic id="id4e59c114-46a9-4292-8c91-b346f9cde93f">
+   <title>SQL Views in MarkLogic </title>
+   <body>
+      <p>Es macht nicht immer Sinn über eine Baumstruktur zu suchen. Obwohl das in einer 
+XML Datenbank rasend schnell geht, weil jeder Knoten des Baums initial in einen Index
+aufgenommen wird. So gibt es doch Anwendungsfälle bei denen man lieber eine relationale
+Sicht auf die Daten hätte.<fn callout="H"><p>UWE-Testfußnote (34/40, Callout H): DITA-fn wird in UWE zu footnote/key/desc.</p></fn></p>
+      <p>In MarkLogic heisst die Lösung dazu SQL Views.</p>
+      <p>Bspw. benötigt man eine relationale Sicht auf die Daten,
+wenn über verschiedene Datensätze ein Report generiert werden soll.</p>
+      <p>Nehmen wir an, es gibt im D- die folgenden Dokumente:</p>
+      <pre xml:space="preserve">&lt;k:kunde&gt;
+  &lt;k:id&gt;1&lt;/k:id&gt;
+  &lt;k:name&gt;Alex&lt;/k:name&gt;
+  &lt;k:eMail&gt;tekturcms@gmail.com&lt;/k:eMail&gt;
+&lt;/k:kunde&gt;
+
+&lt;k:kunde&gt;
+  &lt;k:id&gt;2&lt;/k:id&gt;
+  &lt;k:name&gt;Horst&lt;/k:name&gt;
+  &lt;k:eMail&gt;horst@horst.de&lt;/k:eMail&gt;
+&lt;/k:kunde&gt;
+
+&lt;k:kunde&gt;
+  &lt;k:id&gt;3&lt;/k:id&gt;
+  &lt;k:name&gt;Gundula&lt;/k:name&gt;
+  &lt;k:eMail&gt;gundl@gundula.de&lt;/k:eMail&gt;
+&lt;/k:kunde&gt;
+
+&lt;b:bestellung&gt;
+  &lt;b:id&gt;1&lt;/b:id&gt;
+  &lt;b:datum&gt;02.01.2019&lt;/b:datum&gt;
+  &lt;b:preis&gt;99.90&lt;/b:preis&gt;
+  &lt;kunde-id&gt;2&lt;/kunde-id&gt;
+&lt;/b:bestellung&gt;
+
+&lt;b:bestellung&gt;
+  &lt;b:id&gt;2&lt;/b:id&gt;
+  &lt;b:datum&gt;03.01.2019&lt;/b:datum&gt;
+  &lt;b:preis&gt;68.90&lt;/b:preis&gt;
+  &lt;b:kunde-id&gt;1&lt;/b:kunde-id&gt;
+&lt;/b:bestellung&gt;</pre>
+      <p>Will man sich alle Kunden anzeigen lassen, die eine Bestellung 
+abgegeben haben - das sind Alex und Horst - so würde man bei
+einem relationalen Ansatz einen <codeph>JOIN</codeph> verwenden, so wie hier:</p>
+      <pre xml:space="preserve">SELECT name, datum, preis
+FROM kunden k
+INNER JOIN bestellungen b
+ON k.id = b.kunde_id</pre>
+      <p>In einer relationalen Sicht würde uns das dann die folgende Tabelle liefern:</p>
+      <pre xml:space="preserve">name, datum, preis
+Alex, 03.01.2019, 68.90
+Horst, 02.01.2019, 99.90</pre>
+      <p>Um für MarkLogic eine SQL View zu definieren verwendet man einen Mechanismus,
+der da heisst: Template Driven Extraction <xref format="html" scope="external" href="https://docs.marklogic.com/guide/app-dev/TDE">Template Driven Extraction wird verwendet um in MarkLogic eine relationale Sicht auf die baumstrukturierten Daten zu setzen</xref>
+      </p>
+      <p>Dazu werden Templates in XML deklariert und in die Template Collection eingefügt. Für unser obiges Beispiel
+würden wir zwei Templates brauchen, die so aussehen:</p>
+      <pre xml:space="preserve">xquery version "1.0-ml";
+
+import module namespace tde = "http://marklogic.com/xdmp/tde" 
+                            at "/MarkLogic/tde.xqy";
+
+let $sql-view-name := 'kunden-view.xml'
+let $sql-view := &lt;template xmlns="http://marklogic.com/xdmp/tde"&gt;
+   &lt;path-namespaces&gt;
+      &lt;path-namespace&gt;
+         &lt;prefix&gt;k&lt;/prefix&gt;
+         &lt;namespace-uri&gt;https://tekturcms.de/schema/kunde/1.0&lt;/namespace-uri&gt;
+      &lt;/path-namespace&gt;
+   &lt;/path-namespaces&gt;
+   &lt;context&gt;/k:kunde&lt;/context&gt;
+   &lt;collections&gt;
+      &lt;collections-and&gt;
+         &lt;collection&gt;/kunden&lt;/collection&gt;
+      &lt;/collections-and&gt;
+   &lt;/collections&gt;
+   &lt;rows&gt;
+      &lt;row&gt;
+         &lt;schema-name&gt;kunden_schema&lt;/schema-name&gt;
+         &lt;view-name&gt;kunden_view&lt;/view-name&gt;
+         &lt;columns&gt;
+            &lt;column&gt;
+               &lt;name&gt;id&lt;/name&gt;
+               &lt;scalar-type&gt;string&lt;/scalar-type&gt;
+               &lt;val&gt;k:id&lt;/val&gt;
+               &lt;nullable&gt;true&lt;/nullable&gt;
+            &lt;/column&gt;
+            &lt;column&gt;
+               &lt;name&gt;datum&lt;/name&gt;
+               &lt;scalar-type&gt;string&lt;/scalar-type&gt;
+               &lt;val&gt;k:datum&lt;/val&gt;
+               &lt;nullable&gt;true&lt;/nullable&gt;
+            &lt;/column&gt;
+            &lt;column&gt;
+               &lt;name&gt;eMail&lt;/name&gt;
+               &lt;scalar-type&gt;string&lt;/scalar-type&gt;
+               &lt;val&gt;k:eMail&lt;/val&gt;
+               &lt;nullable&gt;true&lt;/nullable&gt;
+            &lt;/column&gt;
+         &lt;/columns&gt;
+      &lt;/row&gt;
+   &lt;/rows&gt;
+&lt;/template&gt;
+return(
+  tde:template-insert(concat('/templates/', $sql-view-name), 
+                      $sql-view, xdmp:default-permissions())
+)</pre>
+      <p>und analog für die Bestellungen:</p>
+      <pre xml:space="preserve">[...]
+   &lt;rows&gt;
+      &lt;row&gt;
+         &lt;schema-name&gt;bestellungen_schema&lt;/schema-name&gt;
+         &lt;view-name&gt;bestellungen_view&lt;/view-name&gt;
+         &lt;columns&gt;
+            &lt;column&gt;
+               &lt;name&gt;id&lt;/name&gt;
+               &lt;scalar-type&gt;string&lt;/scalar-type&gt;
+               &lt;val&gt;b:id&lt;/val&gt;
+            &lt;/column&gt;
+            &lt;column&gt;
+               &lt;name&gt;datum&lt;/name&gt;
+               &lt;scalar-type&gt;string&lt;/scalar-type&gt;
+               &lt;val&gt;b:datum&lt;/val&gt;
+            &lt;/column&gt;
+            &lt;column&gt;
+               &lt;name&gt;preis&lt;/name&gt;
+               &lt;scalar-type&gt;string&lt;/scalar-type&gt;
+               &lt;val&gt;b:preis&lt;/val&gt;
+            &lt;/column&gt;
+            &lt;column&gt;
+               &lt;name&gt;kunde_id&lt;/name&gt;
+               &lt;scalar-type&gt;string&lt;/scalar-type&gt;
+               &lt;val&gt;b:kunde-id&lt;/val&gt;
+            &lt;/column&gt;
+         &lt;/columns&gt;
+      &lt;/row&gt;
+[...]</pre>
+      <p>In XQuery eingebunden, könnte man dann die definierten SQL Views mit dem folgenden Befehl abfragen:</p>
+      <pre xml:space="preserve">xdmp:sql("SELECT name, datum, preis FROM kunden_view k 
+          INNER JOIN bestellungen_view b ON k.id = b.kunde_id")</pre>
+      <p>Folgende ist das komplette Beispiel für eine MarkLogic XQuery Konsolensitzung abgebildet ...</p>
+      <pre xml:space="preserve">xquery version "1.0-ml";
+
+declare namespace k = 'http://www.tekturcms.de/kunden';
+declare namespace b = 'http://www.tekturcms.de/bestellungen';
+
+import module namespace tde = "http://marklogic.com/xdmp/tde" at "/MarkLogic/tde.xqy";
+
+declare function local:loadKunde($id, $name, $eMail)
+{
+  let $root :=
+  &lt;k:kunde&gt;
+    &lt;k:id&gt;{ $id }&lt;/k:id&gt;
+    &lt;k:name&gt;{ $name }&lt;/k:name&gt;
+    &lt;k:eMail&gt;{ $eMail }&lt;/k:eMail&gt;
+  &lt;/k:kunde&gt;,
+  $options :=
+  &lt;options xmlns="xdmp:document-insert"&gt;  
+    &lt;permissions&gt;{ xdmp:default-permissions() }&lt;/permissions&gt;
+    &lt;collections&gt;
+      &lt;collection&gt;/kunden&lt;/collection&gt;
+    &lt;/collections&gt;
+  &lt;/options&gt;,
+  $fname := concat('/kunden/',$id,".xml")
+  return xdmp:document-insert($fname,$root,$options)
+};
+
+declare function local:loadBestellung($id, $datum, $preis, $kunde-id)
+{
+  let $root :=
+  &lt;b:bestellung&gt;
+    &lt;b:id&gt;{ $id }&lt;/b:id&gt;
+    &lt;b:datum&gt;{ $datum }&lt;/b:datum&gt;
+    &lt;b:preis&gt;{ $preis }&lt;/b:preis&gt;
+    &lt;b:kunde-id&gt;{ $kunde-id }&lt;/b:kunde-id&gt;
+  &lt;/b:bestellung&gt;,
+  $options :=
+  &lt;options xmlns="xdmp:document-insert"&gt;  
+    &lt;permissions&gt;{ xdmp:default-permissions() }&lt;/permissions&gt;
+    &lt;collections&gt;
+      &lt;collection&gt;/bestellungen&lt;/collection&gt;
+    &lt;/collections&gt;
+  &lt;/options&gt;,
+  $fname := concat('/bestellungen/',$id,".xml")
+  return xdmp:document-insert($fname,$root,$options)
+};
+
+declare function local:insertKundenSchema()
+{
+  let $sql-view-name := 'kunden-view.xml',
+      $sql-view := &lt;template xmlns="http://marklogic.com/xdmp/tde"&gt;
+    &lt;path-namespaces&gt;
+      &lt;path-namespace&gt;
+        &lt;prefix&gt;k&lt;/prefix&gt;
+        &lt;namespace-uri&gt;http://www.tekturcms.de/kunden&lt;/namespace-uri&gt;
+       &lt;/path-namespace&gt;
+    &lt;/path-namespaces&gt;
+    &lt;context&gt;/k:kunde&lt;/context&gt;
+     &lt;collections&gt;
+       &lt;collections-and&gt;
+         &lt;collection&gt;/kunden&lt;/collection&gt;
+      &lt;/collections-and&gt;
+     &lt;/collections&gt;
+     &lt;rows&gt;
+       &lt;row&gt;
+         &lt;schema-name&gt;kunden_schema&lt;/schema-name&gt;
+         &lt;view-name&gt;kunden_view&lt;/view-name&gt;
+         &lt;columns&gt;
+            &lt;column&gt;
+               &lt;name&gt;id&lt;/name&gt;
+               &lt;scalar-type&gt;string&lt;/scalar-type&gt;
+               &lt;val&gt;k:id&lt;/val&gt;
+            &lt;/column&gt;
+            &lt;column&gt;
+               &lt;name&gt;name&lt;/name&gt;
+               &lt;scalar-type&gt;string&lt;/scalar-type&gt;
+               &lt;val&gt;k:name&lt;/val&gt;
+            &lt;/column&gt;
+          &lt;column&gt;
+             &lt;name&gt;eMail&lt;/name&gt;
+             &lt;scalar-type&gt;string&lt;/scalar-type&gt;
+             &lt;val&gt;k:eMail&lt;/val&gt;
+          &lt;/column&gt;
+        &lt;/columns&gt;
+      &lt;/row&gt;
+    &lt;/rows&gt;
+  &lt;/template&gt;
+  return
+    tde:template-insert(concat('/templates/', 
+                        $sql-view-name), $sql-view, xdmp:default-permissions())
+};
+
+declare function local:insertBestellungenSchema()
+{
+  let $sql-view-name := 'bestellungen-view.xml',
+      $sql-view := &lt;template xmlns="http://marklogic.com/xdmp/tde"&gt;
+    &lt;path-namespaces&gt;
+      &lt;path-namespace&gt;
+        &lt;prefix&gt;b&lt;/prefix&gt;
+        &lt;namespace-uri&gt;http://www.tekturcms.de/bestellungen&lt;/namespace-uri&gt;
+       &lt;/path-namespace&gt;
+    &lt;/path-namespaces&gt;
+    &lt;context&gt;/b:bestellung&lt;/context&gt;
+     &lt;collections&gt;
+       &lt;collections-and&gt;
+         &lt;collection&gt;/bestellungen&lt;/collection&gt;
+      &lt;/collections-and&gt;
+     &lt;/collections&gt;
+     &lt;rows&gt;
+       &lt;row&gt;
+         &lt;schema-name&gt;bestellungen_schema&lt;/schema-name&gt;
+         &lt;view-name&gt;bestellungen_view&lt;/view-name&gt;
+         &lt;columns&gt;
+            &lt;column&gt;
+               &lt;name&gt;id&lt;/name&gt;
+               &lt;scalar-type&gt;string&lt;/scalar-type&gt;
+               &lt;val&gt;b:id&lt;/val&gt;
+            &lt;/column&gt;
+            &lt;column&gt;
+               &lt;name&gt;datum&lt;/name&gt;
+               &lt;scalar-type&gt;string&lt;/scalar-type&gt;
+               &lt;val&gt;b:datum&lt;/val&gt;
+            &lt;/column&gt;
+          &lt;column&gt;
+             &lt;name&gt;preis&lt;/name&gt;
+             &lt;scalar-type&gt;string&lt;/scalar-type&gt;
+             &lt;val&gt;b:preis&lt;/val&gt;
+          &lt;/column&gt;
+          &lt;column&gt;
+             &lt;name&gt;kunde_id&lt;/name&gt;
+             &lt;scalar-type&gt;string&lt;/scalar-type&gt;
+             &lt;val&gt;b:kunde-id&lt;/val&gt;
+          &lt;/column&gt;
+        &lt;/columns&gt;
+      &lt;/row&gt;
+    &lt;/rows&gt;
+  &lt;/template&gt;
+  return
+    tde:template-insert(concat('/templates/', 
+                        $sql-view-name), $sql-view, xdmp:default-permissions())
+};
+
+
+local:loadKunde("1","Alex","tekturcms@gmail.com"),
+
+local:loadKunde("2","Horst","horst@horst.de"),
+
+local:loadKunde("3","Gundula","gundl@gundula.de"),
+
+local:loadBestellung("1","02.01.2019","99.90","2"),
+
+local:loadBestellung("2","03.01.2019","68.90","1"),
+
+local:insertKundenSchema(),
+
+local:insertBestellungenSchema(),
+
+xdmp:sql("SELECT name, datum, preis FROM kunden_view k INNER JOIN 
+          bestellungen_view b ON k.id = b.kunde_id")</pre>
+      <p>... mit einer schönen tabellarischen Ausgabe im unteren Panel der Query Konsole - oder als JSON:</p>
+      <pre xml:space="preserve">[
+  [
+    "k.name", 
+    "b.datum", 
+    "b.preis"
+  ], 
+  [
+    "Alex", 
+    "03.01.2019", 
+    "68.90"
+  ], 
+  [
+    "Horst", 
+    "02.01.2019", 
+    "99.90"
+  ]
+]</pre>
+   </body>
+</topic>

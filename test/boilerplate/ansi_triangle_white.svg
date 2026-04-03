@@ -1,0 +1,8 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- UWE.XSL - DITA Publishing Stylesheets
+ Copyright (C) 2012-2026 Alex Duesel <tekturcms@gmail.com>
+ SPDX-License-Identifier: LGPL-3.0-only
+ See license.txt for the full license text. -->
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 24" width="16" height="24">
+  <polygon points="2,2 2,22 14,12" fill="#ffffff" stroke="#1d1d1b" stroke-width="0.75"/>
+</svg>

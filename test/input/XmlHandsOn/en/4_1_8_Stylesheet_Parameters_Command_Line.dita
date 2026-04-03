@@ -1,0 +1,73 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!DOCTYPE topic
+  PUBLIC "-//OASIS//DTD DITA Topic//EN" "topic.dtd">
+<topic id="id3428ba06-d592-42a8-8480-4093057c0f89">
+   <title>Stylesheet Parameters on the Command Line</title>
+   <body>
+      <p>
+         <indexterm>Parameterization<indexterm>Stylesheet Parameters</indexterm>
+         </indexterm>When calling XSLT on the entry file (main stylesheet), parameters can be passed on the command line.
+These are normally declared in the main stylesheet, but can also be placed in sub-stylesheets<indexterm>Parameterization<indexterm>Sub-Stylesheet</indexterm>
+         </indexterm>
+if they should only be locally available.<fn callout="E"><p>UWE test footnote (31/40, callout E): DITA fn maps to UWE footnote/key/desc.</p></fn></p>
+      <p>A parameter can look like this, for example:</p>
+      <pre xml:space="preserve">&lt;xsl:param name="test-param" required="no" select="'Hallo'"/&gt;</pre>
+      <p>If the <codeph>@required</codeph> field is set to the value <codeph>yes</codeph>, then no default value may be specified in the <codeph>@select</codeph> attribute.
+(The default could of course also be placed as PCDATA content within the tags.)</p>
+      <p>A Saxon invocation on the command line that supplies this parameter looks like this, for example:</p>
+      <pre xml:space="preserve">saxon -it:main -o:out.xml testparam="Servus!"</pre>
+      <section>
+         <title>XPath as Parameter Value</title>
+         <p>There are also some hidden functionalities here, for example, you may want to pass an XPath expression to the stylesheet
+that the main program perhaps computes with the help of a database query.</p>
+         <p>In the simplest case, such an XPath is a boolean value <codeph>true()</codeph>. This is correctly passed to the stylesheet by prepending the XPath identifier <codeph>?</codeph>, like this:</p>
+         <pre xml:space="preserve">saxon -it:main -o:out.xml ?testparam=true()</pre>
+         <p>Because of the <codeph>?</codeph> prefix, Saxon immediately understands that it is an XPath. An <codeph>xsl:choose</codeph> statement like
+the following would yield the correct branch:</p>
+         <pre xml:space="preserve">[...]
+&lt;xsl:param name="test-param" required="yes"/&gt;
+[...]
+&lt;xsl:choose&gt;
+    &lt;xsl:when test="$test-param"&gt;Gut&lt;/xsl:when&gt;
+    &lt;xsl:otheriwse&gt;Schlecht&lt;/xsl:otheriwse&gt;
+&lt;/xsl:choose&gt;
+[...]</pre>
+         <p>If you did not set the prefix and sent, for example, this <codeph>name=value</codeph> pair:</p>
+         <pre xml:space="preserve">saxon -it:main -o:out.xml testparam=false</pre>
+         <p>The good branch would also be executed, because the non-empty string would be interpreted as true, which is incorrect.</p>
+         <p>You can of course also program in a type-safe manner and attach a type declaration to the parameter, which facilitates debugging:</p>
+         <pre xml:space="preserve">&lt;xsl:param name="test-param" required="yes" as="xs:boolean"/&gt;</pre>
+         <p>To show a more complex scenario for a passed XPath, consider the following parameter passing:</p>
+         <pre xml:space="preserve">saxon -it:main -o:out.xml ?testparam="//descendant::buch[id=$id-aus-webservice-abfrage]"</pre>
+         <p>The shell variable <codeph>$id-aus-webservice-abfrage</codeph> is populated during execution of the shell script with the result value
+of a preceding web service call and passed to the XSLT stylesheet. This operates on a book list and formats
+the selected book, for example, as an HTML page:</p>
+         <pre xml:space="preserve">&lt;xsl:param name="test-param" required="yes" /&gt;
+
+&lt;xsl:template name="main"&gt;
+    &lt;xsl:apply-templates select="$test-param"/&gt;
+&lt;/xsl:template&gt;</pre>
+      </section>
+      <section>
+         <title>Clark Notation</title>
+         <p>
+            <indexterm>Clark Notation</indexterm>With Clark Notation <xref format="html" scope="external" href="http://www.jclark.com/xml/xmlns.htm">James Clark (XML Namespaces)</xref>, the required namespace can be prepended
+to the element name using curly braces. This looks, for example, as follows - if you also prepend
+the <codeph>?</codeph> prefix:</p>
+         <pre xml:space="preserve">?{http://www.tekturcms.de/namespaces/mein-namespace}spezieller-verarbeitungs-modus=true()</pre>
+         <p>In the called stylesheet, first the namespace is declared, then the parameter is set, and finally the logic is specified:</p>
+         <pre xml:space="preserve">&lt;xsl:stylesheet xmlns:xsl="http://www.w3.org/1999/XSL/Transform" xmlns:xs="http://www.w3.org/2001/XMLSchema" xmlns:tk="http://www.tekturcms.de/namespaces/mein-namespace" exclude-result-prefixes="xs" version="2.0"&gt;
+   &lt;xsl:param name="tk:spezieller-verarbeitungs-modus" select="false()" as="xs:boolean"/&gt;
+   &lt;xsl:template name="main"&gt;
+      &lt;xsl:choose&gt;
+         &lt;xsl:when test="$tk:spezieller-verarbeitungs-modus"&gt;Gut&lt;/xsl:when&gt;
+         &lt;xsl:otheriwse&gt;Schlecht&lt;/xsl:otheriwse&gt;
+      &lt;/xsl:choose&gt;
+   &lt;/xsl:template&gt;
+&lt;/xsl:stylesheet&gt;</pre>
+         <p>This special case is really only needed when you want to introduce a
+parameter into an existing transformation whose name already exists, in order to avoid a naming conflict
+- seen for example in complex Schematron rules.</p>
+      </section>
+   </body>
+</topic>
