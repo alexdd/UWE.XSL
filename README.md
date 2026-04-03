@@ -14,7 +14,6 @@ UWE.XSL turns **DITA 1.3** maps and topics into **PDF** (via XSL-FO and Apache F
 - [Validation](#validation)
 - [Dependencies](#dependencies)
 - [Test data](#test-data)
-- [Upgrading from older layouts](#upgrading-from-older-layouts)
 - [Optional helper scripts](#optional-helper-scripts)
 - [License](#license)
 
@@ -274,23 +273,6 @@ Calabash ships **Saxon-HE**; you normally do not install Saxon separately. To up
 `test/input/XmlHandsOn/` is a full sample (“XML Developer’s Handbook”) in **de** and **en** (64 topics per language, one ditamap each), with shared images under `images/`.
 
 The bundled **`test/boilerplate/`** assets are the default targets of `conf/params/a4_margin_book.xml` → `<pdf-config>`: SVG line art for cover and admonition bands (`Lines_*.svg`), ANSI-style note and triangles (`ansi_*.svg`), a sample caution graphic (`caution_animal_chipmunk.svg`), and small PNG logos (`logo_small_*.png`, `hands_on_logo.png`). Older checkouts used raster icons under `test/boilerplate/warning/` (per-language `*_caution_300dpi.png`, etc.); those files are gone—point `<pdf-config>` at your own SVG or PNG paths instead. Paths in `<pdf-config>` are **relative to the params file** (`conf/params/`), not the repo root.
-
-## Upgrading from older layouts
-
-If you used an earlier checkout or fork, configuration paths were reorganized:
-
-| Previously | Now |
-|------------|-----|
-| `params/a4_margin_book.xml` | `conf/params/a4_margin_book.xml` |
-| `conf/fop-template.xconf` (repo root) | `conf/fop/fop-template.xconf` |
-| `conf/fop-generated.xconf` (repo root) | `conf/fop/fop-generated.xconf` (still generated; still gitignored) |
-| `src/common/pretransformation.xsl` | removed; PDF pretransform is **`src/pdf/pretransformation.xsl`** only (pipeline `pdf-params-step.xpl`) |
-| `src/common/data.xsl`, `functions.xsl`, `src/xpl/tools/params-to-flat.xsl`, `src/pdf/tektur.xsl`, `src/sch/fo-linktarget-errors.sch`, `conf/fop/fop.xconf` | removed as unused (helpers such as `tektur:*` string functions live in **`src/html/images.xsl`**; FO link checks use **`src/xpl/tools/fo-link-errors.xsl`**) |
-| `test/boilerplate/warning/*.png`, `test/boilerplate/tui_logo.png` | removed from the tree; set `<pdf-config>` to your replacement assets (defaults use SVG + PNG in `test/boilerplate/`) |
-
-Update any **CI scripts, documentation, or absolute paths** that still point at the old locations. After moving a custom params file, adjust `<pdf-config>` relative paths if the distance to your images changed (they resolve from the params file’s directory).
-
-The main XProc graph also injects a **`<?uwe-viewport-params uri=…?>`** processing instruction ahead of the map when calling `map2uwe.xsl`, so per-language params line up with the viewport iteration. You only need to care about this if you invoke `map2uwe.xsl` outside `main.xpl` and rely on that PI for `doc()` resolution.
 
 ## Optional helper scripts
 
