@@ -2,6 +2,8 @@
 
 UWE.XSL turns **DITA 1.3** maps and topics into **PDF** (via XSL-FO and Apache FOP) and **HTML**, using XSLT and an **XProc 3** orchestration layer. The stylesheets come from the [Tektur CCMS](http://www.tekturcms.de) ecosystem and are suitable for automated builds in CI, Docker, or locally on your machine.
 
+The non-XML infrastructure has been built with AI-assisted coding.
+
 ## Contents
 
 - [Quick start](#quick-start)
@@ -272,7 +274,6 @@ Calabash ships **Saxon-HE**; you normally do not install Saxon separately. To up
 
 `test/input/XmlHandsOn/` is a full sample (“XML Developer’s Handbook”) in **de** and **en** (64 topics per language, one ditamap each), with shared images under `images/`.
 
-The bundled **`test/boilerplate/`** assets are the default targets of `conf/params/a4_margin_book.xml` → `<pdf-config>`: SVG line art for cover and admonition bands (`Lines_*.svg`), ANSI-style note and triangles (`ansi_*.svg`), a sample caution graphic (`caution_animal_chipmunk.svg`), and small PNG logos (`logo_small_*.png`, `hands_on_logo.png`). Older checkouts used raster icons under `test/boilerplate/warning/` (per-language `*_caution_300dpi.png`, etc.); those files are gone—point `<pdf-config>` at your own SVG or PNG paths instead. Paths in `<pdf-config>` are **relative to the params file** (`conf/params/`), not the repo root.
 
 ## Optional helper scripts
 
