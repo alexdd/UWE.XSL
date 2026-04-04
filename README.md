@@ -2,12 +2,11 @@
 
 UWE.XSL turns **DITA 1.3** maps and topics into **PDF** (via XSL-FO and Apache FOP) and **HTML**, using XSLT and an **XProc 3** orchestration layer. The stylesheets come from the [Tektur CCMS](http://www.tekturcms.de) ecosystem and are suitable for automated builds in CI, Docker, or locally on your machine.
 
-The non-XML infrastructure has been built using AI-assisted coding.
-
 ## Contents
 
 - [Quick start](#quick-start)
 - [Overview](#overview)
+- [Screenshots](#screenshots)
 - [Project structure](#project-structure)
 - [Configuration](#configuration)
 - [Prerequisites](#prerequisites)
@@ -16,6 +15,7 @@ The non-XML infrastructure has been built using AI-assisted coding.
 - [Validation](#validation)
 - [Dependencies](#dependencies)
 - [Test data](#test-data)
+- [Upgrading from older layouts](#upgrading-from-older-layouts)
 - [Optional helper scripts](#optional-helper-scripts)
 - [License](#license)
 
@@ -38,6 +38,22 @@ Default output goes under `test/output/XmlHandsOn/<language>/` (PDF + HTML). To 
 
 The main entry point wires structure/layout/fonts/colors from `conf/params/a4_margin_book.xml`, walks the languages declared in `src/localize.xml`, and drives PDF and HTML sub-pipelines for each language.
 
+## Screenshots
+
+Real output from the **XmlHandsOn** sample (same pipeline as `run.sh` / `run.bat`): **PDF** via XSL-FO and Apache FOP, **HTML** as a static site with table of contents, topic body, and client-side search. 
+
+**PDF** (English sample, different spreads):
+
+![PDF: cover or opening pages](test/screenshots/pdf1.png)
+
+![PDF: body text and typography](test/screenshots/pdf2.png)
+
+![PDF: tables or figures](test/screenshots/pdf3.png)
+
+**HTML** (German sample):
+
+<img src="test/screenshots/html1.png" alt="HTML: navigation, topic content, and search chrome" width="680">
+
 ## Project structure
 
 ```
@@ -49,6 +65,7 @@ UWE.XSL/
 │   ├── run.sh                   # Runs pipeline via Calabash 3 (Unix/Git Bash)
 │   ├── run.bat                  # Windows: same; run from project root
 │   ├── docker-entrypoint.sh     # Docker: validates UWE_*_BASE file: URIs, calls run.sh
+│   ├── sync-uwe-github-mirror.sh # Git Bash: robocopy into publish clone (excl. submodule + this script)
 │   └── pdf-list-fonts.py        # Optional: list fonts embedded in a PDF (needs PyMuPDF)
 ├── conf/
 │   ├── params/
@@ -65,6 +82,7 @@ UWE.XSL/
 │   └── html/                    # HTML XSLT + res/lib (lunr, mark.js, …)
 ├── test/
 │   ├── input/XmlHandsOn/        # Sample publication (de, en, shared images)
+│   ├── screenshots/             # PDF/HTML sample captures (for README)
 │   ├── output/                  # Generated output (.gitignore)
 │   └── logs/                    # Logs (.gitignore)
 ├── lib/                         # Created by install.sh (not in git)
@@ -273,7 +291,6 @@ Calabash ships **Saxon-HE**; you normally do not install Saxon separately. To up
 ## Test data
 
 `test/input/XmlHandsOn/` is a full sample (“XML Developer’s Handbook”) in **de** and **en** (64 topics per language, one ditamap each), with shared images under `images/`.
-
 
 ## Optional helper scripts
 
