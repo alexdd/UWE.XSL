@@ -64,7 +64,6 @@ UWE.XSL/
 │   ├── run.sh                   # Runs pipeline via Calabash 3 (Unix/Git Bash)
 │   ├── run.bat                  # Windows: same; run from project root
 │   ├── docker-entrypoint.sh     # Docker: validates UWE_*_BASE file: URIs, calls run.sh
-│   ├── sync-uwe-github-mirror.sh # Git Bash: robocopy into publish clone (excl. submodule + this script)
 │   └── pdf-list-fonts.py        # Optional: list fonts embedded in a PDF (needs PyMuPDF)
 ├── conf/
 │   ├── params/
