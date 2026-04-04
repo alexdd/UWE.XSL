@@ -15,7 +15,6 @@ UWE.XSL turns **DITA 1.3** maps and topics into **PDF** (via XSL-FO and Apache F
 - [Validation](#validation)
 - [Dependencies](#dependencies)
 - [Test data](#test-data)
-- [Upgrading from older layouts](#upgrading-from-older-layouts)
 - [Optional helper scripts](#optional-helper-scripts)
 - [License](#license)
 
